@@ -1,7 +1,7 @@
 package UI.application.encryptTab.statisticsComponent.singleCodeStatistics;
 
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.StatisticRecordDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.StatisticRecordDTO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 

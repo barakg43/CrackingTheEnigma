@@ -6,7 +6,7 @@ import UI.application.FilePathComponent.FilePathController;
 import UI.application.MachineConfTab.MachineConfigurationController;
 import UI.application.encryptTab.EncryptTabController;
 import UI.application.encryptTab.statisticsComponent.singleCodeStatistics.SingleCodeStatisticsViewController;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 import javafx.application.Platform;

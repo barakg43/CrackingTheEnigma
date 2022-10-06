@@ -4,8 +4,8 @@ package UI.application.encryptTab.statisticsComponent.singleCodeStatistics;
 import UI.application.AllMachineController;
 import UI.application.encryptTab.statisticsComponent.singleCodeStatistics.tableViewRecord.TableStatisticRecordController;
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.StatisticRecordDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.StatisticRecordDTO;
 import javafx.fxml.FXML;
 
 import java.util.List;

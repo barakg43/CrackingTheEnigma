@@ -4,9 +4,9 @@ package UI.application.MachineConfTab;
 import UI.application.AllMachineController;
 import UI.application.MachineConfTab.NewCodeFormat.NewCodeFormatController;
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.MachineDataDTO;
-import dtoObjects.PlugboardPairDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.MachineDataDTO;
+import engineDTOs.PlugboardPairDTO;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 import javafx.application.Platform;
@@ -91,7 +91,7 @@ public class MachineConfigurationController {
    // private SimpleListProperty<Integer> selectedRotorsIDProperty;
     private ObservableList<SimpleStringProperty> selectedRotorsIDProperty;
     private ObservableList<SimpleStringProperty> currentRotorsIDProperty;
-    private ObservableList<SimpleStringProperty> selectedPlugBoardPairsProperty;
+    private final ObservableList<SimpleStringProperty> selectedPlugBoardPairsProperty;
 
     private Set<Integer> rotorIDSet;
     private Set<Character> positionsSet;
@@ -199,9 +199,6 @@ public class MachineConfigurationController {
     public SimpleBooleanProperty getIsSelected()
     {
         return isSelected;
-    }
-    public Engine getmEngine() {
-        return mEngine;
     }
 
     public void setMainAppController(AllMachineController MainController) {
@@ -340,7 +337,7 @@ public class MachineConfigurationController {
 
 
     @FXML
-    public void SetCodeConfActionListener(javafx.event.ActionEvent actionEvent) {
+    public void SetCodeConfActionListener(javafx.event.ActionEvent ignoredActionEvent) {
 
         isSelected.set(true);
 
@@ -433,18 +430,15 @@ public class MachineConfigurationController {
         pairComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
             plugBoardGroupedComboBoxes.stream().filter((comboBox -> !comboBox.equals(pairComboBox))).forEach(comboBox ->
-            {
-                            Platform.runLater(()->
-                {
-                    if (newValue != null)
-                        comboBox.getItems().remove(newValue);
-                    if (oldValue != null && !comboBox.getItems().contains(oldValue))
-                        comboBox.getItems().add(oldValue);
-                    FXCollections.sort(comboBox.getItems());
+                    Platform.runLater(()->
+        {
+            if (newValue != null)
+                comboBox.getItems().remove(newValue);
+            if (oldValue != null && !comboBox.getItems().contains(oldValue))
+                comboBox.getItems().add(oldValue);
+            FXCollections.sort(comboBox.getItems());
 
-                });
-
-            });
+        }));
 
             if(oldValue!=null)
                 plugBoardSet.add(oldValue);
@@ -511,7 +505,7 @@ public class MachineConfigurationController {
             AddMorePairsButton.setDisable(false);
     }
 
-    public void GetRandomButtonActionListener(ActionEvent actionEvent) {
+    public void GetRandomButtonActionListener(ActionEvent ignoredActionEvent) {
    //    resetAllFields();
         disableAllFields(true);
   //      mEngine.resetSelected();
@@ -566,7 +560,7 @@ public class MachineConfigurationController {
             firstInputFromPair.getItems().clear();
             secondInputFromPair.getItems().clear();
         }
-        firstInputs.getChildren().clear();;
+        firstInputs.getChildren().clear();
         secondInputs.getChildren().clear();
 
         CurrentCodeComponentController.resetFields();
@@ -602,12 +596,12 @@ public class MachineConfigurationController {
         removePlugBoardPairButton.setDisable(toDisable);
     }
 
-    public void ResetAllFieldsButtonActionListener(ActionEvent actionEvent) {
+    public void ResetAllFieldsButtonActionListener(ActionEvent ignoredActionEvent) {
         disableAllFields(false);
         resetAllFields();
     }
 
-    public void addMorePairsButtonOnAction(ActionEvent actionEvent) {
+    public void addMorePairsButtonOnAction(ActionEvent ignoredActionEvent) {
         addNewPlugBoardPair();
     }
 
@@ -631,7 +625,7 @@ public class MachineConfigurationController {
         plugBoardSet.add(first);
         plugBoardSet.add(second);
     }
-    public void removePlugBoardPairOnAction(ActionEvent actionEvent) {
+    public void removePlugBoardPairOnAction(ActionEvent ignoredActionEvent) {
 
         int index=firstInputVBox.getChildren().size()-1;
         Character firstLetter=((ChoiceBox<Character>)firstInputVBox.getChildren().get(index)).getValue();
@@ -643,18 +637,11 @@ public class MachineConfigurationController {
         addRemovePlugLetterToOtherComboBox(firstLetter,secondLetter);
 
 
-
-        if(firstInputVBox.getChildren().size()==0) {
-            removePlugBoardPairButton.setDisable(true);
-        }
-        else
-        {
-            removePlugBoardPairButton.setDisable(false);
-        }
+        removePlugBoardPairButton.setDisable(firstInputVBox.getChildren().size() == 0);
         AddMorePairsButton.setDisable(false);
     }
 
-    public void SelectedReflectorActionListener(ActionEvent actionEvent) {
+    public void SelectedReflectorActionListener(ActionEvent ignoredActionEvent) {
         isCodeSelectedByUser.set(true);
        // isSelected.set(true);
         showCodeDetails.set(true);

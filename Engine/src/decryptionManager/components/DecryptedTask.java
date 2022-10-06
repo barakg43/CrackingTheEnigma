@@ -1,8 +1,8 @@
 package decryptionManager.components;
 
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.DmDTO.CandidateDTO;
-import dtoObjects.DmDTO.TaskFinishDataDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import enigmaEngine.Engine;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class DecryptedTask implements Runnable {
             isPauseRunningTask();
       //     System.out.println(Thread.currentThread().getName() + " is running!");
             copyEngine.setCodeManually(currentCode);
-            String processedOutput = null;
+            String processedOutput;
             try {
                 processedOutput = copyEngine.processDataInput(cipheredString);
             } catch (Exception e) {

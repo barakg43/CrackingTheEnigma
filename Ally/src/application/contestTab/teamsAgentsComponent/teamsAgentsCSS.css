@@ -1,0 +1,13 @@
+.Done-Labels{
+    -fx-text-fill: #116411;
+    -fx-font-size: 15;
+
+}
+.Produced-Labels{
+    -fx-text-fill: BROWN;
+    -fx-font-size: 15;
+
+}
+.label {
+	-fx-font-weight: BOLD;
+}

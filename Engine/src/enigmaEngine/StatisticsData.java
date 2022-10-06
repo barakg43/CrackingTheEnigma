@@ -1,8 +1,8 @@
 package enigmaEngine;
 
 
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.StatisticsDataDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.StatisticsDataDTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;

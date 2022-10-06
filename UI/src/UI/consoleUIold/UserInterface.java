@@ -1,6 +1,6 @@
 package UI.consoleUIold;
 
-import dtoObjects.*;
+import engineDTOs.*;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
@@ -15,7 +15,6 @@ public class UserInterface {
     private final Scanner scanner;
     private Engine mEngine;
     private MachineDataDTO machineData;
-    private byte[] engineCopyBytes;
     private StatisticsDataDTO historyData;
   //  private Set<Integer> selectedOptions;
     protected enum  OPTIONS{
@@ -330,8 +329,7 @@ public class UserInterface {
                                 "the letters in alphabet of the machine is below(without 'space','space' could be part of alphabet):" +
                                 "\n%s\n",machineData.getAlphabetString());
             boolean res = false;
-            List<PlugboardPairDTO> plugboardPairDTOList=new ArrayList<>();
-            while (!res) {
+        while (!res) {
                 try {
                     String plugBoardPairsString = scanner.nextLine();
                     if(plugBoardPairsString.contains("\t"))
@@ -358,16 +356,15 @@ public class UserInterface {
     public List<Integer> rotorToList(String rotors) {
 
 
-        return Arrays.asList(rotors.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        return Arrays.stream(rotors.split(",")).map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
 
     }
 
 
     public List<Character> positionToList(String positions) {
-      List<Character> res=positions.toUpperCase().chars()
-              .mapToObj(e -> (char) e).collect(Collectors.toList());
-           //  Collections.reverse(res);
-        return res;
+        //  Collections.reverse(res);
+        return positions.toUpperCase().chars()
+                .mapToObj(e -> (char) e).collect(Collectors.toList());
     }
 
     public List<PlugboardPairDTO> plugboardPairDTOList(String pairs)  {

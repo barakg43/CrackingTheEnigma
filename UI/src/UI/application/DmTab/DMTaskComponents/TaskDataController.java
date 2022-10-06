@@ -4,11 +4,11 @@ import UI.application.DmTab.DMTaskComponents.CandidatesStatus.CandidatesStatusCo
 import UI.application.DmTab.DMTaskComponents.taskProgress.taskProgressController;
 import UI.application.DmTab.DMcontroller;
 import UI.application.DmTab.ProgressDataDTO;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.DmDTO.CandidateDTO;
-import dtoObjects.DmDTO.TaskFinishDataDTO;
-import dtoObjects.PlugboardPairDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;

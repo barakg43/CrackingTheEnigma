@@ -5,7 +5,7 @@ import UI.application.DmTab.DMTaskComponents.TaskDataController;
 import UI.application.DmTab.DMencrypt.encryptTabDMController;
 import UI.application.DmTab.Trie.Trie;
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -29,7 +29,7 @@ public class DMcontroller {
     @FXML private TaskDataController taskDataComponentController;
 
 
-     private ObservableList<String> dictionaryWords = FXCollections.observableArrayList();
+     private final ObservableList<String> dictionaryWords = FXCollections.observableArrayList();
      private AllMachineController mainAppController;
      private Engine enigmaEngine;
      private SimpleStringProperty outputString;
@@ -89,10 +89,6 @@ public class DMcontroller {
 
     public SimpleCodeController bindCodeComponentController() {
         return encryptComponentController.getCodeComponentController();
-    }
-
-    public void addCandidates() {
-        taskDataComponentController.addCandidates();
     }
 
     public void resetAllData() {

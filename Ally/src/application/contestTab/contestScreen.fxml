@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+<GridPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          prefHeight="896.0" prefWidth="1344.0" xmlns="http://javafx.com/javafx/8.0.171"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.contestTab.ContestScreenController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="250.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="294.0" minHeight="0.0" prefHeight="49.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="597.0" minHeight="10.0" prefHeight="597.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <HBox prefHeight="239.0" prefWidth="1112.0" spacing="100.0">
+        <AnchorPane prefHeight="239.0" prefWidth="2.0"/>
+        <fx:include fx:id="contestDataComponent" source="contestDataComponent/contestDataComponent.fxml"/>
+        <AnchorPane prefHeight="188.0" prefWidth="392.0">
+            <padding>
+                <Insets top="20.0"/>
+            </padding>
+            <fx:include fx:id="alliesTeamsComponent" source="contestsTeamsComponent/contestsTeamsComponent.fxml"
+                        AnchorPane.topAnchor="10.0"/>
+        </AnchorPane>
+    </HBox>
+    <HBox prefHeight="508.0" prefWidth="1344.0" GridPane.rowIndex="2">
+        <AnchorPane prefHeight="473.0" prefWidth="689.0">
+            <fx:include fx:id="teamsAgentsComponent" source="teamsAgentsComponent/teamsAgentsComponent.fxml"/>
+        </AnchorPane>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <fx:include source="teamsCandidatesComponent/teamsCandidates.fxml"/>
+        </AnchorPane>
+    </HBox>
+</GridPane>

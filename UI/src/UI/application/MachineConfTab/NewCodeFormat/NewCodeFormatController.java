@@ -2,9 +2,9 @@ package UI.application.MachineConfTab.NewCodeFormat;
 
 import UI.application.MachineConfTab.MachineConfigurationController;
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.PlugboardPairDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,8 +19,8 @@ import javafx.scene.layout.Pane;
 
 public class NewCodeFormatController {
 
-    @FXML public TableColumn RotorIDColumn;
-    @FXML public TableColumn PositionColumn;
+    @FXML public TableColumn<rotorsAndPositions,Integer> RotorIDColumn;
+    @FXML public TableColumn<rotorsAndPositions,String> PositionColumn;
     @FXML public Label NoPlubBoardPairsLabel;
     @FXML public Pane CurrentCodePane;
     @FXML public Label rotorsCurrCode;
@@ -82,8 +82,8 @@ public class NewCodeFormatController {
             rotorsAndPositions.add(new rotorsAndPositions(rotor.getId(),String.valueOf(rotor.getStatingLetter())));
         }
 
-        RotorIDColumn.setCellValueFactory(new PropertyValueFactory<rotorsAndPositions,Integer>("rotorID"));
-        PositionColumn.setCellValueFactory(new PropertyValueFactory<rotorsAndPositions,String>("rotorCurrPosition"));
+        RotorIDColumn.setCellValueFactory(new PropertyValueFactory<>("rotorID"));
+        PositionColumn.setCellValueFactory(new PropertyValueFactory<>("rotorCurrPosition"));
         RotorsAndPositionsTable.setItems(rotorsAndPositions);
 
         ObservableList<PlugboardPairDTO> plugBoardPairs = FXCollections.observableArrayList();

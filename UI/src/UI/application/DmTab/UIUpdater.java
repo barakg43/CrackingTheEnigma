@@ -3,7 +3,7 @@ package UI.application.DmTab;
 import UI.application.DmTab.DMTaskComponents.CandidatesStatus.CandidatesStatusController;
 import decryptionManager.DecryptionManager;
 import decryptionManager.components.AtomicCounter;
-import dtoObjects.DmDTO.TaskFinishDataDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;

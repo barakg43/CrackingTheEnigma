@@ -1,8 +1,8 @@
 package enigmaEngine;
 
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.PlugboardPairDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package dtoObjects;
+package engineDTOs;
 
 import java.io.Serializable;
 import java.util.*;
