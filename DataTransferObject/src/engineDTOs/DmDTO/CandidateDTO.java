@@ -1,6 +1,6 @@
-package dtoObjects.DmDTO;
+package engineDTOs.DmDTO;
 
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 
 public class CandidateDTO {
 

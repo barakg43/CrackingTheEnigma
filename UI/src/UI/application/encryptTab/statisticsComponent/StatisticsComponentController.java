@@ -1,9 +1,9 @@
 package UI.application.encryptTab.statisticsComponent;
 
 import UI.application.encryptTab.statisticsComponent.singleCodeStatistics.CodeStatisticsFactory;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.StatisticRecordDTO;
-import dtoObjects.StatisticsDataDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.StatisticRecordDTO;
+import engineDTOs.StatisticsDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;

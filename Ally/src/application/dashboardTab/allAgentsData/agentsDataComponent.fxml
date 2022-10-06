@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="529.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.dashboardTab.allAgentsData.TeamAgentsDataController">
+    <TableView fx:id="agentsDataTable" prefHeight="100.0" prefWidth="525.0">
+      <columns>
+          <TableColumn fx:id="agentNameColumn" prefWidth="178.0" text="Agent Name" />
+          <TableColumn fx:id="threadAmountColumn" minWidth="9.0" prefWidth="136.0" text="Threads Amount" />
+          <TableColumn fx:id="taskAmountColumn" minWidth="0.0" prefWidth="210.0" text="Tasks Amount pre Session" />
+      </columns>
+    </TableView>
+</ScrollPane>

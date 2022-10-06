@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.dashboardTab.allContestsData.AllContestDataController">
+    <TableView fx:id="allContestsDataTable" prefHeight="54.0">
+      <columns>
+          <TableColumn fx:id="battlefieldNameColumn" prefWidth="200.0"
+                       style="-fx-alignment: CENTER; -fx-font: 15 arial; -fx-font-weight: bold; -fx-text-fill: blue;"
+                       text="Battlefield Name"/>
+          <TableColumn fx:id="battlefieldDataColumn" prefWidth="300.0" text="Battlefield Data"/>
+      </columns>
+        <columnResizePolicy>
+          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+</ScrollPane>

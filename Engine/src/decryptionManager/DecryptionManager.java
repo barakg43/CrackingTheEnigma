@@ -1,11 +1,11 @@
 package decryptionManager;
 
 import decryptionManager.components.*;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.DmDTO.BruteForceLevel;
-import dtoObjects.DmDTO.TaskFinishDataDTO;
-import dtoObjects.MachineDataDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
+import engineDTOs.MachineDataDTO;
+import engineDTOs.RotorInfoDTO;
 import enigmaEngine.Engine;
 
 import java.io.*;
@@ -165,19 +165,19 @@ public class DecryptionManager {
                 try {
                     CodeFormatDTO startingCode = engine.getCodeFormat(false);
                     switch (level) {
-                        case easyLevel:
+                        case EASY:
                             messageConsumer.accept("Starting brute force easy level");
                             createTaskEasyLevel(startingCode);
                             break;
-                        case middleLevel:
+                        case MIDDLE:
                             messageConsumer.accept("Starting brute force middle level");
                             createTaskMiddleLevel(startingCode);
                             break;
-                        case hardLevel:
+                        case HARD:
                             messageConsumer.accept("Starting brute force hard level");
                             createTaskHardLevel(startingCode);
                             break;
-                        case impossibleLevel:
+                        case INSANE:
                             messageConsumer.accept("Starting brute force impossible level");
                             createTaskImpossibleLevel();
                             break;
@@ -377,16 +377,16 @@ public class DecryptionManager {
     {
             switch (level)
             {
-                case easyLevel:
+                case EASY:
                     totalTaskAmount= calculateEasyLevelTaskAmount();
                 break;
-                case middleLevel:
+                case MIDDLE:
                     totalTaskAmount= calculateMiddleLevelTaskAmount();
                     break;
-                case hardLevel:
+                case HARD:
                     totalTaskAmount= calculateHardLevelTaskAmount();
                     break;
-                case impossibleLevel:
+                case INSANE:
                     totalTaskAmount= calculateImpossibleLevelTaskAmount();
                     break;
             }

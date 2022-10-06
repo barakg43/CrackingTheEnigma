@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: application.JavaFXAllyApplication
+Class-Path: DataTransferObject.jar Engine.jar
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="689.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.contestTab.teamsAgentsComponent.AllyProgressController">
+   <children>
+      <TableView fx:id="allyAgentDataTable" layoutX="14.0" layoutY="23.0" prefHeight="200.0" prefWidth="559.0">
+        <columns>
+          <TableColumn fx:id="agentNameColumn" prefWidth="242.0" text="Agent Name" />
+            <TableColumn prefWidth="286.0" style="-fx-text-fill: RED;" text="Tasks Information">
+               <columns>
+                <TableColumn fx:id="receivedTaskColumn" prefWidth="83.0" text="Received" />
+                  <TableColumn fx:id="waitingTaskColumn" prefWidth="82.0" text="Waiting" />
+                  <TableColumn fx:id="candidatesColumn" prefWidth="150.0" text="Candidates Amount" />
+               </columns>
+            </TableColumn>
+        </columns>
+      </TableView>
+      <AnchorPane layoutX="-1.0" layoutY="274.0" prefHeight="214.0" prefWidth="689.0">
+         <Label layoutX="258.0" layoutY="-1.0" prefHeight="31.0" prefWidth="212.0" text="Ally Progress"
+                textFill="#d72121" underline="true">
+            <font>
+               <Font size="21.0"/>
+            </font>
+         </Label>
+         <GridPane layoutY="42.0" maxHeight="225.0" minHeight="106.0" prefHeight="168.0" prefWidth="670.0"
+                   stylesheets="@teamsAgentsCSS.css">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="213.0"/>
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="499.0" minWidth="10.0" prefWidth="457.0"/>
+               <ColumnConstraints/>
+               <ColumnConstraints/>
+               <ColumnConstraints/>
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints maxHeight="168.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES"/>
+               <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES"/>
+               <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES"/>
+               <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES"/>
+               <RowConstraints maxHeight="205.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES"/>
+               <RowConstraints maxHeight="205.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Label maxWidth="1.7976931348623157E308" styleClass="text-label" text="Message Status"
+                   textFill="#249bbc">
+               <GridPane.margin>
+                  <Insets left="15.0"/>
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="statusMessage" styleClass="text-label" GridPane.columnIndex="1"/>
+            <Label styleClass="text-label" text="Total Task Amount" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="15.0"/>
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="totalTaskAmount" styleClass="text-label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label styleClass="Produced-Labels" text="Tasks Amount Produced" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="15.0"/>
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="tasksAmountProduced" styleClass="Produced-Labels" GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
+            <Label maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="154.0" styleClass="Produced-Labels"
+                   text="Produced Progress" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="55.0"/>
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="taskProducedPercentLabel" styleClass="Produced-Labels" GridPane.columnIndex="1"
+                   GridPane.rowIndex="3"/>
+            <ProgressBar fx:id="taskProducedProgressBar" maxWidth="1.7976931348623157E308" prefHeight="36.0"
+                         prefWidth="398.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <padding>
+                  <Insets bottom="5.0" top="5.0"/>
+               </padding>
+               <GridPane.margin>
+                  <Insets left="50.0" right="10.0"/>
+               </GridPane.margin>
+            </ProgressBar>
+            <Label maxWidth="1.7976931348623157E308" styleClass="Done-Labels" text="All Agents Tasks Done "
+                   GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="15.0"/>
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="agentsTasksDoneLabel" styleClass="Done-Labels" GridPane.columnIndex="1"
+                   GridPane.rowIndex="4"/>
+            <ProgressBar fx:id="agentsTasksProgressBar" maxWidth="1.7976931348623157E308" prefHeight="40.0"
+                         prefWidth="439.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="4"
+                         GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="50.0" right="10.0"/>
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="5.0" top="5.0"/>
+               </padding>
+            </ProgressBar>
+            <Label maxWidth="1.7976931348623157E308" styleClass="Done-Labels" text="Tasks Done Progress"
+                   GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="30.0"/>
+               </GridPane.margin>
+            </Label>
+            <Label fx:id="agentsTasksDonePercent" styleClass="Done-Labels" GridPane.columnIndex="1"
+                   GridPane.rowIndex="5"/>
+         </GridPane>
+      </AnchorPane>
+   </children>
+</AnchorPane>

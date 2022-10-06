@@ -1,6 +1,6 @@
 package UI.application.encryptTab.statisticsComponent.singleCodeStatistics.tableViewRecord;
 
-import dtoObjects.StatisticRecordDTO;
+import engineDTOs.StatisticRecordDTO;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

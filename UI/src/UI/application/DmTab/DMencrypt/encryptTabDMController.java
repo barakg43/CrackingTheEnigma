@@ -9,7 +9,7 @@ import UI.application.DmTab.Trie.TrieNode;
 import UI.application.DmTab.UIUpdater;
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
 import decryptionManager.DecryptionManager;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;

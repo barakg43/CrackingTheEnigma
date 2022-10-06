@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0"
+            prefWidth="392.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171"
+            fx:controller="application.contestTab.contestsTeamsComponent.ContestTeamsController">
+    <TableView fx:id="contestsTeamsTable" prefHeight="200.0" prefWidth="390.0">
+      <columns>
+          <TableColumn fx:id="alliesNameColumn" prefWidth="75.0" text="Ally Name"/>
+          <TableColumn fx:id="agentsAmountColumn" prefWidth="75.0" text="Agents Amount"/>
+          <TableColumn fx:id="taskSizeColumn" prefWidth="75.0" text="Task Size"/>
+      </columns>
+        <columnResizePolicy>
+          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+</ScrollPane>

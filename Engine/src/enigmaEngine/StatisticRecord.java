@@ -1,6 +1,6 @@
 package enigmaEngine;
 
-import dtoObjects.StatisticRecordDTO;
+import engineDTOs.StatisticRecordDTO;
 
 public class StatisticRecord extends StatisticRecordDTO {
 

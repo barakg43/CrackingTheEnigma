@@ -1,4 +1,4 @@
-package dtoObjects.DmDTO;
+package engineDTOs.DmDTO;
 
 import java.util.List;
 

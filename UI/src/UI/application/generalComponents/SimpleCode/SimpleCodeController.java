@@ -3,9 +3,9 @@ package UI.application.generalComponents.SimpleCode;
 
 
 import UI.application.MachineConfTab.NewCodeFormat.NewCodeFormatController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.PlugboardPairDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -72,13 +72,9 @@ public class SimpleCodeController {
     @FXML
     private Label plugboardLabel;
     private String isSmallFont;
-    private NewCodeFormatController currentCodeController;
     private List<Label> labelList;
 //    private MachineConfigurationController machineCodeController;
-    public void setCurrCodeController(NewCodeFormatController currCodeController)
-    {
-        currentCodeController=currCodeController;
-    }
+
 
     @FXML
     private void initialize() {

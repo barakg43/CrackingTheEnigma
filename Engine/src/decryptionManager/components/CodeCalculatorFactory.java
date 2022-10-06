@@ -1,7 +1,7 @@
 package decryptionManager.components;
 
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.RotorInfoDTO;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -70,9 +70,7 @@ public class CodeCalculatorFactory implements Serializable {
         //System.out.println("number is:"+numberInLetterSizeBase);
         return numberInLetterSizeBase;
     }
-    public double remainCodeConfTask(CodeFormatDTO initialCode) {
-        return MAX_VALUE_OFFSET-convertCodePositionToNumber(initialCode.getRotorInfoArray())-1;
-    }
+
 
 
 }

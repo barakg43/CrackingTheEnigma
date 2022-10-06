@@ -1,7 +1,7 @@
 package enigmaEngine;
 
 import decryptionManager.components.Dictionary;
-import dtoObjects.*;
+import engineDTOs.*;
 import enigmaMachine.EnigmaMachine;
 import enigmaMachine.parts.Reflector;
 import enigmaMachine.parts.Rotor;
@@ -332,15 +332,9 @@ public class EnigmaEngine implements Engine , Serializable {
         }
         selectedReflector=enigmaMachine.getReflectorById(tempSelectedReflectorID);
         plugBoardPairs=tempPlugBoardPairs;
-        int i=0;
-       //plugBoardPairsProperty=new PlugboardPairDTO.PlugBoardPairProperty[tempPlugBoardPairs.size()];
       for(PlugboardPairDTO pair:tempPlugBoardPairs)
       {
           enigmaMachine.getPlugBoard().addMappedInputOutput(pair.getFirstLetter(),pair.getSecondLetter());
-          SimpleStringProperty firstInputProperty=new SimpleStringProperty(String.valueOf(pair.getFirstLetter()));
-          SimpleStringProperty secondInputProperty=new SimpleStringProperty(String.valueOf(pair.getSecondLetter()));
-        //  plugBoardPairsProperty[i]=new PlugboardPairDTO.PlugBoardPairProperty(firstInputProperty,secondInputProperty);
-          i++;
       }
 
         setInitialCode();

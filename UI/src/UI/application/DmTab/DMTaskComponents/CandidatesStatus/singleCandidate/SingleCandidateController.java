@@ -1,7 +1,7 @@
 package UI.application.DmTab.DMTaskComponents.CandidatesStatus.singleCandidate;
 
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
-import dtoObjects.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.CandidateDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

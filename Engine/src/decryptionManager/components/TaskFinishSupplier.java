@@ -1,6 +1,6 @@
 package decryptionManager.components;
 
-import dtoObjects.DmDTO.TaskFinishDataDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Supplier;

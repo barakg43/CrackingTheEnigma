@@ -5,7 +5,7 @@ import UI.application.encryptTab.encryptComponent.EncryptComponentController;
 import UI.application.encryptTab.keyboardComponent.KeyboardAnimationController;
 import UI.application.encryptTab.statisticsComponent.StatisticsComponentController;
 import UI.application.generalComponents.SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -63,8 +63,6 @@ public class EncryptTabController {
     {
         return enigmaEngine;
     }
-
-    FilteredList<String> filteredData;
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty)
     {

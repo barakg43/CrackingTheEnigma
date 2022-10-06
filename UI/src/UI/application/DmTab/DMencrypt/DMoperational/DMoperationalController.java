@@ -2,7 +2,7 @@ package UI.application.DmTab.DMencrypt.DMoperational;
 
 import UI.application.DmTab.UIUpdater;
 import decryptionManager.DecryptionManager;
-import dtoObjects.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.BruteForceLevel;
 import enigmaEngine.Engine;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
