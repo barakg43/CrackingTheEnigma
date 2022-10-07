@@ -1,6 +1,6 @@
 package TeamsStatus.SingleTeamData;
 
-import dtoObjects.UBoatDTO.TeamDTO;
+import UBoatDTO.TeamDTO;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;

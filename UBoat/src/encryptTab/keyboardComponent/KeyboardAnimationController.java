@@ -4,8 +4,6 @@ import javafx.animation.FillTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -15,8 +13,6 @@ import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static javafx.scene.input.KeyEvent.KEY_TYPED;
 
 public class KeyboardAnimationController {
 

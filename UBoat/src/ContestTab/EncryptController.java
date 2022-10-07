@@ -4,11 +4,13 @@ package ContestTab;
 //import UI.application.DmTab.Trie.Trie;
 //import UI.application.DmTab.Trie.TrieNode;
 //import UI.application.generalComponents.SimpleCode.SimpleCodeController;
+
 import DMencrypt.automaticEncryptDM.AutomaticEncryptDMController;
 import SimpleCode.SimpleCodeController;
 import Trie.Trie;
 import Trie.TrieNode;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
+import enigmaEngine.Engine;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,8 +23,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import enigmaEngine.Engine;
-
 
 import java.util.ArrayList;
 

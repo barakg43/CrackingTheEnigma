@@ -3,102 +3,80 @@ package decryptionManager;
 import decryptionManager.components.*;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.BruteForceLevel;
-import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.MachineDataDTO;
 import engineDTOs.RotorInfoDTO;
-import enigmaEngine.Engine;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 
 public class DecryptionManager {
 
 
-    private final Dictionary dictionary;
-    private final Engine engine;
+    private final CodeFormatDTO startingCode;
+
+    private final MachineDataDTO machineData;
+    // private final Engine engine;
     private BruteForceLevel level=null;
     private int taskSize=0;
     private final CodeCalculatorFactory codeCalculatorFactory;
-    private final MachineDataDTO machineData;
-    private BlockingQueue<Runnable> taskQueue;
-    private BlockingQueue<TaskFinishDataDTO> successfulDecryption;
-     private AgentsThreadPool agents;
-    private byte[] engineCopyBytes;
+    private BlockingQueue<DecryptedTask> taskQueue;
     private final int QUEUE_SIZE=1000;
     public  AtomicCounter taskDoneAmount;
     private String output;
     private Thread taskCreator;
     private double totalTaskAmount;
-    private static Consumer<String> messageConsumer;
-    public static Consumer<Long> currentTaskTimeConsumer;
+//    private static Consumer<String> messageConsumer;
+   // public static Consumer<Long> currentTaskTimeConsumer;
 //    private long taskCounter;
     private static Boolean isFinishAllTask;
     public static volatile boolean isSystemPause;
     private boolean stopFlag;
     private Runnable startListener;
     public static final Object pauseLock=new Object();
-    public DecryptionManager(Engine engine) {
+    private Consumer<String> messageConsumer;
 
+    public DecryptionManager(CodeFormatDTO initialCode, MachineDataDTO machineDataDTO) {
 
-        this.engine = engine;
-        dictionary=engine.getDictionary();
-        machineData=engine.getMachineData();
+    this.machineData =machineDataDTO;
+       // this.engine = engine;
+         startingCode =initialCode;
+
         totalTaskAmount=0;
 
-        codeCalculatorFactory =new CodeCalculatorFactory(engine.getMachineData().getAlphabetString(),
-                machineData.getNumberOfRotorsInUse());
+        codeCalculatorFactory =new CodeCalculatorFactory(machineDataDTO.getAlphabetString(), machineDataDTO.getNumberOfRotorsInUse());
 
         isFinishAllTask= Boolean.FALSE;
 
     }
 
-    public void setTaskDoneAmount(AtomicCounter taskDoneAmount) {
-        this.taskDoneAmount = taskDoneAmount;
-    }
+//    public void setTaskDoneAmount(AtomicCounter taskDoneAmount) {
+//        this.taskDoneAmount = taskDoneAmount;
+//    }
 
-    public void setDataConsumer(Consumer<String> messageConsumer, Consumer<Long> currentTaskTimeConsumer) {
-        DecryptionManager.messageConsumer = messageConsumer;
-        DecryptionManager.currentTaskTimeConsumer =currentTaskTimeConsumer;
-    }
+    public void setDataConsumer(Consumer<String> messageConsumer) {
+        this.messageConsumer = messageConsumer;
 
-    public void saveEngineCopy()
+    }
+    public List<DecryptedTask> getTasksForAgentSession(int amount)
     {
 
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream os = new ObjectOutputStream(  bos);
-            os.writeObject(engine);
-            engineCopyBytes= bos.toByteArray();
-            os.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        //TODO: fix sync between put and take from blocking queue
+        List<DecryptedTask> decryptedTaskList=new ArrayList<>(amount);
+        taskQueue.drainTo(decryptedTaskList,amount);
+        return decryptedTaskList;
     }
-    public void setSetupConfiguration(BruteForceLevel level,int agentAmount,int taskSize)
+
+    public void setSetupConfiguration(BruteForceLevel level,int taskSize)
     {
     this.level=level;
-        this.taskSize=taskSize;
+    this.taskSize=taskSize;
     totalTaskAmount=0;
     calculateTotalTaskAmount(level);
-    if(taskSize<1)
-        throw new RuntimeException("task size must be positive number!(greater then 0)");
-    if(agentAmount<2||agentAmount>50)
-        throw new RuntimeException("Agent amount must be between 2 and 50");
-    if(level==null)
-        throw new RuntimeException("Brute force level must be selected");
-    successfulDecryption =new LinkedBlockingDeque<>();
-    taskQueue = new ArrayBlockingQueue<>(QUEUE_SIZE);
-    agents=new AgentsThreadPool(agentAmount,agentAmount,20, TimeUnit.SECONDS,
-            taskQueue,new AgentThreadFactory(),taskDoneAmount);
+
+
     }
     public double getTotalTasksAmount() {
         if(totalTaskAmount==0)
@@ -106,63 +84,47 @@ public class DecryptionManager {
         return totalTaskAmount;
     }
 
-    private Engine createNewEngineCopy()  {
-        ObjectInputStream oInputStream = null;
-        Engine copyEngine=null;
-        try {
-            oInputStream = new ObjectInputStream(new ByteArrayInputStream(engineCopyBytes));
-            copyEngine= (Engine) oInputStream.readObject();
-            oInputStream.close();
-        } catch (ClassNotFoundException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        return copyEngine;
-    }
+
     public void setCandidateListenerStarter(Runnable startListener)
     {
         this.startListener=startListener;
 
     }
-
-    public void pause()  {
-        isSystemPause =true;
-//        try {
-//            taskCreator.checkAccess();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
+//
+//    public void pause()  {
+//        isSystemPause =true;
+////        try {
+////            taskCreator.checkAccess();
+////        } catch (InterruptedException e) {
+////            throw new RuntimeException(e);
+////        }
+//    }
+//    public void resume()  {
+//        isSystemPause =false;
+//        synchronized (pauseLock)
+//        {
+//         //   System.out.println("Dm:Trying to resume");
+//            pauseLock.notifyAll();
 //        }
-    }
-    public void resume()  {
-        isSystemPause =false;
-        synchronized (pauseLock)
-        {
-         //   System.out.println("Dm:Trying to resume");
-            pauseLock.notifyAll();
-        }
-    }
-    public void stop(){
-        stopFlag=true;
-        isFinishAllTask=true;
-        agents.shutdownNow();
-    }
+//    }
+//    public void stop(){
+//        stopFlag=true;
+//        isFinishAllTask=true;
+//        agents.shutdownNow();
+//    }
 
-    public Supplier<TaskFinishDataDTO> getFinishQueueSupplier()
-    {
-        return new TaskFinishSupplier(successfulDecryption,isFinishAllTask);
-    }
-    public void startBruteForce(String output)
+
+    public void startCreatingBruteforceTasks(String output)
     {
         this.output=output;
-        agents.prestartAllCoreThreads();
         totalTaskAmount=0;
         isFinishAllTask=false;
         isSystemPause =false;
         stopFlag=false;
         startListener.run();
         taskCreator=new Thread(()-> {
-            agents.setTotalTaskAmount(getTotalTasksAmount());
                 try {
-                    CodeFormatDTO startingCode = engine.getCodeFormat(false);
+
                     switch (level) {
                         case EASY:
                             messageConsumer.accept("Starting brute force easy level");
@@ -190,13 +152,13 @@ public class DecryptionManager {
 
     }
 
-    static public void doneBruteForceTasks()
-    {
-
-        messageConsumer.accept("Finish running all tasks,finishing update all possible candidate.....");
-        isFinishAllTask=true;
-
-    }
+//    static public void doneBruteForceTasks()
+//    {
+//
+//        messageConsumer.accept("Finish running all tasks,finishing update all possible candidate.....");
+//        isFinishAllTask=true;
+//
+//    }
 
 
 
@@ -308,13 +270,7 @@ public class DecryptionManager {
                // Thread.sleep(5000);//TODO: thread pool delayed
               //  System.out.println("Task creator is running!");
 
-                taskQueue.put(new DecryptedTask(CodeFormatDTO.copyOf(currentCode),
-                output,
-                  codeCalculatorFactory,
-                 createNewEngineCopy(),
-             taskSize,
-            successfulDecryption,
-            dictionary));
+                taskQueue.put(new DecryptedTask(currentCode,output, taskSize));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

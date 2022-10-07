@@ -3,8 +3,8 @@ package CandidateStatus;
 
 import CandidateStatus.SingleCandidate.SingleCandidateController;
 import MainAgentApp.CommonResources;
-import dtoObjects.DmDTO.CandidateDTO;
-import dtoObjects.DmDTO.TaskFinishDataDTO;
+import engineDTOs.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXMLLoader;

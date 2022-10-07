@@ -1,7 +1,5 @@
 package Trie;
 
-import Trie.TrieNode;
-
 import java.util.*;
 
 public class Trie {

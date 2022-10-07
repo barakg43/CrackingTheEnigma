@@ -4,7 +4,7 @@ import ContestTab.ContestController;
 import FilePathComponent.FilePathController;
 import MachineTab.UBoatMachineController;
 import MainUboatApp.MainUboatController;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;

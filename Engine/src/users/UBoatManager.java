@@ -1,8 +1,8 @@
-package UBoat;
+package users;
 
 import java.util.List;
 
-public class UBoat {
+public class UBoatManager {
 
     private List<String> UBoatNames;
 

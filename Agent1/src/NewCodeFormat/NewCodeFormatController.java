@@ -1,9 +1,9 @@
 package NewCodeFormat;
 
 import SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.PlugboardPairDTO;
-import dtoObjects.RotorInfoDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -66,7 +66,7 @@ public class NewCodeFormatController {
     }
 
 
-    public void SetCurrentCode(CodeFormatDTO currentCode,boolean isCurrentCode) {
+    public void SetCurrentCode(CodeFormatDTO currentCode, boolean isCurrentCode) {
 
 
         currCodeController.clearCurrentCodeView();

@@ -2,8 +2,8 @@ package TeamsStatus;
 
 import CandidateStatus.SingleCandidate.SingleCandidateController;
 import MainUboatApp.CommonResources;
-import dtoObjects.DmDTO.CandidateDTO;
-import dtoObjects.DmDTO.TaskFinishDataDTO;
+import engineDTOs.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +35,7 @@ public class TeamsStatusController {
         }
 
     }
-    private void addNewTile(CandidateDTO candidateDTO,String agentID)
+    private void addNewTile(CandidateDTO candidateDTO, String agentID)
     {
         try {
             FXMLLoader loader = new FXMLLoader();

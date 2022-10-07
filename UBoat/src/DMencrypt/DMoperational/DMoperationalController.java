@@ -1,9 +1,9 @@
 package DMencrypt.DMoperational;
 
 import decryptionManager.DecryptionManager;
-import dtoObjects.DmDTO.BruteForceLevel;
+
+import engineDTOs.DmDTO.BruteForceLevel;
 import enigmaEngine.Engine;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -11,10 +11,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.stage.WindowEvent;
-
-import java.util.Optional;
-
-import static java.lang.Thread.sleep;
 
 
 public class DMoperationalController {
@@ -117,7 +113,7 @@ public class DMoperationalController {
 
 
         // uiUpdater.setupCandidateListener();
-        decryptionManager.startBruteForce(outputString.getValue());
+        decryptionManager.startCreatingBruteforceTasks(outputString.getValue());
         pauseButton.setDisable(false);
 
 

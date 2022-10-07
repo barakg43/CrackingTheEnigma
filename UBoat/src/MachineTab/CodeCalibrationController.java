@@ -1,7 +1,7 @@
 package MachineTab;
 
-import MachineTab.UBoatMachineController;
-import dtoObjects.PlugboardPairDTO;
+
+import engineDTOs.PlugboardPairDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

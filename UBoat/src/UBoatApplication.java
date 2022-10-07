@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import users.UserManager;
 
 import java.net.URL;
 
@@ -20,6 +21,10 @@ public class UBoatApplication extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
+
+
         this.primaryStage=primaryStage;
         primaryStage.setTitle("Login");
         FXMLLoader fxmlLoader=new FXMLLoader();

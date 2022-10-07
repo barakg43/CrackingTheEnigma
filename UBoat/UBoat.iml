@@ -20,23 +20,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat 10.0.23" level="application_server_libraries" />
-    <orderEntry type="module" module-name="UI" />
     <orderEntry type="module" module-name="DataTransferObject" />
     <orderEntry type="module" module-name="DataTransferObject" />
     <orderEntry type="module" module-name="Engine" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../דוגמאות קוד/Online Chat V3/3rd/okHttp/okio-2.8.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../דוגמאות קוד/Online Chat V3/3rd/okHttp/okhttp-4.9.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../דוגמאות קוד/Online Chat V3/3rd/okHttp/annotations-13.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../דוגמאות קוד/Online Chat V3/3rd/okHttp/kotlin-stdlib-1.4.10.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../דוגמאות קוד/Online Chat V3/3rd/okHttp/kotlin-stdlib-common-1.4.10.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.26" level="application_server_libraries" />
+    <orderEntry type="library" name="okHttp" level="project" />
   </component>
 </module>

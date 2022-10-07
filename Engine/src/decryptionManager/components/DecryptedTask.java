@@ -16,28 +16,31 @@ public class DecryptedTask implements Runnable {
 
 
     private final CodeFormatDTO initialCode;
-
-    private final Engine copyEngine;
-    private final double taskSize;
-    private final Dictionary dictionary;
-    private final List<CandidateDTO> possibleCandidates;
+    private long taskSize=0L;
     private final String cipheredString;
-    private final CodeCalculatorFactory codeCalculatorFactory;
-    BlockingQueue<TaskFinishDataDTO> successfulDecryption;
-    public DecryptedTask(CodeFormatDTO initialCode, String cipheredString,CodeCalculatorFactory codeCalculatorFactory,
-                         Engine copyEngine, double taskSize, BlockingQueue<TaskFinishDataDTO> successfulDecryption,
-                         Dictionary dictionary) {
+    private Engine copyEngine=null;
+    private Dictionary dictionary=null;
+    private List<CandidateDTO> possibleCandidates=null;
+    private CodeCalculatorFactory codeCalculatorFactory=null;
+    BlockingQueue<TaskFinishDataDTO> successfulDecryption=null;
+    private AtomicCounter atomicCounter=null;
+
+    public DecryptedTask(CodeFormatDTO initialCode, String cipheredString, long taskSize) {
         this.initialCode = initialCode;
-        this.copyEngine = copyEngine;
+        this.cipheredString=cipheredString;
         this.taskSize = taskSize;
-		this.cipheredString=cipheredString;
+    }
+    public void setupAgentConf(CodeCalculatorFactory codeCalculatorFactory,
+                                Engine copyEngine, BlockingQueue<TaskFinishDataDTO> successfulDecryption,
+                                Dictionary dictionary,AtomicCounter atomicCounter)
+    {
+        this.copyEngine = copyEngine;
+        possibleCandidates=new ArrayList<>();
+        this.atomicCounter = atomicCounter;
         this.dictionary=dictionary;
         this.successfulDecryption=successfulDecryption;
         this.codeCalculatorFactory=codeCalculatorFactory;
-        possibleCandidates=new ArrayList<>();
-
     }
-
     @Override
     public void run() {
 
@@ -71,13 +74,13 @@ public class DecryptedTask implements Runnable {
 
 
        // Thread.sleep(DecryptionManager.UI_SLEEP_TIME);//to
-            currentTaskTimeConsumer.accept(totalTime);
+         //   currentTaskTimeConsumer.accept(totalTime);
     } catch (InterruptedException ignored) {
 
        // throw new RuntimeException(e);
         }
 
-
+        atomicCounter.increment();
     }
 
         private void isPauseRunningTask() {

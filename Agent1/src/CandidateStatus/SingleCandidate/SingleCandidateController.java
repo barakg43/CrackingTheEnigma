@@ -1,7 +1,7 @@
 package CandidateStatus.SingleCandidate;
 
 import SimpleCode.SimpleCodeController;
-import dtoObjects.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.CandidateDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;

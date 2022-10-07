@@ -1,21 +1,16 @@
 package DMencrypt.automaticEncryptDM;
 
 import ContestTab.EncryptController;
-import decryptionManager.components.Dictionary;
 import encryptTab.encryptComponent.automaticEncrypt.AutomaticEncryptController;
 import enigmaEngine.Encryptor;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
-import java.util.Set;
 
 public class AutomaticEncryptDMController {
 

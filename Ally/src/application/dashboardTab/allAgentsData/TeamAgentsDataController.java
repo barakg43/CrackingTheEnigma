@@ -1,7 +1,8 @@
 package application.dashboardTab.allAgentsData;
 
 
-import allyDTOs.AgentDataDTO;
+
+import agent.AgentDataDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

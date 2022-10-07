@@ -1,8 +1,8 @@
 package MachineTab;
 
 import UBoatApp.UBoatController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.MachineDataDTO;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.MachineDataDTO;
 import enigmaEngine.Engine;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;

@@ -1,9 +1,9 @@
 package MachineTab;
 
-import MachineTab.UBoatMachineController;
 import SimpleCode.SimpleCodeController;
-import dtoObjects.CodeFormatDTO;
-import dtoObjects.MachineDataDTO;
+
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.MachineDataDTO;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
@@ -12,9 +12,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class MachineDetailsController {
 

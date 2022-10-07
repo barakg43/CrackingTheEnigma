@@ -1,8 +1,6 @@
-package chat.client.component.login;
+package application.login;
 
-import chat.client.component.main.ChatAppMainController;
-import chat.client.util.Constants;
-import chat.client.util.http.HttpClientUtil;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,8 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
+
+
 
 import java.io.IOException;
 
@@ -24,16 +22,16 @@ public class LoginController {
     @FXML
     public Label errorMessageLabel;
 
-    private ChatAppMainController chatAppMainController;
+//    private ChatAppMainController chatAppMainController;
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
 
     @FXML
     public void initialize() {
-        errorMessageLabel.textProperty().bind(errorMessageProperty);
-        HttpClientUtil.setCookieManagerLoggingFacility(line ->
-                Platform.runLater(() ->
-                        updateHttpStatusLine(line)));
+//        errorMessageLabel.textProperty().bind(errorMessageProperty);
+//        HttpClientUtil.setCookieManagerLoggingFacility(line ->
+//                Platform.runLater(() ->
+//                        updateHttpStatusLine(line)));
     }
 
     @FXML
@@ -45,40 +43,40 @@ public class LoginController {
             return;
         }
 
-        //noinspection ConstantConditions
-        String finalUrl = HttpUrl
-                        .parse(Constants.LOGIN_PAGE)
-                        .newBuilder()
-                        .addQueryParameter("username", userName)
-                        .build()
-                        .toString();
-
-        updateHttpStatusLine("New request is launched for: " + finalUrl);
-
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Platform.runLater(() ->
-                        errorMessageProperty.set("Something went wrong: " + e.getMessage())
-                );
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() != 200) {
-                    String responseBody = response.body().string();
-                    Platform.runLater(() ->
-                            errorMessageProperty.set("Something went wrong: " + responseBody)
-                    );
-                } else {
-                    Platform.runLater(() -> {
-                            chatAppMainController.updateUserName(userName);
-                            chatAppMainController.switchToChatRoom();
-                    });
-                }
-            }
-        });
+//        //noinspection ConstantConditions
+//        String finalUrl = HttpUrl
+//                        .parse(Constants.LOGIN_PAGE)
+//                        .newBuilder()
+//                        .addQueryParameter("username", userName)
+//                        .build()
+//                        .toString();
+//
+//        updateHttpStatusLine("New request is launched for: " + finalUrl);
+//
+//        HttpClientUtil.runAsync(finalUrl, new Callback() {
+//
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                Platform.runLater(() ->
+//                        errorMessageProperty.set("Something went wrong: " + e.getMessage())
+//                );
+//            }
+//
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                if (response.code() != 200) {
+//                    String responseBody = response.body().string();
+//                    Platform.runLater(() ->
+//                            errorMessageProperty.set("Something went wrong: " + responseBody)
+//                    );
+//                } else {
+//                    Platform.runLater(() -> {
+//                            chatAppMainController.updateUserName(userName);
+//                            chatAppMainController.switchToChatRoom();
+//                    });
+//                }
+//            }
+//        });
     }
 
     @FXML
@@ -91,11 +89,11 @@ public class LoginController {
         Platform.exit();
     }
 
-    private void updateHttpStatusLine(String data) {
-        chatAppMainController.updateHttpLine(data);
-    }
+//    private void updateHttpStatusLine(String data) {
+//        chatAppMainController.updateHttpLine(data);
+//    }
 
-    public void setChatAppMainController(ChatAppMainController chatAppMainController) {
-        this.chatAppMainController = chatAppMainController;
-    }
+//    public void setChatAppMainController(ChatAppMainController chatAppMainController) {
+//        this.chatAppMainController = chatAppMainController;
+//    }
 }

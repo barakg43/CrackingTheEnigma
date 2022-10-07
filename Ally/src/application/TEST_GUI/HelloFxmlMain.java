@@ -1,6 +1,7 @@
 package application.TEST_GUI;
 
-import allyDTOs.AgentDataDTO;
+
+import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
 import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
@@ -86,9 +87,9 @@ public class HelloFxmlMain extends Application{
         Parent root=fxmlLoader.load(url.openStream());
         DashboardScreenController controller= fxmlLoader.getController();
         List<AgentDataDTO> list=new ArrayList<>();
-        AgentDataDTO nn=new AgentDataDTO("agent1",10,500);
+        AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);
         list.add(nn);
-        list.add(new AgentDataDTO("agent2",30,400));
+        list.add(new AgentDataDTO("allyTeamName2", "agent2",30,400));
         controller.addAllAgentsDataToTable(list);
         List<ContestDataDTO> list2=new ArrayList<>();
         list2.add(new ContestDataDTO("battle1","uboat1", ContestDataDTO.GameStatus.ACTIVE, BruteForceLevel.HARD,2,3));

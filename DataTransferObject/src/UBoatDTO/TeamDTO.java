@@ -1,4 +1,4 @@
-package dtoObjects.UBoatDTO;
+package UBoatDTO;
 
 public class TeamDTO {
 

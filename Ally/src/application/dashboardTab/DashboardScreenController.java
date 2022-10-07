@@ -1,6 +1,7 @@
 package application.dashboardTab;
 
-import allyDTOs.AgentDataDTO;
+
+import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
 import application.dashboardTab.allAgentsData.TeamAgentsDataController;
 import application.dashboardTab.allContestsData.AllContestDataController;

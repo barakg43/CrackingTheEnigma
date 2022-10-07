@@ -4,7 +4,7 @@ import CandidateStatus.CandidatesStatusController;
 import TeamsStatus.TeamsStatusController;
 import Trie.Trie;
 import UBoatApp.UBoatController;
-import dtoObjects.CodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
