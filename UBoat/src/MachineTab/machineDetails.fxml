@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MachineTab.MachineDetailsController">
+   <content>
+      <AnchorPane fx:id="MachineDetails" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" stylesheets="@../MachineConfTab/MachineConfCSS.css">
+         <children>
+            <Label id="Titels-Label" layoutX="177.0" layoutY="14.0" prefHeight="27.0" prefWidth="142.0" text="Machine Details" />
+            <Label layoutX="19.0" layoutY="46.0" prefHeight="21.0" prefWidth="425.0" styleClass="text-button" text="Amount of rotors in use out of the total amount of rotors:" />
+            <Label fx:id="NumberOfRotors" layoutX="485.0" layoutY="46.0" prefHeight="21.0" prefWidth="50.0" styleClass="text-button" />
+            <Label layoutX="20.0" layoutY="85.0" prefHeight="21.0" prefWidth="178.0" styleClass="text-button" text="Number of reflectors:" />
+            <Label fx:id="numberOfReflectors" layoutX="224.0" layoutY="85.0" styleClass="text-button" />
+            <Label layoutX="19.0" layoutY="121.0" prefHeight="21.0" prefWidth="363.0" styleClass="text-button" text="The amount of inputs that have ciphered so far:" />
+            <Label fx:id="CipheredInputs" layoutX="436.0" layoutY="121.0" styleClass="text-button" />
+            <Label fx:id="selectedMachineCodeLabel" layoutX="20.0" layoutY="161.0" prefHeight="21.0" prefWidth="218.0" styleClass="text-button" text="Selected machine code:" />
+            <Label fx:id="currentMachineLabel" layoutX="19.0" layoutY="245.0" prefHeight="21.0" prefWidth="210.0" styleClass="text-button" text="Current machine code:" />
+            <ScrollPane fx:id="currentCodeScrollPane" fitToWidth="true" layoutX="21.0" layoutY="266.0" maxHeight="81.0" maxWidth="1010.0">
+               <content>
+                  <fx:include fx:id="CurrentMachineCode" source="../SimpleCode/simpleCodeVersion.fxml" />
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="selectedCodeConfigScrollPane" fitToWidth="true" layoutX="21.0" layoutY="182.0" maxHeight="81.0" maxWidth="1010.0">
+               <content>
+                  <fx:include fx:id="SelectedMachineCode" source="../SimpleCode/simpleCodeVersion.fxml" />
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Agent1/Agent1.iml" filepath="$PROJECT_DIR$/Agent1/Agent1.iml" />
       <module fileurl="file://$PROJECT_DIR$/CrackingTheEnigma.iml" filepath="$PROJECT_DIR$/CrackingTheEnigma.iml" />
       <module fileurl="file://$PROJECT_DIR$/DataTransferObject/DataTransferObject.iml" filepath="$PROJECT_DIR$/DataTransferObject/DataTransferObject.iml" />
       <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestOnly/TestOnly.iml" filepath="$PROJECT_DIR$/TestOnly/TestOnly.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UBoat/UBoat.iml" filepath="$PROJECT_DIR$/UBoat/UBoat.iml" />
       <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
     </modules>
   </component>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ContestTab.ContestController">
+   <children>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1311.0">
+         <children>
+            <fx:include fx:id="EncryptComponent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="EncryptTab.fxml" />
+            <fx:include fx:id="teamsStatusComponent" source="../TeamsStatus/TeamStatus.fxml" />
+         </children>
+      </HBox>
+      <fx:include fx:id="candidatesStatusComponent" source="../CandidateStatus/CandidateStatus.fxml" />
+      <BorderPane prefHeight="62.0" prefWidth="1311.0">
+         <right>
+            <Button id="logout-button" fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="36.0" prefWidth="105.0" stylesheets="@contestCSS.css" text="Logout" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="30.0" />
+               </BorderPane.margin>
+            </Button>
+         </right>
+      </BorderPane>
+   </children>
+</VBox>

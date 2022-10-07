@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="164.0" prefWidth="326.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane maxWidth="1.7976931348623157E308" prefHeight="45.0">
+         <children>
+            <Label layoutX="14.0" layoutY="4.0" prefHeight="17.0" prefWidth="113.0" styleClass="text-label" text="Team name:">
+               <padding>
+                  <Insets top="5.0" />
+               </padding></Label>
+            <TextFlow fx:id="teamName" layoutX="187.0" layoutY="10.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" styleClass="text-label">
+               <padding>
+                  <Insets top="5.0" />
+               </padding></TextFlow>
+         </children>
+      </Pane>
+      <Pane maxWidth="1.7976931348623157E308" prefHeight="45.0">
+         <children>
+            <Label layoutX="14.0" layoutY="4.0" prefHeight="21.0" prefWidth="152.0" styleClass="text-label" text="Amount of agents:" />
+            <TextFlow fx:id="amountOfAgents" layoutX="190.0" layoutY="7.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" styleClass="text-label" />
+         </children>
+      </Pane>
+      <Pane maxWidth="1.7976931348623157E308" prefHeight="45.0">
+         <children>
+            <Label layoutX="14.0" layoutY="4.0" prefHeight="21.0" prefWidth="98.0" styleClass="text-label" text="Task size:" />
+            <TextFlow fx:id="taskSize" layoutX="190.0" layoutY="7.0" maxWidth="1.7976931348623157E308" prefHeight="31.0" styleClass="text-label" />
+         </children>
+      </Pane>
+   </children>
+</VBox>

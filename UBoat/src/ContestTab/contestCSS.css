@@ -1,0 +1,15 @@
+#logout-button {
+    -fx-text-fill: RED;
+    -fx-font-weight: BOLD;
+    -fx-font-size: 16px;
+    -fx-border-color:  red;
+    -fx-border-width: 8px;
+}
+
+#ready-button{
+    -fx-text-fill: #64d364;
+    -fx-font-weight: BOLD;
+    -fx-font-size: 16px;
+    -fx-border-color:  #64d364;
+    -fx-border-width: 8px;
+}

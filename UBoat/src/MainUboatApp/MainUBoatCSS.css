@@ -1,0 +1,22 @@
+
+.title-label {
+    -fx-font-weight: BOLD;
+    -fx-font-size: 16px;
+    -fx-text-fill: #005380;
+}
+#Titels-Label{
+    -fx-background-color:  #005380;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-font-weight: BOLD;
+}
+
+#singleCandidate-VBox{
+    -fx-padding: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+    -fx-border-width: 10px;
+    -fx-border-color: #9e8ea1;
+}
