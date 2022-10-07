@@ -6,11 +6,13 @@ import engineDTOs.MachineDataDTO;
 import engineDTOs.PlugboardPairDTO;
 import engineDTOs.StatisticsDataDTO;
 
+import java.io.InputStream;
 import java.util.List;
 
 
 public interface Engine extends Encryptor {
     void loadXMLFile(String filePath);
+    void loadXMLFile(InputStream inputStreamXml);
     void checkIfRotorsValid(List<Integer> arrayInteger);
     void checkIfPositionsValid(List<Character> positions);
     void checkIfReflectorNumValid(String ReflectorNum);

@@ -85,15 +85,25 @@ public class EnigmaEngine implements Engine , Serializable {
     public void loadXMLFile(String filePath) {
         filePath=filePath.replaceAll("\"","");//for case user enter with " "
 
+        try {
+            loadXMLFile(Files.newInputStream(Paths.get(filePath)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    public void loadXMLFile(InputStream inputStreamXml)
+    {
 
         try {
-            InputStream inputStream = new FileInputStream(filePath);
+
             JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);
             Unmarshaller u = jc.createUnmarshaller();
-            CTEEnigma eng = (CTEEnigma) u.unmarshal(inputStream);
+            CTEEnigma eng = (CTEEnigma) u.unmarshal(inputStreamXml);
             copyAllData(eng);
 
-        } catch (JAXBException | FileNotFoundException e) {
+        } catch (JAXBException e) {
             e.printStackTrace();
             throw new RuntimeException("Error on parsing xml file!");
         } catch (Exception e) {
@@ -102,7 +112,6 @@ public class EnigmaEngine implements Engine , Serializable {
         }
 
     }
-
     @Override
     public void setCodeManually(CodeFormatDTO codeConfiguration) {
         RotorInfoDTO[] rotorInfoDTO=codeConfiguration.getRotorInfoArray();
