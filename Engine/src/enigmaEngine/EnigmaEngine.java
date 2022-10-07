@@ -502,11 +502,11 @@ public class EnigmaEngine implements Engine , Serializable {
             initialCodeFormat=null;
 
             int[] rotorsArrayId = copyRotorsID(eng.getCTEMachine().getCTERotors().getCTERotor());
-            agentAmount=eng.getCTEDecipher().getAgents();
+            //agentAmount=eng.getCTEDecipher().getAgents();
             List<Character> excludeChars=copyExcludeChars(eng.getCTEDecipher().getCTEDictionary().getExcludeChars());
 
-            if(agentAmount<1||agentAmount>50)
-                throw  new RuntimeException("Invalid number of agents "+agentAmount+" number need to between 2 to 50");
+//            if(agentAmount<1||agentAmount>50)
+//                throw  new RuntimeException("Invalid number of agents "+agentAmount+" number need to between 2 to 50");
 
             dictionary=new Dictionary(eng.getCTEDecipher().getCTEDictionary().getWords(),excludeChars,tempEnigmaMachine.getAlphabet());
             machineData = new MachineDataDTO( eng.getCTEMachine().getRotorsCount(),

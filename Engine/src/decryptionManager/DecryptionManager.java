@@ -144,7 +144,6 @@ public class DecryptionManager {
         stopFlag=true;
         isFinishAllTask=true;
         agents.shutdownNow();
-        System.out.println("Stopping DM!...");
     }
 
     public Supplier<TaskFinishDataDTO> getFinishQueueSupplier()
@@ -186,7 +185,6 @@ public class DecryptionManager {
                 } catch (RuntimeException e) {
                     throw new RuntimeException("Error when creating tasks: "+e);
                 }
-            System.out.println("Task Creator is done!");
         },"Task Creator DM Thread");
         taskCreator.start();
 
@@ -303,9 +301,7 @@ public class DecryptionManager {
             try {
                 if(isSystemPause) {
                     synchronized (pauseLock) {
-                        System.out.println("Task creator is pause!");
                         pauseLock.wait();
-                        System.out.println("resume Task creator!");
                     }
                 }
 

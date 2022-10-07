@@ -113,8 +113,6 @@ private void initRotorArrays() {
             windowPosition++;
             windowPosition = windowPosition % letterSize;
         }
-        if (debugMode)
-            System.out.format("Rotor ID:%d,window position:%d,notch position:%d\n", this.rotorID, windowPosition, notchPosition);
 
         return  notchPosition == windowPosition;
     }
@@ -129,8 +127,8 @@ private void initRotorArrays() {
         int innerTableIndex = calcIndexRotorTable(inputRowRotorTable, false);
         int otherSideRelativIndex;
 
-        if (debugMode)
-            System.out.format("Rotor ID:%d,letter:%c\n", this.rotorID, index2letterRightSide[innerTableIndex]);
+       // if (debugMode)
+         //   System.out.format("Rotor ID:%d,letter:%c\n", this.rotorID, index2letterRightSide[innerTableIndex]);
         char inputLetter;
         if (isInputFromLeft) {
 
@@ -140,8 +138,8 @@ private void initRotorArrays() {
             inputLetter = index2letterRightSide[innerTableIndex];//translate the input index to letter in right side
             otherSideRelativIndex = calcIndexRotorTable(letter2IndexLeftSide.get(inputLetter), true);
         }
-        if (debugMode)
-            System.out.format("Rotor ID:%d,input letter:%c,input flow:%d -> %d\n", this.rotorID, inputLetter, inputRowRotorTable, otherSideRelativIndex);
+       // if (debugMode)
+         //   System.out.format("Rotor ID:%d,input letter:%c,input flow:%d -> %d\n", this.rotorID, inputLetter, inputRowRotorTable, otherSideRelativIndex);
         return otherSideRelativIndex;
     }
 
@@ -157,7 +155,7 @@ private void initRotorArrays() {
     {
         if(debugMode)
         {
-            System.out.println("Rotor id:"+rotorID);
+         //   System.out.println("Rotor id:"+rotorID);
             for (int i = 0; i < letterSize; i++) {
 
                 System.out.println(index2letterLeftSide[i]+" "+ index2letterRightSide[i]);

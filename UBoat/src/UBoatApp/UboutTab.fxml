@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<SplitPane id="AllMachineSplitPane" fx:id="UBoatTabSplitPane" dividerPositions="0.2" minHeight="400.0" orientation="VERTICAL" prefHeight="845.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UBoatApp.UBoatController">
+      <items>
+      <fx:include fx:id="filePathComponent" source="../FilePathComponent/filePathFX.fxml" />
+          <TabPane fx:id="UboatTabPane" disable="true" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="1.7976093134862315E308">
+              <tabs>
+                  <Tab fx:id="machineConfTab" text="Machine Configuration">
+                      <content>
+                            </content>
+               <content>
+                  <fx:include fx:id="MachineTab" source="../MachineTab/Machine.fxml" />
+               </content>
+                  </Tab>
+                  <Tab fx:id="contestTab" text="Contest">
+                      <content>
+                            </content>
+               <content>
+                  <fx:include fx:id="ContestTab" source="../ContestTab/Contest.fxml" />
+               </content>
+                  </Tab>
+              </tabs>
+          </TabPane>
+      </items>
+  </SplitPane>
