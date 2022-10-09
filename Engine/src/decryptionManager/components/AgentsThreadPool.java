@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static decryptionManager.DecryptionManager.doneBruteForceTasks;
 
 public class AgentsThreadPool extends ThreadPoolExecutor {
 
@@ -39,8 +38,8 @@ public class AgentsThreadPool extends ThreadPoolExecutor {
             //throw new RuntimeException(t);
         }
         totalDoneCounter.increment();
-        if(totalDoneCounter.getValue()==totalTaskAmount)
-            doneBruteForceTasks();
+        //if(totalDoneCounter.getValue()==totalTaskAmount)
+          //  doneBruteForceTasks();
        // System.out.println("Perform afterExecute() logic");
     }
 }

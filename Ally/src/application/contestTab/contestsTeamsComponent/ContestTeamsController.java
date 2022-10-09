@@ -1,6 +1,6 @@
 package application.contestTab.contestsTeamsComponent;
 
-import allyDTOs.OtherAlliesDataDTO;
+import allyDTOs.AllyDataDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,20 +14,20 @@ import java.util.List;
 public class ContestTeamsController {
 
     @FXML
-    private TableView<OtherAlliesDataDTO> contestsTeamsTable;
+    private TableView<AllyDataDTO> contestsTeamsTable;
 
     @FXML
-    private TableColumn<OtherAlliesDataDTO, String> alliesNameColumn;
+    private TableColumn<AllyDataDTO, String> alliesNameColumn;
 
     @FXML
-    private TableColumn<OtherAlliesDataDTO, Integer> agentsAmountColumn;
+    private TableColumn<AllyDataDTO, Integer> agentsAmountColumn;
 
     @FXML
-    private TableColumn<OtherAlliesDataDTO, Integer> taskSizeColumn;
+    private TableColumn<AllyDataDTO, Integer> taskSizeColumn;
 
-   private ObservableList<OtherAlliesDataDTO> contestTeamsListObs;
+   private ObservableList<AllyDataDTO> contestTeamsListObs;
 
-   public void addAlliesDataToContestTeamTable(List<OtherAlliesDataDTO> otherAlliesDataList) {
+   public void addAlliesDataToContestTeamTable(List<AllyDataDTO> otherAlliesDataList) {
 
         contestTeamsListObs.setAll(otherAlliesDataList);
         contestsTeamsTable.setItems(contestTeamsListObs);

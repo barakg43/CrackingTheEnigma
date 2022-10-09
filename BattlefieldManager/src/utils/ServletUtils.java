@@ -1,8 +1,13 @@
 package utils;
 
 
+import com.google.gson.Gson;
+import enigmaEngine.Engine;
+import enigmaEngine.EnigmaEngine;
 import general.ApplicationType;
+import jakarta.servlet.GenericServlet;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import users.AlliesManager;
 import users.UBoatManager;
@@ -16,13 +21,24 @@ public class ServletUtils {
 	private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
 	private static final String UBOAT_MANAGER_ATTRIBUTE_NAME = "uboatManager";
 	private static final String ALLY_MANAGER_ATTRIBUTE_NAME = "allyManager";
+	private static final String ENGINE_ATTRIBUTE_NAME = "engine";
+	private static final String GSON_ATTRIBUTE_NAME = "gson";
 	private static final String AGENT_MANAGER_ATTRIBUTE_NAME = "agentManager";
 	/*
 	Note how the synchronization is done only on the question and\or creation of the relevant managers and once they exists -
 	the actual fetch of them is remained un-synchronized for performance POV
 	 */
 	private static final Object userManagerLock = new Object();
+	public static Gson getGson(ServletContext servletContext) {
 
+
+		synchronized (userManagerLock) {
+			if (servletContext.getAttribute(GSON_ATTRIBUTE_NAME) == null) {
+				servletContext.setAttribute(GSON_ATTRIBUTE_NAME, new Gson());
+			}
+		}
+		return (Gson) servletContext.getAttribute(GSON_ATTRIBUTE_NAME);
+	}
 	public static UserManager getSystemUserManager(ServletContext servletContext) {
 
 
@@ -59,6 +75,15 @@ public class ServletUtils {
 //		}
 //		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
 //	}
+
+	public static Engine getEngine(ServletContext servletContext) {
+		synchronized (userManagerLock) {
+			if (servletContext.getAttribute(ENGINE_ATTRIBUTE_NAME) == null) {
+				servletContext.setAttribute(ENGINE_ATTRIBUTE_NAME, new EnigmaEngine());
+			}
+		}
+		return (Engine) servletContext.getAttribute(ENGINE_ATTRIBUTE_NAME);
+	}
 
 	public static int getIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);

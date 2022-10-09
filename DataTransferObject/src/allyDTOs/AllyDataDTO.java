@@ -1,6 +1,6 @@
 package allyDTOs;
 
-public class OtherAlliesDataDTO {
+public class AllyDataDTO {
 
 
 
@@ -8,7 +8,7 @@ public class OtherAlliesDataDTO {
     private final int agentsAmount;
     private final int taskSize;
 
-    public OtherAlliesDataDTO(String allyName, int agentsAmount, int taskSize) {
+    public AllyDataDTO(String allyName, int agentsAmount, int taskSize) {
         this.allyName = allyName;
         this.agentsAmount = agentsAmount;
         this.taskSize = taskSize;
