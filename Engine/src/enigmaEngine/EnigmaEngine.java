@@ -2,10 +2,12 @@ package enigmaEngine;
 
 import decryptionManager.components.Dictionary;
 import engineDTOs.*;
+import engineDTOs.DmDTO.BruteForceLevel;
 import enigmaMachine.EnigmaMachine;
 import enigmaMachine.parts.Reflector;
 import enigmaMachine.parts.Rotor;
 import javafx.beans.property.SimpleStringProperty;
+import jaxb.CTEBattlefield;
 import jaxb.CTEEnigma;
 import jaxb.CTERotor;
 
@@ -27,6 +29,8 @@ public class EnigmaEngine implements Engine , Serializable {
     private List<PlugboardPairDTO> plugBoardPairs;
     private int agentAmount;
     private StatisticsData statisticsData;
+    BattlefieldDataDTO battlefieldDataDTO;
+    Set<String> loadedBattlefieldName;
 
     private Reflector selectedReflector = null;
     private char[] selectedPositions;
@@ -54,7 +58,7 @@ public class EnigmaEngine implements Engine , Serializable {
         statisticsData=new StatisticsData();
         cipheredInputsAmount =0;
         initialCodeFormat=null;
-
+        loadedBattlefieldName=new HashSet<>();
     }
 
     public void resetAllData()
@@ -508,6 +512,7 @@ public class EnigmaEngine implements Engine , Serializable {
 //            if(agentAmount<1||agentAmount>50)
 //                throw  new RuntimeException("Invalid number of agents "+agentAmount+" number need to between 2 to 50");
 
+            setBattlefieldData(eng.getCTEBattlefield());
             dictionary=new Dictionary(eng.getCTEDecipher().getCTEDictionary().getWords(),excludeChars,tempEnigmaMachine.getAlphabet());
             machineData = new MachineDataDTO( eng.getCTEMachine().getRotorsCount(),
                                              rotorsArrayId,
@@ -517,7 +522,23 @@ public class EnigmaEngine implements Engine , Serializable {
 
 
         }
-
+        private void setBattlefieldData(CTEBattlefield cteBattlefield)
+        {
+            int alliesAmount=cteBattlefield.getAllies();
+            String level=cteBattlefield.getLevel();
+            String battlefieldName=cteBattlefield.getBattleName();
+            if(loadedBattlefieldName.contains(battlefieldName))
+                throw new RuntimeException(battlefieldName+" already loaded in server!");
+            if(alliesAmount<1)
+                throw new RuntimeException("invalid allies amount: "+alliesAmount);
+            try {
+                BruteForceLevel bruteForceLevel = BruteForceLevel.valueOf(level.toUpperCase());
+            }catch (IllegalArgumentException e)
+            {
+                throw new RuntimeException("the "+level+" isn't valid game level");
+            }
+            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,level);
+        }
 
         private List<Character> copyExcludeChars(String excludeChars) {
         List<Character> excludeCharsList= new ArrayList<>();

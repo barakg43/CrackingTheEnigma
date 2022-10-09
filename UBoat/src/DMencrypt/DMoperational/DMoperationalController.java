@@ -62,7 +62,7 @@ public class DMoperationalController {
 
     public void setEnigmaEngine(Engine enigmaEngine) {
         this.enigmaEngine = enigmaEngine;
-        decryptionManager = new DecryptionManager(enigmaEngine);
+       // decryptionManager = new DecryptionManager(enigmaEngine);
 
 //        agentSize.setMin(2);
 //        agentSize.setMax(enigmaEngine.getAgentsAmount());
@@ -107,9 +107,9 @@ public class DMoperationalController {
         }
 
         startButtonDisabled.setValue(true);
-        decryptionManager.setSetupConfiguration(levelCombobox.getValue(),
-                3,  // TODO
-                getAgentAmountFromSpinner());
+//        decryptionManager.setSetupConfiguration(levelCombobox.getValue(),
+//                3,  // TODO
+//                getAgentAmountFromSpinner());
 
 
         // uiUpdater.setupCandidateListener();
@@ -125,7 +125,7 @@ public class DMoperationalController {
         pauseButton.setDisable(true);
         resumeButton.setDisable(true);
         if (decryptionManager != null) {
-            decryptionManager.stop();
+        //    decryptionManager.stop();
             // uiUpdater.resetData();
             // uiUpdater.stopCandidateListener();}
 
@@ -199,7 +199,7 @@ public class DMoperationalController {
     public void pauseBFButton(ActionEvent actionEvent) {
         pauseButton.setDisable(true);
         resumeButton.setDisable(false);
-        decryptionManager.pause();
+      //  decryptionManager.pause();
         //  uiUpdater.pauseCandidateListener();
     }
 

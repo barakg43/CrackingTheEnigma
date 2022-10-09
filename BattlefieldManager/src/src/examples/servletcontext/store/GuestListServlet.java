@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static examples.servletcontext.store.GuestIntroductionServlet.GUESTS_LIST_PROPERTY_NAME;
+import static src.examples.servletcontext.store.GuestIntroductionServlet.GUESTS_LIST_PROPERTY_NAME;
 
 @WebServlet(name = "GuestsListServlet", urlPatterns = "/guestslist")
 public class GuestListServlet extends HttpServlet {
@@ -39,7 +39,7 @@ public class GuestListServlet extends HttpServlet {
         if (guestsList == null) {
             guestsList = new ArrayList<>();
 
-            getServletContext().setAttribute(GUESTS_LIST_PROPERTY_NAME, guestsList);
+//            getServletContext().setAttribute(GUESTS_LIST_PROPERTY_NAME, guestsList);
         }
 
         return guestsList;

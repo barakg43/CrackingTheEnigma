@@ -29,6 +29,7 @@ public class UserManager{
         {
             case UBOAT:
                 uboatSet.add(username);
+
                 break;
             case ALLY:
                 alliesSet.add(username);

@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        UserManager userManager = ServletUtils.getSystemUserManager(getServletContext());
         if (usernameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
@@ -60,12 +60,21 @@ public class LoginServlet extends HttpServlet {
                     else {
                         //add the new user to the users list
                         ApplicationType type= ApplicationType.valueOf(typeUserNameFromParameter);
+
                         userManager.addUserName(usernameFromParameter,type);
-                        if(type==ApplicationType.AGENT)
+                        switch (type)
                         {
-
-
+                            case UBOAT:
+                               ServletUtils.getUboatManager(getServletContext()).addUboatUser(usernameFromParameter);
+                                break;
+                            case ALLY:
+                                ServletUtils.getAlliesManager(getServletContext()).addAllyUser(usernameFromParameter);
+                                break;
+                            case AGENT:
+                               // agentSet.add(username);
+                                break;
                         }
+
                         request.getSession(true).setAttribute(Constants.USERNAME, usernameFromParameter);
                         //redirect the request to the chat room - in order to actually change the URL
                         System.out.println("On login, request URI is: " + request.getRequestURI());
