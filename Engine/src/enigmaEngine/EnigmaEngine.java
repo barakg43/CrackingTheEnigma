@@ -525,14 +525,15 @@ public class EnigmaEngine implements Engine , Serializable {
         private void setBattlefieldData(CTEBattlefield cteBattlefield)
         {
             int alliesAmount=cteBattlefield.getAllies();
-            String level=cteBattlefield.getLevel();
+            String level=cteBattlefield.getLevel().toUpperCase();
             String battlefieldName=cteBattlefield.getBattleName();
             if(loadedBattlefieldName.contains(battlefieldName))
                 throw new RuntimeException(battlefieldName+" already loaded in server!");
             if(alliesAmount<1)
                 throw new RuntimeException("invalid allies amount: "+alliesAmount);
             try {
-                BruteForceLevel bruteForceLevel = BruteForceLevel.valueOf(level.toUpperCase());
+                BruteForceLevel bruteForceLevel = BruteForceLevel.valueOf(level);
+                System.out.println(bruteForceLevel);
             }catch (IllegalArgumentException e)
             {
                 throw new RuntimeException("the "+level+" isn't valid game level");
