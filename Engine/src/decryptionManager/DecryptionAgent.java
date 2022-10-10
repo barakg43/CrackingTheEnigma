@@ -82,9 +82,9 @@ public class DecryptionAgent {
     }
 
 
-    public void setSetupConfiguration(InputStream engineStream,CodeFormatDTO codeFormatDTO,String output)
+    public void setSetupConfiguration(String engineXmlFile,CodeFormatDTO codeFormatDTO,String output)
     {
-        engine.loadXMLFile(engineStream);
+        engine.loadXMLFileFromStringContent(engineXmlFile);
         engine.setCodeManually(codeFormatDTO);
         machineData=engine.getMachineData();
         dictionary=engine.getDictionary();

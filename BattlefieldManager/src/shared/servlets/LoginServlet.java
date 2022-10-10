@@ -1,4 +1,4 @@
-package servlets;
+package shared.servlets;
 
 
 import constants.Constants;
@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
-                typeUserNameFromParameter = usernameFromParameter.trim();
+                typeUserNameFromParameter = typeUserNameFromParameter.trim().toUpperCase();
 
                 synchronized (this) {
                     if (userManager.isUserExists(usernameFromParameter)) {

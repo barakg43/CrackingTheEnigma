@@ -1,5 +1,6 @@
 package enigmaEngine;
 
+import com.sun.xml.internal.messaging.saaj.util.CharReader;
 import decryptionManager.components.Dictionary;
 import engineDTOs.*;
 import engineDTOs.DmDTO.BruteForceLevel;
@@ -22,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EnigmaEngine implements Engine , Serializable {
 
-    private final static String JAXB_XML_PACKAGE_NAME = "jaxb";
+    private static final String JAXB_XML_PACKAGE_NAME = "jaxb";
     private static final String stateMachineFileExtension=".bin";
     private EnigmaMachine enigmaMachine;
     private MachineDataDTO machineData;
@@ -90,21 +91,29 @@ public class EnigmaEngine implements Engine , Serializable {
         filePath=filePath.replaceAll("\"","");//for case user enter with " "
 
         try {
-            loadXMLFile(Files.newInputStream(Paths.get(filePath)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);
+            Unmarshaller u = jc.createUnmarshaller();
+            CTEEnigma eng = (CTEEnigma) u.unmarshal(Files.newInputStream(Paths.get(filePath)));
+            copyAllData(eng);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error on parsing xml file!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
 
 
     }
-    public void loadXMLFile(InputStream inputStreamXml)
+    public void loadXMLFileFromStringContent(String inputStreamXml)
     {
 
         try {
-
             JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);
             Unmarshaller u = jc.createUnmarshaller();
-            CTEEnigma eng = (CTEEnigma) u.unmarshal(inputStreamXml);
+            Reader xmlReader = new StringReader(inputStreamXml);
+            CTEEnigma eng = (CTEEnigma) u.unmarshal(xmlReader);
+            xmlReader.close();
             copyAllData(eng);
 
         } catch (JAXBException e) {

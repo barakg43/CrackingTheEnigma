@@ -1,4 +1,4 @@
-package servlets;
+package sharedServlets;
 
 
 import constants.Constants;

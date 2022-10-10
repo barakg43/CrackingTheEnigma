@@ -40,7 +40,7 @@ public class FileUploadServlet extends HttpServlet {
             response.getWriter().println("ERROR! must upload only 1 XML file.");
         }
 
-        StringBuilder fileContent = new StringBuilder();
+
         String usernameFromParameter = request.getParameter(USERNAME);
         if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
             //no username in session and no username in parameter - not standard situation. it's a conflict
@@ -62,8 +62,10 @@ public class FileUploadServlet extends HttpServlet {
                     Part input=parts.stream().findFirst().orElse(null);
                     if(input!=null)
                     {
-                    ServletUtils.getUboatManager(getServletContext()).assignXMLFileToUboat(usernameFromParameter, input.getInputStream());
-                    response.setStatus(HttpServletResponse.SC_OK);}
+                    ServletUtils.getUboatManager(getServletContext()).assignXMLFileToUboat(usernameFromParameter, readFromInputStream(input.getInputStream()));
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    out.println("Success upload '"+input.getSubmittedFileName()+"' to server for uboat user:"  + usernameFromParameter);
+                    }
                     else
                         response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);}
 

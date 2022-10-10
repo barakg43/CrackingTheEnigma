@@ -29,7 +29,7 @@ public class TestErrorMain {
                 try{
                     System.out.println((++i) +" # "+fileName+":");
 
-                    engine.loadXMLFile(folderPath+fileName);//enter your implement
+                    engine.loadXMLFileFromStringContent(folderPath+fileName);//enter your implement
                 }
                 catch (RuntimeException e)
                 {

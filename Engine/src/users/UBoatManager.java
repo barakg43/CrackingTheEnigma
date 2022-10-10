@@ -9,7 +9,7 @@ public class UBoatManager {
 
 
     private final Map<String, Set<AllyDataDTO>> uboatMapAlliesSet;
-    private final Map<String, InputStream> uboatMapXmlFilesSet;
+    private final Map<String, String> uboatMapXmlFilesSet;
 
     public UBoatManager() {
         this.uboatMapAlliesSet = new HashMap<>();
@@ -30,7 +30,6 @@ public class UBoatManager {
     {
         if(!uboatMapAlliesSet.containsKey(uboatName)) {
             uboatMapAlliesSet.put(uboatName, new HashSet<>());
-            uboatMapXmlFilesSet.put(uboatName, null);
         }
         else
         {
@@ -39,10 +38,10 @@ public class UBoatManager {
         }
 
     }
-    public void assignXMLFileToUboat(String uboatName,InputStream inputStream)
+    public void assignXMLFileToUboat(String uboatName,String XmlContent)
     {
         if (uboatMapAlliesSet.containsKey(uboatName))
-              uboatMapXmlFilesSet.put(uboatName,inputStream);
+              uboatMapXmlFilesSet.put(uboatName,XmlContent);
         else
             {
                 System.out.println("error");

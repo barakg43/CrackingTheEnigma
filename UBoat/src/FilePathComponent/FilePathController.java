@@ -104,7 +104,7 @@ public class FilePathController {
             String absolutePath = selectedFile.getAbsolutePath();
             Engine mEngine = new EnigmaEngine();
             try {
-                mEngine.loadXMLFile(absolutePath);
+                mEngine.loadXMLFileFromStringContent(absolutePath);
                 mEngine.resetAllData();
                 UBoatController.resetAllData();
                 selectedFileProperty.set(absolutePath);

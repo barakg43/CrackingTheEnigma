@@ -11,7 +11,7 @@ public class BattlefieldDataDTO {
     public BattlefieldDataDTO(String battlefieldName, int alliesAmount, String level) {
         this.battlefieldName = battlefieldName;
         this.alliesAmount = alliesAmount;
-        this.level = BruteForceLevel.valueOf(level.toUpperCase());
+        this.level = BruteForceLevel.valueOf(level);
     }
 
     public String getBattlefieldName() {
