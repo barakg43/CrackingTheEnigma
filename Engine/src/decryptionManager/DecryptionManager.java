@@ -130,9 +130,9 @@ public class DecryptionManager {
                             messageConsumer.accept("Starting brute force easy level");
                             createTaskEasyLevel(startingCode);
                             break;
-                        case MIDDLE:
-                            messageConsumer.accept("Starting brute force middle level");
-                            createTaskMiddleLevel(startingCode);
+                        case MEDIUM:
+                            messageConsumer.accept("Starting brute force medium level");
+                            createTaskMediumLevel(startingCode);
                             break;
                         case HARD:
                             messageConsumer.accept("Starting brute force hard level");
@@ -227,14 +227,14 @@ public class DecryptionManager {
             }
 
             currentCode=new CodeFormatDTO(currentRotorInfo,codeFormatDTO.getReflectorID(), new ArrayList<>());
-            createTaskMiddleLevel(currentCode);
+            createTaskMediumLevel(currentCode);
             currentPermutationIndex=permuteFactory.getNext();
         }
 
 
     }
 
-    private void createTaskMiddleLevel(CodeFormatDTO codeFormatDTO){
+    private void createTaskMediumLevel(CodeFormatDTO codeFormatDTO){
         List<String> reflectorIdList = machineData.getReflectorIdList();
         CodeFormatDTO currentCode;
         for(String reflector:reflectorIdList)
@@ -301,14 +301,14 @@ public class DecryptionManager {
             totalAmount+=1;
         return Math.floor(totalAmount);
     }
-    private double calculateMiddleLevelTaskAmount()
+    private double calculateMediumLevelTaskAmount()
     {
         return (machineData.getReflectorIdList().size())*calculateEasyLevelTaskAmount();
     }
     private double calculateHardLevelTaskAmount()
     {
         double totalAmount=calculateFactorial(machineData.getNumberOfRotorsInUse());
-        return totalAmount*calculateMiddleLevelTaskAmount();
+        return totalAmount* calculateMediumLevelTaskAmount();
     }
     private double calculateImpossibleLevelTaskAmount()
     {
@@ -332,8 +332,8 @@ public class DecryptionManager {
                 case EASY:
                     totalTaskAmount= calculateEasyLevelTaskAmount();
                 break;
-                case MIDDLE:
-                    totalTaskAmount= calculateMiddleLevelTaskAmount();
+                case MEDIUM:
+                    totalTaskAmount= calculateMediumLevelTaskAmount();
                     break;
                 case HARD:
                     totalTaskAmount= calculateHardLevelTaskAmount();

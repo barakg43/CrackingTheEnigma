@@ -1,10 +1,13 @@
 package allyDTOs;
 
+import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.DmDTO.BruteForceLevel;
 
 
 
-public class ContestDataDTO {
+public class ContestDataDTO extends BattlefieldDataDTO {
+
+
     public enum GameStatus{
         ACTIVE("active"),
         IDLE("idle");
@@ -18,25 +21,25 @@ public class ContestDataDTO {
         }
     }
 
-    private final String battlefieldName;
     private final String uboatUserName;
-    private final GameStatus gameStatus;
-    private final BruteForceLevel gameLevel;
-    private final int registeredAmount;
-    private final int requiredAmount;
+    protected GameStatus gameStatus;
+    protected int registeredAmount;
 
     public ContestDataDTO(String battlefieldName,String uboatUserName,
                           GameStatus gameStatus, BruteForceLevel gameLevel,
-                          int registeredAmount, int requiredAmount) {
-        this.battlefieldName = battlefieldName;
+                           int requiredAmount) {
+        super(battlefieldName,requiredAmount,gameLevel);
         this.uboatUserName = uboatUserName;
         this.gameStatus = gameStatus;
-        this.gameLevel = gameLevel;
-        this.registeredAmount = registeredAmount;
-        this.requiredAmount = requiredAmount;
+        this.registeredAmount = 0;
+
     }
-    public String getBattlefieldName() {
-        return battlefieldName;
+    public ContestDataDTO(String uboatUserName,BattlefieldDataDTO battlefieldDataDTO) {
+        super(battlefieldDataDTO.getBattlefieldName(),battlefieldDataDTO.getRequiredAlliesAmount(),battlefieldDataDTO.getLevel());
+        this.uboatUserName = uboatUserName;
+        this.gameStatus = GameStatus.IDLE;
+        this.registeredAmount = 0;
+
     }
     public String getUboatUserName() {
         return uboatUserName;
@@ -44,15 +47,9 @@ public class ContestDataDTO {
     public GameStatus getGameStatus() {
         return gameStatus;
     }
-    public BruteForceLevel getGameLevel() {
-        return gameLevel;
-    }
-
     public int getRegisteredAmount() {
         return registeredAmount;
     }
 
-    public int getRequiredAmount() {
-        return requiredAmount;
-    }
+
 }

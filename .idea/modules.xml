@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Agent1/Agent1.iml" filepath="$PROJECT_DIR$/Agent1/Agent1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Agent/Agent.iml" filepath="$PROJECT_DIR$/Agent/Agent.iml" />
       <module fileurl="file://$PROJECT_DIR$/Ally/Ally.iml" filepath="$PROJECT_DIR$/Ally/Ally.iml" />
       <module fileurl="file://$PROJECT_DIR$/BattlefieldManager/BattlefieldManager.iml" filepath="$PROJECT_DIR$/BattlefieldManager/BattlefieldManager.iml" />
       <module fileurl="file://$PROJECT_DIR$/CrackingTheEnigma.iml" filepath="$PROJECT_DIR$/CrackingTheEnigma.iml" />

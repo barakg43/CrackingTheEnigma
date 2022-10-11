@@ -5,21 +5,21 @@ import engineDTOs.DmDTO.BruteForceLevel;
 public class BattlefieldDataDTO {
 
     private final String battlefieldName;
-    private final int alliesAmount;
+    private final int requiredAlliesAmount;
     private final BruteForceLevel level;
 
-    public BattlefieldDataDTO(String battlefieldName, int alliesAmount, String level) {
+    public BattlefieldDataDTO(String battlefieldName, int alliesAmount, BruteForceLevel level) {
         this.battlefieldName = battlefieldName;
-        this.alliesAmount = alliesAmount;
-        this.level = BruteForceLevel.valueOf(level);
+        this.requiredAlliesAmount = alliesAmount;
+        this.level = level;
     }
 
     public String getBattlefieldName() {
         return battlefieldName;
     }
 
-    public int getAlliesAmount() {
-        return alliesAmount;
+    public int getRequiredAlliesAmount() {
+        return requiredAlliesAmount;
     }
 
     public BruteForceLevel getLevel() {

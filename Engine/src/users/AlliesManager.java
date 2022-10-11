@@ -7,16 +7,17 @@ import java.util.*;
 public class AlliesManager {
 
 
-    private final Map<String, Set<AgentDataDTO>> alliesMapSet;
-
+    private final Map<String, Set<AgentDataDTO>> alliesMapAgents;
+    private final Map<String, String> alliesMapUboat;
     public AlliesManager() {
-        this.alliesMapSet = new HashMap<>();
+        this.alliesMapAgents = new HashMap<>();
+        alliesMapUboat=new HashMap<>();
     }
 
     public void addAllyUser(String allyName)
     {
-        if(!alliesMapSet.containsKey(allyName))
-            alliesMapSet.put(allyName,new HashSet<>());
+        if(!alliesMapAgents.containsKey(allyName))
+            alliesMapAgents.put(allyName,new HashSet<>());
         else
         {
             System.out.println("error");
@@ -24,11 +25,20 @@ public class AlliesManager {
         }
 
     }
+    public void assignAllyToUboat(AgentDataDTO agentDataDTO)
+    {
+        String allyName=agentDataDTO.getAllyTeamName();
+        if (alliesMapAgents.containsKey(allyName)) {
+            alliesMapAgents.get(allyName).add(agentDataDTO);
+        }
+
+
+    }
     public void assignAgentToAlly(AgentDataDTO agentDataDTO)
     {
         String allyName=agentDataDTO.getAllyTeamName();
-        if (alliesMapSet.containsKey(allyName)) {
-            alliesMapSet.get(allyName).add(agentDataDTO);
+        if (alliesMapAgents.containsKey(allyName)) {
+            alliesMapAgents.get(allyName).add(agentDataDTO);
         }
 
 
@@ -36,7 +46,7 @@ public class AlliesManager {
 
     public Set<AgentDataDTO> getAgentDataForAlly(String allyName)
     {
-        return Collections.unmodifiableSet(alliesMapSet.get(allyName));
+        return Collections.unmodifiableSet(alliesMapAgents.get(allyName));
     }
 
 }

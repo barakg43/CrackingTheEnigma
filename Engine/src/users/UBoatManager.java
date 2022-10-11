@@ -1,6 +1,7 @@
 package users;
 
 import allyDTOs.AllyDataDTO;
+import uboat.SingleBattleFieldController;
 
 import java.io.InputStream;
 import java.util.*;
@@ -8,28 +9,20 @@ import java.util.*;
 public class UBoatManager {
 
 
-    private final Map<String, Set<AllyDataDTO>> uboatMapAlliesSet;
-    private final Map<String, String> uboatMapXmlFilesSet;
+    private final Map<String, SingleBattleFieldController> uboatMapControllerSet;
+
 
     public UBoatManager() {
-        this.uboatMapAlliesSet = new HashMap<>();
-        uboatMapXmlFilesSet=new HashMap<>();
-    }
-
-
-    public void assignAllyToUboat(AllyDataDTO agentDataDTO,String uboatName)
-    {
-
-        if (uboatMapAlliesSet.containsKey(uboatName)) {
-            uboatMapAlliesSet.get(uboatName).add(agentDataDTO);
-        }
-
+        this.uboatMapControllerSet = new HashMap<>();
 
     }
+
+
+
     public void addUboatUser(String uboatName)
     {
-        if(!uboatMapAlliesSet.containsKey(uboatName)) {
-            uboatMapAlliesSet.put(uboatName, new HashSet<>());
+        if(!uboatMapControllerSet.containsKey(uboatName)) {
+            uboatMapControllerSet.put(uboatName,new SingleBattleFieldController(uboatName));
         }
         else
         {
@@ -38,23 +31,13 @@ public class UBoatManager {
         }
 
     }
-    public void assignXMLFileToUboat(String uboatName,String XmlContent)
+    public SingleBattleFieldController getBattleFieldController(String uboatUserName)
     {
-        if (uboatMapAlliesSet.containsKey(uboatName))
-              uboatMapXmlFilesSet.put(uboatName,XmlContent);
-        else
-            {
-                System.out.println("error");
-                //TODO: Runtime Exception
-            }
-
+        return uboatMapControllerSet.get(uboatUserName);
     }
     public boolean isUboatExist(String uboatName)
     {
-        return uboatMapAlliesSet.containsKey(uboatName);
+        return uboatMapControllerSet.containsKey(uboatName);
     }
-    public Set<AllyDataDTO> getAlliesDataForUboat(String uboatName)
-    {
-        return Collections.unmodifiableSet(uboatMapAlliesSet.get(uboatName));
-    }
+
 }

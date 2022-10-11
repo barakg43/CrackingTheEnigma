@@ -89,9 +89,9 @@ public class AllContestDataController {
             ObservableList<battlefieldListViewCell> dataList = FXCollections.observableArrayList(
                     new battlefieldListViewCell(createLabelWithStyle("Uboat User:"), new Text(contestDataDTO.getUboatUserName())),
                     new battlefieldListViewCell(createLabelWithStyle("Game Status:"), new Text(contestDataDTO.getGameStatus().toString())),
-                    new battlefieldListViewCell(createLabelWithStyle("Game Level:"), new Text(contestDataDTO.getGameLevel().toString())),
+                    new battlefieldListViewCell(createLabelWithStyle("Game Level:"), new Text(contestDataDTO.getLevel().toString())),
                     new battlefieldListViewCell(createLabelWithStyle("Allies Amount:"),
-                            new Text(String.format("%d/%d",contestDataDTO.getRegisteredAmount(),contestDataDTO.getRequiredAmount())))
+                            new Text(String.format("%d/%d",contestDataDTO.getRegisteredAmount(),contestDataDTO.getRequiredAlliesAmount())))
             );
             battlefieldDataList.setFixedCellSize(24);
             battlefieldDataList.setMaxHeight(105);
@@ -130,7 +130,7 @@ public class AllContestDataController {
         allContestsDataTable.setFixedCellSize(110);
         allContestsDataTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    int requiredAmount = newValue.getContestData().getRequiredAmount();
+                    int requiredAmount = newValue.getContestData().getRequiredAlliesAmount();
                     int registeredAmount = newValue.getContestData().getRegisteredAmount();
                     readyButtonSetDisable.set(requiredAmount==registeredAmount);
                 });
