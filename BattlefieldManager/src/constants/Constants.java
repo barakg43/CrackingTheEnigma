@@ -4,6 +4,7 @@ import general.ApplicationType;
 
 public class Constants {
     public static final String USERNAME = "username";
+    public static final String AMOUNT="amount";
     public static final String TYPE = "type";
     public static final String AGENT_CONTEXT= ApplicationType.AGENT.getURLContext();
     public static final String USER_NAME_ERROR = "username_error";

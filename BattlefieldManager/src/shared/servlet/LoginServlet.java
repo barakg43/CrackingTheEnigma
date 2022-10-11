@@ -1,7 +1,10 @@
 package shared.servlet;
 
 
+import agent.AgentDataDTO;
+import com.google.gson.Gson;
 import constants.Constants;
+import engineDTOs.CodeFormatDTO;
 import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +15,10 @@ import users.UserManager;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import static constants.Constants.TYPE;
 import static constants.Constants.USERNAME;
@@ -39,7 +45,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getSystemUserManager(getServletContext());
+        UserManager userManager = ServletUtils.getSystemUserManager();
         if (usernameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
@@ -71,7 +77,12 @@ public class LoginServlet extends HttpServlet {
                                 ServletUtils.getAlliesManager().addAllyUser(usernameFromParameter);
                                 break;
                             case AGENT:
-                               // agentSet.add(username);
+                                try {
+                                    ServletUtils.getAgentManager().addAgentData(readAgentDTO(request));
+                                }catch (RuntimeException ex)
+                                {
+                                    response.sendError(HttpServletResponse.SC_EXPECTATION_FAILED,"ERROR reading agent data.");
+                                }
                                 break;
                         }
 
@@ -86,6 +97,19 @@ public class LoginServlet extends HttpServlet {
             //user is already logged in
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
+    }
+    
+    private AgentDataDTO readAgentDTO(HttpServletRequest request)
+    {
+        try {
+            Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            Gson gson = ServletUtils.getGson();
+            return gson.fromJson(inputReader, AgentDataDTO.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

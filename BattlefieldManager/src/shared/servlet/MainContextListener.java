@@ -5,6 +5,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import users.AgentManager;
 import users.AlliesManager;
 import users.UBoatManager;
 import users.UserManager;
@@ -23,6 +24,8 @@ public class MainContextListener implements ServletContextListener {
         servletContext.setAttribute(USER_MANAGER_ATTRIBUTE_NAME, new UserManager());
         servletContext.setAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
         servletContext.setAttribute(ALLY_MANAGER_ATTRIBUTE_NAME, new AlliesManager());
+        servletContext.setAttribute(AGENT_MANAGER_ATTRIBUTE_NAME, new AgentManager());
+
 
         System.out.println("Battlefield Manager finish initialized.");
     }

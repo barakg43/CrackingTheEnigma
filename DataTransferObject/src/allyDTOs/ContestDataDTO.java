@@ -10,7 +10,9 @@ public class ContestDataDTO extends BattlefieldDataDTO {
 
     public enum GameStatus{
         ACTIVE("active"),
-        IDLE("idle");
+        IDLE("idle"),
+        FINISH("finish");
+
         final String status;
         GameStatus(String level) {
             status=level;
@@ -28,14 +30,14 @@ public class ContestDataDTO extends BattlefieldDataDTO {
     public ContestDataDTO(String battlefieldName,String uboatUserName,
                           GameStatus gameStatus, BruteForceLevel gameLevel,
                            int requiredAmount) {
-        super(battlefieldName,requiredAmount,gameLevel);
+        super(battlefieldName,requiredAmount,gameLevel.toString());
         this.uboatUserName = uboatUserName;
         this.gameStatus = gameStatus;
         this.registeredAmount = 0;
 
     }
     public ContestDataDTO(String uboatUserName,BattlefieldDataDTO battlefieldDataDTO) {
-        super(battlefieldDataDTO.getBattlefieldName(),battlefieldDataDTO.getRequiredAlliesAmount(),battlefieldDataDTO.getLevel());
+        super(battlefieldDataDTO.getBattlefieldName(),battlefieldDataDTO.getRequiredAlliesAmount(),battlefieldDataDTO.getLevel().toString());
         this.uboatUserName = uboatUserName;
         this.gameStatus = GameStatus.IDLE;
         this.registeredAmount = 0;
