@@ -12,7 +12,7 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "AutomaticCodeConfigurationServlet", urlPatterns = {"/uboat/automatic-code"})
+@WebServlet(name = "ResetEnigmaMachineCodeServlet", urlPatterns = {"/uboat/reset-code"})
 public class ResetEnigmaMachineCodeServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -29,7 +29,8 @@ public class ResetEnigmaMachineCodeServlet extends HttpServlet {
         Engine enigmaEngine=ServletUtils.getUboatManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
-        //enigmaEngine. //TODO: reset code
+        enigmaEngine.resetSelected();
+        enigmaEngine.resetAllData();
         //returning JSON objects, not HTML
         response.setStatus(HttpServletResponse.SC_OK);
 

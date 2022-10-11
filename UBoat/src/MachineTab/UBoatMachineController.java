@@ -133,11 +133,10 @@ public class UBoatMachineController {
         {
             mEngine.resetAllData();
             mEngine.resetSelected();
-            isSelected.set(false);
 
-            MachineDetailsComponentController.clearCodes();
         }
-
+        isSelected.set(false);
+        MachineDetailsComponentController.clearCodes();
         isCodeSelectedByUser.set(false);
     }
 

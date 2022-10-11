@@ -1,4 +1,4 @@
-package sharedServlets;
+package shared.servlet;
 
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;

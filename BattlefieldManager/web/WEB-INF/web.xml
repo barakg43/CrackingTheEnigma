@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <listener>
-        <listener-class>shared.servlets.listener.MainContextListener</listener-class>
+        <listener-class>shared.servlet.MainContextListener</listener-class>
     </listener>
 </web-app>
 

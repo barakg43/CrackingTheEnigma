@@ -59,7 +59,7 @@ public class DecryptedTask implements Runnable {
             }
             if(dictionary.checkIfAllLetterInDic(processedOutput))
                     {
-                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true),processedOutput));
+                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), allyTeamName, processedOutput));
 //                        System.out.println(currentCode);
 //
 //                        System.out.println("Output: "+ processedOutput+"\n********************************************" );
