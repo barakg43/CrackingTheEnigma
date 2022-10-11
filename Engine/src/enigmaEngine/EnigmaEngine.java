@@ -196,23 +196,19 @@ public class EnigmaEngine implements Engine , Serializable {
     }
 
     @Override
-    public String processDataInput(String dataInput) throws Exception {
+    public String processDataInput(String dataInput) {
 
         resetProcessingTime();
         dataInput = dataInput.toUpperCase();
         StringBuilder output = new StringBuilder();
 
-        try {
             for (int i = 0; i < dataInput.length(); i++) {
                 output.append(processDataInput(dataInput.charAt(i)));
             }
             //System.out.println("output:" + output);
             addOutputStringToStatics(dataInput, output.toString());
             return output.toString();
-        }catch (Exception ex)
-        {
-            throw new Exception(ex.getMessage());
-        }
+
     }
 
     @Override
@@ -273,6 +269,7 @@ public class EnigmaEngine implements Engine , Serializable {
         selectedRotors = null;
         selectedPositions = null;
         selectedReflector = null;
+        initialCodeFormat=null;
        // tempSelectedReflectorID=0;
       //  tempPlugBoardPairs=null;
         //tempSelectedInitPositions=null;
@@ -570,14 +567,14 @@ public class EnigmaEngine implements Engine , Serializable {
         }
 
     @Override
-    public char processDataInput(char charInput) throws Exception {
+    public char processDataInput(char charInput)  {
         long startTime = System.nanoTime();
         charInput = Character.toUpperCase(charInput);
         // System.out.println("char is:"+charInput);
 
         boolean advanceNextRotor = true;//first right rotor always advance every typing of letter
         //the row input after moving in plug board
-        try {
+
             int currentRow = enigmaMachine.getKeyboard().getMappedOutput(charInput);
             //move input flow from right rotor to left rotors
             for (Rotor selectedRotor : selectedRotors) {
@@ -593,11 +590,8 @@ public class EnigmaEngine implements Engine , Serializable {
             sumProcessingTime += System.nanoTime() - startTime;
 
             return enigmaMachine.getKeyboard().getLetterFromRowNumber(currentRow);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.getMessage());
-        }
+
+
 
 
     }

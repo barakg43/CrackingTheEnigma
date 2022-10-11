@@ -1,4 +1,4 @@
-package shared.servlets;
+package shared.servlet;
 
 
 import constants.Constants;

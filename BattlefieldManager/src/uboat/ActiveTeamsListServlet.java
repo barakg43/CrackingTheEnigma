@@ -1,5 +1,6 @@
 package uboat;
 
+import UBoatDTO.ActiveTeamsDTO;
 import com.google.gson.Gson;
 import enigmaEngine.Engine;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +13,8 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "EnigmaMachineDataServlet", urlPatterns = {"/uboat/machine-data"})
-public class EnigmaMachineDataServlet extends HttpServlet {
+@WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {"/uboat/active-teams-list"})
+public class ActiveTeamsListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -26,14 +27,15 @@ public class EnigmaMachineDataServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        Engine enigmaEngine=ServletUtils.getUboatManager().
-                getBattleFieldController(username).
-                getEnigmaEngine();
+       ActiveTeamsDTO activeTeamsDTO =ServletUtils.getUboatManager()
+                       .getBattleFieldController(username)
+                        .getActiveTeamsDTO();
+
         //returning JSON objects, not HTML
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             Gson gson = ServletUtils.getGson();
-            String json = gson.toJson(enigmaEngine.getMachineData());
+            String json = gson.toJson(activeTeamsDTO);
             out.println(json);
             out.flush();
         }

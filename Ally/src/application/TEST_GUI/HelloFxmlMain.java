@@ -5,6 +5,8 @@ import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
 import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import engineDTOs.DmDTO.BruteForceLevel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +15,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static application.CommonResourcesPaths.CONTEST_SCREEN_FXML_RESOURCE;
 
@@ -114,6 +118,20 @@ public class HelloFxmlMain extends Application{
 //          assert url != null;
 //          System.out.println("before 2.5:"+url);
           Parent load = fxmlLoader.load(url.openStream());
+          String json="[\n" +
+                  "    [\n" +
+                  "        \"ubrr1\"\n" +
+                  "    ],\n" +
+                  "    [\n" +
+                  "        \"ally1\",\n" +
+                  "        \"ally2\"\n" +
+                  "    ],\n" +
+                  "    []\n" +
+                  "]";
+         Gson gson=new Gson();
+         Type type=new TypeToken<List<Set<String>>>(){}.getType();
+         List<Set<String>> fromJson=gson.fromJson(json,type);
+         System.out.println();
 //          System.out.println("before 3");
            ContestScreenController controller= fxmlLoader.getController();
 //          EncryptTabController controller= fxmlLoader.getController();

@@ -1,5 +1,6 @@
 package uboat;
 
+import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import engineDTOs.BattlefieldDataDTO;
@@ -52,6 +53,12 @@ public class SingleBattleFieldController {
     }
     public BattlefieldDataDTO getBattlefieldDataDTO() {
         return contestDataManager;
+    }
+    public ActiveTeamsDTO getActiveTeamsDTO()
+    {
+        return new ActiveTeamsDTO(contestDataManager.getRegisteredAmount(),
+                contestDataManager.getRequiredAlliesAmount(),Collections.unmodifiableSet(alliesDataSet));
+
     }
     public String getXmlFileContent() {
         return xmlFileContent;

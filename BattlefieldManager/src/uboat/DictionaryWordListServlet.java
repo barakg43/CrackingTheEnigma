@@ -12,8 +12,8 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "EnigmaMachineDataServlet", urlPatterns = {"/uboat/machine-data"})
-public class EnigmaMachineDataServlet extends HttpServlet {
+@WebServlet(name = "DictionaryWordsServlet", urlPatterns = {"/uboat/dictionary-words"})
+public class DictionaryWordListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -29,11 +29,12 @@ public class EnigmaMachineDataServlet extends HttpServlet {
         Engine enigmaEngine=ServletUtils.getUboatManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
+
         //returning JSON objects, not HTML
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             Gson gson = ServletUtils.getGson();
-            String json = gson.toJson(enigmaEngine.getMachineData());
+            String json = gson.toJson(enigmaEngine.getDictionary().getWordsSet());
             out.println(json);
             out.flush();
         }

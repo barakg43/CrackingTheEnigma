@@ -1,7 +1,6 @@
-package shared.servlets.listener;
+package shared.servlet;
 
 import com.google.gson.Gson;
-import enigmaEngine.EnigmaEngine;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;

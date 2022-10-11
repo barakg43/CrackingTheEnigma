@@ -58,10 +58,10 @@ public class ApplicationController {
         list.add(new AgentDataDTO("allyTeamName2", "agent2",30,400));
         dashboardScreenController.addAllAgentsDataToTable(list);
         List<ContestDataDTO> list2=new ArrayList<>();
-        list2.add(new ContestDataDTO("battle1","uboat1", ContestDataDTO.GameStatus.ACTIVE, BruteForceLevel.HARD,2,3));
-        list2.add(new ContestDataDTO("battle2","uboat2", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,4,4));
-        list2.add(new ContestDataDTO("battle3","uboat3", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,1,3));
-        list2.add(new ContestDataDTO("battle4","uboat4", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,3,3));
+        list2.add(new ContestDataDTO("battle1","uboat1", ContestDataDTO.GameStatus.ACTIVE, BruteForceLevel.HARD,2));
+        list2.add(new ContestDataDTO("battle2","uboat2", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,4));
+        list2.add(new ContestDataDTO("battle3","uboat3", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,1));
+        list2.add(new ContestDataDTO("battle4","uboat4", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,3));
         dashboardScreenController.addAllContestDataToTable(list2);
         dashboardScreenController.setReadyActionParent(this::readyActionPressedInDashboard);
 

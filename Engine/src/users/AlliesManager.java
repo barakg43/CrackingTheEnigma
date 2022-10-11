@@ -2,6 +2,7 @@ package users;
 
 import agent.AgentDataDTO;
 
+import javax.lang.model.element.NestingKind;
 import java.util.*;
 
 public class AlliesManager {
@@ -20,19 +21,22 @@ public class AlliesManager {
             alliesMapAgents.put(allyName,new HashSet<>());
         else
         {
-            System.out.println("error");
-            //TODO: Runtime Exception
+            throw new RuntimeException( allyName+ "is already exist!");
         }
 
     }
-    public void assignAllyToUboat(AgentDataDTO agentDataDTO)
+    public void assignAllyToUboat(String allyName,String uboatName)
     {
-        String allyName=agentDataDTO.getAllyTeamName();
-        if (alliesMapAgents.containsKey(allyName)) {
-            alliesMapAgents.get(allyName).add(agentDataDTO);
+        alliesMapUboat.put(allyName,uboatName);
+    }
+    public String getUboatNameManager(String allyName)
+    {
+        if(alliesMapUboat.containsKey(allyName))
+        {
+            return alliesMapUboat.get(allyName);
         }
-
-
+        else
+            throw new RuntimeException( allyName+ "is not assign to any Uboat manager");
     }
     public void assignAgentToAlly(AgentDataDTO agentDataDTO)
     {
