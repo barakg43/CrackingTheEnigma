@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebListener;
 import users.AlliesManager;
 import users.UBoatManager;
 import users.UserManager;
+import utils.ServletUtils;
 
 import static utils.ServletUtils.*;
 
@@ -18,12 +19,12 @@ public class MainContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         System.out.println("Battlefield Manager is being initialized :)");
         ServletContext servletContext=servletContextEvent.getServletContext();
-
+        ServletUtils.setServletContextRef(servletContext);
         servletContext.setAttribute(GSON_ATTRIBUTE_NAME, new Gson());
         servletContext.setAttribute(USER_MANAGER_ATTRIBUTE_NAME, new UserManager());
         servletContext.setAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
         servletContext.setAttribute(ALLY_MANAGER_ATTRIBUTE_NAME, new AlliesManager());
-        servletContext.setAttribute(ENGINE_ATTRIBUTE_NAME, new EnigmaEngine());
+
         System.out.println("Battlefield Manager finish initialized.");
     }
 

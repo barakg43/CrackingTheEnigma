@@ -1,4 +1,4 @@
-package uboat.fileupload;
+package uboat;
 
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import utils.ServletUtils;
+import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,39 +40,33 @@ public class FileUploadServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("ERROR! must upload only 1 XML file.");
         }
+        String username = SessionUtils.getUsername(request);
 
-
-        String usernameFromParameter = request.getParameter(USERNAME);
-        if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-            //no username in session and no username in parameter - not standard situation. it's a conflict
-
-            // stands for conflict in server state
-            response.setStatus(HttpServletResponse.SC_CONFLICT);
-        } else {
-            //normalize the username value
-            usernameFromParameter = usernameFromParameter.trim();
-            synchronized (this) {
-                if (!ServletUtils.getUboatManager(getServletContext()).isUboatExist(usernameFromParameter)) {
-                    String errorMessage = "Uboat username " + usernameFromParameter + " not exists. Please enter a different username.";
-
-                    // stands for unauthorized as there is already such user with this name
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    response.getOutputStream().print(errorMessage);
-                }
-                else {
-                    Part input=parts.stream().findFirst().orElse(null);
-                    if(input!=null)
-                    {
-                    ServletUtils.getUboatManager(getServletContext()).assignXMLFileToUboat(usernameFromParameter, readFromInputStream(input.getInputStream()));
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    out.println("Success upload '"+input.getSubmittedFileName()+"' to server for uboat user:"  + usernameFromParameter);
-                    }
-                    else
-                        response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);}
-
-                }
-            }
+        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        {
+            if(username == null)
+                response.getWriter().println("Must login as UBOAT first!");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
+
+        Part input=parts.stream().findFirst().orElse(null);
+        if(input!=null)
+        {
+        ServletUtils.getUboatManager()
+                .getBattleFieldController(username)
+                .assignXMLFileToUboat(
+                        readFromInputStream(input.getInputStream()));
+        response.setStatus(HttpServletResponse.SC_OK);
+        out.println("Success upload '"+input.getSubmittedFileName()+"' to server for uboat user:"  + username);
+        }
+        else
+            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+    }
+
+
+
+
 
 
     private void printPart(Part part, PrintWriter out) {

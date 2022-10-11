@@ -13,6 +13,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FilePathController {
 
@@ -104,7 +107,8 @@ public class FilePathController {
             String absolutePath = selectedFile.getAbsolutePath();
             Engine mEngine = new EnigmaEngine();
             try {
-                mEngine.loadXMLFileFromStringContent(absolutePath);
+
+                mEngine.loadXMLFileFromStringContent(new String(Files.readAllBytes(Paths.get(absolutePath))));
                 mEngine.resetAllData();
                 UBoatController.resetAllData();
                 selectedFileProperty.set(absolutePath);

@@ -2,7 +2,7 @@ package engineDTOs.DmDTO;
 
 public enum BruteForceLevel {
     EASY("Easy"),
-    MIDDLE("Middle"),
+    MEDIUM("Medium"),
     HARD("Hard"),
     INSANE("Insane");
     final String name;

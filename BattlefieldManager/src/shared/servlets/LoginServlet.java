@@ -65,10 +65,10 @@ public class LoginServlet extends HttpServlet {
                         switch (type)
                         {
                             case UBOAT:
-                               ServletUtils.getUboatManager(getServletContext()).addUboatUser(usernameFromParameter);
+                               ServletUtils.getUboatManager().addUboatUser(usernameFromParameter);
                                 break;
                             case ALLY:
-                                ServletUtils.getAlliesManager(getServletContext()).addAllyUser(usernameFromParameter);
+                                ServletUtils.getAlliesManager().addAllyUser(usernameFromParameter);
                                 break;
                             case AGENT:
                                // agentSet.add(username);

@@ -1,6 +1,5 @@
 package enigmaEngine;
 
-import com.sun.xml.internal.messaging.saaj.util.CharReader;
 import decryptionManager.components.Dictionary;
 import engineDTOs.*;
 import engineDTOs.DmDTO.BruteForceLevel;
@@ -30,8 +29,8 @@ public class EnigmaEngine implements Engine , Serializable {
     private List<PlugboardPairDTO> plugBoardPairs;
     private int agentAmount;
     private StatisticsData statisticsData;
-    BattlefieldDataDTO battlefieldDataDTO;
-    Set<String> loadedBattlefieldName;
+    private BattlefieldDataDTO battlefieldDataDTO;
+    private Set<String> loadedBattlefieldName;
 
     private Reflector selectedReflector = null;
     private char[] selectedPositions;
@@ -536,18 +535,19 @@ public class EnigmaEngine implements Engine , Serializable {
             int alliesAmount=cteBattlefield.getAllies();
             String level=cteBattlefield.getLevel().toUpperCase();
             String battlefieldName=cteBattlefield.getBattleName();
+            BruteForceLevel bruteForceLevel;
             if(loadedBattlefieldName.contains(battlefieldName))
                 throw new RuntimeException(battlefieldName+" already loaded in server!");
             if(alliesAmount<1)
                 throw new RuntimeException("invalid allies amount: "+alliesAmount);
             try {
-                BruteForceLevel bruteForceLevel = BruteForceLevel.valueOf(level);
+                 bruteForceLevel = BruteForceLevel.valueOf(level);
                 System.out.println(bruteForceLevel);
             }catch (IllegalArgumentException e)
             {
                 throw new RuntimeException("the "+level+" isn't valid game level");
             }
-            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,level);
+            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,bruteForceLevel);
         }
 
         private List<Character> copyExcludeChars(String excludeChars) {
@@ -623,5 +623,8 @@ public class EnigmaEngine implements Engine , Serializable {
                 '}';
     }
 
-
+@Override
+    public BattlefieldDataDTO getBattlefieldDataDTO() {
+        return battlefieldDataDTO;
+    }
 }

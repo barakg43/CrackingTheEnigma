@@ -1,10 +1,7 @@
 package enigmaEngine;
 
 import decryptionManager.components.Dictionary;
-import engineDTOs.CodeFormatDTO;
-import engineDTOs.MachineDataDTO;
-import engineDTOs.PlugboardPairDTO;
-import engineDTOs.StatisticsDataDTO;
+import engineDTOs.*;
 
 import java.io.InputStream;
 import java.util.List;
@@ -36,4 +33,5 @@ public interface Engine extends Encryptor {
     Dictionary getDictionary();
     int getAgentsAmount();
 
+    BattlefieldDataDTO getBattlefieldDataDTO();
 }
