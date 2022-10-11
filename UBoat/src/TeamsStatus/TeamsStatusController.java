@@ -31,7 +31,7 @@ public class TeamsStatusController {
 
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())
         {
-            addNewTile(candidateDTO,taskFinishDataDTO.getAgentID());
+         //   addNewTile(candidateDTO,taskFinishDataDTO.getAgentID());
         }
 
     }
