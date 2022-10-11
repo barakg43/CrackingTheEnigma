@@ -1,10 +1,12 @@
 package uboat;
 
+import CandidateStatus.CandidatesStatusController;
 import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.MachineDataDTO;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
@@ -19,6 +21,8 @@ public class SingleBattleFieldController {
     private String xmlFileContent;
     private final Engine enigmaEngine;
     private ContestDataManager contestDataManager;
+
+    private CandidatesStatusController candidatesStatusController;
     private final String uboatName;
     public SingleBattleFieldController(String uboatName) {
         alliesDataSet=new HashSet<>();

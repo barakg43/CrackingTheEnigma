@@ -5,12 +5,14 @@ import engineDTOs.CodeFormatDTO;
 public class CandidateDTO {
 
     private final CodeFormatDTO codeConf;
-
     private final String output;
-    public CandidateDTO(CodeFormatDTO codeConf, String output) {
-        this.codeConf = codeConf;
 
+    private final String allyTeamName;
+
+    public CandidateDTO(CodeFormatDTO codeConf, String output,String allyTeamName) {
+        this.codeConf = codeConf;
         this.output=output;
+        this.allyTeamName=allyTeamName;
 
     }
 
@@ -21,5 +23,7 @@ public class CandidateDTO {
         return codeConf;
     }
 
-
+    public String getAllyTeamName() {
+        return allyTeamName;
+    }
 }
