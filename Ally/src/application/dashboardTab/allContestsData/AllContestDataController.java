@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AllContestDataController {
 
@@ -24,7 +25,7 @@ public class AllContestDataController {
 
     @FXML
     private TableColumn<SingleContestRecord,String> battlefieldNameColumn;
-
+    private String selectedBattlefieldName;
     @FXML
     private TableColumn<SingleContestRecord, ListView<battlefieldListViewCell>> battlefieldDataColumn;
     private class battlefieldListViewCell{
@@ -46,7 +47,7 @@ public class AllContestDataController {
 
         private final String battlefieldName;
         private final ListView<battlefieldListViewCell> battlefieldDataList;
-        private ContestDataDTO contestData;
+        private final ContestDataDTO contestData;
         public SingleContestRecord(ContestDataDTO contestDataDTO) {
             this.battlefieldName = contestDataDTO.getBattlefieldName();
             battlefieldDataList = new ListView<>();
@@ -91,7 +92,7 @@ public class AllContestDataController {
                     new battlefieldListViewCell(createLabelWithStyle("Game Status:"), new Text(contestDataDTO.getGameStatus().toString())),
                     new battlefieldListViewCell(createLabelWithStyle("Game Level:"), new Text(contestDataDTO.getLevel().toString())),
                     new battlefieldListViewCell(createLabelWithStyle("Allies Amount:"),
-                            new Text(String.format("%d/%d",contestDataDTO.getRegisteredAmount(),contestDataDTO.getRequiredAlliesAmount())))
+                            new Text(String.format("%d/%d", contestDataDTO.getRegisteredAmount(), contestDataDTO.getRequiredAlliesAmount())))
             );
             battlefieldDataList.setFixedCellSize(24);
             battlefieldDataList.setMaxHeight(105);
@@ -113,10 +114,31 @@ public class AllContestDataController {
             allContestsDataTable.setPrefHeight(allContestsDataTable.getPrefHeight()+110);
             allContestsDataTable.getItems().add(new SingleContestRecord(contestData));
         }
+        Optional<SingleContestRecord> lastSelectedOptional= allContestsDataTable.getItems()
+                .filtered(singleContestRecord ->
+                        singleContestRecord.battlefieldName
+                                .equals(selectedBattlefieldName))
+                                .stream()
+                                .findFirst();
 
-
+        lastSelectedOptional.ifPresent(singleContestRecord ->
+                                    allContestsDataTable.getSelectionModel()
+                                            .select(singleContestRecord));
+//
+//        statisticRecordListObs.setAll(statisticRecordList);
+//        statisticTable.setItems(statisticRecordListObs);
+//        Optional<StatisticRecordDTO> last = statisticRecordList.stream()//search a
+//                .filter(StatisticRecordDTO::isLastMachineInput)
+//                .findFirst();
+//
+//            statisticTable.getSelectionModel().focus(statisticTable.getSelectionModel().getSelectedIndex());
 
     }
+
+
+
+
+
     public String getSelectedBattlefieldName()
     {
         return allContestsDataTable.getSelectionModel().selectedItemProperty().get().getBattlefieldName();
@@ -130,9 +152,13 @@ public class AllContestDataController {
         allContestsDataTable.setFixedCellSize(110);
         allContestsDataTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    if(newValue!=null)
+                    {
+                    selectedBattlefieldName=newValue.getContestData().getBattlefieldName();
                     int requiredAmount = newValue.getContestData().getRequiredAlliesAmount();
                     int registeredAmount = newValue.getContestData().getRegisteredAmount();
                     readyButtonSetDisable.set(requiredAmount==registeredAmount);
+                    }
                 });
 
         //allContestsDataTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
