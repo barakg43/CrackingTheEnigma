@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/CrackingTheEnigma.iml" filepath="$PROJECT_DIR$/CrackingTheEnigma.iml" />
       <module fileurl="file://$PROJECT_DIR$/DataTransferObject/DataTransferObject.iml" filepath="$PROJECT_DIR$/DataTransferObject/DataTransferObject.iml" />
       <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HttpClientUtils/HttpClientUtils.iml" filepath="$PROJECT_DIR$/HttpClientUtils/HttpClientUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestOnly/TestOnly.iml" filepath="$PROJECT_DIR$/TestOnly/TestOnly.iml" />
       <module fileurl="file://$PROJECT_DIR$/UBoat/UBoat.iml" filepath="$PROJECT_DIR$/UBoat/UBoat.iml" />
     </modules>

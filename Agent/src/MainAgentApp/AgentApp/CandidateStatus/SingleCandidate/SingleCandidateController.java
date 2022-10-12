@@ -7,10 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class SingleCandidateController {
 
-    @FXML private  FlowPane outputString;
+    @FXML private TextFlow outputString;
     @FXML private  Label taskNumberLabel;
     @FXML private HBox simpleCodeFormat;
     @FXML private SimpleCodeController simpleCodeFormatController;

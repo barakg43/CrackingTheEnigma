@@ -23,14 +23,13 @@ public class DecryptionAgent {
     private final Engine engine;
     private final String alliesTeam;
     private final int threadNumber;
-    private BruteForceLevel level=null;
-    private long taskSize=0L;
-    private String agentName;
+
+    private long taskSize;
+    private final String agentName;
     private CodeCalculatorFactory codeCalculatorFactory;
-    private MachineDataDTO machineData;
     private BlockingQueue<Runnable> taskQueue;
     private BlockingQueue<TaskFinishDataDTO> successfulDecryption;
-    private ExecutorService threadAgents;
+    private final ExecutorService threadAgents;
     private byte[] engineCopyBytes;
     public AtomicCounter taskDoneAmount;
 
@@ -91,10 +90,10 @@ public class DecryptionAgent {
     {
         engine.loadXMLFileFromStringContent(engineXmlFile);
         engine.setCodeManually(codeFormatDTO);
-        machineData=engine.getMachineData();
+        MachineDataDTO machineData = engine.getMachineData();
         dictionary=engine.getDictionary();
         saveEngineCopy();
-        codeCalculatorFactory=new CodeCalculatorFactory(machineData.getAlphabetString(),machineData.getNumberOfRotorsInUse());
+        codeCalculatorFactory=new CodeCalculatorFactory(machineData.getAlphabetString(), machineData.getNumberOfRotorsInUse());
         successfulDecryption =new LinkedBlockingDeque<>();
 
     }
