@@ -1,7 +1,11 @@
 package http;
 
+import Client.http.HttpClientUtil;
+import FilePathComponent.FilePathController;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.MachineDataDTO;
+import general.ApplicationType;
+import http.client.HttpClientUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +14,7 @@ public class HttpClientAdapter {
 
 
     private final Set<String> wordsSet;
-
+    private final HttpClientUtil HTTP_CLIENT=new HttpClientUtil(ApplicationType.UBOAT);
     public HttpClientAdapter() {
         this.wordsSet = new HashSet<>();
     }
@@ -18,7 +22,7 @@ public class HttpClientAdapter {
     public Set<String> getDictionaryWords() {
       if(wordsSet.isEmpty())
       {
-
+          HTTP_CLIENT
       }
       return wordsSet;
     }

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+
 @WebServlet(name = "ManuallyCodeConfigurationServlet", urlPatterns = {"/uboat/manually-code"})
 public class ManuallyCodeConfigurationServlet extends HttpServlet {
 

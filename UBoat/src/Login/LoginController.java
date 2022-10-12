@@ -46,7 +46,7 @@ public class LoginController {
         UBoatNames=new ArrayList<>();
         errorAlert.setTitle("Error");
         errorAlert.contentTextProperty().bind(errorMessageProperty);
-//        HttpClientUtil.setCookieManagerLoggingFacility(line ->
+//        http.client.HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
     }
@@ -79,7 +79,7 @@ public class LoginController {
 //
 //        updateHttpStatusLine("New request is launched for: " + finalUrl);
 //
-//        HttpClientUtil.runAsync(finalUrl, new Callback() {
+//        http.client.HttpClientUtil.runAsync(finalUrl, new Callback() {
 //
 //            @Override
 //            public void onFailure(@NotNull Call call, @NotNull IOException e) {
