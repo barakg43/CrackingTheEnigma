@@ -9,6 +9,7 @@ import jakarta.servlet.GenericServlet;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
+import users.AgentManager;
 import users.AlliesManager;
 import users.UBoatManager;
 import users.UserManager;
@@ -20,11 +21,12 @@ public class ServletUtils {
 
 	public static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
 	public static final String UBOAT_MANAGER_ATTRIBUTE_NAME = "uboatManager";
+
 	public static final String ALLY_MANAGER_ATTRIBUTE_NAME = "allyManager";
 
 	public static final String GSON_ATTRIBUTE_NAME = "gson";
 
-	private static final String AGENT_MANAGER_ATTRIBUTE_NAME = "agentManager";
+	public static final String AGENT_MANAGER_ATTRIBUTE_NAME = "agentManager";
 	private static ServletContext servletContextRef;
 	/*
 	Note how the synchronization is done only on the question and\or creation of the relevant managers and once they exists -
@@ -41,7 +43,7 @@ public class ServletUtils {
 		// Initialized in class servlets.listener.MainContextListener
 		return (Gson) servletContextRef.getAttribute(GSON_ATTRIBUTE_NAME);
 	}
-	public static UserManager getSystemUserManager(ServletContext servletContext) {
+	public static UserManager getSystemUserManager() {
 //		synchronized (userManagerLock) {
 //			if (servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME) == null) {
 //				servletContext.setAttribute(USER_MANAGER_ATTRIBUTE_NAME, new UserManager());
@@ -60,6 +62,9 @@ public class ServletUtils {
 				return (UBoatManager) servletContextRef.getAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME);
 		}
 
+		public static AgentManager getAgentManager(){
+		return (AgentManager) servletContextRef.getAttribute(AGENT_MANAGER_ATTRIBUTE_NAME);
+		}
 	public static AlliesManager getAlliesManager() {
 //		synchronized (userManagerLock) {
 //			if (servletContext.getAttribute(ALLY_MANAGER_ATTRIBUTE_NAME) == null) {

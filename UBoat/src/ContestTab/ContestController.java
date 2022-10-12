@@ -47,7 +47,7 @@ public class ContestController {
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
         EncryptComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
-        candidatesStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
+     //  candidatesStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
         teamsStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
 
 
@@ -55,7 +55,7 @@ public class ContestController {
 
     public void resetAllData() {
         EncryptComponentController.clearAllData();
-        candidatesStatusComponentController.clearAllTiles();
+       // candidatesStatusComponentController.clearAllTiles();
         teamsStatusComponentController.clearAllTiles();
 
     }

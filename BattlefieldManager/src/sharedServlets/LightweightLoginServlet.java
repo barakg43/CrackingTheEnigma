@@ -22,7 +22,7 @@ public class LightweightLoginServlet extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
 
         String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getSystemUserManager(getServletContext());
+        UserManager userManager = ServletUtils.getSystemUserManager();
 
         if (usernameFromSession == null) { //user is not logged in yet
 

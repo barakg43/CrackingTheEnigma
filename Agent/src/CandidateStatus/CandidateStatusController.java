@@ -33,7 +33,7 @@ public class CandidateStatusController {
 
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())
         {
-            addNewTile(candidateDTO,taskFinishDataDTO.getAgentID());
+            addNewTile(candidateDTO,taskFinishDataDTO.getAllyTeamName());
         }
 
     }

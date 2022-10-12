@@ -544,7 +544,7 @@ public class EnigmaEngine implements Engine , Serializable {
             {
                 throw new RuntimeException("the "+level+" isn't valid game level");
             }
-            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,bruteForceLevel);
+            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,bruteForceLevel.toString());
         }
 
         private List<Character> copyExcludeChars(String excludeChars) {

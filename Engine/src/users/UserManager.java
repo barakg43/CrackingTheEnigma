@@ -40,6 +40,13 @@ public class UserManager{
         }
 
     }
+
+    public boolean isUserAgentExist(String agentName)
+    {
+        if(agentSet.contains(agentName))
+            return true;
+        else return false;
+    }
     public synchronized void removeUserName(String username, ApplicationType type)
     {
         switch (type)

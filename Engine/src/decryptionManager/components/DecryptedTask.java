@@ -59,7 +59,7 @@ public class DecryptedTask implements Runnable {
             }
             if(dictionary.checkIfAllLetterInDic(processedOutput))
                     {
-                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), allyTeamName, processedOutput));
+                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput,null));
 //                        System.out.println(currentCode);
 //
 //                        System.out.println("Output: "+ processedOutput+"\n********************************************" );
@@ -70,7 +70,7 @@ public class DecryptedTask implements Runnable {
         long totalTime=System.nanoTime()-startTime;
         try {
             if(possibleCandidates.size()>0)
-                 successfulDecryption.put(new TaskFinishDataDTO(possibleCandidates,Thread.currentThread().getName(),totalTime));
+                 successfulDecryption.put(new TaskFinishDataDTO(possibleCandidates,Thread.currentThread().getName()));
 
 
        // Thread.sleep(DecryptionManager.UI_SLEEP_TIME);//to
