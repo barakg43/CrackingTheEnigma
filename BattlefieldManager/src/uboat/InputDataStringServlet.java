@@ -3,7 +3,6 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -47,7 +45,9 @@ public class InputDataStringServlet extends HttpServlet {
         if(inputString!=null)
         {
        String output= ServletUtils.getUboatManager()
-                .getBattleFieldController(username).getEnigmaEngine().processDataInput(inputString);
+                .getBattleFieldController(username)
+               .getEnigmaEngine()
+               .processDataInput(inputString);
 
         response.setStatus(HttpServletResponse.SC_OK);
         out.println("output="+output);

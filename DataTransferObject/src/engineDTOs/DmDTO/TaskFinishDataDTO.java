@@ -5,12 +5,12 @@ import java.util.List;
 public class TaskFinishDataDTO {
 
     private final List<CandidateDTO> possibleCandidates;
-    private final String allyTeamName;;
+    private final String agentName;;
 
 
-    public TaskFinishDataDTO(List<CandidateDTO> possibleCandidates, String allyTeamName) {
+    public TaskFinishDataDTO(List<CandidateDTO> possibleCandidates, String agentName) {
         this.possibleCandidates = possibleCandidates;
-        this.allyTeamName = allyTeamName;
+        this.agentName = agentName;
 
     }
 
@@ -20,7 +20,7 @@ public class TaskFinishDataDTO {
         return possibleCandidates;
     }
 
-    public String getAllyTeamName() {
-        return allyTeamName;
+    public String getAgentName() {
+        return agentName;
     }
 }

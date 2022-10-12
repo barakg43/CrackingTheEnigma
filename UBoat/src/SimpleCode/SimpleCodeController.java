@@ -1,7 +1,7 @@
 package SimpleCode;
 
 
-import MachineConfTab.NewCodeFormat.NewCodeFormatController;
+
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.PlugboardPairDTO;
 import engineDTOs.RotorInfoDTO;
@@ -71,13 +71,9 @@ public class SimpleCodeController {
     @FXML
     private Label plugboardLabel;
     private String isSmallFont;
-    private NewCodeFormatController currentCodeController;
     private List<Label> labelList;
 
-    public void setCurrCodeController(NewCodeFormatController currCodeController)
-    {
-        currentCodeController=currCodeController;
-    }
+
 
     @FXML
     private void initialize() {
@@ -207,29 +203,7 @@ public class SimpleCodeController {
     }
 }
 
-//
-//
-//       String selectedParts[]=currCode.split(">");
-//
-//       Text rotors=new Text(selectedParts[0] + ">");
-//       rotors.getStyleClass().add("Rotors-text");
-//       codeTextFlow.getChildren().add(rotors);
-//
-//       Text positions=new Text(selectedParts[1] + ">");
-//       positions.getStyleClass().add("Positions-text");
-//       codeTextFlow.getChildren().add(positions);
-//
-//       Text reflector=new Text(selectedParts[2]+">");
-//       reflector.getStyleClass().add("Reflector-text");
-//       codeTextFlow.getChildren().add(reflector);
-//
-//       if(selectedParts.length==4)
-//       {
-//           Text pairs=new Text(selectedParts[3]+">");
-//           pairs.getStyleClass().add("PlugBoardPairs-text");
-//           codeTextFlow.getChildren().add(pairs);
-//
-//       }
+
 
 
 

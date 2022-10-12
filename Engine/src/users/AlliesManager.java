@@ -1,18 +1,15 @@
 package users;
 
 import Ally.SingleAllyController;
-import agent.AgentDataDTO;
 
-import javax.lang.model.element.NestingKind;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlliesManager {
     private Map<String, SingleAllyController> allyControllerMap;
-    private final Map<String, Set<AgentDataDTO>> alliesMapAgents;
-    private final Map<String, String> alliesMapUboat;
+
     public AlliesManager() {
-        this.alliesMapAgents = new HashMap<>();
-        alliesMapUboat=new HashMap<>();
+
         allyControllerMap=new HashMap<>();
     }
 
@@ -27,7 +24,10 @@ public class AlliesManager {
         }
 
     }
-
+     public boolean isUserExist(String username)
+     {
+         return allyControllerMap.containsKey(username);
+     }
     public SingleAllyController getSingleAllyController(String allyName)
     {
         if(allyControllerMap.containsKey(allyName))

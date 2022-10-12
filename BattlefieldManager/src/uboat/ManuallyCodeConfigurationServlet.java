@@ -10,10 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 @WebServlet(name = "ManuallyCodeConfigurationServlet", urlPatterns = {"/uboat/manually-code"})
 public class ManuallyCodeConfigurationServlet extends HttpServlet {
@@ -29,9 +29,9 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        Engine enigmaEngine=ServletUtils.getUboatManager().
-                getBattleFieldController(username).
-                getEnigmaEngine();
+        Engine enigmaEngine=ServletUtils.getUboatManager()
+                .getBattleFieldController(username)
+                .getEnigmaEngine();
         try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();

@@ -2,7 +2,7 @@ package DMencrypt.automaticEncryptDM;
 
 import ContestTab.EncryptController;
 import encryptTab.encryptComponent.automaticEncrypt.AutomaticEncryptController;
-import enigmaEngine.Encryptor;
+import http.HttpClientAdapter;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -19,7 +19,7 @@ public class AutomaticEncryptDMController {
     @FXML public Label inputString;
     @FXML public Label alphabetString;
     public VBox autoEncryptVBox;
-    private Encryptor encryptor;
+    private HttpClientAdapter httpClientAdapter;
     @FXML private AutomaticEncryptController encryptDataController;
    // @FXML private encryptTabDMController parentComponentTab;
 
@@ -34,10 +34,11 @@ public class AutomaticEncryptDMController {
     {
         return encryptController;
     }
-    public void setEncryptor(Encryptor encryptor) {
-        this.encryptor = encryptor;
-        encryptDataController.setEncryptor(encryptor);
-        alphabetString.setText(encryptController.getEnigmaEngine().getMachineData().getAlphabetString());
+    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+        this.httpClientAdapter = httpClientAdapter;
+        encryptDataController.setHttpClientAdapter(httpClientAdapter);
+        alphabetString.setText(encryptController.getHttpClientAdapter().getMachineData().getAlphabetString());
+        //TODO : get ABC MACHINE DATA
 
     }
     public void clearOutputInputLabels(){
@@ -48,7 +49,11 @@ public class AutomaticEncryptDMController {
     public void doneProcessData()
     {
         encryptController.doneProcessData();
-        encryptController.getCodeComponentController().setSelectedCode(encryptController.getEnigmaEngine().getCodeFormat(false));
+        encryptController.getCodeComponentController()
+                .setSelectedCode(encryptController.getHttpClientAdapter()
+                                    .getInitialCurrentCodeFormat()
+                                    .getCurrentCode()
+                                );
     }
     @FXML
     private void initialize() {
@@ -72,7 +77,7 @@ public class AutomaticEncryptDMController {
 //    }
 
     public void resetCodeToInitialState(ActionEvent actionEvent) {
-        encryptor.resetCodePosition();
+        httpClientAdapter.resetCodePosition();
         //encryptDataController.clearTextFieldInput(actionEvent);
         encryptController.bindResetButtonToCode();
 
@@ -80,7 +85,7 @@ public class AutomaticEncryptDMController {
 
     public boolean checkIfInputStringInDictionary(String inputText) {
 
-        return encryptController.getEnigmaEngine().getDictionary().checkIfAllLetterInDic(inputText);
+        return encryptController.getHttpClientAdapter().checkIfAllLetterInDic(inputText);
 //        String[] inputWords=inputText.split(" ");
 //        Dictionary dictionary=parentComponentTab.getEnigmaEngine().getDictionary();
 //        for (String word:inputWords) {

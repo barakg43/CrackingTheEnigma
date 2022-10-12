@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="239.0" prefWidth="448.0" stylesheets="@contestDataComponentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainAgentApp.AgentApp.ContestTeamData.contestDataComponent.ContestDataController">
+   <children>
+      <Label fx:id="battlefieldNameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="14.0" prefHeight="21.0" prefWidth="229.0" textAlignment="CENTER" textFill="#2024f5ba" underline="true">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <VBox layoutX="14.0" layoutY="63.0" prefHeight="175.0" prefWidth="113.0" spacing="10.0">
+         <children>
+            <Label styleClass="Label-Info-Static" text="Uboat User" />
+            <Label styleClass="Label-Info-Static" text="Game Status:" />
+            <Label styleClass="Label-Info-Static" text="Game Level:" />
+            <Label styleClass="Label-Info-Static" text="Allies Amount:" />
+         </children>
+      </VBox>
+      <VBox layoutX="147.0" layoutY="63.0" prefHeight="175.0" prefWidth="251.0" spacing="10.0">
+         <children>
+            <Label fx:id="uboatUserLabel" />
+            <Label fx:id="gameStatusLabel" />
+            <Label fx:id="gameLevelLabel" />
+            <Label fx:id="alliesAmountLabel" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

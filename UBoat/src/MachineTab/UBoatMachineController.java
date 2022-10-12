@@ -1,9 +1,10 @@
 package MachineTab;
 
 import UBoatApp.UBoatController;
+import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
-import enigmaEngine.Engine;
+import http.HttpClientAdapter;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,7 +29,7 @@ public class UBoatMachineController {
     @FXML private CodeCalibrationController ConfigurationComponentController;
 
     private UBoatApp.UBoatController UBoatController;
-    private Engine mEngine;
+    private HttpClientAdapter httpClientAdapter;
     private MachineDataDTO machineData;
     private SimpleBooleanProperty isCodeSelectedByUser;
     private SimpleBooleanProperty isSelected;
@@ -92,13 +93,12 @@ public class UBoatMachineController {
         }
         showCodeDetails.set(false);
         MachineDetailsComponentController.clearCurrentCode();
-        mEngine = UBoatController.getmEngine();
-        machineData = mEngine.getMachineData();
+        machineData = httpClientAdapter.getMachineData();
         ConfigurationComponentController.createDataMachineSets();
         if (machineData != null) {
             MachineDetailsComponentController.setData();
         }
-        if (mEngine.isCodeConfigurationIsSet()) {
+        if (httpClientAdapter.isCodeConfigurationIsSet()) {
             MachineDetailsComponentController.setCodes();
             // setVisibleCodeFields(true);
         } else {
@@ -129,12 +129,8 @@ public class UBoatMachineController {
         ConfigurationComponentController.getCodeConfTabPane().getSelectionModel().select(0);
         setInitializeConfiguration();
 
-        if(mEngine.isCodeConfigurationIsSet())
-        {
-            mEngine.resetAllData();
-            mEngine.resetSelected();
 
-        }
+        httpClientAdapter.resetAllData();
         isSelected.set(false);
         MachineDetailsComponentController.clearCodes();
         isCodeSelectedByUser.set(false);
@@ -149,8 +145,8 @@ public class UBoatMachineController {
         return isSelected;
     }
 
-    public Engine getmEngine() {
-        return mEngine;
+    public HttpClientAdapter getHttpClientAdapter() {
+        return httpClientAdapter;
     }
 
     public SimpleBooleanProperty getShowCodeDetails() {
@@ -158,12 +154,14 @@ public class UBoatMachineController {
     }
 
     public void showAllCodes() {
-        CodeFormatDTO selectedCode = mEngine.getCodeFormat(true);
 
+        AllCodeFormatDTO allCodeFormatDTO= httpClientAdapter.getInitialCurrentCodeFormat();
+        CodeFormatDTO selectedCode = allCodeFormatDTO.getInitialCode();
+        CodeFormatDTO currentCode =  allCodeFormatDTO.getCurrentCode();
         //SelectedMachineCodeController.setSelectedCode(selectedCode);
         ConfigurationComponentController.getCodeConfTabPane().getSelectionModel().select(0);
 
-        CodeFormatDTO currentCode = mEngine.getCodeFormat(false);
+
         //CurrentMachineCodeController.setSelectedCode(currentCode);
         MachineDetailsComponentController.setCodes();
         //  setVisibleCodeFields(true);

@@ -4,13 +4,13 @@ public class TeamAgentsDataDTO {
     private final String agentName;
     private final int receivedTaskAmount;
     private final int waitingTaskAmount;
-    private final int candidateAmount;
+    private final int candidatesAmount;
 
-    public TeamAgentsDataDTO(String agentName, int receivedTaskAmount, int waitingTaskAmount, int candidateAmount) {
+    public TeamAgentsDataDTO(String agentName, int receivedTaskAmount, int waitingTaskAmount, int candidatesAmount) {
         this.agentName = agentName;
         this.receivedTaskAmount = receivedTaskAmount;
         this.waitingTaskAmount = waitingTaskAmount;
-        this.candidateAmount = candidateAmount;
+        this.candidatesAmount = candidatesAmount;
     }
 
     public String getAgentName() {
@@ -25,5 +25,5 @@ public class TeamAgentsDataDTO {
         return waitingTaskAmount;
     }
 
-    public int getCandidateAmount() {return candidateAmount;}
+    public int getCandidatesAmount() {return candidatesAmount;}
 }

@@ -1,6 +1,5 @@
-package Agent;
+package agent;
 
-import allyDTOs.AllyCandidateDTO;
 import com.google.gson.Gson;
 import decryptionManager.components.DecryptedTask;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,11 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import static constants.Constants.AMOUNT;
-import static constants.Constants.USERNAME;
 
 @WebServlet(name = "SupplyTaskServlet", urlPatterns = {"/agent/get-tasks"})
 public class SupplyTaskServlet extends HttpServlet {
@@ -51,7 +50,10 @@ public class SupplyTaskServlet extends HttpServlet {
         try {
             Gson gson = ServletUtils.getGson();
             String allyName = ServletUtils.getAgentManager().getAgentData(username).getAllyTeamName();
-            List<DecryptedTask> taskList = ServletUtils.getAlliesManager().getSingleAllyController(allyName).getDecryptionManager().getTasksForAgentSession(amount);
+            List<DecryptedTask> taskList = ServletUtils.getAlliesManager()
+                    .getSingleAllyController(allyName)
+                    .getDecryptionManager()
+                    .getTasksForAgentSession(amount);
             String json = gson.toJson(taskList);
             out.println(json);
             out.flush();

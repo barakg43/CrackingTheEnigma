@@ -1,48 +1,49 @@
 package Ally;
 
-import CandidateStatus.CandidatesStatusController;
-import UBoatDTO.ActiveTeamsDTO;
 import agent.AgentDataDTO;
 import allyDTOs.AllyCandidateDTO;
-import allyDTOs.AllyDataDTO;
-import allyDTOs.ContestDataDTO;
+import allyDTOs.TeamAgentsDataDTO;
 import decryptionManager.DecryptionManager;
-import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
-import enigmaEngine.Engine;
-import enigmaEngine.EnigmaEngine;
-import uboat.ContestDataManager;
 
 import java.util.*;
 
 public class SingleAllyController {
 
     private String uboatManager;
-    private String allyName;
+    private final String allyName;
     private final Set<AgentDataDTO> agentSet;
     private DecryptionManager decryptionManager;
-    private List<AllyCandidateDTO> allyCandidateDTOList;
-    private ContestDataDTO contestDataDTO;
+    private final List<AllyCandidateDTO> allyCandidateDTOList;
 
-
-    public ContestDataDTO getContestDataDTO() {
-        return contestDataDTO;
-    }
-
-    public void setContestDataDTO(ContestDataDTO contestDataDTO) {
-        this.contestDataDTO = contestDataDTO;
-    }
+    private final Map<String, TeamAgentsDataDTO> agentsTasksProgress;
+    private int candidateVersion=0;
 
     public SingleAllyController(String allyName) {
         this.agentSet = new HashSet<>();
+        agentsTasksProgress=new HashMap<>();
         uboatManager=null;
         this.allyName=allyName;
         allyCandidateDTOList=new ArrayList<>();
     }
+    public void updateAgentProgressData(TeamAgentsDataDTO teamAgentsDataDTO)
+    {
+        agentsTasksProgress.put(teamAgentsDataDTO.getAgentName(),teamAgentsDataDTO);
 
-    public List<AllyCandidateDTO> getAllyCandidateDTOList() {
-        return Collections.unmodifiableList(allyCandidateDTOList);
+
+
+    }
+    public List<TeamAgentsDataDTO> getAgentProgressDTOList()
+    {
+        return new ArrayList<>(agentsTasksProgress.values());
+    }
+    public List<AllyCandidateDTO> getAllyCandidateDTOListWithVersion() {
+
+        return allyCandidateDTOList.subList(candidateVersion,allyCandidateDTOList.size());
+    }
+    public void updateAllyCandidateVersion(){
+        candidateVersion=allyCandidateDTOList.size();
     }
 
     public void addCandidateToAllyList(AllyCandidateDTO allyCandidateDTO)
@@ -63,7 +64,7 @@ public class SingleAllyController {
     {
         uboatManager=uboatName;
     }
-    public String getUboatNameManager(String allyNam)
+    public String getUboatNameManager()
     {
         if(uboatManager!=null)
         {
@@ -77,9 +78,9 @@ public class SingleAllyController {
         agentSet.add(agentDataDTO);
     }
 
-    public Set<AgentDataDTO> getAgentDataForAlly(String allyName)
+    public List<AgentDataDTO> getAgentDataListForAlly()
     {
-        return Collections.unmodifiableSet(agentSet);
+        return Collections.unmodifiableList(new ArrayList<>(agentSet));
     }
 
 

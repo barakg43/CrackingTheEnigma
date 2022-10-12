@@ -4,7 +4,6 @@ package shared.servlet;
 import agent.AgentDataDTO;
 import com.google.gson.Gson;
 import constants.Constants;
-import engineDTOs.CodeFormatDTO;
 import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,10 +19,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import static constants.Constants.TYPE;
 import static constants.Constants.USERNAME;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/uboat/login","/ally/login","/agent/login"})
 public class LoginServlet extends HttpServlet {
 
     // urls that starts with forward slash '/' are considered absolute
@@ -49,14 +47,13 @@ public class LoginServlet extends HttpServlet {
         if (usernameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
-            String typeUserNameFromParameter= request.getParameter(TYPE);
-            if (usernameFromParameter == null || usernameFromParameter.isEmpty()||typeUserNameFromParameter == null || typeUserNameFromParameter.isEmpty()) {
+            String typeFromUrl=(request.getRequestURI().split("/")[2]).toUpperCase();
+            if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
             } else {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
-                typeUserNameFromParameter = typeUserNameFromParameter.trim().toUpperCase();
+                //typeFromUrl = typeFromUrl.trim().toUpperCase();
 
                 synchronized (this) {
                     if (userManager.isUserExists(usernameFromParameter)) {
@@ -65,7 +62,7 @@ public class LoginServlet extends HttpServlet {
                     }
                     else {
                         //add the new user to the users list
-                        ApplicationType type= ApplicationType.valueOf(typeUserNameFromParameter);
+                        ApplicationType type= ApplicationType.valueOf(typeFromUrl);
 
                         userManager.addUserName(usernameFromParameter,type);
                         switch (type)
@@ -81,7 +78,9 @@ public class LoginServlet extends HttpServlet {
                                     ServletUtils.getAgentManager().addAgentData(readAgentDTO(request));
                                 }catch (RuntimeException ex)
                                 {
-                                    response.sendError(HttpServletResponse.SC_EXPECTATION_FAILED,"ERROR reading agent data.");
+                                    response.sendError(HttpServletResponse.SC_NO_CONTENT,"Error reading agent data from request.");
+
+                                    return;
                                 }
                                 break;
                         }

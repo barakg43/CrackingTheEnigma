@@ -9,7 +9,10 @@ import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
 import java.io.*;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -22,6 +25,7 @@ public class DecryptionAgent {
     private final int threadNumber;
     private BruteForceLevel level=null;
     private long taskSize=0L;
+    private String agentName;
     private CodeCalculatorFactory codeCalculatorFactory;
     private MachineDataDTO machineData;
     private BlockingQueue<Runnable> taskQueue;
@@ -41,11 +45,12 @@ public class DecryptionAgent {
     private Runnable startListener;
     public static final Object pauseLock=new Object();
     private Runnable notifyFinishTaskSession;
-    public DecryptionAgent(String alliesTeam, int threadNumber, long taskSize, Runnable notifyFinishTaskSession) {
+    public DecryptionAgent(String agentName,String alliesTeam, int threadNumber, long taskSize, Runnable notifyFinishTaskSession) {
         this.alliesTeam = alliesTeam;
         this.threadNumber = threadNumber;
         this.taskSize = taskSize;
         threadAgents =  Executors.newFixedThreadPool(threadNumber);
+        this.agentName = agentName;
         this.notifyFinishTaskSession = notifyFinishTaskSession;
         engine=new EnigmaEngine();
         taskDoneAmount=new AtomicCounter();
@@ -132,7 +137,7 @@ public class DecryptionAgent {
         taskSize=decryptedTasksArray.length;
         for(DecryptedTask task:decryptedTasksArray)
         {
-            task.setupAgentConf(codeCalculatorFactory,createNewEngineCopy(),successfulDecryption,dictionary,taskDoneAmount);
+            task.setupAgentConf(codeCalculatorFactory,createNewEngineCopy(),successfulDecryption,dictionary,taskDoneAmount,agentName);
             threadAgents.submit(task);
         }
     }

@@ -5,15 +5,10 @@ import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import engineDTOs.BattlefieldDataDTO;
-import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.TaskFinishDataDTO;
-import engineDTOs.MachineDataDTO;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class SingleBattleFieldController {
 
@@ -34,9 +29,9 @@ public class SingleBattleFieldController {
             alliesDataSet.add(agentDataDTO);
     }
 
-    public Set<AllyDataDTO> getAlliesDataForUboat()
+    public List<AllyDataDTO> getAlliesDataListForUboat()
     {
-        return Collections.unmodifiableSet(alliesDataSet);
+        return new ArrayList<>(alliesDataSet);
     }
 
     public Engine getEnigmaEngine() {
@@ -56,6 +51,10 @@ public class SingleBattleFieldController {
         return contestDataManager;
     }
     public BattlefieldDataDTO getBattlefieldDataDTO() {
+        return contestDataManager;
+    }
+    public ContestDataManager getContestDataManager()
+    {
         return contestDataManager;
     }
     public ActiveTeamsDTO getActiveTeamsDTO()
