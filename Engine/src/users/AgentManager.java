@@ -1,6 +1,5 @@
 package users;
 
-import Ally.SingleAllyController;
 import agent.AgentDataDTO;
 
 import java.util.HashMap;

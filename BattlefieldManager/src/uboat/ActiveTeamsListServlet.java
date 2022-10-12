@@ -2,7 +2,6 @@ package uboat;
 
 import UBoatDTO.ActiveTeamsDTO;
 import com.google.gson.Gson;
-import enigmaEngine.Engine;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

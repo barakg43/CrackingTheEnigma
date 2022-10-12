@@ -3,8 +3,6 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
-import constants.Constants;
-import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,10 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Scanner;
-
-import static constants.Constants.USERNAME;
 
 @WebServlet("/uboat/upload-file")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)

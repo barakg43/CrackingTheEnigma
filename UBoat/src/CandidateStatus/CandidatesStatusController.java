@@ -1,25 +1,15 @@
 package CandidateStatus;
 
-import CandidateStatus.SingleCandidate.SingleCandidateController;
-import MainUboatApp.CommonResources;
-import agent.AgentDataDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.io.IOException;
-import java.util.List;
 
 public class CandidatesStatusController {
 

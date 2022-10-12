@@ -1,8 +1,6 @@
 package users;
 
 import general.ApplicationType;
-import jakarta.servlet.http.HttpServlet;
-import javafx.application.Application;
 
 import java.util.*;
 

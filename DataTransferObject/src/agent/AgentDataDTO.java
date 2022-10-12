@@ -1,9 +1,5 @@
 package agent;
 
-import engineDTOs.CodeFormatDTO;
-
-import java.util.Arrays;
-
 public class AgentDataDTO{
 
     private final String agentName;
