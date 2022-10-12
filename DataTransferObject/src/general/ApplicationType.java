@@ -8,12 +8,16 @@ public enum ApplicationType {
     AGENT("agent");
 
 
-    final String name;
+    static final String name=null;
     ApplicationType(String type)
     {
-        this.name=type;
+        name=type;
     }
-    public String getURLContext()
+//    public String getURLContext()
+//    {
+//        return "\\"+name;
+//    }
+    public static String getURLContext()
     {
         return "\\"+name;
     }

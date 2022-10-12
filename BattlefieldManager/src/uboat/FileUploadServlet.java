@@ -19,7 +19,9 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Scanner;
 
-@WebServlet("/uboat/upload-file")
+import static general.ConstantsHTTP.UPLOAD_FILE;
+
+@WebServlet("/uboat"+UPLOAD_FILE)
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class FileUploadServlet extends HttpServlet {
 
@@ -48,12 +50,18 @@ public class FileUploadServlet extends HttpServlet {
         Part input=parts.stream().findFirst().orElse(null);
         if(input!=null)
         {
-        ServletUtils.getUboatManager()
-                .getBattleFieldController(username)
-                .assignXMLFileToUboat(
-                        readFromInputStream(input.getInputStream()));
-        response.setStatus(HttpServletResponse.SC_OK);
-        out.println("Success upload '"+input.getSubmittedFileName()+"' to server for uboat user:"  + username);
+            try {
+                ServletUtils.getUboatManager()
+                        .getBattleFieldController(username)
+                        .assignXMLFileToUboat(
+                                readFromInputStream(input.getInputStream()));
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
+            }
+            catch (RuntimeException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println(e.getMessage());
+            }
         }
         else
             response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);

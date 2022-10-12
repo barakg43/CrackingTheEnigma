@@ -1,7 +1,6 @@
 package http;
 
-import Client.http.HttpClientUtil;
-import FilePathComponent.FilePathController;
+
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.MachineDataDTO;
 import general.ApplicationType;
@@ -22,7 +21,7 @@ public class HttpClientAdapter {
     public Set<String> getDictionaryWords() {
       if(wordsSet.isEmpty())
       {
-          HTTP_CLIENT
+//          HTTP_CLIENT
       }
       return wordsSet;
     }
