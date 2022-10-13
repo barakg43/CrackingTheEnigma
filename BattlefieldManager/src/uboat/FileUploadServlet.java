@@ -19,9 +19,10 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Scanner;
 
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 import static general.ConstantsHTTP.UPLOAD_FILE;
 
-@WebServlet("/uboat"+UPLOAD_FILE)
+@WebServlet(UBOAT_CONTEXT+UPLOAD_FILE)
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class FileUploadServlet extends HttpServlet {
 

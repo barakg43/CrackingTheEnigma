@@ -17,9 +17,14 @@ import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.Scanner;
 
+import static general.ConstantsHTTP.INPUT_STRING;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
-@WebServlet(name = "InputDataStringServlet", urlPatterns = {"/uboat/input-string"})
+
+@WebServlet(name = "InputDataStringServlet", urlPatterns = {UBOAT_CONTEXT+INPUT_STRING})
 public class InputDataStringServlet extends HttpServlet {
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

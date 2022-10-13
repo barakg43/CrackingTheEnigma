@@ -12,8 +12,13 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "EnigmaMachineDataServlet", urlPatterns = {"/uboat/machine-data"})
+import static general.ConstantsHTTP.MACHINE_DATA;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+@WebServlet(name = "EnigmaMachineDataServlet", urlPatterns = {UBOAT_CONTEXT+MACHINE_DATA})
 public class EnigmaMachineDataServlet extends HttpServlet {
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

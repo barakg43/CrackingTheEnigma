@@ -17,9 +17,14 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import static general.ConstantsHTTP.READY_TO_START;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
-@WebServlet(name = "InputDataStringServlet", urlPatterns = {"/uboat/ready-to-start"})
+
+@WebServlet(name = "StartBattlefieldServlet", urlPatterns = {UBOAT_CONTEXT+READY_TO_START})
 public class StartBattlefieldServlet extends HttpServlet {
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

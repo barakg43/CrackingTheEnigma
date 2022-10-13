@@ -14,7 +14,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class HttpClientUtil {
 
-    private final ApplicationType type;
+
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
@@ -23,7 +23,6 @@ public class HttpClientUtil {
                     .build();
     private static String APP_CONTEXT_PATH;
     public HttpClientUtil(ApplicationType type) {
-        this.type=type;
         APP_CONTEXT_PATH=type.getURLContext();
     }
     public void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {

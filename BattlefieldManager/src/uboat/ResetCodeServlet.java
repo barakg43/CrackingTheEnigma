@@ -12,8 +12,13 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ResetEnigmaMachineServlet", urlPatterns = {"/uboat/reset-code"})
+import static general.ConstantsHTTP.RESET_CODE;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+@WebServlet(name = "ResetEnigmaMachineServlet", urlPatterns = {UBOAT_CONTEXT+RESET_CODE})
 public class ResetCodeServlet extends HttpServlet {
+
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

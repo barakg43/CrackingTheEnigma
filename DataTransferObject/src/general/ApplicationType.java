@@ -8,7 +8,7 @@ public enum ApplicationType {
     AGENT("agent");
 
 
-    static final String name=null;
+    final String name;
     ApplicationType(String type)
     {
         name=type;
@@ -17,9 +17,9 @@ public enum ApplicationType {
 //    {
 //        return "\\"+name;
 //    }
-    public static String getURLContext()
+    public String getURLContext()
     {
-        return "\\"+name;
+        return "/"+name;
     }
     @Override
     public String toString()

@@ -10,8 +10,13 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "ResetEnigmaMachineServlet", urlPatterns = {"/uboat/reset-machine"})
+import static general.ConstantsHTTP.RESET_MACHINE;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+@WebServlet(name = "ResetEnigmaMachineServlet", urlPatterns = {UBOAT_CONTEXT+RESET_MACHINE})
 public class ResetEnigmaMachineServlet extends HttpServlet {
+
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

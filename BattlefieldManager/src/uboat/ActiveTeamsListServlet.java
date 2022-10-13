@@ -12,7 +12,9 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {"/uboat/active-teams-list"})
+import static general.ConstantsHTTP.*;
+
+@WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {UBOAT_CONTEXT+ACTIVE_TEAMS_LIST})
 public class ActiveTeamsListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
