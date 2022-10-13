@@ -2,7 +2,6 @@ package UBoatDTO;
 
 import allyDTOs.AllyDataDTO;
 
-import java.util.List;
 import java.util.Set;
 
 public class ActiveTeamsDTO {

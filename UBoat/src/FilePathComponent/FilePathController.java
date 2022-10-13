@@ -2,8 +2,7 @@ package FilePathComponent;
 
 
 import UBoatApp.UBoatController;
-import enigmaEngine.Engine;
-import enigmaEngine.EnigmaEngine;
+import http.HttpClientAdapter;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FilePathController {
@@ -29,7 +27,7 @@ public class FilePathController {
     private SimpleBooleanProperty isFileSelected;
     public Label SelectedFilePath;
     private UBoatApp.UBoatController UBoatController;
-
+    private HttpClientAdapter httpClientAdapter;
     public void setMainAppController(UBoatController MainController) {
         UBoatController = MainController;
     }
@@ -105,14 +103,13 @@ public class FilePathController {
             }
 
             String absolutePath = selectedFile.getAbsolutePath();
-            Engine mEngine = new EnigmaEngine();
+
             try {
 
-                mEngine.loadXMLFileFromStringContent(new String(Files.readAllBytes(Paths.get(absolutePath))));
-                mEngine.resetAllData();
+                httpClientAdapter.loadXMLFileFromStringContent(new String(Files.readAllBytes(Paths.get(absolutePath))));
+                httpClientAdapter.resetAllData();
                 UBoatController.resetAllData();
                 selectedFileProperty.set(absolutePath);
-                UBoatController.setmEngine(mEngine);
                 UBoatController.setMachineDetails();
 
                 UBoatController.setConfPanel();
@@ -145,5 +142,9 @@ public class FilePathController {
     public void resetFile() {
         FirstLoadFileLabel.setText("You need first load the machine from file");
         selectedFileProperty.set("");
+    }
+
+    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+
     }
 }

@@ -12,8 +12,13 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "AutomaticCodeConfigurationServlet", urlPatterns = {"/uboat/automatic-code"})
+import static general.ConstantsHTTP.AUTOMATIC_CODE;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+@WebServlet(name = "AutomaticCodeConfigurationServlet", urlPatterns = {UBOAT_CONTEXT+AUTOMATIC_CODE})
 public class AutomaticCodeConfigurationServlet extends HttpServlet {
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

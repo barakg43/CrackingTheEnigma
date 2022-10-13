@@ -2,7 +2,7 @@ package encryptTab.encryptComponent.automaticEncrypt;
 
 import DMencrypt.automaticEncryptDM.AutomaticEncryptDMController;
 import encryptTab.encryptComponent.EncryptComponentController;
-import enigmaEngine.Encryptor;
+import http.HttpClientAdapter;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 
 public class AutomaticEncryptController {
 
-        Encryptor encryptor;
+        HttpClientAdapter httpClientAdapter;
         @FXML
         private Button processEncryptButton;
 
@@ -38,10 +38,10 @@ public class AutomaticEncryptController {
         void processStringData(ActionEvent event) {
             if(automaticEncryptDMController!=null) {
                 String inputText=stringInputTextField.getText();
-               if(automaticEncryptDMController.checkIfInputStringInDictionary(inputText.toUpperCase()))
+               if(httpClientAdapter.checkIfAllLetterInDic(inputText.toUpperCase()))
                {
                    try {
-                       outputProperty.setValue(encryptor.processDataInput(stringInputTextField.getText()));//update output label on component
+                       outputProperty.setValue(httpClientAdapter.processDataInput(stringInputTextField.getText()));//update output label on component
                        inputProperty.setValue(stringInputTextField.getText().toUpperCase());
 
                    }catch (Exception ex)
@@ -57,7 +57,7 @@ public class AutomaticEncryptController {
             }
             else{
                 try {
-                    outputProperty.setValue(encryptor.processDataInput(stringInputTextField.getText()));//update output label on component
+                    outputProperty.setValue(httpClientAdapter.processDataInput(stringInputTextField.getText()));//update output label on component
                     inputProperty.setValue(stringInputTextField.getText().toUpperCase());
 
                 }catch (Exception ex)
@@ -77,11 +77,10 @@ public class AutomaticEncryptController {
 
              if(automaticEncryptDMController!=null)
                     automaticEncryptDMController.clearOutputInputLabels();
-//                  automaticEncryptDMController.clearListView(); //TODO:check why?!?!
         }
 
-        public void setEncryptor(Encryptor encryptor) {
-            this.encryptor = encryptor;
+        public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+            this.httpClientAdapter = httpClientAdapter;
         }
 
     public void bindInputOutputPropertyFromParent(StringProperty inputPropertyParent,StringProperty outputPropertyParent) {

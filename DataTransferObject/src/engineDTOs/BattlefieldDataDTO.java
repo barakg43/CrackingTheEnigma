@@ -18,7 +18,7 @@ public class BattlefieldDataDTO {
         return battlefieldName;
     }
 
-    public int getAlliesAmount() {
+    public int getRequiredAlliesAmount() {
         return alliesAmount;
     }
 
@@ -26,7 +26,5 @@ public class BattlefieldDataDTO {
         return level;
     }
 
-    public int getRequiredAlliesAmount() {
-        return 0;
-    }
+
 }

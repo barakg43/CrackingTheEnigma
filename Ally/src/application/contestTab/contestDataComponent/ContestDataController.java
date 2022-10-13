@@ -28,7 +28,9 @@ public class ContestDataController {
         uboatUserLabel.setText(contestData.getUboatUserName());
         gameStatusLabel.setText(contestData.getGameStatus().toString());
         gameLevelLabel.setText(contestData.getLevel().toString());
-        alliesAmountLabel.setText(String.format("%d/%d",contestData.getRegisteredAmount(),contestData.getRequiredAlliesAmount()));
+        alliesAmountLabel.setText(String.format("%d/%d",
+                contestData.getRegisteredAmount(),
+                contestData.getRequiredAlliesAmount()));
 
     }
 

@@ -18,8 +18,8 @@ public class SingleCandidateController {
     @FXML
     private SimpleCodeController simpleCodeFormatController;
 
-    public void setData(CandidateDTO candidateDataDTO, String agentID){
-        this.agentID.setText(agentID);
+    public void setData(CandidateDTO candidateDataDTO){
+        this.agentID.setText(candidateDataDTO.getUserName());
         Text output=new Text(candidateDataDTO.getOutput());
         outputString.getChildren().add(output);
         simpleCodeFormatController.loadSmallFontStyle();

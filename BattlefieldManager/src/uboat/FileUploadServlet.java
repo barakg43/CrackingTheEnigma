@@ -3,8 +3,6 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
-import constants.Constants;
-import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,12 +17,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Scanner;
 
-import static constants.Constants.USERNAME;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.UPLOAD_FILE;
 
-@WebServlet("/uboat/upload-file")
+@WebServlet(UBOAT_CONTEXT+UPLOAD_FILE)
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class FileUploadServlet extends HttpServlet {
 
@@ -53,43 +51,25 @@ public class FileUploadServlet extends HttpServlet {
         Part input=parts.stream().findFirst().orElse(null);
         if(input!=null)
         {
-        ServletUtils.getUboatManager()
-                .getBattleFieldController(username)
-                .assignXMLFileToUboat(
-                        readFromInputStream(input.getInputStream()));
-        response.setStatus(HttpServletResponse.SC_OK);
-        out.println("Success upload '"+input.getSubmittedFileName()+"' to server for uboat user:"  + username);
+            try {
+                ServletUtils.getUboatManager()
+                        .getBattleFieldController(username)
+                        .assignXMLFileToUboat(
+                                readFromInputStream(input.getInputStream()));
+                response.setStatus(HttpServletResponse.SC_OK);
+                out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
+            }
+            catch (RuntimeException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println(e.getMessage());
+            }
         }
         else
             response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-    }
-
-
-
-
-
-
-    private void printPart(Part part, PrintWriter out) {
-        StringBuilder sb = new StringBuilder();
-        sb
-            .append("Parameter Name: ").append(part.getName()).append("\n")
-            .append("Content Type (of the file): ").append(part.getContentType()).append("\n")
-            .append("Size (of the file): ").append(part.getSize()).append("\n")
-            .append("Part Headers:").append("\n");
-
-        for (String header : part.getHeaderNames()) {
-            sb.append(header).append(" : ").append(part.getHeader(header)).append("\n");
-        }
-
-        out.println(sb.toString());
     }
 
     private String readFromInputStream(InputStream inputStream) {
         return new Scanner(inputStream).useDelimiter("\\Z").next();
     }
 
-    private void printFileContent(String content, PrintWriter out) {
-        out.println("------------------------------------------------------------File content:-----");
-        out.println(content);
-    }
 }

@@ -2,7 +2,6 @@ package uboat;
 
 import UBoatDTO.ActiveTeamsDTO;
 import com.google.gson.Gson;
-import enigmaEngine.Engine;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +12,10 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {"/uboat/active-teams-list"})
+import static general.ConstantsHTTP.ACTIVE_TEAMS_LIST;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+@WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {UBOAT_CONTEXT+ACTIVE_TEAMS_LIST})
 public class ActiveTeamsListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

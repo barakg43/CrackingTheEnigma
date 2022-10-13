@@ -1,7 +1,7 @@
 package application.contestTab;
 
-import allyDTOs.ContestDataDTO;
 import allyDTOs.AllyDataDTO;
+import allyDTOs.ContestDataDTO;
 import allyDTOs.TeamAgentsDataDTO;
 import application.contestTab.contestDataComponent.ContestDataController;
 import application.contestTab.contestsTeamsComponent.ContestTeamsController;

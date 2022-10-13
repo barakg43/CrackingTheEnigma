@@ -1,16 +1,13 @@
 package allyDTOs;
 
-import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
-
-import java.util.List;
 
 public class AllyCandidateDTO extends TaskFinishDataDTO {
 
-    private String allyName;
+    private final String allyName;
 
     public AllyCandidateDTO(TaskFinishDataDTO taskFinishDataDTO,String allyName) {
-        super(taskFinishDataDTO.getPossibleCandidates(), taskFinishDataDTO.getAllyTeamName());
+        super(taskFinishDataDTO.getPossibleCandidates(), taskFinishDataDTO.getAgentName());
         this.allyName=allyName;
     }
 

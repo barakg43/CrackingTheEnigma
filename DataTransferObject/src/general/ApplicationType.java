@@ -11,11 +11,15 @@ public enum ApplicationType {
     final String name;
     ApplicationType(String type)
     {
-        this.name=type;
+        name=type;
     }
+//    public String getURLContext()
+//    {
+//        return "\\"+name;
+//    }
     public String getURLContext()
     {
-        return "\\"+name;
+        return "/"+name;
     }
     @Override
     public String toString()

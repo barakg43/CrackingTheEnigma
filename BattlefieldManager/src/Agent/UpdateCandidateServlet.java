@@ -1,22 +1,19 @@
-package Agent;
+package agent;
 
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
 import allyDTOs.AllyCandidateDTO;
 import com.google.gson.Gson;
-import engineDTOs.CodeFormatDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import users.AlliesManager;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.*;
-import java.util.Properties;
 import java.util.Scanner;
 
 

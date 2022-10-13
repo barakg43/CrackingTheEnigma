@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static decryptionManager.DecryptionManager.*;
+import static decryptionManager.DecryptionManager.isSystemPause;
+import static decryptionManager.DecryptionManager.pauseLock;
 
 
 public class DecryptedTask implements Runnable {
@@ -17,6 +18,7 @@ public class DecryptedTask implements Runnable {
 
     private final CodeFormatDTO initialCode;
     private long taskSize=0L;
+    private String agentName;
     private final String cipheredString;
     private Engine copyEngine=null;
     private Dictionary dictionary=null;
@@ -29,10 +31,11 @@ public class DecryptedTask implements Runnable {
         this.initialCode = initialCode;
         this.cipheredString=cipheredString;
         this.taskSize = taskSize;
+
     }
     public void setupAgentConf(CodeCalculatorFactory codeCalculatorFactory,
-                                Engine copyEngine, BlockingQueue<TaskFinishDataDTO> successfulDecryption,
-                                Dictionary dictionary,AtomicCounter atomicCounter)
+                               Engine copyEngine, BlockingQueue<TaskFinishDataDTO> successfulDecryption,
+                               Dictionary dictionary, AtomicCounter atomicCounter, String agentName)
     {
         this.copyEngine = copyEngine;
         possibleCandidates=new ArrayList<>();
@@ -40,6 +43,7 @@ public class DecryptedTask implements Runnable {
         this.dictionary=dictionary;
         this.successfulDecryption=successfulDecryption;
         this.codeCalculatorFactory=codeCalculatorFactory;
+        this.agentName=agentName;
     }
     @Override
     public void run() {
@@ -59,7 +63,7 @@ public class DecryptedTask implements Runnable {
             }
             if(dictionary.checkIfAllLetterInDic(processedOutput))
                     {
-                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput,null));
+                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput,agentName));
 //                        System.out.println(currentCode);
 //
 //                        System.out.println("Output: "+ processedOutput+"\n********************************************" );
@@ -102,4 +106,7 @@ public class DecryptedTask implements Runnable {
 
         }
 
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
 }

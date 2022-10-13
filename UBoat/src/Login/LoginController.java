@@ -1,6 +1,5 @@
 package Login;
 
-import DMencrypt.DMoperational.DMoperationalController;
 import MainUboatApp.CommonResources;
 import MainUboatApp.MainUboatController;
 import UBoatApp.UBoatController;
@@ -18,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,7 +46,7 @@ public class LoginController {
         UBoatNames=new ArrayList<>();
         errorAlert.setTitle("Error");
         errorAlert.contentTextProperty().bind(errorMessageProperty);
-//        HttpClientUtil.setCookieManagerLoggingFacility(line ->
+//        http.client.HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
     }
@@ -81,7 +79,7 @@ public class LoginController {
 //
 //        updateHttpStatusLine("New request is launched for: " + finalUrl);
 //
-//        HttpClientUtil.runAsync(finalUrl, new Callback() {
+//        http.client.HttpClientUtil.runAsync(finalUrl, new Callback() {
 //
 //            @Override
 //            public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -122,7 +120,6 @@ public class LoginController {
             UBoatController machineController=fxmlLoader.getController();
             Stage stage=new Stage();
             stage.setScene(scene);
-            stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, DMoperationalController::closeWindowEvent);
             stage.show();
 
         } catch (IOException e) {

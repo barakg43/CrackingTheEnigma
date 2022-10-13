@@ -1,10 +1,12 @@
 package users;
 
-import allyDTOs.AllyDataDTO;
+import allyDTOs.ContestDataDTO;
 import uboat.SingleBattleFieldController;
 
-import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UBoatManager {
 
@@ -18,7 +20,14 @@ public class UBoatManager {
     }
 
 
+    public List<ContestDataDTO> getAllContestDataList()
+    {
+        return uboatMapControllerSet.values()
+                .stream()
+                .map(SingleBattleFieldController::getContestDataDTO)
+                .collect(Collectors.toList());
 
+    }
     public void addUboatUser(String uboatName)
     {
         if(!uboatMapControllerSet.containsKey(uboatName)) {

@@ -1,12 +1,7 @@
-
 import CandidateStatus.CandidatesStatusController;
-import DMencrypt.DMoperational.DMoperationalController;
 import MainUboatApp.CommonResources;
 import MainUboatApp.MainUboatController;
-import agent.AgentDataDTO;
-import allyDTOs.ContestDataDTO;
 import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.BruteForceLevel;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.RotorInfoDTO;
@@ -15,8 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import users.UserManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,7 +41,6 @@ public class UBoatApplication extends Application{
 
 
         primaryStage.setScene(scene);
-        primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, DMoperationalController::closeWindowEvent);
         primaryStage.show();
 
     }

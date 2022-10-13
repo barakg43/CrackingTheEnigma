@@ -6,16 +6,23 @@ import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
 
 public class TeamsStatusController {
-    public ScrollPane scrollPaneTeams;
-    public FlowPane flowPaneTeams;
+    @FXML
+    private ScrollPane scrollPaneTeams;
+
+    @FXML
+    private Label alliesAmountLabel;
+    @FXML
+    private FlowPane flowPaneTeams;
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
 
@@ -31,18 +38,18 @@ public class TeamsStatusController {
 
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())
         {
-         //   addNewTile(candidateDTO,taskFinishDataDTO.getAgentID());
+           addNewTile(candidateDTO);
         }
 
     }
-    private void addNewTile(CandidateDTO candidateDTO, String agentID)
+    private void addNewTile(CandidateDTO candidateDTO)
     {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(CommonResources.MAIN_FXML_RESOURCE);
+            loader.setLocation(getClass().getResource(CommonResources.CANDIDATE_SINGLE_TILE));
             Node singledCandidateTile = loader.load();
             SingleCandidateController singledCandidateTileController = loader.getController();
-            singledCandidateTileController.setData(candidateDTO,agentID);
+            singledCandidateTileController.setData(candidateDTO);
             Platform.runLater(
                     ()->flowPaneTeams.getChildren().add(singledCandidateTile)
             );

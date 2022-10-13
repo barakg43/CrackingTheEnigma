@@ -1,7 +1,7 @@
 package MainAgentApp;
 
-import AgentApp.AgentController;
-import agentLogin.AgentLoginController;
+import MainAgentApp.AgentApp.AgentController;
+import MainAgentApp.agentLogin.AgentLoginController;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;

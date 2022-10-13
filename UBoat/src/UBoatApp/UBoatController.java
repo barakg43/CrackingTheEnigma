@@ -5,7 +5,7 @@ import FilePathComponent.FilePathController;
 import MachineTab.UBoatMachineController;
 import MainUboatApp.MainUboatController;
 import engineDTOs.CodeFormatDTO;
-import enigmaEngine.Engine;
+import http.HttpClientAdapter;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -21,7 +21,7 @@ public class UBoatController {
     public Label UBoatTitleLabel;
     public TextField UBoatNameTextField;
    // public Label FirstLoadFileLabel;
-    
+    private HttpClientAdapter httpClientAdapter;
     public ScrollPane filePathComponent;
 
     public FilePathController filePathComponentController;
@@ -38,7 +38,7 @@ public class UBoatController {
 
     public ContestController ContestTabController;
     public TabPane UboatTabPane;
-    private Engine mEngine;
+   // private Engine mEngine;
     private ReadOnlyDoubleProperty sceneWidthProperty;
     private ReadOnlyDoubleProperty sceneHeightProperty;
     private Scene scene;
@@ -51,6 +51,9 @@ public class UBoatController {
             MachineTabController.setMainAppController(this);
             ContestTabController.setMainAppController(this);
         }
+        httpClientAdapter=new HttpClientAdapter();
+        ContestTabController.setHttpClientAdapter(httpClientAdapter);
+        filePathComponentController.setHttpClientAdapter(httpClientAdapter);
     }
 
     public void bindCurrentCode()
@@ -58,13 +61,10 @@ public class UBoatController {
         MachineTabController.getMachineDetailsController().getCurrentMachineCodeController().setSelectedCode(ContestTabController.getEncryptComponentController().bindCodeComponentController().getCurrentCode());
     }
 
-    public Engine getmEngine() {
-        return mEngine;
+    public HttpClientAdapter getHttpClientAdapter() {
+        return httpClientAdapter;
     }
-    public void setmEngine(Engine mEngine) {
-        this.mEngine = mEngine;
-        ContestTabController.setEnigmaEngine(mEngine);
-    }
+
 
     public void setSceneWidthHeightProperties(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty)
     {

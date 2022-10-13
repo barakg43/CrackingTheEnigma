@@ -12,8 +12,13 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "DictionaryWordsServlet", urlPatterns = {"/uboat/dictionary-words"})
+import static general.ConstantsHTTP.DICTIONARY_WORDS;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+@WebServlet(name = "DictionaryWordsServlet", urlPatterns = {UBOAT_CONTEXT+DICTIONARY_WORDS})
 public class DictionaryWordListServlet extends HttpServlet {
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

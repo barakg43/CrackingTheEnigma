@@ -525,7 +525,7 @@ public class EnigmaEngine implements Engine , Serializable {
                                             tempEnigmaMachine.getAlphabet());
             enigmaMachine= tempEnigmaMachine;
 
-
+            resetAllData();
         }
         private void setBattlefieldData(CTEBattlefield cteBattlefield)
         {

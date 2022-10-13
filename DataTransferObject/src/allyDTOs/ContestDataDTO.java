@@ -36,6 +36,17 @@ public class ContestDataDTO extends BattlefieldDataDTO {
         this.registeredAmount = 0;
 
     }
+
+    public ContestDataDTO(String battlefieldName,String uboatUserName,
+                          GameStatus gameStatus, BruteForceLevel gameLevel,
+                          int requiredAmount,int registeredAmount ) {
+        super(battlefieldName,requiredAmount,gameLevel.toString());
+        this.uboatUserName = uboatUserName;
+        this.gameStatus = gameStatus;
+        this.registeredAmount = registeredAmount;
+
+    }
+
     public ContestDataDTO(String uboatUserName,BattlefieldDataDTO battlefieldDataDTO) {
         super(battlefieldDataDTO.getBattlefieldName(),battlefieldDataDTO.getRequiredAlliesAmount(),battlefieldDataDTO.getLevel().toString());
         this.uboatUserName = uboatUserName;

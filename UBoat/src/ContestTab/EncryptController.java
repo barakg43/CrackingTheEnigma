@@ -10,7 +10,7 @@ import SimpleCode.SimpleCodeController;
 import Trie.Trie;
 import Trie.TrieNode;
 import engineDTOs.CodeFormatDTO;
-import enigmaEngine.Engine;
+import http.HttpClientAdapter;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -43,7 +43,7 @@ public class EncryptController {
 
     private Trie dictionaryTrie;
 
-    private Engine enigmaEngine;
+    private HttpClientAdapter httpClientAdapter;
     private SimpleStringProperty outputString;
     private ContestController contestController;
 
@@ -149,7 +149,7 @@ public class EncryptController {
     }
 
     public void bindResetButtonToCode() {
-        simpleCodeComponentController.setSelectedCode(enigmaEngine.getCodeFormat(true));
+        simpleCodeComponentController.setSelectedCode(httpClientAdapter.getInitialCurrentCodeFormat().getCurrentCode());
         contestController.bindCurrentCode();
 
     }
@@ -162,9 +162,9 @@ public class EncryptController {
 
     }
 
-    public void setEncryptor(Engine enigmaEngine) {
-        this.enigmaEngine = enigmaEngine;
-        codeEncryptComponentController.setEncryptor(enigmaEngine);
+    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+        this.httpClientAdapter = httpClientAdapter;
+        codeEncryptComponentController.setHttpClientAdapter(httpClientAdapter);
     }
     public ListView getDictionaryListView() {
         return dictionaryListView;
@@ -174,8 +174,8 @@ public class EncryptController {
         simpleCodeComponentController.setSelectedCode(currentCode);
     }
 
-    public Engine getEnigmaEngine() {
-        return contestController.uBoatController.getmEngine();
+    public HttpClientAdapter getHttpClientAdapter() {
+        return contestController.uBoatController.getHttpClientAdapter();
     }
 
     public void setContestController(ContestController contestController) {
@@ -183,7 +183,9 @@ public class EncryptController {
     }
 
     public void doneProcessData() {
-        simpleCodeComponentController.setSelectedCode(contestController.uBoatController.getmEngine().getCodeFormat(false));
+        simpleCodeComponentController.setSelectedCode(contestController.uBoatController.getHttpClientAdapter()
+                .getInitialCurrentCodeFormat()
+                .getCurrentCode());
         contestController.bindCurrentCode();
     }
 

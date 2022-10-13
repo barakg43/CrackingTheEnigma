@@ -1,7 +1,9 @@
 package MachineTab;
 
 
+import engineDTOs.CodeFormatDTO;
 import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,7 +112,7 @@ public class CodeCalibrationController {
 
     public void GetRandomButtonActionListener(ActionEvent actionEvent) {
         disableAllFields(true);
-        uBoatMachineController.getmEngine().setCodeAutomatically();
+        uBoatMachineController.getHttpClientAdapter().setCodeAutomatically();
         uBoatMachineController.getShowCodeDetails().set(true);
         uBoatMachineController.getIsSelected().set(true);
         uBoatMachineController.showAllCodes();
@@ -138,8 +140,10 @@ public class CodeCalibrationController {
         uBoatMachineController.getIsSelected().set(true);
         List<Integer> selectedRotorsID = new ArrayList<>();
         List<Character> selectedPositions =new ArrayList<>();
+        int rotorSize=rotorsAndPositionsHBox.getChildren().size();
+        RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[rotorSize];
         try {
-            for (int i = 0; i < rotorsAndPositionsHBox.getChildren().size(); i++) {
+            for (int i = 0; i < rotorSize; i++) {
                 VBox rotorAndPosition=(VBox) rotorsAndPositionsHBox.getChildren().get(i);
                 if(rotorAndPosition==null)
                     throw new Exception("You need to configurate all data.");
@@ -149,23 +153,16 @@ public class CodeCalibrationController {
                 if(((ComboBox<Character>)(rotorAndPosition.getChildren().toArray()[1])).getSelectionModel().getSelectedIndex()==-1)
                     throw new Exception("You need to select all rotors and positions.\nPlease check rotor in column number: " + (i+1));
                 Character selectedPosition=((ComboBox<Character>)(rotorAndPosition.getChildren().toArray()[1])).getSelectionModel().getSelectedItem();
-
-                selectedRotorsID.add(selectedID);
-                selectedPositions.add(selectedPosition);
+                rotorInfoDTOS[i]=new RotorInfoDTO(selectedID,0,selectedPosition);
             }
 
-            uBoatMachineController.getmEngine().checkIfRotorsValid(selectedRotorsID);
-            uBoatMachineController.getmEngine().checkIfPositionsValid(selectedPositions);
+
 
             if(SelectedReflectorComboBox.getSelectionModel().getSelectedIndex()==-1)
                 throw new Exception("You need to select reflector.");
             String selectedReflector = SelectedReflectorComboBox.getValue();
-            uBoatMachineController.getmEngine().setReflector(selectedReflector);
             //   selectedReflectorProperty.set(selectedReflector);
-
             List<PlugboardPairDTO> plugBoardPairs=new ArrayList<>();
-
-
             for(int i=0;i<firstInputVBox.getChildren().size();i++)
             {
                 if(((ChoiceBox<Character>)(firstInputVBox.getChildren().get(i))).getSelectionModel().getSelectedIndex()==-1)
@@ -176,8 +173,9 @@ public class CodeCalibrationController {
                 Character secondInput=((ChoiceBox<Character>)(secondInputVBox.getChildren().get(i))).getSelectionModel().getSelectedItem();
                 plugBoardPairs.add(new PlugboardPairDTO(firstInput,secondInput));
             }
-            uBoatMachineController.getmEngine().checkPlugBoardPairs(plugBoardPairs);
 
+
+            CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,selectedReflector,plugBoardPairs);
             uBoatMachineController.getMachineDetailsController().getCurrentMachineCodeController().clearCurrentCodeView();
             uBoatMachineController.getMachineDetailsController().getSelectedMachineCodeController().clearCurrentCodeView();
 
@@ -251,10 +249,10 @@ public class CodeCalibrationController {
     }
     public void createDataMachineSets() {
 
-        rotorIDSet= Arrays.stream(uBoatMachineController.getmEngine().getMachineData().getRotorsId())
+        rotorIDSet= Arrays.stream(uBoatMachineController.getHttpClientAdapter().getMachineData().getRotorsId())
                 .boxed().
                 collect(Collectors.toSet());
-        positionsSet = uBoatMachineController.getmEngine().getMachineData().getAlphabetString()
+        positionsSet = uBoatMachineController.getHttpClientAdapter().getMachineData().getAlphabetString()
                 .chars().
                 mapToObj(c -> (Character)(char)c)
                 .collect(Collectors.toSet());
@@ -285,7 +283,7 @@ public class CodeCalibrationController {
 
     private void addNewPlugBoardPair() {
         removePlugBoardPairButton.setDisable(false);
-        String alphabet = uBoatMachineController.getmEngine().getMachineData().getAlphabetString();
+        String alphabet = uBoatMachineController.getHttpClientAdapter().getMachineData().getAlphabetString();
         firstInputVBox.getChildren().add(createSinglePlugBoardComboBox());
         secondInputVBox.getChildren().add(createSinglePlugBoardComboBox());
         PairsHBox.setSpacing(20);

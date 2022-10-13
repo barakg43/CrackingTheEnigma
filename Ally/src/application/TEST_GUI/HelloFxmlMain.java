@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static application.CommonResourcesPaths.APP_FXML_INCLUDE_RESOURCE;
 import static application.CommonResourcesPaths.CONTEST_SCREEN_FXML_RESOURCE;
 
 
@@ -41,12 +42,12 @@ public class HelloFxmlMain extends Application{
 //        }
 
 
-        start1(primaryStage);
+//        start1(primaryStage);
         //start1(primaryStage);
 
 //         start2(primaryStage);
 //        start3(primaryStage);
-//        start5(primaryStage);
+        start5(primaryStage);
 //long time=619200000000L;
 //        System.out.println("time is "+Duration.ofNanos(1000000000L));
 //
@@ -84,7 +85,7 @@ public class HelloFxmlMain extends Application{
 
     private void start5(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
-        URL url=getClass().getClassLoader().getResource("application/dashboardTab/dashboardScreen.fxml");
+        URL url=getClass().getClassLoader().getResource(APP_FXML_INCLUDE_RESOURCE);
         fxmlLoader.setLocation(url);
 
         assert url != null;
@@ -117,6 +118,7 @@ public class HelloFxmlMain extends Application{
 //          System.out.println("before 2");
 //          assert url != null;
 //          System.out.println("before 2.5:"+url);
+
           Parent load = fxmlLoader.load(url.openStream());
           String json="[\n" +
                   "    [\n" +

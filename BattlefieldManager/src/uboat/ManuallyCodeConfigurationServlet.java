@@ -10,13 +10,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static general.ConstantsHTTP.MANUALLY_CODE;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
-@WebServlet(name = "ManuallyCodeConfigurationServlet", urlPatterns = {"/uboat/manually-code"})
+
+@WebServlet(name = "ManuallyCodeConfigurationServlet", urlPatterns = {UBOAT_CONTEXT+MANUALLY_CODE})
 public class ManuallyCodeConfigurationServlet extends HttpServlet {
+
+
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -29,9 +35,9 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        Engine enigmaEngine=ServletUtils.getUboatManager().
-                getBattleFieldController(username).
-                getEnigmaEngine();
+        Engine enigmaEngine=ServletUtils.getUboatManager()
+                .getBattleFieldController(username)
+                .getEnigmaEngine();
         try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();

@@ -5,7 +5,7 @@ import TeamsStatus.TeamsStatusController;
 import Trie.Trie;
 import UBoatApp.UBoatController;
 import engineDTOs.CodeFormatDTO;
-import enigmaEngine.Engine;
+import http.HttpClientAdapter;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -61,11 +61,11 @@ public class ContestController {
     }
 
     public void setDictionaryList() {
-        dictionaryWords.addAll(uBoatController.getmEngine().getDictionary().getWordsSet());
+        dictionaryWords.addAll(uBoatController.getHttpClientAdapter().getDictionaryWords());
         EncryptComponentController.getDictionaryListView().setItems(dictionaryWords);
         EncryptComponentController.setDictionaryTrie();
         Trie trieDic = EncryptComponentController.getTrieDictionary();
-        for (String word:uBoatController.getmEngine().getDictionary().getWordsSet()) {
+        for (String word:uBoatController.getHttpClientAdapter().getDictionaryWords()) {
             trieDic.insert(word);
         }
     }
@@ -81,8 +81,8 @@ public class ContestController {
 
     }
 
-    public void setEnigmaEngine(Engine mEngine) {
-        EncryptComponentController.setEncryptor(mEngine);
+    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+        EncryptComponentController.setHttpClientAdapter(httpClientAdapter);
     }
 
     public void bindCurrentCode() {

@@ -1,10 +1,8 @@
 package uboat;
 
-import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
 import com.google.gson.Gson;
-import engineDTOs.DmDTO.TaskFinishDataDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,11 +14,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import static general.ConstantsHTTP.CANDIDATES;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
 
-@WebServlet(name = "CandidatesServlet", urlPatterns = {"/uboat/candidates"})
+@WebServlet(name = "CandidatesServlet", urlPatterns = {UBOAT_CONTEXT+CANDIDATES})
 public class CandidatesServlet extends HttpServlet {
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
@@ -34,9 +36,13 @@ public class CandidatesServlet extends HttpServlet {
         }
 
         List<AllyCandidateDTO> allyCandidateDTOList = new ArrayList<>();
-        Set<AllyDataDTO> allyDataDTOSet = ServletUtils.getUboatManager().getBattleFieldController(username).getAlliesDataForUboat();
+        List<AllyDataDTO> allyDataDTOSet = ServletUtils.getUboatManager()
+                .getBattleFieldController(username)
+                .getAlliesDataListForUboat();
         for (AllyDataDTO allyData:allyDataDTOSet) {
-            allyCandidateDTOList.addAll(ServletUtils.getAlliesManager().getSingleAllyController(allyData.getAllyName()).getAllyCandidateDTOList());
+            allyCandidateDTOList.addAll(ServletUtils.getAlliesManager()
+                    .getSingleAllyController(allyData.getAllyName())
+                    .getAllyCandidateDTOListWithVersion());
 
         }
 

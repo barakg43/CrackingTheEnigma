@@ -7,12 +7,12 @@ public class CandidateDTO {
     private final CodeFormatDTO codeConf;
     private final String output;
 
-    private final String allyTeamName;
+    private final String userName;
 
-    public CandidateDTO(CodeFormatDTO codeConf, String output,String allyTeamName) {
+    public CandidateDTO(CodeFormatDTO codeConf, String output,String userName) {
         this.codeConf = codeConf;
         this.output=output;
-        this.allyTeamName=allyTeamName;
+        this.userName=userName;
 
     }
 
@@ -23,7 +23,7 @@ public class CandidateDTO {
         return codeConf;
     }
 
-    public String getAllyTeamName() {
-        return allyTeamName;
+    public String getUserName() {
+        return userName;
     }
 }

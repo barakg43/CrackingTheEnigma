@@ -1,7 +1,7 @@
 package MachineTab;
 
 import SimpleCode.SimpleCodeController;
-
+import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
 import javafx.beans.binding.Bindings;
@@ -51,7 +51,7 @@ public class MachineDetailsController {
     }
 
     public void setData() {
-        MachineDataDTO machineData= machineConfigurationController.getmEngine().getMachineData();
+        MachineDataDTO machineData= machineConfigurationController.getHttpClientAdapter().getMachineData();
         NumberOfRotors.setText(machineData.getNumberOfRotorsInUse() + "/" + machineData.getNumberOfRotorInSystem());
         numberOfReflectors.setText(String.valueOf(machineData.getNumberOfReflectors()));
         CipheredInputs.setText(String.valueOf(0));
@@ -73,9 +73,10 @@ public class MachineDetailsController {
     }
 
     public void setCodes() {
-        CodeFormatDTO selectedCode = machineConfigurationController.getmEngine().getCodeFormat(true);
+        AllCodeFormatDTO  allCodeFormatDTO= machineConfigurationController.getHttpClientAdapter().getInitialCurrentCodeFormat();
+        CodeFormatDTO selectedCode = allCodeFormatDTO.getInitialCode();
+        CodeFormatDTO currentCode =  allCodeFormatDTO.getCurrentCode();
         SelectedMachineCodeController.setSelectedCode(selectedCode);
-        CodeFormatDTO currentCode = machineConfigurationController.getmEngine().getCodeFormat(false);
         CurrentMachineCodeController.setSelectedCode(currentCode);
     }
 
