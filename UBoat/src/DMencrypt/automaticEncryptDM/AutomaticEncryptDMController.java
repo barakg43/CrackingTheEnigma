@@ -37,7 +37,7 @@ public class AutomaticEncryptDMController {
     public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
         this.httpClientAdapter = httpClientAdapter;
         encryptDataController.setHttpClientAdapter(httpClientAdapter);
-        alphabetString.setText(encryptController.getHttpClientAdapter().getMachineData().getAlphabetString());
+     //  alphabetString.setText(encryptController.getHttpClientAdapter().getMachineData().getAlphabetString());
         //TODO : get ABC MACHINE DATA
 
     }

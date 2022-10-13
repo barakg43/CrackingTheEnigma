@@ -51,11 +51,14 @@ public class UBoatController {
             MachineTabController.setMainAppController(this);
             ContestTabController.setMainAppController(this);
         }
-        httpClientAdapter=new HttpClientAdapter();
+
+    }
+
+    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter){
+        this.httpClientAdapter=httpClientAdapter;
         ContestTabController.setHttpClientAdapter(httpClientAdapter);
         filePathComponentController.setHttpClientAdapter(httpClientAdapter);
     }
-
     public void bindCurrentCode()
     {
         MachineTabController.getMachineDetailsController().getCurrentMachineCodeController().setSelectedCode(ContestTabController.getEncryptComponentController().bindCodeComponentController().getCurrentCode());

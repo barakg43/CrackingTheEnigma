@@ -1,20 +1,25 @@
 package http;
 
 
+import Login.LoginInterface;
+import Resources.Contants;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.MachineDataDTO;
 import general.ApplicationType;
+import general.ConstantsHTTP;
 import http.client.HttpClientUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.Response;
+import javafx.application.Platform;
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
+
+import static general.ConstantsHTTP.LOGIN;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
 public class HttpClientAdapter {
 
@@ -48,6 +53,27 @@ public class HttpClientAdapter {
       return wordsSet;
     }
 
+    public void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage,String userName){
+        String finalUrl = HttpUrl
+                .parse(UBOAT_CONTEXT+LOGIN)
+                .newBuilder()
+                .addQueryParameter(ConstantsHTTP.USERNAME, userName)
+                .build()
+                .toString();
+
+        HTTP_CLIENT.doGetASync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                errorMessage.accept(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                assert response.body() != null;
+                loginInterface.loginSuccess(response.code()==200,response.body().string(),userName);
+            }
+        });
+    }
+
     public AllCodeFormatDTO getInitialCurrentCodeFormat() {
 
         return null;
@@ -77,9 +103,24 @@ public class HttpClientAdapter {
         
     }
 
-    public void loadXMLFileFromStringContent(String inputStreamXml) {
+    public void uploadXMLFile(Consumer<String> updateFileSettings,Consumer<String> errorMessage,String filePath) {
 
+        HTTP_CLIENT.uploadFileRequest(filePath, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                errorMessage.accept(e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    String responseBody = response.body().string();
 
+                    errorMessage.accept("Something went wrong: " + responseBody);
+                } else {
+                    System.out.println("upload file success");
+                }
+            }
+        });
     }
 
     public boolean isCodeConfigurationIsSet() {

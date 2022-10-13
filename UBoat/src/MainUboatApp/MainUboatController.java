@@ -2,6 +2,7 @@ package MainUboatApp;
 
 import Login.LoginController;
 import UBoatApp.UBoatController;
+import http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -39,6 +40,8 @@ public class MainUboatController{
     private final StringProperty currentUserName;
     private ReadOnlyDoubleProperty widthProperty;
     private ReadOnlyDoubleProperty heightProperty;
+    private HttpClientAdapter httpClientAdapter;
+
 
 
     public MainUboatController() {
@@ -51,6 +54,10 @@ public class MainUboatController{
 
         loadLoginPage();
         loadUBoatPage();
+        httpClientAdapter=new HttpClientAdapter();
+        uBoatController.setHttpClientAdapter(httpClientAdapter);
+        logicController.setHttpAdapter(httpClientAdapter);
+
     }
 
     private void loadLoginPage() {
@@ -61,13 +68,11 @@ public class MainUboatController{
             loginComponent = fxmlLoader.load();
             logicController = fxmlLoader.getController();
             logicController.setMainController(this);
-
             setMainPanelTo(loginComponent);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     private void loadUBoatPage() {
         URL loginPageUrl = getClass().getClassLoader().getResource(CommonResources.UBOAT_APP_FXML_INCLUDE_RESOURCE);
         try {
