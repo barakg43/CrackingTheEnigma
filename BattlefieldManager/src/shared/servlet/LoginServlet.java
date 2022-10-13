@@ -20,8 +20,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import static constants.Constants.USERNAME;
+import static general.ConstantsHTTP.*;
 
-@WebServlet(name = "LoginServlet", urlPatterns = {"/uboat/login","/ally/login","/agent/login"})
+@WebServlet(name = "LoginServlet", urlPatterns = {UBOAT_CONTEXT+LOGIN,ALLY_CONTEXT+LOGIN, AGENT_CONTEXT+LOGIN})
 public class LoginServlet extends HttpServlet {
 
     // urls that starts with forward slash '/' are considered absolute

@@ -2,7 +2,6 @@ package decryptionManager;
 
 import decryptionManager.components.*;
 import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.BruteForceLevel;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.MachineDataDTO;
 import enigmaEngine.Engine;

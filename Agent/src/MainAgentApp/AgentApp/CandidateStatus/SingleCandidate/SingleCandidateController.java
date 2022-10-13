@@ -4,7 +4,6 @@ import MainAgentApp.AgentApp.SimpleCode.SimpleCodeController;
 import engineDTOs.DmDTO.CandidateDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;

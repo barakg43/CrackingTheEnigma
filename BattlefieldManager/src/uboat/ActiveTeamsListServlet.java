@@ -12,7 +12,8 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.ACTIVE_TEAMS_LIST;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
 @WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {UBOAT_CONTEXT+ACTIVE_TEAMS_LIST})
 public class ActiveTeamsListServlet extends HttpServlet {

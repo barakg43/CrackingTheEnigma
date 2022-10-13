@@ -13,8 +13,12 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
-@WebServlet(name = "UserListServlet", urlPatterns = {"/userlist"})
+import static general.ConstantsHTTP.USER_LIST;
+
+@WebServlet(name = "UserListServlet", urlPatterns = {USER_LIST})
 public class UsersListServlet extends HttpServlet {
+
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //returning JSON objects, not HTML
