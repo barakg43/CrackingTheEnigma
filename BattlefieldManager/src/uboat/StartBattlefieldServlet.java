@@ -12,7 +12,6 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.READY_TO_START;
 import static general.ConstantsHTTP.UBOAT_CONTEXT;
