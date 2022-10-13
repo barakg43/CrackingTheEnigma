@@ -2,7 +2,11 @@ package Login;
 
 import MainUboatApp.CommonResources;
 import MainUboatApp.MainUboatController;
+import Resources.Contants;
 import UBoatApp.UBoatController;
+import general.ConstantsHTTP;
+import http.HttpClientAdapter;
+import http.client.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -17,13 +21,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginController {
+import static general.ConstantsHTTP.LOGIN;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+
+public class LoginController implements LoginInterface {
 
 
     @FXML
@@ -38,6 +50,8 @@ public class LoginController {
 
     private MainUboatController mainUboatController;
 
+   private HttpClientAdapter httpClientAdapter;
+
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
@@ -51,6 +65,10 @@ public class LoginController {
 //                        updateHttpStatusLine(line)));
     }
 
+    public void setHttpAdapter(HttpClientAdapter httpClientAdapter){
+        this.httpClientAdapter=httpClientAdapter;
+    }
+
 
     @FXML
     void loginButtonClicked(ActionEvent event) {
@@ -59,73 +77,30 @@ public class LoginController {
             errorMessageProperty.set("User name is empty. You can't login with empty user name");
             return;
         }
-        if(UBoatNames.contains(userName))
-        {
-            errorMessageProperty.set("User name already logged in. You can't login with same user name");
-            return;
-        }
-        UBoatNames.add(userName);
 
-        mainUboatController.updateUserName(userName);
-        mainUboatController.switchToChatRoom();
-
-
-//        String finalUrl = HttpUrl
-//                .parse(Constants.LOGIN_PAGE)
-//                .newBuilder()
-//                .addQueryParameter("username", userName)
-//                .build()
-//                .toString();
+        httpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
 //
-//        updateHttpStatusLine("New request is launched for: " + finalUrl);
-//
-//        http.client.HttpClientUtil.runAsync(finalUrl, new Callback() {
-//
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                Platform.runLater(() ->
-//                        errorMessageProperty.set("Something went wrong: " + e.getMessage())
-//                );
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.code() != 200) {
-//                    String responseBody = response.body().string();
-//                    Platform.runLater(() ->
-//                            errorMessageProperty.set("Something went wrong: " + responseBody)
-//                    );
-//                } else {
-//                    Platform.runLater(() -> {
-//                        chatAppMainController.updateUserName(userName);
-//                        chatAppMainController.switchToChatRoom();
-//                    });
-//                }
-//            }
-//        });
-
     }
 
-    private void switchToUBoatScene(){
-
-        URL UboatPageUrl = getClass().getClassLoader().getResource(CommonResources.UBOAT_APP_FXML_INCLUDE_RESOURCE);
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(UboatPageUrl);
-
-            assert UboatPageUrl != null;
-            Parent root=fxmlLoader.load(UboatPageUrl.openStream());
-            Scene scene = new Scene(root,1010,1020);
-
-            UBoatController machineController=fxmlLoader.getController();
-            Stage stage=new Stage();
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void updateErrorMessage(String errorMessage)
+    {
+        Platform.runLater(() ->
+                errorMessageProperty.set("Something went wrong: " + errorMessage)
+        );
+    }
+    public void loginSuccess(boolean isLoginSuccess,String response,String userName)
+    {
+        if (!isLoginSuccess) {
+            Platform.runLater(() ->
+                    errorMessageProperty.set("Something went wrong: " + response)
+            );
+        } else {
+            System.out.println("login success");
+            Platform.runLater(() -> {
+                mainUboatController.updateUserName(userName);
+                mainUboatController.switchToChatRoom();
+            });
         }
-
     }
 
 

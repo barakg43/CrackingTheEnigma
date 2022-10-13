@@ -25,15 +25,15 @@ public class HttpClientUtil {
     public HttpClientUtil(ApplicationType type) {
         APP_CONTEXT_PATH=type.getURLContext();
     }
-    public void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
+    public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);
     }
 
-    public void removeCookiesOf(String domain) {
+    public static void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
     }
 
-    public void uploadFileRequest(String filePath)  {
+    public void uploadFileRequest(String filePath,Callback callback)  {
         File file = new File(filePath);
         RequestBody body =
                 new MultipartBody.Builder()

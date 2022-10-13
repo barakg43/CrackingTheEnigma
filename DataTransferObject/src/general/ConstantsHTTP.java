@@ -8,7 +8,7 @@ public class ConstantsHTTP {
 
     public final static int REFRESH_RATE = 2000;
 
-
+    public static final String USERNAME = "username";
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
