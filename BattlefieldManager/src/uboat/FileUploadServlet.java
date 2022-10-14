@@ -3,6 +3,7 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,7 +34,6 @@ public class FileUploadServlet extends HttpServlet {
 
         Collection<Part> parts = request.getParts();
 
-        out.println("Total file : " + parts.size());
         if(parts.size()!=1) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().println("ERROR! must upload only 1 XML file.");
@@ -47,17 +47,21 @@ public class FileUploadServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(username,"FileUploadServlet");
         Part input=parts.stream().findFirst().orElse(null);
         if(input!=null)
         {
             try {
-                ServletUtils.getUboatManager()
-                        .getBattleFieldController(username)
-                        .assignXMLFileToUboat(
+                SingleBattleFieldController uboatController= ServletUtils.getUboatManager().getBattleFieldController(username);
+                uboatController.assignXMLFileToUboat(
                                 readFromInputStream(input.getInputStream()));
+                String machineDataContent= ServletUtils.getGson().toJson(uboatController
+                                .getEnigmaEngine()
+                                .getMachineData());
+                out.println(machineDataContent);
+                out.flush();
                 response.setStatus(HttpServletResponse.SC_OK);
-                out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
+               // out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
             }
             catch (RuntimeException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

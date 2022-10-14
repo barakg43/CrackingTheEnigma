@@ -71,12 +71,7 @@ public class UpdateCandidateServlet extends HttpServlet {
         out.println(sb.toString());
     }
 
-    private String readFromInputStream(InputStream inputStream) {
-        return new Scanner(inputStream).useDelimiter("\\Z").next();
-    }
 
-    private void printFileContent(String content, PrintWriter out) {
-        out.println("------------------------------------------------------------File content:-----");
-        out.println(content);
-    }
+
+
 }

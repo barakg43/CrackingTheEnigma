@@ -1,43 +1,29 @@
 package Login;
 
-import MainUboatApp.CommonResources;
+import Login.userListComponent.AllUserListController;
 import MainUboatApp.MainUboatController;
-import Resources.Contants;
-import UBoatApp.UBoatController;
-import general.ConstantsHTTP;
 import http.HttpClientAdapter;
-import http.client.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
+import javafx.scene.layout.HBox;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static general.ConstantsHTTP.LOGIN;
-import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static UBoatApp.UBoatController.createErrorAlertWindow;
 
 public class LoginController implements LoginInterface {
 
-
+    @FXML private HBox userListComponent;
+    @FXML private AllUserListController userListComponentController;
     @FXML
     private GridPane loginPage;
     @FXML
@@ -67,33 +53,33 @@ public class LoginController implements LoginInterface {
 
     public void setHttpAdapter(HttpClientAdapter httpClientAdapter){
         this.httpClientAdapter=httpClientAdapter;
+        userListComponentController.setHttpClientUtil(httpClientAdapter.getHttpClient());
+        userListComponentController.startListRefresher();
     }
 
 
     @FXML
-    void loginButtonClicked(ActionEvent event) {
+    void loginButtonClicked(ActionEvent ignoredEvent) {
         String userName = userNameTextField.getText();
         if (userName.isEmpty()) {
-            errorMessageProperty.set("User name is empty. You can't login with empty user name");
-            return;
+            createErrorAlertWindow("Login error","User name is empty. You can't login with empty user name");
+//            errorMessageProperty.set();
         }
-
-        httpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
+        else
+            httpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
 //
     }
 
     public void updateErrorMessage(String errorMessage)
     {
-        Platform.runLater(() ->
-                errorMessageProperty.set("Something went wrong: " + errorMessage)
-        );
+        createErrorAlertWindow("Login error",errorMessage);
     }
-    public void loginSuccess(boolean isLoginSuccess,String response,String userName)
+    public void doLoginRequest(boolean isLoginSuccess, String response, String userName)
     {
         if (!isLoginSuccess) {
-            Platform.runLater(() ->
-                    errorMessageProperty.set("Something went wrong: " + response)
-            );
+
+            createErrorAlertWindow("Login error",response);
+                 //  errorMessageProperty.set("Something went wrong: " + response)
         } else {
             System.out.println("login success");
             Platform.runLater(() -> {

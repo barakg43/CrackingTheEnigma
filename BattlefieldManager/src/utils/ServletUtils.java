@@ -69,17 +69,12 @@ public class ServletUtils {
 		// Initialized in class servlets.listener.MainContextListener
 		return (AlliesManager) servletContextRef.getAttribute(ALLY_MANAGER_ATTRIBUTE_NAME);
 	}
-
-//	public static ChatManager getChatManager(ServletContext servletContext) {
-//		synchronized (chatManagerLock) {
-//			if (servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME) == null) {
-//				servletContext.setAttribute(CHAT_MANAGER_ATTRIBUTE_NAME, new ChatManager());
-//			}
-//		}
-//		return (ChatManager) servletContext.getAttribute(CHAT_MANAGER_ATTRIBUTE_NAME);
-//	}
-
-
+	public static void logRequestAndTime(String title, String description)
+	{
+		long time = System.currentTimeMillis();
+		String CHAT_LINE_FORMATTING = "%tH:%tM:%tS:%tL | %s: %s%n";
+		System.out.format( CHAT_LINE_FORMATTING, time, time, time,time, title, description);
+	}
 
 	public static int getIntParameter(HttpServletRequest request, String name) {
 		String value = request.getParameter(name);

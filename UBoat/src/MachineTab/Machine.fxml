@@ -5,8 +5,8 @@
 <?import javafx.scene.layout.HBox?>
 <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MachineTab.UBoatMachineController">
    <children>
-      <fx:include fx:id="MachineDetailsComponent" source="../MachineTab/machineDetails.fxml" />
+      <fx:include fx:id="MachineDetailsComponent" source="machineDetails/machineDetails.fxml" />
       <Separator orientation="VERTICAL" prefHeight="562.0" prefWidth="0.0" />
-      <fx:include fx:id="ConfigurationComponent" source="../MachineTab/codeCalibration.fxml" />
+      <fx:include fx:id="codeCalibration" source="codeCalibration/codeCalibration.fxml" />
    </children>
 </HBox>

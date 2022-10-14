@@ -18,6 +18,7 @@ public class ResetEnigmaMachineServlet extends HttpServlet {
 
 
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
@@ -29,6 +30,7 @@ public class ResetEnigmaMachineServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(username,"ResetEnigmaMachineServlet");
         Engine enigmaEngine=ServletUtils.getUboatManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();

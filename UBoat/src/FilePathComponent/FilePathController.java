@@ -54,7 +54,7 @@ public class FilePathController {
         SelectedFilePath.textProperty().bind(selectedFileProperty);
         errorAlert.setTitle("Error");
         errorAlert.contentTextProperty().bind(errorMessageProperty);
-        httpClientAdapter=new HttpClientAdapter();
+
     }
 //    @FXML
 //    public void LoadFileButtonActionListener(javafx.event.ActionEvent actionEvent) {
@@ -124,6 +124,7 @@ public class FilePathController {
         }
 
     }
+
     public void updateErrorMessage(String errorMessage)
     {
         Platform.runLater(() ->
@@ -132,7 +133,7 @@ public class FilePathController {
     }
 
     public void fileUploadSettings(String filePath)
-        {
+    {
         Platform.runLater(() -> {
 
             try {
@@ -170,6 +171,6 @@ public class FilePathController {
     }
 
     public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-
+            this.httpClientAdapter=httpClientAdapter;
     }
 }

@@ -19,7 +19,7 @@ import static general.ConstantsHTTP.UBOAT_CONTEXT;
 public class EnigmaMachineDataServlet extends HttpServlet {
 
 
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
@@ -31,6 +31,8 @@ public class EnigmaMachineDataServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(username,"EnigmaMachineDataServlet");
+
         Engine enigmaEngine=ServletUtils.getUboatManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
@@ -42,6 +44,7 @@ public class EnigmaMachineDataServlet extends HttpServlet {
             out.println(json);
             out.flush();
         }
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 }

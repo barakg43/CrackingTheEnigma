@@ -3,6 +3,7 @@ package uboat;
 import com.google.gson.Gson;
 import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,16 +16,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import static general.ConstantsHTTP.MANUALLY_CODE;
-import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.*;
 
 
 @WebServlet(name = "ManuallyCodeConfigurationServlet", urlPatterns = {UBOAT_CONTEXT+MANUALLY_CODE})
 public class ManuallyCodeConfigurationServlet extends HttpServlet {
 
 
-
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
 
@@ -35,6 +35,7 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(username,"ManuallyCodeConfigurationServlet");
         Engine enigmaEngine=ServletUtils.getUboatManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();
@@ -42,10 +43,11 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
             CodeFormatDTO codeFormatDTO = gson.fromJson(inputReader, CodeFormatDTO.class);
+            inputReader.close();
             System.out.println(codeFormatDTO);
             enigmaEngine.setCodeManually(codeFormatDTO);
-            response.setStatus(HttpServletResponse.SC_OK);
-        }catch (RuntimeException e) {
+            getServletContext().getRequestDispatcher(UBOAT_CONTEXT+ALL_CODE).forward(request, response);
+        }catch (RuntimeException | ServletException e) {
             response.setContentType("text/plain");
             response.getWriter().println(e.getMessage());
             response.getWriter().flush();

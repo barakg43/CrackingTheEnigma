@@ -1,12 +1,14 @@
 package http.client;
 
+import com.google.gson.Gson;
+import engineDTOs.CodeFormatDTO;
 import general.ApplicationType;
 import general.ConstantsHTTP;
 import okhttp3.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.function.Consumer;
 
 import static general.ConstantsHTTP.UPLOAD_FILE;
@@ -14,7 +16,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class HttpClientUtil {
 
-
+    public final static Gson GSON_INSTANCE = new Gson();
     private final static SimpleCookieManager simpleCookieManager = new SimpleCookieManager();
     private final static OkHttpClient HTTP_CLIENT =
             new OkHttpClient.Builder()
@@ -28,11 +30,13 @@ public class HttpClientUtil {
     public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);
     }
-
     public static void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
     }
-
+    public Gson getGson()
+    {
+        return  GSON_INSTANCE;
+    }
     public void uploadFileRequest(String filePath,Callback callback)  {
         File file = new File(filePath);
         RequestBody body =
@@ -48,14 +52,7 @@ public class HttpClientUtil {
                 .build();
         Response response=null;
         Call call = HTTP_CLIENT.newCall(request);
-        try {
-             response = call.execute();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        finally {
-            Objects.requireNonNull(response).close();
-        }
+        call.enqueue(callback);
         //  System.out.println(response.body().string());
     }
     public void doPostSync(String urlContext,String body) {
@@ -67,7 +64,7 @@ public class HttpClientUtil {
         Call call = HTTP_CLIENT.newCall(request);
         executeRequest(call);
     }
-    public void doPostASync(String urlContext, Callback callback,String body){
+    public void doPostASync(String urlContext,String body, Callback callback){
 
         Request request = new Request.Builder()
                 .url(ConstantsHTTP.FULL_SERVER_PATH+APP_CONTEXT_PATH+urlContext)
@@ -111,7 +108,10 @@ public class HttpClientUtil {
         }
         return null;
     }
-
+    public String readFromInputStream(InputStream inputStream) throws IOException {
+        inputStream.reset();
+        return new Scanner(inputStream).useDelimiter("\\Z").next();
+    }
     public void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();

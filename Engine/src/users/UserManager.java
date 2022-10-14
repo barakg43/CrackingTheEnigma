@@ -1,6 +1,7 @@
 package users;
 
 import general.ApplicationType;
+import general.UserListDTO;
 
 import java.util.*;
 
@@ -68,13 +69,11 @@ public class UserManager{
         alliesSet.clear();
     }
 
-    public synchronized List<Set<String>> getUsers() {
-        List<Set<String>> res=new ArrayList<>();
+    public synchronized UserListDTO getUsers() {
 
-        res.add(Collections.unmodifiableSet(uboatSet));
-        res.add(Collections.unmodifiableSet(alliesSet));
-        res.add(Collections.unmodifiableSet(agentSet));
-      return res;
+      return new UserListDTO(Collections.unmodifiableSet(uboatSet),
+                              Collections.unmodifiableSet(alliesSet),
+                              Collections.unmodifiableSet(agentSet));
     }
 
     public boolean isUserExists(String username) {

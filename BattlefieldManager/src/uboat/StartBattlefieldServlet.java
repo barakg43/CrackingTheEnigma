@@ -36,7 +36,7 @@ public class StartBattlefieldServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(username,"StartBattlefieldServlet");
         ServletUtils.getUboatManager()
                 .getBattleFieldController(username)
                 .getContestDataManager()

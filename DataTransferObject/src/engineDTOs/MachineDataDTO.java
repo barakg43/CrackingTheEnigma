@@ -7,30 +7,28 @@ public class MachineDataDTO implements Serializable {
 
     private final int numberOfRotorsInUse;
     private final int[] rotorsId;
-    private String alphabet;
+    private final String alphabet;
     private final List<String> reflectorList;
-    private Set<String> dictionaryList;
-    private List<Character> excludeChars;
-
-    private int numberOfAgents;
+    private final Set<String> dictionaryWords;
 
 
     public MachineDataDTO() {
+        this.dictionaryWords = null;
         numberOfRotorsInUse = 0;
         rotorsId = null;
         reflectorList = null;
-        dictionaryList=new HashSet<>();
-        excludeChars=new ArrayList<>();
+        alphabet="";
     }
 
 
-    public MachineDataDTO(int numOfRotorsInUse, int[] rotorsIdArray, List<String> reflectorList, String alphabet) {
+    public MachineDataDTO(int numOfRotorsInUse, int[] rotorsIdArray, List<String> reflectorList, String alphabet, Set<String> dictionaryWords) {
         this.numberOfRotorsInUse =numOfRotorsInUse;
         rotorsId =rotorsIdArray;
         this.reflectorList=reflectorList;
-        this.alphabet=new String(alphabet);
+        this.alphabet=alphabet;
 
 
+        this.dictionaryWords = dictionaryWords;
     }
 
     public int getNumberOfReflectors() {
@@ -65,4 +63,7 @@ public class MachineDataDTO implements Serializable {
                 '}';
     }
 
+    public Set<String> getDictionaryWords() {
+        return dictionaryWords;
+    }
 }

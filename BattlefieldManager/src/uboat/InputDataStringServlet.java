@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-import static general.ConstantsHTTP.INPUT_STRING;
-import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.*;
 
 
 @WebServlet(name = "InputDataStringServlet", urlPatterns = {UBOAT_CONTEXT+INPUT_STRING})
 public class InputDataStringServlet extends HttpServlet {
+
 
 
 
@@ -38,11 +38,10 @@ public class InputDataStringServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(username,"InputDataStringServlet");
             Properties prop = new Properties();
             prop.load(request.getInputStream());
-
-            String inputString = prop.getProperty("input");
+            String inputString = prop.getProperty(INPUT_PROPERTY);
 
         if(inputString!=null)
         {
@@ -51,8 +50,10 @@ public class InputDataStringServlet extends HttpServlet {
                .getEnigmaEngine()
                .processDataInput(inputString);
 
+       out.println(OUTPUT_PROPERTY+'='+output);
+       out.flush();
         response.setStatus(HttpServletResponse.SC_OK);
-        out.println("output="+output);
+
         }
         else
             response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);

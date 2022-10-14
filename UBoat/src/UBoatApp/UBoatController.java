@@ -6,6 +6,7 @@ import MachineTab.UBoatMachineController;
 import MainUboatApp.MainUboatController;
 import engineDTOs.CodeFormatDTO;
 import http.HttpClientAdapter;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -53,11 +54,23 @@ public class UBoatController {
         }
 
     }
+    public static void createErrorAlertWindow(String title,String error)
+    {
+        Platform.runLater(() -> {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText(title);
+            errorAlert.setContentText(error);
+            errorAlert.showAndWait();
+        });
+
+    }
 
     public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter){
         this.httpClientAdapter=httpClientAdapter;
         ContestTabController.setHttpClientAdapter(httpClientAdapter);
         filePathComponentController.setHttpClientAdapter(httpClientAdapter);
+        MachineTabController.setHttpClientAdapter(httpClientAdapter);
     }
     public void bindCurrentCode()
     {
@@ -86,6 +99,12 @@ public class UBoatController {
     public void setMachineDetails() {
         MachineTabController.setMachineDetails();
         ContestTabController.setDictionaryList();
+        ContestTabController.getEncryptComponentController()
+                .getCodeEncryptComponentController()
+                .setAlphabetString(
+                        httpClientAdapter.getMachineData()
+                                .getAlphabetString()
+                );
 
     }
 

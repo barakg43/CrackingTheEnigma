@@ -12,27 +12,32 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
 
 public class MainUboatController{
+    private final String LOGIN="login";
+    private final String DASHBOARD="dashboard";
     public Label UboatTitle;
+    private Scene mainScene;
     @FXML
     private Label helloUserLabel;
-    private GridPane loginComponent;
+    private AnchorPane loginComponent;
 
     @FXML
     private FlowPane mainPanel;
 
-    private Parent UBoatComponent;
+    private Pane UBoatComponent;
 
     private UBoatController uBoatController;
-
+    ScreenController screenController;
 
 
     private LoginController logicController;
@@ -95,7 +100,7 @@ public class MainUboatController{
     }
 
     private void setMainPanelTo(Parent pane) {
-
+        //screenController.activate();
         mainPanel.getChildren().clear();
         mainPanel.getChildren().add(pane);
         AnchorPane.setBottomAnchor(pane, 1.0);
@@ -135,6 +140,13 @@ public class MainUboatController{
         uBoatController.bindScene(widthProperty,heightProperty);
 
 
+    }
+
+    public void setMainScene(Scene mainScene) {
+        this.mainScene = mainScene;
+        screenController=new ScreenController(mainScene);
+        screenController.addScreen(LOGIN,loginComponent);
+        screenController.addScreen(DASHBOARD,UBoatComponent);
     }
 }
 

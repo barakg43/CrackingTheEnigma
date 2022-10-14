@@ -1,8 +1,9 @@
 package ContestTab;
 
-import CandidateStatus.CandidatesStatusController;
-import TeamsStatus.TeamsStatusController;
-import Trie.Trie;
+import ContestTab.CandidateStatus.CandidatesStatusController;
+import ContestTab.encryptComponent.EncryptController;
+import ContestTab.TeamsStatus.TeamsStatusController;
+import ContestTab.Trie.Trie;
 import UBoatApp.UBoatController;
 import engineDTOs.CodeFormatDTO;
 import http.HttpClientAdapter;
@@ -29,7 +30,11 @@ public class ContestController {
     @FXML private CandidatesStatusController candidatesStatusComponentController;
     private ObservableList<String> dictionaryWords = FXCollections.observableArrayList();
 
-    UBoatController uBoatController;
+   private  UBoatController uBoatController;
+
+    public UBoatController getuBoatController() {
+        return uBoatController;
+    }
 
     @FXML
     private void initialize() {

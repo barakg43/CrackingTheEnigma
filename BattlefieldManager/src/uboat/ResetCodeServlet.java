@@ -15,11 +15,10 @@ import java.io.PrintWriter;
 import static general.ConstantsHTTP.RESET_CODE;
 import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
-@WebServlet(name = "ResetEnigmaMachineServlet", urlPatterns = {UBOAT_CONTEXT+RESET_CODE})
+@WebServlet(name = "ResetCodeServlet", urlPatterns = {UBOAT_CONTEXT+RESET_CODE})
 public class ResetCodeServlet extends HttpServlet {
 
-
-
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
@@ -29,6 +28,7 @@ public class ResetCodeServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(username,"ResetEnigmaMachineServlet");
         Engine enigmaEngine = ServletUtils.getUboatManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();

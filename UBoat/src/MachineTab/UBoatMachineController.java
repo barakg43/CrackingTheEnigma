@@ -1,10 +1,13 @@
 package MachineTab;
 
+import MachineTab.codeCalibration.CodeCalibrationController;
+import MachineTab.machineDetails.MachineDetailsController;
 import UBoatApp.UBoatController;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
 import http.HttpClientAdapter;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -12,9 +15,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
 
 import java.util.List;
 
@@ -24,14 +25,14 @@ public class UBoatMachineController {
 
     @FXML private MachineDetailsController MachineDetailsComponentController;
 
-    @FXML private ScrollPane ConfigurationComponent;
+    @FXML private ScrollPane codeCalibration;
 
-    @FXML private CodeCalibrationController ConfigurationComponentController;
+    @FXML private CodeCalibrationController codeCalibrationController;
 
     private UBoatApp.UBoatController UBoatController;
     private HttpClientAdapter httpClientAdapter;
     private MachineDataDTO machineData;
-    private SimpleBooleanProperty isCodeSelectedByUser;
+
     private SimpleBooleanProperty isSelected;
     private SimpleBooleanProperty showCodeDetails;
     private ObservableList<SimpleStringProperty> selectedRotorsIDProperty;
@@ -40,7 +41,7 @@ public class UBoatMachineController {
 
     @FXML
     public void initialize() {
-        isCodeSelectedByUser = new SimpleBooleanProperty();
+
         isSelected = new SimpleBooleanProperty(false);
         showCodeDetails = new SimpleBooleanProperty(false);
 
@@ -48,8 +49,8 @@ public class UBoatMachineController {
         currentRotorsIDProperty = FXCollections.observableArrayList();
         selectedPlugBoardPairsProperty = FXCollections.observableArrayList();
 
-        if (MachineDetailsComponentController != null && ConfigurationComponentController != null) {
-            ConfigurationComponentController.SetMachineConfController(this);
+        if (MachineDetailsComponentController != null && codeCalibrationController != null) {
+            codeCalibrationController.SetMachineConfController(this);
             MachineDetailsComponentController.SetMachineConfController(this);
         }
 
@@ -62,28 +63,28 @@ public class UBoatMachineController {
     }
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
-        ConfigurationComponent.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
-        ConfigurationComponent.prefHeightProperty().bind(Bindings.subtract(sceneHeightProperty,400));
+        codeCalibration.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
+        codeCalibration.prefHeightProperty().bind(Bindings.subtract(sceneHeightProperty,400));
         MachineDetailsComponentController.bindMachineDetails(sceneWidthProperty,sceneHeightProperty);
     }
 
     public void setInitializeConfiguration() {
 
-        ConfigurationComponentController.getFirstInputVBox().getChildren().clear();
-        ConfigurationComponentController.getSecondInputVBox().getChildren().clear();
-        isCodeSelectedByUser.set(false);
-        ConfigurationComponentController.getMachineCodePane().setVisible(true);
+
+
+
         showCodeDetails.set(true);
         int numberOfRotorsInUse = machineData.getNumberOfRotorsInUse();
 //        int[] rotorsId = machineData.getRotorsId();
 //        String positions = machineData.getAlphabetString();
         for (int i = 0; i < numberOfRotorsInUse; i++) {
-            ConfigurationComponentController.createRotorInfoComboBox();
+            codeCalibrationController.createRotorInfoComboBox();
         }
+
         List<String> reflectorIDName = machineData.getReflectorIdList();
         ObservableList<String> reflectorIDs = FXCollections.observableArrayList(reflectorIDName);
 //        reflectorID.addAll(reflectorIDName);
-        ConfigurationComponentController.getSelectedReflectorComboBox().setItems(reflectorIDs);
+        codeCalibrationController.getSelectedReflectorComboBox().setItems(reflectorIDs);
     }
 
     public void setMachineDetails() {
@@ -94,52 +95,36 @@ public class UBoatMachineController {
         showCodeDetails.set(false);
         MachineDetailsComponentController.clearCurrentCode();
         machineData = httpClientAdapter.getMachineData();
-        ConfigurationComponentController.createDataMachineSets();
+        codeCalibrationController.createDataMachineSets();
         if (machineData != null) {
             MachineDetailsComponentController.setData();
         }
-        if (httpClientAdapter.isCodeConfigurationIsSet()) {
+
             MachineDetailsComponentController.setCodes();
-            // setVisibleCodeFields(true);
-        } else {
-            // setVisibleCodeFields(false);
-        }
+
+
     }
 
     public void resetAllFields() {
 
-        ConfigurationComponentController.resetSelectedData();
-        ConfigurationComponentController.getSelectedReflectorComboBox().getItems().clear();
+        codeCalibrationController.resetSelectedData();
+        codeCalibrationController.getSelectedReflectorComboBox().getItems().clear();
 
-        VBox firstInputs=(VBox)ConfigurationComponentController.getPairsHBox().getChildren().get(0);
-        VBox secondInputs=(VBox)ConfigurationComponentController.getPairsHBox().getChildren().get(1);
-        for (int i = 0; i < firstInputs.getChildren().size(); i++) {
-            ChoiceBox<Character> firstInputFromPair = (ChoiceBox<Character>)firstInputs.getChildren().get(i);
-            ChoiceBox<Character> secondInputFromPair = (ChoiceBox<Character>)secondInputs.getChildren().get(i);
-            for (int j = 0; j <firstInputFromPair.getItems().size() ; j++) {
-                firstInputFromPair.getItems().remove(j);
-                secondInputFromPair.getItems().remove(j);
-            }
-            firstInputFromPair.getItems().clear();
-            secondInputFromPair.getItems().clear();
-        }
-        firstInputs.getChildren().clear();;
-        secondInputs.getChildren().clear();
 
-        ConfigurationComponentController.getCodeConfTabPane().getSelectionModel().select(0);
+
         setInitializeConfiguration();
 
 
         httpClientAdapter.resetAllData();
         isSelected.set(false);
         MachineDetailsComponentController.clearCodes();
-        isCodeSelectedByUser.set(false);
+
     }
 
     public void resetAllData(){
         resetAllFields();
         MachineDetailsComponentController.resetAllData();
-        ConfigurationComponentController.resetAllData();
+        codeCalibrationController.resetAllData();
     }
     public SimpleBooleanProperty getIsSelected() {
         return isSelected;
@@ -153,31 +138,38 @@ public class UBoatMachineController {
         return showCodeDetails;
     }
 
-    public void showAllCodes() {
+    public void showAndGetAllCodes() {
 
-        AllCodeFormatDTO allCodeFormatDTO= httpClientAdapter.getInitialCurrentCodeFormat();
-        CodeFormatDTO selectedCode = allCodeFormatDTO.getInitialCode();
-        CodeFormatDTO currentCode =  allCodeFormatDTO.getCurrentCode();
-        //SelectedMachineCodeController.setSelectedCode(selectedCode);
-        ConfigurationComponentController.getCodeConfTabPane().getSelectionModel().select(0);
+         httpClientAdapter.getInitialCurrentCodeFormat(this::setAllCodesView);
 
-
-        //CurrentMachineCodeController.setSelectedCode(currentCode);
-        MachineDetailsComponentController.setCodes();
-        //  setVisibleCodeFields(true);
-        // CurrentCodeConfigurationPane.setVisible(true);
-        UBoatController.setCurrentCode(currentCode);
     }
+    public void setAllCodesView(AllCodeFormatDTO allCodeFormatDTO)
+    {
+        Platform.runLater(()->
+        {
+            //CodeFormatDTO selectedCode = allCodeFormatDTO.getInitialCode();
+            CodeFormatDTO currentCode =  allCodeFormatDTO.getCurrentCode();
+            //SelectedMachineCodeController.setSelectedCode(selectedCode);
+            //CurrentMachineCodeController.setSelectedCode(currentCode);
+            MachineDetailsComponentController.setAllCode(allCodeFormatDTO);
+            //  setVisibleCodeFields(true);
+            // CurrentCodeConfigurationPane.setVisible(true);
+            UBoatController.setCurrentCode(currentCode);
 
+        });
+
+    }
     public MachineDetailsController getMachineDetailsController() {
         return MachineDetailsComponentController;
     }
 
-    public SimpleBooleanProperty getIsCodeSelectedByUser() {
-        return isCodeSelectedByUser;
-    }
 
     public void bindTabPane(SimpleBooleanProperty isFileSelected) {
         UBoatController.bindFileToTabPane(isFileSelected);
+    }
+
+    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
+        this.httpClientAdapter = httpClientAdapter;
+        codeCalibrationController.setHttpClientAdapter(httpClientAdapter);
     }
 }

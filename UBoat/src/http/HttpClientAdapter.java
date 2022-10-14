@@ -2,88 +2,94 @@ package http;
 
 
 import Login.LoginInterface;
-import Resources.Contants;
+import UBoatApp.UBoatController;
 import engineDTOs.AllCodeFormatDTO;
+import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
 import general.ApplicationType;
-import general.ConstantsHTTP;
 import http.client.HttpClientUtil;
-import javafx.application.Platform;
+
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static general.ConstantsHTTP.LOGIN;
-import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.*;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class HttpClientAdapter {
 
 
-    private final Set<String> wordsSet;
-    private final HttpClientUtil HTTP_CLIENT=new HttpClientUtil(ApplicationType.UBOAT);
+    private Set<String> wordsSet;
+    private final HttpClientUtil HTTP_CLIENT = new HttpClientUtil(ApplicationType.UBOAT);
+    private MachineDataDTO machineData = null;
+
     public HttpClientAdapter() {
         this.wordsSet = new HashSet<>();
     }
 
     public Set<String> getDictionaryWords() {
-      if(wordsSet.isEmpty())
-      {
-         new Callback() {
-              public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                  System.out.println("Performing Thread: [" + Thread.currentThread().getName() + "]");
-                  Headers headers = response.headers();
-                  System.out.println("Code: " + response.code());
-                  System.out.println("Total Headers: " + headers.size());
-                  System.out.println("Headers Names: " + headers.names());
-                  headers.names().forEach(headerName -> System.out.println("Header [" + headerName + "] = [" + headers.get(headerName) + "]"));
-                  System.out.println("Body: " + Objects.requireNonNull(response.body()).string());
-              }
-
-              public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                  System.out.println("Oopsy... something went wrong..." + e.getMessage());
-              }
-          };
-//          HTTP_CLIENT
-      }
-      return wordsSet;
+        return wordsSet;
     }
 
-    public void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage,String userName){
-        String finalUrl = HttpUrl
-                .parse(UBOAT_CONTEXT+LOGIN)
-                .newBuilder()
-                .addQueryParameter(ConstantsHTTP.USERNAME, userName)
-                .build()
-                .toString();
-
-        HTTP_CLIENT.doGetASync(finalUrl, new Callback() {
+    public void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
+        String contextUrl = String.format("%s?%s=%s", LOGIN, USERNAME, userName);
+        HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 errorMessage.accept(e.getMessage());
             }
+
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 assert response.body() != null;
-                loginInterface.loginSuccess(response.code()==200,response.body().string(),userName);
+                loginInterface.doLoginRequest(response.code() == HTTP_OK, response.body().string(), userName);
+            }
+        });
+    }
+    public HttpClientUtil getHttpClient()
+    {
+        return HTTP_CLIENT;
+    }
+    public void getInitialCurrentCodeFormat(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
+        HTTP_CLIENT.doGetASync(ALL_CODE, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatController.createErrorAlertWindow("Get all Code Configuration", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                codeConfigurationRequestHandler(response,allCodeFormatDTOConsumer);
+
             }
         });
     }
 
-    public AllCodeFormatDTO getInitialCurrentCodeFormat() {
-
-        return null;
-    }
-
     public MachineDataDTO getMachineData() {
-        return null;
+        return machineData;
     }
 
     public void resetCodePosition() {
+        HTTP_CLIENT.doPostASync(RESET_CODE,"" ,new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatController.createErrorAlertWindow("Reset Code Machine", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                assert response.body() != null;
+                if(response.code()!=HTTP_OK)
+                    UBoatController.createErrorAlertWindow("Reset Code Machine", "Error when trying to reset code machine");
+            }
+        });
+
     }
 
 
@@ -94,12 +100,32 @@ public class HttpClientAdapter {
             if(!wordsSet.contains(word))
                 return false;
         }
-
         return true;
     }
 
-    public String processDataInput(String text) {
-        return null;
+    public void processDataInput(String text,Consumer<String> outputHandler) {
+        String body=INPUT_PROPERTY+'='+text;
+        HTTP_CLIENT.doPostASync(INPUT_STRING, body,new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatController.createErrorAlertWindow("Processing Input String", e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Properties prop = new Properties();
+                String body=Objects.requireNonNull(response.body()).string();
+                Reader responseStream=new StringReader(body);
+                System.out.println("Body:"+body);
+                prop.load(responseStream);
+                responseStream.close();
+                if(response.code()==HTTP_OK)
+
+                    outputHandler.accept(prop.getProperty(OUTPUT_PROPERTY));
+                else
+                    UBoatController.createErrorAlertWindow("Processing Input String", body);
+
+            }
+        });
         
     }
 
@@ -108,28 +134,80 @@ public class HttpClientAdapter {
         HTTP_CLIENT.uploadFileRequest(filePath, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
                 errorMessage.accept(e.getMessage());
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if (response.code() != 200) {
-                    String responseBody = response.body().string();
-
-                    errorMessage.accept("Something went wrong: " + responseBody);
+                String responseBody = Objects.requireNonNull(response.body()).string();
+                if (response.code() != HTTP_OK) {
+                    UBoatController.createErrorAlertWindow("Upload file to Server", Objects.requireNonNull(response.body()).string());
                 } else {
-                    System.out.println("upload file success");
+                    System.out.println(filePath+" uploaded successfully");
+                    machineData=HttpClientUtil.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
+                    wordsSet=machineData.getDictionaryWords();
+                    updateFileSettings.accept(filePath);
                 }
             }
         });
     }
+        private void codeConfigurationRequestHandler(Response response,Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) throws IOException {
 
-    public boolean isCodeConfigurationIsSet() {
-        return true;
-    }
+            if (response.code() == HTTP_OK) {
+                assert response.body() != null;
+                allCodeFormatDTOConsumer.accept(
+                        HttpClientUtil.GSON_INSTANCE.fromJson(
+                                Objects.requireNonNull(
+                                        response.body()).string(), AllCodeFormatDTO.class)
+                );
+            }
+            else
+                UBoatController.createErrorAlertWindow("Code Configuration", Objects.requireNonNull(response.body()).string());
+
+        }
+
 
     public void resetAllData() {
+        HTTP_CLIENT.doPostASync(RESET_MACHINE,"", new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatController.createErrorAlertWindow("Reset Machine", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                assert response.body() != null;
+                if(response.code()!=HTTP_OK)
+                    UBoatController.createErrorAlertWindow("Reset Machine", "Error when trying to reset machine configuration\n"+ Objects.requireNonNull(response.body()).string());
+            }
+        });
+
     }
 
-    public void setCodeAutomatically() {
+    public void setCodeManually(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer, CodeFormatDTO selectedCode) {
+
+        String selectedCodeBody=HttpClientUtil.GSON_INSTANCE.toJson(selectedCode);
+        HTTP_CLIENT.doPostASync(MANUALLY_CODE,selectedCodeBody, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatController.createErrorAlertWindow("Manual Code Configuration", e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                codeConfigurationRequestHandler(response,allCodeFormatDTOConsumer);
+            }
+        });
+    }
+    public void setCodeAutomatically(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
+        HTTP_CLIENT.doGetASync(AUTOMATIC_CODE, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatController.createErrorAlertWindow("Automatic Code Configuration", e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                codeConfigurationRequestHandler(response,allCodeFormatDTOConsumer);
+            }
+        });
     }
 }

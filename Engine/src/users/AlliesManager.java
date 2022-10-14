@@ -20,7 +20,7 @@ public class AlliesManager {
             allyControllerMap.put(allyName,new SingleAllyController(allyName));
         else
         {
-            throw new RuntimeException( allyName+ "is already exist!");
+            throw new RuntimeException(allyName+ " is already exist and logged in to server.");
         }
 
     }

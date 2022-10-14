@@ -12,7 +12,7 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 
-import static constants.Constants.USERNAME;
+import static general.ConstantsHTTP.USERNAME;
 
 
 public class LightweightLoginServlet extends HttpServlet {
@@ -62,7 +62,7 @@ public class LightweightLoginServlet extends HttpServlet {
                         //set the username in a session so it will be available on each request
                         //the true parameter means that if a session object does not exists yet
                         //create a new one
-                        request.getSession(true).setAttribute(Constants.USERNAME, usernameFromParameter);
+                        request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
 
                         //redirect the request to the chat room - in order to actually change the URL
                         System.out.println("On login, request URI is: " + request.getRequestURI());

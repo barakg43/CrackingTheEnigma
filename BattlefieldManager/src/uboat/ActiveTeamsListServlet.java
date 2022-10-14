@@ -17,18 +17,21 @@ import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
 @WebServlet(name = "ActiveTeamsListServlet", urlPatterns = {UBOAT_CONTEXT+ACTIVE_TEAMS_LIST})
 public class ActiveTeamsListServlet extends HttpServlet {
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
 
         if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
         {
+
             if(username == null)
                 response.getWriter().println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(username,"ActiveTeamsListServlet");
+
        ActiveTeamsDTO activeTeamsDTO =ServletUtils.getUboatManager()
                        .getBattleFieldController(username)
                         .getActiveTeamsDTO();
@@ -41,6 +44,7 @@ public class ActiveTeamsListServlet extends HttpServlet {
             out.println(json);
             out.flush();
         }
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 }

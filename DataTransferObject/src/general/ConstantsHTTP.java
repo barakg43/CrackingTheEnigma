@@ -9,6 +9,8 @@ public class ConstantsHTTP {
     public final static int REFRESH_RATE = 2000;
 
     public static final String USERNAME = "username";
+    public static final String INPUT_PROPERTY = "input";
+    public static final String OUTPUT_PROPERTY = "output";
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
@@ -28,6 +30,7 @@ public class ConstantsHTTP {
     public static final String CANDIDATES = "/candidates";
     public static final String DICTIONARY_WORDS = "/dictionary-words";
     public static final String AUTOMATIC_CODE = "/automatic-code";
+    public static final String ALL_CODE = "/code-configuration";
     public static final String MANUALLY_CODE = "/manually-code";
     public static final String RESET_CODE = "/reset-code";
     public static final String RESET_MACHINE = "/reset-machine";

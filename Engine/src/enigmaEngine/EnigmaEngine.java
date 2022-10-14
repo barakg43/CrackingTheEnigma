@@ -59,6 +59,7 @@ public class EnigmaEngine implements Engine , Serializable {
         cipheredInputsAmount =0;
         initialCodeFormat=null;
         loadedBattlefieldName=new HashSet<>();
+        plugBoardPairs=new ArrayList<>();
     }
 
     public void resetAllData()
@@ -397,7 +398,7 @@ public class EnigmaEngine implements Engine , Serializable {
         setRandomRotors();
         setRandomReflector();
         setRandomPositions();
-        setRandomPlugboardPairs();
+       // setRandomPlugboardPairs();
         setInitialCode();
     }
 
@@ -522,7 +523,7 @@ public class EnigmaEngine implements Engine , Serializable {
             machineData = new MachineDataDTO( eng.getCTEMachine().getRotorsCount(),
                                              rotorsArrayId,
                                             tempEnigmaMachine.getReflectorIDList(),
-                                            tempEnigmaMachine.getAlphabet());
+                                            tempEnigmaMachine.getAlphabet(), dictionary.getWordsSet());
             enigmaMachine= tempEnigmaMachine;
 
             resetAllData();
@@ -539,7 +540,7 @@ public class EnigmaEngine implements Engine , Serializable {
                 throw new RuntimeException("invalid allies amount: "+alliesAmount);
             try {
                  bruteForceLevel = BruteForceLevel.valueOf(level);
-                System.out.println(bruteForceLevel);
+
             }catch (IllegalArgumentException e)
             {
                 throw new RuntimeException("the "+level+" isn't valid game level");

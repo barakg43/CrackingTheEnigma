@@ -2,6 +2,7 @@ package uboat;
 
 import com.google.gson.Gson;
 import enigmaEngine.Engine;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,15 +13,14 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static general.ConstantsHTTP.AUTOMATIC_CODE;
-import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.*;
 
 @WebServlet(name = "AutomaticCodeConfigurationServlet", urlPatterns = {UBOAT_CONTEXT+AUTOMATIC_CODE})
 public class AutomaticCodeConfigurationServlet extends HttpServlet {
 
 
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String username = SessionUtils.getUsername(request);
 
@@ -31,18 +31,14 @@ public class AutomaticCodeConfigurationServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(username,"AutomaticCodeConfigurationServlet");
         Engine enigmaEngine=ServletUtils.getUboatManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
         enigmaEngine.setCodeAutomatically();
+        System.out.println(enigmaEngine.getCodeFormat(true));
         //returning JSON objects, not HTML
-        response.setContentType("application/json");
-        try (PrintWriter out = response.getWriter()) {
-            Gson gson = ServletUtils.getGson();
-            String json = gson.toJson(enigmaEngine.getCodeFormat(true));
-            out.println(json);
-            out.flush();
-        }
+        getServletContext().getRequestDispatcher(UBOAT_CONTEXT+ALL_CODE).forward(request, response);
     }
 
 }

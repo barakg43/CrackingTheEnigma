@@ -1,4 +1,4 @@
-import CandidateStatus.CandidatesStatusController;
+import ContestTab.CandidateStatus.CandidatesStatusController;
 import MainUboatApp.CommonResources;
 import MainUboatApp.MainUboatController;
 import engineDTOs.CodeFormatDTO;
@@ -39,7 +39,7 @@ public class UBoatApplication extends Application{
         MainUboatController machineController=fxmlLoader.getController();
         machineController.bindWidthAndHeightScene(scene.widthProperty(),scene.heightProperty());
 
-
+        machineController.setMainScene(scene);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -47,7 +47,7 @@ public class UBoatApplication extends Application{
 
     private void start5(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
-        URL url=getClass().getClassLoader().getResource("CandidateStatus/CandidateStatus.fxml");
+        URL url=getClass().getClassLoader().getResource("ContestTab/CandidateStatus/CandidateStatus.fxml");
         fxmlLoader.setLocation(url);
 
         assert url != null;

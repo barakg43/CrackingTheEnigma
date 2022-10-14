@@ -35,8 +35,7 @@ public class UBoatManager {
         }
         else
         {
-            System.out.println("error");
-            //TODO: Runtime Exception
+        throw new RuntimeException(uboatName+ " is already exist and logged in to server.");
         }
 
     }

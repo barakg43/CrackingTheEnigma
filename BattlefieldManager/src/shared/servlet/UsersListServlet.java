@@ -1,6 +1,7 @@
 package shared.servlet;
 
 import com.google.gson.Gson;
+import general.UserListDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,12 +14,10 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
-import static general.ConstantsHTTP.USER_LIST;
+import static general.ConstantsHTTP.*;
 
-@WebServlet(name = "UserListServlet", urlPatterns = {USER_LIST})
+@WebServlet(name = "UserListServlet", urlPatterns = {USER_LIST,UBOAT_CONTEXT+USER_LIST,ALLY_CONTEXT+USER_LIST,AGENT_CONTEXT+USER_LIST})
 public class UsersListServlet extends HttpServlet {
-
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //returning JSON objects, not HTML
@@ -26,7 +25,7 @@ public class UsersListServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             Gson gson = ServletUtils.getGson();
             UserManager userManager = ServletUtils.getSystemUserManager();
-            List<Set<String>> usersList = userManager.getUsers();
+            UserListDTO usersList = userManager.getUsers();
             String json = gson.toJson(usersList);
             out.println(json);
             out.flush();

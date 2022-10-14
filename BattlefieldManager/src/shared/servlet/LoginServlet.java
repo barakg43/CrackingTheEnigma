@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import static constants.Constants.USERNAME;
+
 import static general.ConstantsHTTP.*;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {UBOAT_CONTEXT+LOGIN,ALLY_CONTEXT+LOGIN, AGENT_CONTEXT+LOGIN})
@@ -48,6 +48,8 @@ public class LoginServlet extends HttpServlet {
         if (usernameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
+
+
             String typeFromUrl=(request.getRequestURI().split("/")[2]).toUpperCase();
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -58,40 +60,44 @@ public class LoginServlet extends HttpServlet {
 
                 synchronized (this) {
                     if (userManager.isUserExists(usernameFromParameter)) {
-                       response.getOutputStream().print("Username " + usernameFromParameter + " already exists. Please enter a different username.");
-
-                    }
-                    else {
+                            response.getOutputStream().print("Username " + usernameFromParameter + " already exists. Please enter a different username.");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            return;
+                        }
                         //add the new user to the users list
                         ApplicationType type= ApplicationType.valueOf(typeFromUrl);
 
                         userManager.addUserName(usernameFromParameter,type);
-                        switch (type)
-                        {
-                            case UBOAT:
-                               ServletUtils.getUboatManager().addUboatUser(usernameFromParameter);
-                                break;
-                            case ALLY:
-                                ServletUtils.getAlliesManager().addAllyUser(usernameFromParameter);
-                                break;
-                            case AGENT:
-                                try {
-                                    ServletUtils.getAgentManager().addAgentData(readAgentDTO(request));
-                                }catch (RuntimeException ex)
-                                {
-                                    response.sendError(HttpServletResponse.SC_NO_CONTENT,"Error reading agent data from request.");
-
-                                    return;
-                                }
-                                break;
+                        try {
+                            switch (type) {
+                                case UBOAT:
+                                    ServletUtils.getUboatManager().addUboatUser(usernameFromParameter);
+                                    break;
+                                case ALLY:
+                                    ServletUtils.getAlliesManager().addAllyUser(usernameFromParameter);
+                                    break;
+                                case AGENT:
+                                    try {
+                                        ServletUtils.getAgentManager().addAgentData(readAgentDTO(request));
+                                    } catch (RuntimeException ex) {
+                                        response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.");
+                                        return;
+                                    }
+                                    break;
+                            }
+                        }catch (RuntimeException ex) {
+                            response.getOutputStream().print("Error: " + ex.getMessage());
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         }
 
-                        request.getSession(true).setAttribute(Constants.USERNAME, usernameFromParameter);
+                        request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
                         //redirect the request to the chat room - in order to actually change the URL
-                        System.out.println("On login, request URI is: " + request.getRequestURI());
+
+                        response.setStatus(HttpServletResponse.SC_OK);
                         //response.sendRedirect(CHAT_ROOM_URL);
+
                     }
-                }
+
             }
         } else {
             //user is already logged in

@@ -22,7 +22,7 @@ import static general.ConstantsHTTP.UBOAT_CONTEXT;
 @WebServlet(name = "CandidatesServlet", urlPatterns = {UBOAT_CONTEXT+CANDIDATES})
 public class CandidatesServlet extends HttpServlet {
 
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
@@ -34,7 +34,7 @@ public class CandidatesServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(username,"CandidatesServlet");
         List<AllyCandidateDTO> allyCandidateDTOList = new ArrayList<>();
         List<AllyDataDTO> allyDataDTOSet = ServletUtils.getUboatManager()
                 .getBattleFieldController(username)
@@ -54,6 +54,7 @@ public class CandidatesServlet extends HttpServlet {
             out.println(json);
             out.flush();
         }
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 }
