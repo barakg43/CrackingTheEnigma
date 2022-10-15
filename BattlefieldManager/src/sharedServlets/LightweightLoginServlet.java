@@ -1,12 +1,11 @@
 package sharedServlets;
 
 
-import constants.Constants;
 import general.ApplicationType;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import users.UserManager;
+import systemManager.SystemManager;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -22,7 +21,7 @@ public class LightweightLoginServlet extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
 
         String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getSystemUserManager();
+        SystemManager userManager = ServletUtils.getSystemManager();
 
         if (usernameFromSession == null) { //user is not logged in yet
 

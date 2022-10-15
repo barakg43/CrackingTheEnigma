@@ -1,95 +1,117 @@
 package application.login;
 
 
+import application.ApplicationController;
+import application.http.HttpClientAdapter;
+import application.login.userListComponent.AllUserListController;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
-public class LoginController {
+import java.util.ArrayList;
+import java.util.List;
+
+
+import static application.ApplicationController.createErrorAlertWindow;
+
+public class LoginController implements LoginInterface {
+
+    @FXML private HBox userListComponent;
+    @FXML private AllUserListController userListComponentController;
+    @FXML
+    private GridPane loginPage;
+    @FXML
+    private TextField userNameTextField;
 
     @FXML
-    public TextField userNameTextField;
+    private Button loginButton;
 
-    @FXML
-    public Label errorMessageLabel;
+    private List<String> UBoatNames;
 
-//    private ChatAppMainController chatAppMainController;
+    private ApplicationController applicationController;
+
+   private HttpClientAdapter httpClientAdapter;
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
+    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
     @FXML
     public void initialize() {
-//        errorMessageLabel.textProperty().bind(errorMessageProperty);
-//        HttpClientUtil.setCookieManagerLoggingFacility(line ->
+        UBoatNames=new ArrayList<>();
+        errorAlert.setTitle("Error");
+        errorAlert.contentTextProperty().bind(errorMessageProperty);
+//        http.client.HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
     }
 
-    @FXML
-    private void loginButtonClicked(ActionEvent event) {
+    public void setHttpAdapter(HttpClientAdapter httpClientAdapter){
+        this.httpClientAdapter=httpClientAdapter;
+        userListComponentController.setHttpClientUtil(httpClientAdapter.getHttpClient());
+     //   userListComponentController.startListRefresher();  TODO : uncomment
+    }
 
+
+    @FXML
+    void loginButtonClicked(ActionEvent ignoredEvent) {
         String userName = userNameTextField.getText();
         if (userName.isEmpty()) {
-            errorMessageProperty.set("User name is empty. You can't login with empty user name");
-            return;
+            createErrorAlertWindow("Login error","User name is empty. You can't login with empty user name");
+//            errorMessageProperty.set();
         }
+        else
+            httpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
+//
+    }
+    public void stopUpdateUserList()
+    {
 
-//        //noinspection ConstantConditions
-//        String finalUrl = HttpUrl
-//                        .parse(Constants.LOGIN_PAGE)
-//                        .newBuilder()
-//                        .addQueryParameter("username", userName)
-//                        .build()
-//                        .toString();
-//
-//        updateHttpStatusLine("New request is launched for: " + finalUrl);
-//
-//        HttpClientUtil.runAsync(finalUrl, new Callback() {
-//
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                Platform.runLater(() ->
-//                        errorMessageProperty.set("Something went wrong: " + e.getMessage())
-//                );
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.code() != 200) {
-//                    String responseBody = response.body().string();
-//                    Platform.runLater(() ->
-//                            errorMessageProperty.set("Something went wrong: " + responseBody)
-//                    );
-//                } else {
-//                    Platform.runLater(() -> {
-//                            chatAppMainController.updateUserName(userName);
-//                            chatAppMainController.switchToChatRoom();
-//                    });
-//                }
-//            }
-//        });
+        userListComponentController.close();
+    }
+    public void updateErrorMessage(String errorMessage)
+    {
+        createErrorAlertWindow("Login error",errorMessage);
+    }
+    public void doLoginRequest(boolean isLoginSuccess, String response, String userName)
+    {
+        if (!isLoginSuccess) {
+
+            createErrorAlertWindow("Login error",response);
+                 //  errorMessageProperty.set("Something went wrong: " + response)
+        } else {
+            System.out.println("login success");
+            Platform.runLater(() -> {
+                applicationController.updateUserName(userName);
+                applicationController.switchToDashboard();
+            });
+        }
     }
 
-    @FXML
-    private void userNameKeyTyped(KeyEvent event) {
-        errorMessageProperty.set("");
-    }
 
     @FXML
-    private void quitButtonClicked(ActionEvent e) {
+    void quitButtonClicked(ActionEvent event) {
         Platform.exit();
     }
 
-//    private void updateHttpStatusLine(String data) {
-//        chatAppMainController.updateHttpLine(data);
-//    }
+    @FXML
+    void userNameKeyTyped(KeyEvent event) {
+        errorMessageProperty.set("");
+    }
 
-//    public void setChatAppMainController(ChatAppMainController chatAppMainController) {
-//        this.chatAppMainController = chatAppMainController;
-//    }
+    public void setMainController(ApplicationController applicationController) {
+        this.applicationController=applicationController;
+    }
+
+    public TextField getName() {
+        return userNameTextField;
+    }
 }

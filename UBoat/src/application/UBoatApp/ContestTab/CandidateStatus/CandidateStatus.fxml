@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<ScrollPane fx:id="scrollPaneCandidates" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController">
+   <content>
+      <TableView fx:id="CandidatesTableData" prefHeight="200.0" prefWidth="697.0">
+        <columns>
+          <TableColumn fx:id="allyNameColumn" prefWidth="155.0" text="Ally name" />
+          <TableColumn fx:id="outputStringColumn" prefWidth="163.0" text="output String" />
+            <TableColumn fx:id="codeColumn" prefWidth="378.0" text="Code" />
+        </columns>
+      </TableView>
+   </content>
+</ScrollPane>

@@ -31,7 +31,7 @@ public class InputDataStringServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as UBOAT first!");
@@ -45,7 +45,7 @@ public class InputDataStringServlet extends HttpServlet {
 
         if(inputString!=null)
         {
-       String output= ServletUtils.getUboatManager()
+       String output= ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                .getEnigmaEngine()
                .processDataInput(inputString);

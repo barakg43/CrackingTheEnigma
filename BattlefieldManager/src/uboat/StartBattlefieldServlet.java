@@ -25,11 +25,8 @@ public class StartBattlefieldServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
-
-
         String username = SessionUtils.getUsername(request);
-
-        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as UBOAT first!");
@@ -37,11 +34,10 @@ public class StartBattlefieldServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"StartBattlefieldServlet");
-        ServletUtils.getUboatManager()
+        ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getContestDataManager()
                 .changeGameStatus(ContestDataDTO.GameStatus.ACTIVE);
-
         response.setStatus(HttpServletResponse.SC_OK);
 
     }

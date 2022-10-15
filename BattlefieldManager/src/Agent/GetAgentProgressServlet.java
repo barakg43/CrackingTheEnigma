@@ -28,7 +28,7 @@ public class GetAgentProgressServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemUserManager().isUserAgentExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as AGENT first!");
@@ -41,11 +41,11 @@ public class GetAgentProgressServlet extends HttpServlet {
             Gson gson = ServletUtils.getGson();
            TeamAgentsDataDTO agentsDataProgressDTO = gson.fromJson(inputReader,TeamAgentsDataDTO.class);
 
-           String allyName=ServletUtils.getAgentManager()
+           String allyName=ServletUtils.getSystemManager()
                    .getAgentData(username)
                    .getAllyTeamName();
 
-           ServletUtils.getAlliesManager()
+           ServletUtils.getSystemManager()
                    .getSingleAllyController(allyName)
                    .updateAgentProgressData(agentsDataProgressDTO);
             response.setStatus(HttpServletResponse.SC_OK);

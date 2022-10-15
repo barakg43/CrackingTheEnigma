@@ -40,7 +40,7 @@ public class FileUploadServlet extends HttpServlet {
         }
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as UBOAT first!");
@@ -52,7 +52,7 @@ public class FileUploadServlet extends HttpServlet {
         if(input!=null)
         {
             try {
-                SingleBattleFieldController uboatController= ServletUtils.getUboatManager().getBattleFieldController(username);
+                SingleBattleFieldController uboatController= ServletUtils.getSystemManager().getBattleFieldController(username);
                 uboatController.assignXMLFileToUboat(
                                 readFromInputStream(input.getInputStream()));
                 String machineDataContent= ServletUtils.getGson().toJson(uboatController

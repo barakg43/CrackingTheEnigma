@@ -14,7 +14,6 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.*;
-import java.util.Scanner;
 
 
 @WebServlet(name = "UpdateCandidateServlet", urlPatterns = {"/agent/update-candidate"})
@@ -28,7 +27,7 @@ public class UpdateCandidateServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemUserManager().isUserAgentExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as AGENT first!");
@@ -40,7 +39,7 @@ public class UpdateCandidateServlet extends HttpServlet {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
             AllyCandidateDTO allyCandidateDTO = gson.fromJson(inputReader,AllyCandidateDTO.class);
-            ServletUtils.getAlliesManager().getSingleAllyController(allyCandidateDTO.getAllyName()).addCandidateToAllyList(allyCandidateDTO);
+            ServletUtils.getSystemManager().getSingleAllyController(allyCandidateDTO.getAllyName()).addCandidateToAllyList(allyCandidateDTO);
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
             response.setContentType("text/plain");

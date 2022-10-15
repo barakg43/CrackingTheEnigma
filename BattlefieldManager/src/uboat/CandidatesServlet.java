@@ -27,7 +27,7 @@ public class CandidatesServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as UBOAT first!");
@@ -36,11 +36,11 @@ public class CandidatesServlet extends HttpServlet {
         }
         ServletUtils.logRequestAndTime(username,"CandidatesServlet");
         List<AllyCandidateDTO> allyCandidateDTOList = new ArrayList<>();
-        List<AllyDataDTO> allyDataDTOSet = ServletUtils.getUboatManager()
+        List<AllyDataDTO> allyDataDTOSet = ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getAlliesDataListForUboat();
         for (AllyDataDTO allyData:allyDataDTOSet) {
-            allyCandidateDTOList.addAll(ServletUtils.getAlliesManager()
+            allyCandidateDTOList.addAll(ServletUtils.getSystemManager()
                     .getSingleAllyController(allyData.getAllyName())
                     .getAllyCandidateDTOListWithVersion());
 

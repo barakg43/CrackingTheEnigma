@@ -22,7 +22,7 @@ public class ActiveTeamsListServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
 
             if(username == null)
@@ -32,7 +32,7 @@ public class ActiveTeamsListServlet extends HttpServlet {
         }
         ServletUtils.logRequestAndTime(username,"ActiveTeamsListServlet");
 
-       ActiveTeamsDTO activeTeamsDTO =ServletUtils.getUboatManager()
+       ActiveTeamsDTO activeTeamsDTO =ServletUtils.getSystemManager()
                        .getBattleFieldController(username)
                         .getActiveTeamsDTO();
 

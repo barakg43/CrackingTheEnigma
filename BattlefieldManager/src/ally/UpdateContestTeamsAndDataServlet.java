@@ -35,7 +35,7 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getAlliesManager().isUserExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as AGENT first!");
@@ -45,8 +45,8 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
 
         try {
             Gson gson = ServletUtils.getGson();
-            String uboatManager=ServletUtils.getAlliesManager().getSingleAllyController(username).getUboatNameManager();
-            SingleBattleFieldController uboatController=ServletUtils.getUboatManager()
+            String uboatManager=ServletUtils.getSystemManager().getSingleAllyController(username).getUboatNameManager();
+            SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
                     .getBattleFieldController(uboatManager);
             List<AllyDataDTO> otherAllyDataDTOList= uboatController
                     .getAlliesDataListForUboat()

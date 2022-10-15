@@ -3,14 +3,13 @@ package shared.servlet;
 
 import agent.AgentDataDTO;
 import com.google.gson.Gson;
-import constants.Constants;
 import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import users.UserManager;
+import systemManager.SystemManager;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -44,7 +43,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getSystemUserManager();
+        SystemManager userManager = ServletUtils.getSystemManager();
         if (usernameFromSession == null) {
             //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
@@ -67,37 +66,28 @@ public class LoginServlet extends HttpServlet {
                         //add the new user to the users list
                         ApplicationType type= ApplicationType.valueOf(typeFromUrl);
 
-                        userManager.addUserName(usernameFromParameter,type);
+
                         try {
-                            switch (type) {
-                                case UBOAT:
-                                    ServletUtils.getUboatManager().addUboatUser(usernameFromParameter);
-                                    break;
-                                case ALLY:
-                                    ServletUtils.getAlliesManager().addAllyUser(usernameFromParameter);
-                                    break;
-                                case AGENT:
-                                    try {
-                                        ServletUtils.getAgentManager().addAgentData(readAgentDTO(request));
-                                    } catch (RuntimeException ex) {
-                                        response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.");
-                                        return;
-                                    }
-                                    break;
+                            userManager.addUserName(usernameFromParameter,type);
+                            try {
+                                if(type==ApplicationType.AGENT)
+                                    ServletUtils.getSystemManager().addAgentData(readAgentDTO(request));
                             }
+                                catch (RuntimeException ex) {
+                                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.\n"+ex.getMessage());
+                                return;
+                            }
+
                         }catch (RuntimeException ex) {
                             response.getOutputStream().print("Error: " + ex.getMessage());
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         }
-
                         request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
                         //redirect the request to the chat room - in order to actually change the URL
-
                         response.setStatus(HttpServletResponse.SC_OK);
-                        //response.sendRedirect(CHAT_ROOM_URL);
+
 
                     }
-
             }
         } else {
             //user is already logged in

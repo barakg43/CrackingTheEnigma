@@ -6,13 +6,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import users.UserManager;
+import systemManager.SystemManager;
 import utils.ServletUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Set;
 
 import static general.ConstantsHTTP.*;
 
@@ -24,7 +22,7 @@ public class UsersListServlet extends HttpServlet {
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             Gson gson = ServletUtils.getGson();
-            UserManager userManager = ServletUtils.getSystemUserManager();
+            SystemManager userManager = ServletUtils.getSystemManager();
             UserListDTO usersList = userManager.getUsers();
             String json = gson.toJson(usersList);
             out.println(json);

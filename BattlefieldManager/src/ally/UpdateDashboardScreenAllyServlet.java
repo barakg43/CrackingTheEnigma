@@ -33,7 +33,7 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getAlliesManager().isUserExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as AGENT first!");
@@ -43,8 +43,8 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
 
         try {
             Gson gson = ServletUtils.getGson();
-            List<ContestDataDTO> contestDataDTOList= ServletUtils.getUboatManager().getAllContestDataList();
-            List<AgentDataDTO> agentDataDTOList= ServletUtils.getAlliesManager()
+            List<ContestDataDTO> contestDataDTOList= ServletUtils.getSystemManager().getAllContestDataList();
+            List<AgentDataDTO> agentDataDTOList= ServletUtils.getSystemManager()
                     .getSingleAllyController(username)
                     .getAgentDataListForAlly();
 

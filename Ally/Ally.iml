@@ -17,5 +17,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="HttpClientUtils" />
+    <orderEntry type="library" name="okHttp" level="project" />
   </component>
 </module>

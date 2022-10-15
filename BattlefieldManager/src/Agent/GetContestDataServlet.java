@@ -30,7 +30,7 @@ public class GetContestDataServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemUserManager().isUserAgentExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as AGENT first!");
@@ -40,11 +40,11 @@ public class GetContestDataServlet extends HttpServlet {
 
         try {
             Gson gson = ServletUtils.getGson();
-            String allyName = ServletUtils.getAgentManager().getAgentData(username).getAllyTeamName();
-            String uboatNameManager= ServletUtils.getAlliesManager().getSingleAllyController(allyName).getUboatNameManager();
+            String allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
+            String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
             if(uboatNameManager!=null)
             {
-                ContestDataDTO contestDataDTO= ServletUtils.getUboatManager().getBattleFieldController(uboatNameManager).getContestDataDTO();
+                ContestDataDTO contestDataDTO= ServletUtils.getSystemManager().getBattleFieldController(uboatNameManager).getContestDataDTO();
                 out.println(gson.toJson(contestDataDTO));
                 out.flush();
             }

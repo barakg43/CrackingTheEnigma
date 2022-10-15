@@ -22,14 +22,14 @@ public class ResetCodeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
-        if (username == null || !ServletUtils.getUboatManager().isUboatExist(username)) {
+        if (username == null || !ServletUtils.getSystemManager().isUboatExist(username)) {
             if (username == null)
                 response.getWriter().println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
         ServletUtils.logRequestAndTime(username,"ResetEnigmaMachineServlet");
-        Engine enigmaEngine = ServletUtils.getUboatManager()
+        Engine enigmaEngine = ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();
         enigmaEngine.resetCodePosition();

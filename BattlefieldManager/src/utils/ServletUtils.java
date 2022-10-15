@@ -4,17 +4,14 @@ package utils;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
-import users.AgentManager;
-import users.AlliesManager;
-import users.UBoatManager;
-import users.UserManager;
+import systemManager.SystemManager;
 
 import static constants.Constants.INT_PARAMETER_ERROR;
 
 
 public class ServletUtils {
 
-	public static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
+	public static final String SYSTEM_MANAGER_ATTRIBUTE_NAME = "userManager";
 	public static final String UBOAT_MANAGER_ATTRIBUTE_NAME = "uboatManager";
 
 	public static final String ALLY_MANAGER_ATTRIBUTE_NAME = "allyManager";
@@ -28,47 +25,15 @@ public class ServletUtils {
 	the actual fetch of them is remained un-synchronized for performance POV
 	 */
 
-	//private static final Object userManagerLock = new Object();
 	public static Gson getGson() {
-//		synchronized (userManagerLock) {
-//			if (servletContext.getAttribute(GSON_ATTRIBUTE_NAME) == null) {
-//				servletContext.setAttribute(GSON_ATTRIBUTE_NAME, new Gson());
-//			}
-//		}
-		// Initialized in class servlets.listener.MainContextListener
+
 		return (Gson) servletContextRef.getAttribute(GSON_ATTRIBUTE_NAME);
 	}
-	public static UserManager getSystemUserManager() {
-//		synchronized (userManagerLock) {
-//			if (servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME) == null) {
-//				servletContext.setAttribute(USER_MANAGER_ATTRIBUTE_NAME, new UserManager());
-//			}
-//		}
-		// Initialized in class servlets.listener.MainContextListener
-		return (UserManager) servletContextRef.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
+	public static SystemManager getSystemManager() {
+		return (SystemManager) servletContextRef.getAttribute(SYSTEM_MANAGER_ATTRIBUTE_NAME);
 	}
-	public static UBoatManager getUboatManager() {
-//		synchronized (userManagerLock) {
-//					if (servletContext.getAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME) == null) {
-//						servletContext.setAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
-//					}
-//				}
-				// Initialized in class servlets.listener.MainContextListener
-				return (UBoatManager) servletContextRef.getAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME);
-		}
 
-		public static AgentManager getAgentManager(){
-		return (AgentManager) servletContextRef.getAttribute(AGENT_MANAGER_ATTRIBUTE_NAME);
-		}
-	public static AlliesManager getAlliesManager() {
-//		synchronized (userManagerLock) {
-//			if (servletContext.getAttribute(ALLY_MANAGER_ATTRIBUTE_NAME) == null) {
-//				servletContext.setAttribute(ALLY_MANAGER_ATTRIBUTE_NAME, new AlliesManager());
-//			}
-//		}
-		// Initialized in class servlets.listener.MainContextListener
-		return (AlliesManager) servletContextRef.getAttribute(ALLY_MANAGER_ATTRIBUTE_NAME);
-	}
+
 	public static void logRequestAndTime(String title, String description)
 	{
 		long time = System.currentTimeMillis();

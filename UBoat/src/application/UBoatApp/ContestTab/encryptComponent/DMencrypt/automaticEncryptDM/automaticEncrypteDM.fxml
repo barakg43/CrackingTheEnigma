@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.AutomaticEncryptDMController">
+   <content>
+      <VBox fx:id="autoEncryptVBox" minWidth="490.0" prefHeight="321.0" prefWidth="699.0">
+         <children>
+            <Pane fx:id="automaticLayout" prefHeight="195.0" prefWidth="615.0">
+               <children>
+                  <fx:include fx:id="encryptData" source="automaticEncrypt/automaticEncrypt.fxml" />
+               </children>
+            </Pane>
+            <GridPane prefHeight="131.0" prefWidth="600.0" stylesheets="@../encryptTabDM.css">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.0" minWidth="10.0" prefWidth="152.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="482.0" minWidth="10.0" prefWidth="448.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <HBox prefHeight="81.0" prefWidth="500.0" GridPane.columnIndex="1">
+                     <children>
+                        <SplitPane dividerPositions="0.4576271186440678" orientation="VERTICAL" prefHeight="83.0" prefWidth="501.0">
+                           <items>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="40.0" prefWidth="499.0">
+                                 <children>
+                                    <HBox AnchorPane.leftAnchor="10.0">
+                                       <children>
+                                          <Label id="outputLabel" prefHeight="21.0" prefWidth="67.0" styleClass="text-label" text="input:" />
+                                          <Label id="inputText" fx:id="inputString" minWidth="50.0" prefHeight="21.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="46.0" prefWidth="499.0">
+                                 <children>
+                                    <HBox AnchorPane.leftAnchor="10.0">
+                                       <children>
+                                          <Label id="output-label" prefHeight="21.0" prefWidth="67.0" styleClass="text-label" text="output:" />
+                                          <Label id="outputText" fx:id="outputString" minWidth="50.0" prefHeight="21.0">
+                                             <padding>
+                                                <Insets left="10.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                           </items>
+                        </SplitPane>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
+                  <ButtonBar buttonMinWidth="30.0">
+                     <buttons>
+                        <Button mnemonicParsing="false" onAction="#resetCodeToInitialState" prefHeight="50.0" prefWidth="134.0" styleClass="text-label" text="Reset Code" />
+                     </buttons>
+                  </ButtonBar>
+                  <Label id="alphabetStringLabel" prefHeight="21.0" prefWidth="98.0" styleClass="text-label" text="Alphabet:" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label id="alphabetString" fx:id="alphabetString" prefHeight="21.0" prefWidth="434.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

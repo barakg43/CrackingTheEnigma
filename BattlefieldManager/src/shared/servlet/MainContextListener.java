@@ -5,10 +5,7 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import users.AgentManager;
-import users.AlliesManager;
-import users.UBoatManager;
-import users.UserManager;
+import systemManager.SystemManager;
 import utils.ServletUtils;
 
 import static utils.ServletUtils.*;
@@ -21,10 +18,8 @@ public class MainContextListener implements ServletContextListener {
         ServletContext servletContext=servletContextEvent.getServletContext();
         ServletUtils.setServletContextRef(servletContext);
         servletContext.setAttribute(GSON_ATTRIBUTE_NAME, new Gson());
-        servletContext.setAttribute(USER_MANAGER_ATTRIBUTE_NAME, new UserManager());
-        servletContext.setAttribute(UBOAT_MANAGER_ATTRIBUTE_NAME, new UBoatManager());
-        servletContext.setAttribute(ALLY_MANAGER_ATTRIBUTE_NAME, new AlliesManager());
-        servletContext.setAttribute(AGENT_MANAGER_ATTRIBUTE_NAME, new AgentManager());
+        servletContext.setAttribute(SYSTEM_MANAGER_ATTRIBUTE_NAME, new SystemManager());
+
 
 
         System.out.println("Battlefield Manager finish initialized.");

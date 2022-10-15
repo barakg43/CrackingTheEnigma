@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<GridPane id="EncryptDecryptPane" prefHeight="127.0" prefWidth="500.0" stylesheets="@/application/UBoatApp/ContestTab/encryptComponent/encryptTabDM.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.automaticEncrypt.AutomaticEncryptController">
+
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="689.0" minWidth="10.0" prefWidth="404.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="432.0" minWidth="10.0" prefWidth="96.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="101.0" minHeight="10.0" prefHeight="56.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <Button id="processButton" fx:id="processEncryptButton" mnemonicParsing="false" onAction="#processStringData" prefHeight="31.0" prefWidth="80.0" styleClass="text-label" text="Process " GridPane.columnIndex="1" />
+      <Button id="clearButton" fx:id="clearTextFieldButton" mnemonicParsing="false" onAction="#clearTextFieldInput" prefHeight="31.0" prefWidth="80.0" styleClass="text-label" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label id="enterStringLabel" styleClass="text-label" text="Please enter string that you want to chipper:">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin></Label>
+      <Pane prefHeight="50.0" prefWidth="50.0" GridPane.rowIndex="1">
+         <children>
+            <TextField fx:id="stringInputTextField" layoutX="10.0" prefHeight="31.0" prefWidth="350.0" promptText="enter string to process...." snapToPixel="false">
+               <opaqueInsets>
+                  <Insets left="10.0" top="10.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </TextField>
+         </children>
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin>
+      </Pane>
+   </children>
+</GridPane>

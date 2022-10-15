@@ -1,13 +1,8 @@
 package TEST_GUI;
 
 
-import Login.userListComponent.AllUserListController;
-import agent.AgentDataDTO;
-import allyDTOs.ContestDataDTO;
+import application.Login.userListComponent.AllUserListController;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import engineDTOs.DmDTO.BruteForceLevel;
 import general.UserListDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -85,7 +79,7 @@ public class HelloFxmlMain extends Application{
 
     private void start5(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
-        URL url=getClass().getClassLoader().getResource("Login/userListComponent/userListTable.fxml");
+        URL url=getClass().getClassLoader().getResource("application/Login/userListComponent/userListTable.fxml");
         fxmlLoader.setLocation(url);
 
         assert url != null;

@@ -1,6 +1,6 @@
 package uboat;
 
-import ContestTab.CandidateStatus.CandidatesStatusController;
+import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;

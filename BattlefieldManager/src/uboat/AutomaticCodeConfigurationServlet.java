@@ -24,7 +24,7 @@ public class AutomaticCodeConfigurationServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getUboatManager().isUboatExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as UBOAT first!");
@@ -32,7 +32,7 @@ public class AutomaticCodeConfigurationServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"AutomaticCodeConfigurationServlet");
-        Engine enigmaEngine=ServletUtils.getUboatManager().
+        Engine enigmaEngine=ServletUtils.getSystemManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
         enigmaEngine.setCodeAutomatically();

@@ -1,6 +1,6 @@
-import ContestTab.CandidateStatus.CandidatesStatusController;
-import MainUboatApp.CommonResources;
-import MainUboatApp.MainUboatController;
+import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
+import application.CommonResources;
+import application.ApplicationController;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
@@ -27,27 +27,28 @@ public class UBoatApplication extends Application{
     public void start(Stage primaryStage) throws Exception {
 
         this.primaryStage=primaryStage;
-        primaryStage.setTitle("Login");
+        primaryStage.setTitle("application/Login");
         FXMLLoader fxmlLoader=new FXMLLoader();
         URL url=getClass().getClassLoader().getResource(CommonResources.UBOAT_MAIN_APP_FXML_LOGIN);
         fxmlLoader.setLocation(url);
         assert url != null;
         Parent root=fxmlLoader.load(url.openStream());
 
-        Scene scene = new Scene(root,1080,1000);
+        Scene scene = new Scene(root);
         // AllMachineController machineController=fxmlLoader.getController();
-        MainUboatController machineController=fxmlLoader.getController();
+        ApplicationController machineController=fxmlLoader.getController();
         machineController.bindWidthAndHeightScene(scene.widthProperty(),scene.heightProperty());
 
-        machineController.setMainScene(scene);
+        machineController.setMainStage(primaryStage);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Uboat Application");
         primaryStage.show();
 
     }
 
     private void start5(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
-        URL url=getClass().getClassLoader().getResource("ContestTab/CandidateStatus/CandidateStatus.fxml");
+        URL url=getClass().getClassLoader().getResource("application/UBoatApp/ContestTab/CandidateStatus/CandidateStatus.fxml");
         fxmlLoader.setLocation(url);
 
         assert url != null;

@@ -25,7 +25,7 @@ public class SupplyTaskServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null || !ServletUtils.getSystemUserManager().isUserAgentExist(username)) {
+        if (username == null || !ServletUtils.getSystemManager().isAgentExist(username)) {
             if (username == null)
                 response.getWriter().println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -49,8 +49,8 @@ public class SupplyTaskServlet extends HttpServlet {
 
         try {
             Gson gson = ServletUtils.getGson();
-            String allyName = ServletUtils.getAgentManager().getAgentData(username).getAllyTeamName();
-            List<DecryptedTask> taskList = ServletUtils.getAlliesManager()
+            String allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
+            List<DecryptedTask> taskList = ServletUtils.getSystemManager()
                     .getSingleAllyController(allyName)
                     .getDecryptionManager()
                     .getTasksForAgentSession(amount);

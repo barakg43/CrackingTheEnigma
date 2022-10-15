@@ -33,7 +33,7 @@ public class UpdateAgentsAndCandidatesServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getAlliesManager().isUserExist(username))
+        if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
         {
             if(username == null)
                 response.getWriter().println("Must login as AGENT first!");
@@ -44,14 +44,14 @@ public class UpdateAgentsAndCandidatesServlet extends HttpServlet {
         try {
             Gson gson = ServletUtils.getGson();
 
-            List<AllyCandidateDTO> updatedAllyCandidates= ServletUtils.getAlliesManager()
+            List<AllyCandidateDTO> updatedAllyCandidates= ServletUtils.getSystemManager()
                     .getSingleAllyController(username)
                     .getAllyCandidateDTOListWithVersion();
 
-            ServletUtils.getAlliesManager()
+            ServletUtils.getSystemManager()
                     .getSingleAllyController(username)
                     .updateAllyCandidateVersion();
-            List<TeamAgentsDataDTO> agentsDataProgressDTOS=ServletUtils.getAlliesManager()
+            List<TeamAgentsDataDTO> agentsDataProgressDTOS=ServletUtils.getSystemManager()
                     .getSingleAllyController(username)
                     .getAgentProgressDTOList();
 

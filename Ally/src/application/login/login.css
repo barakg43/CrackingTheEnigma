@@ -14,3 +14,14 @@
 #quit-button {
     -fx-text-fill: RED;
 }
+
+.GridPane{
+    -fx-border-width: 8px;
+    -fx-border-color: rgba(50, 118, 154, 0.82);
+}
+
+.title-label {
+    -fx-font-weight: BOLD;
+    -fx-font-size: 16px;
+    -fx-text-fill: #005380;
+}
