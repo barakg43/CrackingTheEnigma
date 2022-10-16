@@ -2,7 +2,7 @@ package application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncr
 
 import application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.automaticEncrypt.AutomaticEncryptController;
 import application.UBoatApp.ContestTab.encryptComponent.EncryptController;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -19,7 +19,7 @@ public class AutomaticEncryptDMController {
     @FXML public Label inputString;
     @FXML public Label alphabetString;
     public VBox autoEncryptVBox;
-    private HttpClientAdapter httpClientAdapter;
+
     @FXML private AutomaticEncryptController encryptDataController;
    // @FXML private encryptTabDMController parentComponentTab;
 
@@ -34,13 +34,7 @@ public class AutomaticEncryptDMController {
     {
         return encryptController;
     }
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-        this.httpClientAdapter = httpClientAdapter;
-        encryptDataController.setHttpClientAdapter(httpClientAdapter);
-     //  alphabetString.setText(encryptController.getHttpClientAdapter().getMachineData().getAlphabetString());
 
-
-    }
 
     public void setAlphabetString(String alphabetString) {
         this.alphabetString.setText(alphabetString);
@@ -84,7 +78,7 @@ public class AutomaticEncryptDMController {
 //    }
 
     public void resetCodeToInitialState(ActionEvent actionEvent) {
-        httpClientAdapter.resetCodePosition();
+        HttpClientAdapter.resetCodePosition();
         //encryptDataController.clearTextFieldInput(actionEvent);
         encryptController.bindResetButtonToCode();
 
@@ -92,7 +86,7 @@ public class AutomaticEncryptDMController {
 
     public boolean checkIfInputStringInDictionary(String inputText) {
 
-        return encryptController.getHttpClientAdapter().checkIfAllLetterInDic(inputText);
+        return HttpClientAdapter.checkIfAllLetterInDic(inputText);
 //        String[] inputWords=inputText.split(" ");
 //        Dictionary dictionary=parentComponentTab.getEnigmaEngine().getDictionary();
 //        for (String word:inputWords) {

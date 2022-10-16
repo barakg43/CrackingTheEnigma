@@ -7,7 +7,7 @@ import application.UBoatApp.ContestTab.TeamsStatus.TeamsStatusController;
 import application.UBoatApp.ContestTab.Trie.Trie;
 import application.UBoatApp.UBoatAppController;
 import engineDTOs.CodeFormatDTO;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -81,11 +81,11 @@ public class ContestController {
     }
 
     public void setDictionaryList() {
-        dictionaryWords.addAll(uBoatController.getHttpClientAdapter().getDictionaryWords());
+        dictionaryWords.addAll(HttpClientAdapter.getDictionaryWords());
         EncryptComponentController.getDictionaryListView().setItems(dictionaryWords);
         EncryptComponentController.setDictionaryTrie();
         Trie trieDic = EncryptComponentController.getTrieDictionary();
-        for (String word:uBoatController.getHttpClientAdapter().getDictionaryWords()) {
+        for (String word:HttpClientAdapter.getDictionaryWords()) {
             trieDic.insert(word);
         }
     }
@@ -105,10 +105,6 @@ public class ContestController {
 
     }
 
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-        EncryptComponentController.setHttpClientAdapter(httpClientAdapter);
-        teamsStatusComponentController.setHttpClient(httpClientAdapter.getHttpClient());
-    }
 
     public void bindCurrentCode() {
         uBoatController.bindCurrentCode();

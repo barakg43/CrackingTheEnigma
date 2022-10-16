@@ -2,6 +2,7 @@ package application.UBoatApp.ContestTab.TeamsStatus;
 
 
 import UBoatDTO.ActiveTeamsDTO;
+import application.http.HttpClientAdapter;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
@@ -18,12 +19,11 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
     private final Consumer<ActiveTeamsDTO> activeTeamsConsumer;
     private final Consumer<ActiveTeamsDTO> enableReadyButton;
     private final CustomHttpClient httpClientUtil;
-
-    public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer,Consumer<ActiveTeamsDTO> enableReadyButton, CustomHttpClient httpClientUtil) {
+    public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer,Consumer<ActiveTeamsDTO> enableReadyButton) {
 
         this.activeTeamsConsumer = activeTeamsConsumer;
         this.enableReadyButton = enableReadyButton;
-        this.httpClientUtil = httpClientUtil;
+        this.httpClientUtil = HttpClientAdapter.getHttpClient();
     }
 
     @Override

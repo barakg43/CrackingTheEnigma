@@ -12,7 +12,7 @@ import application.UBoatApp.ContestTab.Trie.Trie;
 import application.UBoatApp.ContestTab.Trie.TrieNode;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,7 +40,7 @@ public class EncryptController {
     @FXML
     private TextField searchBox;
     @FXML
-    private ListView dictionaryListView;
+    private ListView<String> dictionaryListView;
     @FXML
     private HBox encryptHBox;
 
@@ -56,7 +56,7 @@ public class EncryptController {
 
     private Trie dictionaryTrie;
 
-    private HttpClientAdapter httpClientAdapter;
+
     private SimpleStringProperty outputString;
     private ContestController contestController;
 
@@ -121,24 +121,18 @@ public class EncryptController {
         codeEncryptComponentController.bindParentToOutputString(outputString);
 
     }
-    private void createDictionaryList()
-    {
-        dictionaryListView.getSelectionModel().selectedItemProperty().addListener
-                ((ObservableValue ov, Object old_val, Object new_val) -> {
-                    ObservableList<String> selectedItems = dictionaryListView.getSelectionModel().getSelectedItems();
+    private void createDictionaryList() {
+        dictionaryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal)  -> {
+            ObservableList<String> selectedItems = dictionaryListView.getSelectionModel().getSelectedItems();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < selectedItems.size() - 1; i++)
+                builder.append(selectedItems.get(i) + " ");
+            builder.append(selectedItems.get(selectedItems.size() - 1));
+            //    System.out.println(builder.toString());
+            codeEncryptComponentController.getInputString().setText(builder.toString());
 
-                    StringBuilder builder = new StringBuilder();
+        });
 
-                    for(int i=0;i<selectedItems.size()-1;i++)
-                        builder.append(selectedItems.get(i)+" ");
-
-                    builder.append(selectedItems.get(selectedItems.size()-1));
-
-                    //    System.out.println(builder.toString());
-
-                    codeEncryptComponentController.getInputString().setText(builder.toString());
-
-                });
     }
 
     public void deleteButtonOnAction(ActionEvent ignoredActionEvent) {
@@ -158,7 +152,7 @@ public class EncryptController {
     }
 
     public void bindResetButtonToCode() {
-        httpClientAdapter.getInitialCurrentCodeFormat(this::setSelectedCode);
+        HttpClientAdapter.getInitialCurrentCodeFormat(this::setSelectedCode);
         contestController.bindCurrentCode();
 
     }
@@ -176,12 +170,8 @@ public class EncryptController {
 
     }
 
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-        this.httpClientAdapter = httpClientAdapter;
-        codeEncryptComponentController.setHttpClientAdapter(httpClientAdapter);
 
-    }
-    public ListView getDictionaryListView() {
+    public ListView<String> getDictionaryListView() {
         return dictionaryListView;
     }
 
@@ -189,9 +179,6 @@ public class EncryptController {
         simpleCodeComponentController.setSelectedCode(currentCode);
     }
 
-    public HttpClientAdapter getHttpClientAdapter() {
-        return contestController.getuBoatController().getHttpClientAdapter();
-    }
 
     public void setContestController(ContestController contestController) {
         this.contestController=contestController;
@@ -199,7 +186,7 @@ public class EncryptController {
 
     public void doneProcessData() {
 
-        httpClientAdapter.getInitialCurrentCodeFormat(this::setSelectedCode);
+        HttpClientAdapter.getInitialCurrentCodeFormat(this::setSelectedCode);
         contestController.bindCurrentCode();
     }
 

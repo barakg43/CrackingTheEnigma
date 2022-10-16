@@ -37,7 +37,7 @@ public class ApplicationController {
     private Region loginScreen;
     private LoginController logicScreenController;
     private DashboardScreenController dashboardScreenController;
-    private HttpClientAdapter httpClientAdapter;
+
     private ScreenController screenController;
 
     @FXML
@@ -46,7 +46,7 @@ public class ApplicationController {
         loadContestScreen();
         loadDashboardScreen();
 
-        httpClientAdapter = new HttpClientAdapter();
+
         switchToDashboardScreen();
         List<AgentDataDTO> list=new ArrayList<>();
         AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);

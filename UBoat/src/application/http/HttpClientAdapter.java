@@ -1,4 +1,4 @@
-package application.UBoatApp.FilePathComponent.http;
+package application.http;
 
 
 import application.Login.LoginInterface;
@@ -19,25 +19,26 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import static application.ApplicationController.TYPE;
 import static general.ConstantsHTTP.*;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class HttpClientAdapter {
 
 
-    private Set<String> wordsSet;
-    private final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(ApplicationType.UBOAT);
-    private MachineDataDTO machineData = null;
+    private static final Set<String> wordsSet= new HashSet<>();;
+    private static final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(TYPE);
+    private static MachineDataDTO machineData = null;
 
-    public HttpClientAdapter() {
-        this.wordsSet = new HashSet<>();
+    public  HttpClientAdapter() {
+
     }
 
-    public Set<String> getDictionaryWords() {
+    public static Set<String> getDictionaryWords() {
         return wordsSet;
     }
 
-    public void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
+    public static void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
         String contextUrl = String.format("%s?%s=%s", LOGIN, USERNAME, userName);
         HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
             @Override
@@ -52,11 +53,11 @@ public class HttpClientAdapter {
             }
         });
     }
-    public CustomHttpClient getHttpClient()
+    public static CustomHttpClient getHttpClient()
     {
         return HTTP_CLIENT;
     }
-    public void getInitialCurrentCodeFormat(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
+    public static void getInitialCurrentCodeFormat(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
         HTTP_CLIENT.doGetASync(ALL_CODE, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -71,11 +72,11 @@ public class HttpClientAdapter {
         });
     }
 
-    public MachineDataDTO getMachineData() {
+    public static MachineDataDTO getMachineData() {
         return machineData;
     }
 
-    public void resetCodePosition() {
+    public static void resetCodePosition() {
         HTTP_CLIENT.doPostASync(RESET_CODE,"" ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -91,7 +92,7 @@ public class HttpClientAdapter {
         });
 
     }
-    public void sendStartBattlefieldContestCommand()
+    public static void sendStartBattlefieldContestCommand()
     {
         HTTP_CLIENT.doPostASync(READY_TO_START,"", new Callback() {
             @Override
@@ -109,7 +110,7 @@ public class HttpClientAdapter {
 
     }
 
-    public boolean checkIfAllLetterInDic(String sentence)
+    public static boolean checkIfAllLetterInDic(String sentence)
     {
         String[] wordsArray = sentence.trim().split(" ");
         for (String word:wordsArray) {
@@ -119,7 +120,7 @@ public class HttpClientAdapter {
         return true;
     }
 
-    public void processDataInput(String text,Consumer<String> outputHandler) {
+    public static void processDataInput(String text,Consumer<String> outputHandler) {
         String body=INPUT_PROPERTY+'='+text;
         HTTP_CLIENT.doPostASync(INPUT_STRING, body,new Callback() {
             @Override
@@ -145,7 +146,7 @@ public class HttpClientAdapter {
         
     }
 
-    public void uploadXMLFile(Consumer<String> updateFileSettings,Consumer<String> errorMessage,String filePath) {
+    public static void uploadXMLFile(Consumer<String> updateFileSettings,Consumer<String> errorMessage,String filePath) {
 
         HTTP_CLIENT.uploadFileRequest(filePath, new Callback() {
             @Override
@@ -161,13 +162,14 @@ public class HttpClientAdapter {
                 } else {
                     System.out.println(filePath+" uploaded successfully");
                     machineData= CustomHttpClient.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
-                    wordsSet=machineData.getDictionaryWords();
+                    wordsSet.clear();
+                    wordsSet.addAll(machineData.getDictionaryWords());
                     updateFileSettings.accept(filePath);
                 }
             }
         });
     }
-        private void codeConfigurationRequestHandler(Response response,Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) throws IOException {
+        static private void codeConfigurationRequestHandler(Response response,Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) throws IOException {
 
             if (response.code() == HTTP_OK) {
                 assert response.body() != null;
@@ -183,7 +185,7 @@ public class HttpClientAdapter {
         }
 
 
-    public void resetAllData() {
+    public static void resetAllData() {
         HTTP_CLIENT.doPostASync(RESET_MACHINE,"", new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -200,7 +202,7 @@ public class HttpClientAdapter {
 
     }
 
-    public void setCodeManually(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer, CodeFormatDTO selectedCode) {
+    public static void setCodeManually(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer, CodeFormatDTO selectedCode) {
 
         String selectedCodeBody= CustomHttpClient.GSON_INSTANCE.toJson(selectedCode);
         HTTP_CLIENT.doPostASync(MANUALLY_CODE,selectedCodeBody, new Callback() {
@@ -214,7 +216,7 @@ public class HttpClientAdapter {
             }
         });
     }
-    public void setCodeAutomatically(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
+    public static void setCodeAutomatically(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
         HTTP_CLIENT.doGetASync(AUTOMATIC_CODE, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

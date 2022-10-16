@@ -1,5 +1,6 @@
 package application.login.userListComponent;
 
+import application.http.HttpClientAdapter;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
 import javafx.application.Platform;
@@ -27,7 +28,7 @@ public class AllUserListController implements Closeable {
 
     @FXML
     private ListView<String> agentsUsersColumn;
-    private CustomHttpClient httpClientUtil;
+
     private ObservableList<String> uboatUsersObserve;
     private ObservableList<String> alliesUsersObserve;
     private ObservableList<String> agentsUsersObserve;
@@ -66,9 +67,7 @@ public class AllUserListController implements Closeable {
 
 
 
-    public void setHttpClientUtil(CustomHttpClient httpClientUtil) {
-        this.httpClientUtil = httpClientUtil;
-    }
+
 
 
 
@@ -87,7 +86,7 @@ public class AllUserListController implements Closeable {
         listRefresher = new UserListRefresher(
                 autoUpdate,
                 this::updateTableView,
-                httpClientUtil);
+                HttpClientAdapter.getHttpClient());
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

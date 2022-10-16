@@ -31,7 +31,7 @@ public class HttpClientAdapter {
 
 
     private Set<String> wordsSet;
-    private final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(ApplicationType.ALLY);
+    private static final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(ApplicationType.ALLY);
     private MachineDataDTO machineData = null;
 
     public HttpClientAdapter() {
@@ -42,7 +42,7 @@ public class HttpClientAdapter {
         return wordsSet;
     }
 
-    public void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
+    public static void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
         String contextUrl = String.format("%s?%s=%s", LOGIN, USERNAME, userName);
         HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
             @Override
@@ -57,7 +57,7 @@ public class HttpClientAdapter {
             }
         });
     }
-    public CustomHttpClient getHttpClient()
+    public static CustomHttpClient getHttpClient()
     {
         return HTTP_CLIENT;
     }

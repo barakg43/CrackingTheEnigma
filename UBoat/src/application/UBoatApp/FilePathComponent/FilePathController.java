@@ -2,7 +2,7 @@ package application.UBoatApp.FilePathComponent;
 
 
 import application.UBoatApp.UBoatAppController;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,7 +27,6 @@ public class FilePathController {
     private SimpleBooleanProperty isFileSelected;
     public Label SelectedFilePath;
     private UBoatAppController UBoatController;
-    private HttpClientAdapter httpClientAdapter;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
@@ -110,7 +109,7 @@ public class FilePathController {
 
             String absolutePath = selectedFile.getAbsolutePath();
 
-            httpClientAdapter.uploadXMLFile(this::fileUploadSettings,this::updateErrorMessage,absolutePath);
+            HttpClientAdapter.uploadXMLFile(this::fileUploadSettings,this::updateErrorMessage,absolutePath);
 
         } catch (Exception ex) {
             UBoatController.setConfPanel();
@@ -163,7 +162,5 @@ public class FilePathController {
         selectedFileProperty.set("");
     }
 
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-            this.httpClientAdapter=httpClientAdapter;
-    }
+
 }

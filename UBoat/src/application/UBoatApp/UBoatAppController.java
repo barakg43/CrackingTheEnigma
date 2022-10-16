@@ -5,7 +5,7 @@ import application.UBoatApp.FilePathComponent.FilePathController;
 import application.UBoatApp.MachineTab.UBoatMachineController;
 import application.ApplicationController;
 import engineDTOs.CodeFormatDTO;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -21,7 +21,7 @@ public class UBoatAppController {
     public Label UBoatTitleLabel;
     public TextField UBoatNameTextField;
    // public Label FirstLoadFileLabel;
-    private HttpClientAdapter httpClientAdapter;
+
     public ScrollPane filePathComponent;
 
     public FilePathController filePathComponentController;
@@ -65,20 +65,12 @@ public class UBoatAppController {
 
     }
 
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter){
-        this.httpClientAdapter=httpClientAdapter;
-        ContestTabController.setHttpClientAdapter(httpClientAdapter);
-        filePathComponentController.setHttpClientAdapter(httpClientAdapter);
-        MachineTabController.setHttpClientAdapter(httpClientAdapter);
-    }
+
     public void bindCurrentCode()
     {
         MachineTabController.getMachineDetailsController().getCurrentMachineCodeController().setSelectedCode(ContestTabController.getEncryptComponentController().bindCodeComponentController().getCurrentCode());
     }
 
-    public HttpClientAdapter getHttpClientAdapter() {
-        return httpClientAdapter;
-    }
 
 
     public void setSceneWidthHeightProperties(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty)
@@ -101,7 +93,7 @@ public class UBoatAppController {
         ContestTabController.getEncryptComponentController()
                 .getCodeEncryptComponentController()
                 .setAlphabetString(
-                        httpClientAdapter.getMachineData()
+                        HttpClientAdapter.getMachineData()
                                 .getAlphabetString()
                 );
 

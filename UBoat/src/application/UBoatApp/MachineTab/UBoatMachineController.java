@@ -6,7 +6,7 @@ import application.UBoatApp.UBoatAppController;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -30,7 +30,7 @@ public class UBoatMachineController {
     @FXML private CodeCalibrationController codeCalibrationController;
 
     private UBoatAppController UBoatController;
-    private HttpClientAdapter httpClientAdapter;
+
     private MachineDataDTO machineData;
 
     private SimpleBooleanProperty isSelected;
@@ -94,7 +94,7 @@ public class UBoatMachineController {
         }
         showCodeDetails.set(false);
         MachineDetailsComponentController.clearCurrentCode();
-        machineData = httpClientAdapter.getMachineData();
+        machineData = HttpClientAdapter.getMachineData();
         codeCalibrationController.createDataMachineSets();
         if (machineData != null) {
             MachineDetailsComponentController.setData();
@@ -115,7 +115,7 @@ public class UBoatMachineController {
         setInitializeConfiguration();
 
 
-        httpClientAdapter.resetAllData();
+        HttpClientAdapter.resetAllData();
         isSelected.set(false);
         MachineDetailsComponentController.clearCodes();
 
@@ -130,9 +130,6 @@ public class UBoatMachineController {
         return isSelected;
     }
 
-    public HttpClientAdapter getHttpClientAdapter() {
-        return httpClientAdapter;
-    }
 
     public SimpleBooleanProperty getShowCodeDetails() {
         return showCodeDetails;
@@ -140,7 +137,7 @@ public class UBoatMachineController {
 
     public void showAndGetAllCodes() {
 
-         httpClientAdapter.getInitialCurrentCodeFormat(this::setAllCodesView);
+         HttpClientAdapter.getInitialCurrentCodeFormat(this::setAllCodesView);
 
     }
     public void setAllCodesView(AllCodeFormatDTO allCodeFormatDTO)
@@ -168,8 +165,5 @@ public class UBoatMachineController {
         UBoatController.bindFileToTabPane(isFileSelected);
     }
 
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-        this.httpClientAdapter = httpClientAdapter;
-        codeCalibrationController.setHttpClientAdapter(httpClientAdapter);
-    }
+
 }

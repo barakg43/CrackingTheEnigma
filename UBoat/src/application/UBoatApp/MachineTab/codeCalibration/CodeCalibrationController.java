@@ -5,7 +5,7 @@ import application.UBoatApp.MachineTab.UBoatMachineController;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.RotorInfoDTO;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -48,7 +48,6 @@ public class CodeCalibrationController {
 
 
     private UBoatMachineController uBoatMachineController;
-    private HttpClientAdapter httpClientAdapter;
 
     public HBox getButtonsPane() {
         return ButtonsPane;
@@ -89,7 +88,7 @@ public class CodeCalibrationController {
 
     public void GetRandomButtonActionListener(ActionEvent actionEvent) {
         disableAllFields(true);
-        uBoatMachineController.getHttpClientAdapter().setCodeAutomatically(this::updateCodeAfterCodeConfiguration);
+        HttpClientAdapter.setCodeAutomatically(this::updateCodeAfterCodeConfiguration);
 
     }
     public void updateCodeAfterCodeConfiguration(AllCodeFormatDTO allCodeFormatDTO)
@@ -142,9 +141,7 @@ public class CodeCalibrationController {
         selectedReflectorComboBox.setDisable(toDisable);
 
     }
-    public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-        this.httpClientAdapter = httpClientAdapter;
-    }
+
 
     public void SetCodeConfActionListener(ActionEvent actionEvent) {
         uBoatMachineController.getIsSelected().set(true);
@@ -176,7 +173,7 @@ public class CodeCalibrationController {
 
 
             CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,selectedReflector,new ArrayList<>());
-            httpClientAdapter.setCodeManually(this::updateCodeAfterCodeConfiguration,codeFormatDTO);
+            HttpClientAdapter.setCodeManually(this::updateCodeAfterCodeConfiguration,codeFormatDTO);
 
 
         }catch (Exception ex)
@@ -223,10 +220,10 @@ public class CodeCalibrationController {
     }
     public void createDataMachineSets() {
 
-        rotorIDSet= Arrays.stream(uBoatMachineController.getHttpClientAdapter().getMachineData().getRotorsId())
+        rotorIDSet= Arrays.stream(HttpClientAdapter.getMachineData().getRotorsId())
                 .boxed().
                 collect(Collectors.toSet());
-        positionsSet = uBoatMachineController.getHttpClientAdapter().getMachineData().getAlphabetString()
+        positionsSet = HttpClientAdapter.getMachineData().getAlphabetString()
                 .chars().
                 mapToObj(c -> (Character)(char)c)
                 .collect(Collectors.toSet());

@@ -1,7 +1,7 @@
 package application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.automaticEncrypt;
 
 import application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.AutomaticEncryptDMController;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 
 public class AutomaticEncryptController {
 
-        HttpClientAdapter httpClientAdapter;
         @FXML
         private Button processEncryptButton;
 
@@ -36,11 +35,11 @@ public class AutomaticEncryptController {
         void processStringData(ActionEvent event) {
             if(automaticEncryptDMController!=null) {
                 String inputText=stringInputTextField.getText();
-               if(httpClientAdapter.checkIfAllLetterInDic(inputText.toUpperCase()))
+               if(HttpClientAdapter.checkIfAllLetterInDic(inputText.toUpperCase()))
                {
                    try {
 
-                       httpClientAdapter.processDataInput(stringInputTextField.getText(),this::updateOutputProperty);
+                       HttpClientAdapter.processDataInput(stringInputTextField.getText(),this::updateOutputProperty);
                        inputProperty.setValue(stringInputTextField.getText().toUpperCase());
 
                    }catch (Exception ex)
@@ -82,9 +81,7 @@ public class AutomaticEncryptController {
                     automaticEncryptDMController.clearOutputInputLabels();
         }
 
-        public void setHttpClientAdapter(HttpClientAdapter httpClientAdapter) {
-            this.httpClientAdapter = httpClientAdapter;
-        }
+
 
     public void bindInputOutputPropertyFromParent(StringProperty inputPropertyParent,StringProperty outputPropertyParent) {
         outputProperty=outputPropertyParent;

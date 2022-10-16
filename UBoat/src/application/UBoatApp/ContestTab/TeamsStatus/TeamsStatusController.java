@@ -86,7 +86,7 @@ public class TeamsStatusController {
 
 
     public void startListRefresher(Consumer<ActiveTeamsDTO> enableReadyButton) {
-        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies, enableReadyButton,httpClient);
+        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies, enableReadyButton);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

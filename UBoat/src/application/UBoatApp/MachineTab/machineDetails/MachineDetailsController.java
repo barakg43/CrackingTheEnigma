@@ -2,6 +2,7 @@ package application.UBoatApp.MachineTab.machineDetails;
 
 import application.UBoatApp.MachineTab.UBoatMachineController;
 import application.UBoatApp.ContestTab.SimpleCode.SimpleCodeController;
+import application.http.HttpClientAdapter;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
@@ -53,7 +54,7 @@ public class MachineDetailsController {
     }
 
     public void setData() {
-        MachineDataDTO machineData= machineConfigurationController.getHttpClientAdapter().getMachineData();
+        MachineDataDTO machineData= HttpClientAdapter.getMachineData();
         NumberOfRotors.setText(machineData.getNumberOfRotorsInUse() + "/" + machineData.getNumberOfRotorInSystem());
         numberOfReflectors.setText(String.valueOf(machineData.getNumberOfReflectors()));
         CipheredInputs.setText(String.valueOf(0));
@@ -106,4 +107,5 @@ public class MachineDetailsController {
         numberOfReflectors.setText("");
         CipheredInputs.setText("");
     }
+
 }

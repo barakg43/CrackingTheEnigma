@@ -2,7 +2,8 @@ package application;
 
 import application.Login.LoginController;
 import application.UBoatApp.UBoatAppController;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
+import general.ApplicationType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -24,6 +25,7 @@ import java.net.URL;
 public class ApplicationController {
     private final String LOGIN="login";
     private final String DASHBOARD="dashboard";
+    public final static ApplicationType TYPE= ApplicationType.UBOAT;
     public Label UboatTitle;
 
     @FXML
@@ -48,7 +50,6 @@ public class ApplicationController {
     private final StringProperty currentUserName;
     private ReadOnlyDoubleProperty widthProperty;
     private ReadOnlyDoubleProperty heightProperty;
-    private HttpClientAdapter httpClientAdapter;
 
 
 
@@ -62,9 +63,7 @@ public class ApplicationController {
 
         loadLoginPage();
         loadUBoatPage();
-        httpClientAdapter=new HttpClientAdapter();
-        uBoatController.setHttpClientAdapter(httpClientAdapter);
-        logicController.setHttpAdapter(httpClientAdapter);
+
 
     }
 

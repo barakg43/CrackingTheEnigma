@@ -2,7 +2,7 @@ package application.Login;
 
 import application.Login.userListComponent.AllUserListController;
 import application.ApplicationController;
-import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -36,7 +36,7 @@ public class LoginController implements LoginInterface {
 
     private ApplicationController mainUboatController;
 
-   private HttpClientAdapter httpClientAdapter;
+
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -51,11 +51,7 @@ public class LoginController implements LoginInterface {
 //                        updateHttpStatusLine(line)));
     }
 
-    public void setHttpAdapter(HttpClientAdapter httpClientAdapter){
-        this.httpClientAdapter=httpClientAdapter;
-        userListComponentController.setHttpClientUtil(httpClientAdapter.getHttpClient());
-     //   userListComponentController.startListRefresher();  TODO : uncomment
-    }
+
 
 
     @FXML
@@ -66,7 +62,7 @@ public class LoginController implements LoginInterface {
 //            errorMessageProperty.set();
         }
         else
-            httpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
+            HttpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
 //
     }
     public void stopUpdateUserList()
