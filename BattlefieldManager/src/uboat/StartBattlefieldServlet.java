@@ -3,7 +3,7 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
-import allyDTOs.ContestDataDTO;
+import UBoatDTO.GameStatus;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ public class StartBattlefieldServlet extends HttpServlet {
         ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getContestDataManager()
-                .changeGameStatus(ContestDataDTO.GameStatus.ACTIVE);
+                .changeGameStatus(GameStatus.ACTIVE);
         response.setStatus(HttpServletResponse.SC_OK);
 
     }

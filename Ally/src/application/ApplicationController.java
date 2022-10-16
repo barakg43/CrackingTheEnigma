@@ -3,9 +3,9 @@ package application;
 
 import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
+import UBoatDTO.GameStatus;
 import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
-import application.http.HttpClientAdapter;
 import application.login.LoginController;
 import engineDTOs.DmDTO.BruteForceLevel;
 import javafx.application.Platform;
@@ -54,10 +54,10 @@ public class ApplicationController {
         list.add(new AgentDataDTO("allyTeamName2", "agent2",30,400));
         dashboardScreenController.addAllAgentsDataToTable(list);
         List<ContestDataDTO> list2=new ArrayList<>();
-        list2.add(new ContestDataDTO("battle1","uboat1", ContestDataDTO.GameStatus.ACTIVE, BruteForceLevel.HARD,5,5));
-        list2.add(new ContestDataDTO("battle2","uboat2", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,5,3));
-        list2.add(new ContestDataDTO("battle3","uboat3", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,6,6));
-        list2.add(new ContestDataDTO("battle4","uboat4", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,3,3));
+        list2.add(new ContestDataDTO("battle1","uboat1", GameStatus.ACTIVE, BruteForceLevel.HARD,5,5));
+        list2.add(new ContestDataDTO("battle2","uboat2", GameStatus.IDLE, BruteForceLevel.INSANE,5,3));
+        list2.add(new ContestDataDTO("battle3","uboat3", GameStatus.IDLE, BruteForceLevel.INSANE,6,6));
+        list2.add(new ContestDataDTO("battle4","uboat4", GameStatus.IDLE, BruteForceLevel.INSANE,3,3));
         dashboardScreenController.addAllContestDataToTable(list2);
 
 

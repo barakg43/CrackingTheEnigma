@@ -17,6 +17,7 @@ public class SingleTeamController {
     private TextFlow taskSize;
 
 
+
     public void setData(AllyDataDTO teamDataDTO){
         this.teamName.getChildren().add(new Text(teamDataDTO.getAllyName()));
         this.amountOfAgents.getChildren().add(new Text(
