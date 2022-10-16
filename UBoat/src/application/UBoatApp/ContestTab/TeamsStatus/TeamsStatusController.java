@@ -16,6 +16,7 @@ import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 import static general.ConstantsHTTP.REFRESH_RATE;
 
@@ -84,8 +85,8 @@ public class TeamsStatusController {
 
 
 
-    public void startListRefresher() {
-        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies, httpClient);
+    public void startListRefresher(Consumer<ActiveTeamsDTO> enableReadyButton) {
+        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies, enableReadyButton,httpClient);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }
@@ -99,6 +100,9 @@ public class TeamsStatusController {
         }
     }
 
+    public void stopListRefresher() {
+        close();
+    }
     public void setHttpClient(CustomHttpClient httpClient) {
         this.httpClient = httpClient;
         //startListRefresher();

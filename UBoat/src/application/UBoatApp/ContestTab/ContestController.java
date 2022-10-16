@@ -1,5 +1,6 @@
 package application.UBoatApp.ContestTab;
 
+import UBoatDTO.ActiveTeamsDTO;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import application.UBoatApp.ContestTab.encryptComponent.EncryptController;
 import application.UBoatApp.ContestTab.TeamsStatus.TeamsStatusController;
@@ -7,6 +8,7 @@ import application.UBoatApp.ContestTab.Trie.Trie;
 import application.UBoatApp.UBoatAppController;
 import engineDTOs.CodeFormatDTO;
 import application.UBoatApp.FilePathComponent.http.HttpClientAdapter;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -40,7 +42,7 @@ public class ContestController {
     @FXML
     private void initialize() {
         EncryptComponentController.setContestController(this);
-
+        readyButton.setDisable(true);
     }
 
     public EncryptController getEncryptComponentController() {
@@ -55,6 +57,18 @@ public class ContestController {
         EncryptComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
      //  candidatesStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
         teamsStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
+
+
+    }
+    public void enableReadyButtonConsumer(ActiveTeamsDTO activeTeams)
+    {
+        Platform.runLater(()-> {
+            if(activeTeams.getRegisteredAmount()==activeTeams.getRequiredAlliesAmount())
+        {
+        readyButton.setDisable(false);
+        teamsStatusComponentController.stopListRefresher();}
+     });
+
 
 
     }
@@ -79,6 +93,10 @@ public class ContestController {
 
     public void bindTabDisable(SimpleBooleanProperty isCodeSelected)
     {
+        isCodeSelected.addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                teamsStatusComponentController.startListRefresher(this::enableReadyButtonConsumer);
+        });
         EncryptComponent.disableProperty().bind(isCodeSelected.not());
     }
 

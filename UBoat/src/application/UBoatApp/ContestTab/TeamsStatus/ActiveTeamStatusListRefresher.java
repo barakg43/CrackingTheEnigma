@@ -16,23 +16,26 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
 
 
     private final Consumer<ActiveTeamsDTO> activeTeamsConsumer;
+    private final Consumer<ActiveTeamsDTO> enableReadyButton;
     private final CustomHttpClient httpClientUtil;
 
-    public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer, CustomHttpClient httpClientUtil) {
+    public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer,Consumer<ActiveTeamsDTO> enableReadyButton, CustomHttpClient httpClientUtil) {
 
         this.activeTeamsConsumer = activeTeamsConsumer;
+        this.enableReadyButton = enableReadyButton;
         this.httpClientUtil = httpClientUtil;
     }
 
     @Override
     public void run() {
 
-        //System.out.println("Sending user list request to server....");
+        System.out.println("Sending active teams allies request to server....");
         String userListRaw=httpClientUtil.doGetSync(ACTIVE_TEAMS_LIST);
         if(userListRaw!=null&&!userListRaw.isEmpty())
         {
-        ActiveTeamsDTO userListDTO=httpClientUtil.getGson().fromJson(userListRaw,ActiveTeamsDTO.class);
-        activeTeamsConsumer.accept(userListDTO);
+        ActiveTeamsDTO activeTeamsDTO=httpClientUtil.getGson().fromJson(userListRaw,ActiveTeamsDTO.class);
+        activeTeamsConsumer.accept(activeTeamsDTO);
+        enableReadyButton.accept(activeTeamsDTO);
         }
 
     }
