@@ -9,9 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../Agent1/web" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/../Agent1/src" />
-        </sourceRoots>
+        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -38,5 +36,7 @@
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.26" level="application_server_libraries" />
     <orderEntry type="library" name="okHttp" level="project" />
+    <orderEntry type="module" module-name="HttpClientUtils" />
+    <orderEntry type="module" module-name="Engine" />
   </component>
 </module>

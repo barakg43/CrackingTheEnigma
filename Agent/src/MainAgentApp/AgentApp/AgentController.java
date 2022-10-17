@@ -5,8 +5,11 @@ import MainAgentApp.AgentApp.AgentStatus.AgentStatusController;
 import MainAgentApp.AgentApp.CandidateStatus.CandidateStatusController;
 import MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataController;
 import MainAgentApp.MainAgentController;
+import allyDTOs.ContestDataDTO;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
@@ -45,4 +48,25 @@ public class AgentController {
     public void setMainController(MainAgentController mainAgentController) {
         this.mainController=mainAgentController;
     }
+
+    public static void createErrorAlertWindow(String title,String error)
+    {
+        Platform.runLater(() -> {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText(title);
+            errorAlert.setContentText(error);
+            errorAlert.showAndWait();
+        });
+
+
+    }
+
+    public  void getContestData(ContestDataDTO contestDataDTO)
+    {
+        ContestAndTeamDataController.updateContestData(contestDataDTO);
+    }
+
+
 }
+

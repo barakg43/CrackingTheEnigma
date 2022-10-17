@@ -16,6 +16,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,19 +48,19 @@ public class ApplicationController {
         loadDashboardScreen();
 
 
-        switchToDashboardScreen();
-        List<AgentDataDTO> list=new ArrayList<>();
-        AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);
-        list.add(nn);
-        list.add(new AgentDataDTO("allyTeamName2", "agent2",30,400));
-        dashboardScreenController.addAllAgentsDataToTable(list);
-        List<ContestDataDTO> list2=new ArrayList<>();
-        list2.add(new ContestDataDTO("battle1","uboat1", ContestDataDTO.GameStatus.ACTIVE, BruteForceLevel.HARD,5,5));
-        list2.add(new ContestDataDTO("battle2","uboat2", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,5,3));
-        list2.add(new ContestDataDTO("battle3","uboat3", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,6,6));
-        list2.add(new ContestDataDTO("battle4","uboat4", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,3,3));
-        dashboardScreenController.addAllContestDataToTable(list2);
-
+        //switchToDashboardScreen();
+//        List<AgentDataDTO> list=new ArrayList<>();
+//        AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);
+//        list.add(nn);
+//        list.add(new AgentDataDTO("allyTeamName2", "agent2",30,400));
+//        dashboardScreenController.addAllAgentsDataToTable(list);
+//        List<ContestDataDTO> list2=new ArrayList<>();
+//        list2.add(new ContestDataDTO("battle1","uboat1", ContestDataDTO.GameStatus.ACTIVE, BruteForceLevel.HARD,5,5));
+//        list2.add(new ContestDataDTO("battle2","uboat2", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,5,3));
+//        list2.add(new ContestDataDTO("battle3","uboat3", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,6,6));
+//        list2.add(new ContestDataDTO("battle4","uboat4", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,3,3));
+//        dashboardScreenController.addAllContestDataToTable(list2);
+//
 
         dashboardScreenController.setReadyActionParent(this::readyActionPressedInDashboard);
         contestScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());
@@ -71,8 +72,9 @@ public class ApplicationController {
         URL url=getClass().getClassLoader().getResource(LOGIN_SCREEN_FXML_RESOURCE);
         fxmlLoader.setLocation(url);
         assert url != null;
-        loginScreen=fxmlLoader.load(url.openStream());
+        loginScreen=fxmlLoader.load();
         logicScreenController= fxmlLoader.getController();
+        logicScreenController.setMainController(this);
     }
     private void loadDashboardScreen() throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
@@ -81,6 +83,7 @@ public class ApplicationController {
         assert url != null;
         dashboardScreen=fxmlLoader.load(url.openStream());
         dashboardScreenController= fxmlLoader.getController();
+
     }
     private void loadContestScreen() throws IOException {
 
@@ -142,9 +145,25 @@ public class ApplicationController {
     }
 
     public void switchToDashboard() {
+        mainPain.getChildren().clear();
+        mainPain.getChildren().add(dashboardScreen);
+        isContestScreenActive=false;
+
     }
 
     public void updateUserName(String userName) {
 
+    }
+
+    public void setMainStage(Stage primaryStage) {
+        screenController=new ScreenController(mainPain, primaryStage);
+        screenController.addScreen(LOGIN,loginScreen);
+        screenController.addScreen(DASHBOARD,dashboardScreen);
+        screenController.addScreen(CONTEST,contestScreen);
+        setMainPanelTo(LOGIN);
+    }
+
+    private void setMainPanelTo(String screenName) {
+        screenController.activate(screenName);
     }
 }

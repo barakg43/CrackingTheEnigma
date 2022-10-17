@@ -2,6 +2,7 @@ package MainAgentApp;
 
 import MainAgentApp.AgentApp.AgentController;
 import MainAgentApp.agentLogin.AgentLoginController;
+import allyDTOs.ContestDataDTO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -125,6 +126,12 @@ public class MainAgentController {
 
         agentController.bindScene(widthProperty,heightProperty);
 
+
+    }
+
+    public void getContestData(ContestDataDTO contestDataDTO)
+    {
+        agentController.getContestData(contestDataDTO);
     }
 
 

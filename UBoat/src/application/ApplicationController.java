@@ -104,13 +104,10 @@ public class ApplicationController {
 
     private void setMainPanelTo(String screenName) {
 
-
         screenController.activate(screenName);
 
     }
     private void setMainPanelTo(Parent pane) {
-
-
 
         mainPanel.getChildren().clear();
         mainPanel.getChildren().add(pane);
