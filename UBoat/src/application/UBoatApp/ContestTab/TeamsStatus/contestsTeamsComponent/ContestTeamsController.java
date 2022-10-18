@@ -1,4 +1,4 @@
-package application.contestTab.contestsTeamsComponent;
+package application.UBoatApp.ContestTab.TeamsStatus.contestsTeamsComponent;
 
 import allyDTOs.AllyDataDTO;
 import javafx.collections.FXCollections;
@@ -26,7 +26,7 @@ public class ContestTeamsController {
     @FXML
     private TableColumn<AllyDataDTO, Integer> taskSizeColumn;
     @FXML
-    private TableColumn<AllyDataDTO, AllyDataDTO.Status> statusColumn;
+    private TableColumn<AllyDataDTO, String> statusColumn;
 
    private ObservableList<AllyDataDTO> contestTeamsListObs;
 

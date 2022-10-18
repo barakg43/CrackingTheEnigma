@@ -3,9 +3,9 @@ package application;
 
 import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
+import UBoatDTO.GameStatus;
 import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
-import application.http.HttpClientAdapter;
 import application.login.LoginController;
 import engineDTOs.DmDTO.BruteForceLevel;
 import javafx.application.Platform;
@@ -48,6 +48,7 @@ public class ApplicationController {
         loadDashboardScreen();
 
 
+
         //switchToDashboardScreen();
 //        List<AgentDataDTO> list=new ArrayList<>();
 //        AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);
@@ -60,7 +61,8 @@ public class ApplicationController {
 //        list2.add(new ContestDataDTO("battle3","uboat3", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,6,6));
 //        list2.add(new ContestDataDTO("battle4","uboat4", ContestDataDTO.GameStatus.IDLE, BruteForceLevel.INSANE,3,3));
 //        dashboardScreenController.addAllContestDataToTable(list2);
-//
+
+
 
         dashboardScreenController.setReadyActionParent(this::readyActionPressedInDashboard);
         contestScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());

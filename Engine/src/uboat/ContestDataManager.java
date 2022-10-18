@@ -1,6 +1,7 @@
 package uboat;
 
 import allyDTOs.ContestDataDTO;
+import UBoatDTO.GameStatus;
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.DmDTO.BruteForceLevel;
 

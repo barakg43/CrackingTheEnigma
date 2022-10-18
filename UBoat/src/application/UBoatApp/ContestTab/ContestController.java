@@ -1,6 +1,7 @@
 package application.UBoatApp.ContestTab;
 
 import UBoatDTO.ActiveTeamsDTO;
+import allyDTOs.AllyDataDTO;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import application.UBoatApp.ContestTab.encryptComponent.EncryptController;
 import application.UBoatApp.ContestTab.TeamsStatus.TeamsStatusController;
@@ -9,6 +10,7 @@ import application.UBoatApp.UBoatAppController;
 import engineDTOs.CodeFormatDTO;
 import application.http.HttpClientAdapter;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -20,6 +22,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 public class ContestController {
+    BooleanProperty allAlliesAreReady=new SimpleBooleanProperty();
     @FXML private Button readyButton;
     @FXML private Button logoutButton;
     @FXML private VBox EncryptComponent;
@@ -62,8 +65,11 @@ public class ContestController {
     }
     public void enableReadyButtonConsumer(ActiveTeamsDTO activeTeams)
     {
+        allAlliesAreReady.set(true);
+        for(AllyDataDTO allyData:activeTeams.getAllyDataDTOList())
+            allAlliesAreReady.set(allAlliesAreReady.get()&& allyData.getStatus()== AllyDataDTO.Status.READY);
         Platform.runLater(()-> {
-            if(activeTeams.getRegisteredAmount()==activeTeams.getRequiredAlliesAmount())
+            if(activeTeams.getRegisteredAmount()==activeTeams.getRequiredAlliesAmount()&& allAlliesAreReady.getValue())
         {
         readyButton.setDisable(false);
         teamsStatusComponentController.stopListRefresher();}
@@ -76,7 +82,7 @@ public class ContestController {
     public void resetAllData() {
         EncryptComponentController.clearAllData();
        // candidatesStatusComponentController.clearAllTiles();
-        teamsStatusComponentController.clearAllTiles();
+        teamsStatusComponentController.clearData();
 
     }
 

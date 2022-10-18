@@ -1,5 +1,6 @@
 package allyDTOs;
 
+import UBoatDTO.GameStatus;
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.DmDTO.BruteForceLevel;
 
@@ -8,20 +9,7 @@ import engineDTOs.DmDTO.BruteForceLevel;
 public class ContestDataDTO extends BattlefieldDataDTO {
 
 
-    public enum GameStatus{
-        ACTIVE("active"),
-        IDLE("idle"),
-        FINISH("finish");
 
-        final String status;
-        GameStatus(String level) {
-            status=level;
-        }
-        @Override
-        public String toString() {
-            return status;
-        }
-    }
 
     private final String uboatUserName;
     protected GameStatus gameStatus;
