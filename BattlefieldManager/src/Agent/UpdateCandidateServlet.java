@@ -1,7 +1,4 @@
-package agent;
-
-//taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
-// and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
+package Agent;
 
 import allyDTOs.AllyCandidateDTO;
 import com.google.gson.Gson;

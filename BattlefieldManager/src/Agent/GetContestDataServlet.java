@@ -1,7 +1,4 @@
-package agent;
-
-//taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
-// and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
+package Agent;
 
 import allyDTOs.ContestDataDTO;
 import com.google.gson.Gson;
@@ -18,8 +15,10 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import static general.ConstantsHTTP.AGENT_CONTEXT;
+import static general.ConstantsHTTP.CONTEST_DATA;
 
-@WebServlet(name = "GetContestDataServlet", urlPatterns = {"/agent/update-contest-data"})
+@WebServlet(name = "GetContestDataServlet", urlPatterns = {AGENT_CONTEXT+CONTEST_DATA})
 public class GetContestDataServlet extends HttpServlet {
 
     @Override

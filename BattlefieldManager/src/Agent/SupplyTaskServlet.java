@@ -1,4 +1,4 @@
-package agent;
+package Agent;
 
 import com.google.gson.Gson;
 import decryptionManager.components.DecryptedTask;

@@ -1,6 +1,9 @@
 package MainAgentApp.agentLogin;
 
+import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
+import agent.AgentDataDTO;
+import allyDTOs.ContestDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -10,11 +13,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import systemManager.SystemManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgentLoginController {
+import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
+
+public class AgentLoginController implements LoginInterface{
 
     @FXML
     private GridPane loginPage;
@@ -62,18 +68,31 @@ public class AgentLoginController {
     @FXML
     void loginButtonClicked(ActionEvent event) {
 
-        if(validateLoginData()==false) {
-            errorAlert.showAndWait();
+        AgentDataDTO agentDataDTO=validateLoginData();
+        if (agentDataDTO==null) {
+            createErrorAlertWindow("Login error","User name is empty. You can't login with empty user name");
+//            errorMessageProperty.set();
         }
-        else {
-            agentNameList.add(userNameTextField.getText());
-            mainController.updateUserName(userNameTextField.getText());
-            mainController.updateAlliesName(AlliesTeamComboBox.getValue());
-            mainController.switchToAgentPage();
-        }
+        else
+        {
+            HttpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,agentDataDTO);
 
+            Platform.runLater(() -> {
+                HttpClientAdapter.getContestData(this::updateErrorMessage,this::getContestData);
+            });
+
+        }
     }
 
+    public void getContestData(ContestDataDTO contestDataDTO)
+    {
+        mainController.getContestData(contestDataDTO);
+    }
+
+    public void updateErrorMessage(String errorMessage)
+    {
+        createErrorAlertWindow("Login error",errorMessage);
+    }
     @FXML
     void quitButtonClicked(ActionEvent event) {
         Platform.exit();
@@ -88,12 +107,12 @@ public class AgentLoginController {
         return userNameTextField;
     }
 
-    private boolean validateLoginData()
+    private AgentDataDTO validateLoginData()
     {
         String userName = userNameTextField.getText();
         if (userName.isEmpty()) {
             errorMessageProperty.set("User name is empty. You can't login with empty user name.");
-            return false;
+            return null;
         }
         if(AlliesTeamComboBox.getSelectionModel().getSelectedIndex()==-1)
         {
@@ -103,25 +122,46 @@ public class AgentLoginController {
         if(numberOfThreads.getValue()==null)
         {
             errorMessageProperty.set("You need to choose number of threads");
-            return false;
+            return null;
 
         }
         if(NumberOfTasks.getValue()==null)
         {
             errorMessageProperty.set("You need to choose number of tasks.");
-            return false;
+            return null;
 
         }
         if(agentNameList.contains(userName))
         {
             errorMessageProperty.set("User name already logged in. You can't login with same user name");
-            return false;
+            return null;
         }
-        return true;
+
+        //AlliesTeamComboBox.getSelectionModel().getSelectedItem()
+        return new AgentDataDTO(userName,"MOSH"
+                ,numberOfThreads.getValue(), NumberOfTasks.getValue());
     }
 
     public void setMainController( MainAgentController mainAgentController) {
         this.mainController=mainAgentController;
 
+    }
+
+    public void doLoginRequest(boolean isLoginSuccess, String response, AgentDataDTO agentDataDTO)
+    {
+        if (!isLoginSuccess) {
+
+            createErrorAlertWindow("Login error",response);
+            //  errorMessageProperty.set("Something went wrong: " + response)
+        } else {
+            System.out.println("login success");
+            Platform.runLater(() -> {
+
+                agentNameList.add(agentDataDTO.getAgentName());
+                mainController.updateUserName(agentDataDTO.getAgentName());
+                mainController.updateAlliesName(agentDataDTO.getAllyTeamName());
+                mainController.switchToAgentPage();
+            });
+        }
     }
 }

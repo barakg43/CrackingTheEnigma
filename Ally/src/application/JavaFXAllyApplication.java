@@ -20,6 +20,8 @@ public class JavaFXAllyApplication extends Application {
             Parent root=fxmlLoader.load(url.openStream());
 
             Scene scene = new Scene(root,1100,980);
+            ApplicationController machineController=fxmlLoader.getController();
+
             //AllMachineController machineController=fxmlLoader.getController();
 
            // machineController.setScene(scene);
@@ -30,7 +32,7 @@ public class JavaFXAllyApplication extends Application {
 //            scene.getStylesheets().add(3,"UI/SkinsCSS/LovelyMode.css");
 
 
-
+            machineController.setMainStage(primaryStage);
             primaryStage.setScene(scene);
        //     primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, DMoperationalController::closeWindowEvent);
            // machineController.setSceneWidthHeightProperties(scene.widthProperty(),scene.heightProperty());

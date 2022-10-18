@@ -43,6 +43,7 @@ public class ConstantsHTTP {
 
     /**################ AGENT URLs ####################**/
     public static final String AGENT_CONTEXT="/agent";
+    public static final String CONTEST_DATA="/update-contest-data";
 
 //    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
 //    public final static String LOGOUT = FULL_SERVER_PATH + "/chat/logout";

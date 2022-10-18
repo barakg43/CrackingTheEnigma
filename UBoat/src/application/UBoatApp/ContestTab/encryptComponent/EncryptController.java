@@ -159,7 +159,10 @@ public class EncryptController {
     public void setSelectedCode(AllCodeFormatDTO allCodeFormatDTO)
     {
         Platform.runLater(()->
-                simpleCodeComponentController.setSelectedCode(allCodeFormatDTO.getCurrentCode()));
+            simpleCodeComponentController.setSelectedCode(allCodeFormatDTO.getCurrentCode()));
+
+        Platform.runLater(()->
+            contestController.bindCurrentCode());
 
     }
     public void clearListView() {
@@ -187,7 +190,7 @@ public class EncryptController {
     public void doneProcessData() {
 
         HttpClientAdapter.getInitialCurrentCodeFormat(this::setSelectedCode);
-        contestController.bindCurrentCode();
+
     }
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
