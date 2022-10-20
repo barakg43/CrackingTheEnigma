@@ -6,6 +6,7 @@ import decryptionManager.components.DecryptedTask;
 import decryptionManager.components.Permuter;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import engineDTOs.MachineDataDTO;
 import engineDTOs.RotorInfoDTO;
 
@@ -25,10 +26,10 @@ public class DecryptionManager {
     private BruteForceLevel level=null;
     private int taskSize=0;
     private final CodeCalculatorFactory codeCalculatorFactory;
-    private BlockingQueue<DecryptedTask> taskQueue;
+    private BlockingQueue<SimpleDecryptedTaskDTO> taskQueue;
     private final int QUEUE_SIZE=1000;
     public  AtomicCounter taskDoneAmount;
-    private String output;
+
     private Thread taskCreator;
     private double totalTaskAmount;
 //    private static Consumer<String> messageConsumer;
@@ -63,11 +64,11 @@ public class DecryptionManager {
         this.messageConsumer = messageConsumer;
 
     }
-    public List<DecryptedTask> getTasksForAgentSession(int amount)
+    public List<SimpleDecryptedTaskDTO> getTasksForAgentSession(int amount)
     {
 
         //TODO: fix sync between put and take from blocking queue
-        List<DecryptedTask> decryptedTaskList=new ArrayList<>(amount);
+        List<SimpleDecryptedTaskDTO> decryptedTaskList=new ArrayList<>(amount);
         taskQueue.drainTo(decryptedTaskList,amount);
         return decryptedTaskList;
     }
@@ -110,22 +111,21 @@ public class DecryptionManager {
 //            pauseLock.notifyAll();
 //        }
 //    }
-//    public void stop(){
-//        stopFlag=true;
-//        isFinishAllTask=true;
-//        agents.shutdownNow();
-//    }
+    public void stop(){
+        stopFlag=true;
+        isFinishAllTask=true;
+    }
 
 
-    public void startCreatingBruteforceTasks(String output)
+    public void startCreatingBruteforceTasks()
     {
-        this.output=output;
+
         totalTaskAmount=0;
         isFinishAllTask=false;
         isSystemPause =false;
         stopFlag=false;
         startListener.run();
-        taskCreator=new Thread(()-> {
+        new Thread(()-> {
                 try {
 
                     switch (level) {
@@ -150,8 +150,7 @@ public class DecryptionManager {
                 } catch (RuntimeException e) {
                     throw new RuntimeException("Error when creating tasks: "+e);
                 }
-        },"Task Creator DM Thread");
-        taskCreator.start();
+        },"Task Creator DM Thread").start();
 
     }
 
@@ -273,7 +272,7 @@ public class DecryptionManager {
                // Thread.sleep(5000);//TODO: thread pool delayed
               //  System.out.println("Task creator is running!");
 
-                taskQueue.put(new DecryptedTask(currentCode,output, taskSize));
+                taskQueue.put(new SimpleDecryptedTaskDTO(currentCode, taskSize));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

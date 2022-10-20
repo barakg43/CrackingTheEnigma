@@ -1,7 +1,7 @@
 package decryptionManager;
 
+import agent.AgentSetupConfigurationDTO;
 import decryptionManager.components.*;
-import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.MachineDataDTO;
 import enigmaEngine.Engine;
@@ -23,14 +23,15 @@ public class DecryptionAgent {
     private final String alliesTeam;
     private final int threadNumber;
 
-    private long taskSize;
+    private long tasksAmount;
     private final String agentName;
     private CodeCalculatorFactory codeCalculatorFactory;
     private BlockingQueue<Runnable> taskQueue;
     private BlockingQueue<TaskFinishDataDTO> successfulDecryption;
     private final ExecutorService threadAgents;
     private byte[] engineCopyBytes;
-    public AtomicCounter taskDoneAmount;
+    private AtomicCounter taskDoneAmount;
+    private String cipheredString;
 
 //    private Thread taskCreator;
     private double totalTaskAmount;
@@ -42,19 +43,19 @@ public class DecryptionAgent {
     private boolean stopFlag;
     private Runnable startListener;
     public static final Object pauseLock=new Object();
-    private Runnable notifyFinishTaskSession;
-    public DecryptionAgent(String agentName,String alliesTeam, int threadNumber, long taskSize, Runnable notifyFinishTaskSession) {
+    private final Runnable notifyFinishTaskSession;
+    public DecryptionAgent(String agentName, String alliesTeam, int threadAmount, long tasksAmount, Runnable notifyFinishTaskSession) {
         this.alliesTeam = alliesTeam;
-        this.threadNumber = threadNumber;
-        this.taskSize = taskSize;
-        threadAgents =  Executors.newFixedThreadPool(threadNumber);
+        this.threadNumber = threadAmount;
+        this.tasksAmount = tasksAmount;
+        threadAgents =  Executors.newFixedThreadPool(threadAmount);
         this.agentName = agentName;
         this.notifyFinishTaskSession = notifyFinishTaskSession;
         engine=new EnigmaEngine();
         taskDoneAmount=new AtomicCounter();
 
         taskDoneAmount.addPropertyChangeListener((counter) -> {
-            if((Long)counter.getNewValue() ==taskSize) {
+            if((Long)counter.getNewValue() == tasksAmount) {
                 doneRunningTaskSession();
             }
         });
@@ -69,7 +70,7 @@ public class DecryptionAgent {
 //        isFinishAllTask= Boolean.FALSE;
 
     }
-    public void doneRunningTaskSession()
+    private void doneRunningTaskSession()
     {
         taskDoneAmount.resetCounter();
         notifyFinishTaskSession.run();
@@ -85,11 +86,13 @@ public class DecryptionAgent {
     }
 
 
-    public void setSetupConfiguration(String engineXmlFile,CodeFormatDTO codeFormatDTO,String output)
+    public void setSetupConfiguration(AgentSetupConfigurationDTO agentSetupConfiguration)
     {
-        engine.loadXMLFileFromStringContent(engineXmlFile);
-        engine.setCodeManually(codeFormatDTO);
+
+        engine.loadXMLFileFromStringContent(agentSetupConfiguration.getEngineXmlFile());
+        engine.setCodeManually(agentSetupConfiguration.getCodeFormatDTO());
         MachineDataDTO machineData = engine.getMachineData();
+        cipheredString=agentSetupConfiguration.getCipheredString();
         dictionary=engine.getDictionary();
         saveEngineCopy();
         codeCalculatorFactory=new CodeCalculatorFactory(machineData.getAlphabetString(), machineData.getNumberOfRotorsInUse());
@@ -103,24 +106,9 @@ public class DecryptionAgent {
 
     }
 
-    public void pause()  {
-        isSystemPause =true;
-//        try {
-//            taskCreator.checkAccess();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-    }
-    public void resume()  {
-        isSystemPause =false;
-        synchronized (pauseLock)
-        {
-            //   System.out.println("Dm:Trying to resume");
-            pauseLock.notifyAll();
-        }
-    }
+
+
     public void stop(){
-        stopFlag=true;
         isFinishAllTask=true;
         threadAgents.shutdownNow();
     }
@@ -132,10 +120,16 @@ public class DecryptionAgent {
 
     public void addTasksToAgent(DecryptedTask[] decryptedTasksArray)
     {
-        taskSize=decryptedTasksArray.length;
+        tasksAmount =decryptedTasksArray.length;
         for(DecryptedTask task:decryptedTasksArray)
         {
-            task.setupAgentConf(codeCalculatorFactory,createNewEngineCopy(),successfulDecryption,dictionary,taskDoneAmount,agentName);
+            task.setupAgentConf(codeCalculatorFactory,
+                                createNewEngineCopy(),
+                                successfulDecryption,
+                                dictionary,
+                                taskDoneAmount,
+                                agentName,
+                                cipheredString);
             threadAgents.submit(task);
         }
     }
@@ -183,7 +177,7 @@ public class DecryptionAgent {
         return threadNumber;
     }
 
-    public long getTaskSize() {
-        return taskSize;
+    public long getTasksAmount() {
+        return tasksAmount;
     }
 }
