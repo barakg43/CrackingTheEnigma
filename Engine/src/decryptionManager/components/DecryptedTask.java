@@ -2,6 +2,7 @@ package decryptionManager.components;
 
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import enigmaEngine.Engine;
 
@@ -13,29 +14,27 @@ import static decryptionManager.DecryptionManager.isSystemPause;
 import static decryptionManager.DecryptionManager.pauseLock;
 
 
-public class DecryptedTask implements Runnable {
+public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
 
-
-    private final CodeFormatDTO initialCode;
-    private long taskSize=0L;
     private String agentName;
-    private final String cipheredString;
     private Engine copyEngine=null;
     private Dictionary dictionary=null;
     private List<CandidateDTO> possibleCandidates=null;
     private CodeCalculatorFactory codeCalculatorFactory=null;
     BlockingQueue<TaskFinishDataDTO> successfulDecryption=null;
     private AtomicCounter atomicCounter=null;
+    private String cipheredString;
 
-    public DecryptedTask(CodeFormatDTO initialCode, String cipheredString, long taskSize) {
-        this.initialCode = initialCode;
-        this.cipheredString=cipheredString;
-        this.taskSize = taskSize;
-
+    public DecryptedTask(CodeFormatDTO initialCode, long taskSize) {
+        super(initialCode,taskSize);
     }
     public void setupAgentConf(CodeCalculatorFactory codeCalculatorFactory,
-                               Engine copyEngine, BlockingQueue<TaskFinishDataDTO> successfulDecryption,
-                               Dictionary dictionary, AtomicCounter atomicCounter, String agentName)
+                               Engine copyEngine,
+                               BlockingQueue<TaskFinishDataDTO> successfulDecryption,
+                               Dictionary dictionary,
+                               AtomicCounter atomicCounter,
+                               String agentName,
+                               String cipheredString)
     {
         this.copyEngine = copyEngine;
         possibleCandidates=new ArrayList<>();
@@ -44,6 +43,7 @@ public class DecryptedTask implements Runnable {
         this.successfulDecryption=successfulDecryption;
         this.codeCalculatorFactory=codeCalculatorFactory;
         this.agentName=agentName;
+        this.cipheredString=cipheredString;
     }
     @Override
     public void run() {
