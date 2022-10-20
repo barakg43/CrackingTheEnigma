@@ -38,5 +38,6 @@
     <orderEntry type="library" name="okHttp" level="project" />
     <orderEntry type="module" module-name="HttpClientUtils" />
     <orderEntry type="module" module-name="Engine" />
+    <orderEntry type="module" module-name="BattlefieldManager" />
   </component>
 </module>

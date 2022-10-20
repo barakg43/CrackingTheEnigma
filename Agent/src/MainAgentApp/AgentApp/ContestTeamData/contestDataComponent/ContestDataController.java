@@ -2,7 +2,9 @@ package MainAgentApp.AgentApp.ContestTeamData.contestDataComponent;
 
 import allyDTOs.ContestDataDTO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import okhttp3.internal.platform.Platform;
 
 public class ContestDataController {
 
@@ -23,15 +25,15 @@ public class ContestDataController {
 
     public void updateContestData(ContestDataDTO contestData)
     {
-
-        battlefieldNameLabel.setText(contestData.getBattlefieldName());
-        uboatUserLabel.setText(contestData.getUboatUserName());
-        gameStatusLabel.setText(contestData.getGameStatus().toString());
-        gameLevelLabel.setText(contestData.getLevel().toString());
-        alliesAmountLabel.setText(String.format("%d/%d",
-                contestData.getRegisteredAmount(),
-                contestData.getRequiredAlliesAmount()));
-
+        javafx.application.Platform.runLater(() -> {
+            battlefieldNameLabel.setText(contestData.getBattlefieldName());
+            uboatUserLabel.setText(contestData.getUboatUserName());
+            gameStatusLabel.setText(contestData.getGameStatus().toString());
+            gameLevelLabel.setText(contestData.getLevel().toString());
+            alliesAmountLabel.setText(String.format("%d/%d",
+                    contestData.getRegisteredAmount(),
+                    contestData.getRequiredAlliesAmount()));
+        });
     }
     public void resetData()
     {

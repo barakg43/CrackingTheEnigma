@@ -34,4 +34,5 @@ public class ScreenController {
         mainStage.centerOnScreen();
 
     }
+
 }

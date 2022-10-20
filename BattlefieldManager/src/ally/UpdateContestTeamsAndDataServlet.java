@@ -1,4 +1,4 @@
-package ally;
+package Ally;
 
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
@@ -7,6 +7,7 @@ import allyDTOs.AllyContestDataAndTeams;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import com.google.gson.Gson;
+import constants.Constants;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static general.ConstantsHTTP.UBOAT_NAME;
+
 
 @WebServlet(name = "UpdateContestTeamsAndDataServlet", urlPatterns = {"/ally/update-contest-data"})
 public class UpdateContestTeamsAndDataServlet extends HttpServlet {
@@ -32,13 +35,15 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
 
-
         String username = SessionUtils.getUsername(request);
+        String uboatName = request.getParameter(UBOAT_NAME);
+        SingleAllyController singleAllyController= ServletUtils.getSystemManager().getSingleAlly(username);
+        singleAllyController.assignAllyToUboat(uboatName);
 
         if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
         {
             if(username == null)
-                response.getWriter().println("Must login as AGENT first!");
+                response.getWriter().println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

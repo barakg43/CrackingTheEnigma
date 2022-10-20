@@ -83,7 +83,6 @@ public class AllUserListController implements Closeable {
 //        return autoUpdate;
 //    }
 
-
     public void startListRefresher() {
         listRefresher = new UserListRefresher(
                 autoUpdate,
@@ -105,4 +104,10 @@ public class AllUserListController implements Closeable {
         }
     }
 
+    public void closeListRefresher() {
+        if (listRefresher != null && timer != null) {
+            listRefresher.cancel();
+            timer.cancel();
+        }
+    }
 }

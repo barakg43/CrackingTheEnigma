@@ -19,8 +19,6 @@ public class UpdateCandidateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
-        PrintWriter out = response.getWriter();
-
 
         String username = SessionUtils.getUsername(request);
 

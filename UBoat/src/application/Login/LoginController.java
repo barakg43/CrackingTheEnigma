@@ -46,6 +46,7 @@ public class LoginController implements LoginInterface {
         UBoatNames=new ArrayList<>();
         errorAlert.setTitle("Error");
         errorAlert.contentTextProperty().bind(errorMessageProperty);
+        userListComponentController.startListRefresher();
 //        http.client.HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
@@ -84,6 +85,7 @@ public class LoginController implements LoginInterface {
             System.out.println("login success");
             Platform.runLater(() -> {
                 mainUboatController.updateUserName(userName);
+                userListComponentController.closeListRefresher();
                 mainUboatController.switchToDashboard();
             });
         }

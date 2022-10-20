@@ -1,4 +1,4 @@
-package ally;
+package Ally;
 
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
@@ -36,7 +36,7 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
         if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
         {
             if(username == null)
-                response.getWriter().println("Must login as AGENT first!");
+                response.getWriter().println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

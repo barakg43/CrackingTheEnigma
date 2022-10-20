@@ -39,11 +39,20 @@ public class ConstantsHTTP {
 
     /**################ ALLY URLs ####################**/
     public final static  String ALLY_CONTEXT="/ally";
+    public static final String UPDATE_CONTEST="/update-contest-data";
+    public static final String UPDATE_DASHBOARD="/update-dashboard-data";
+    public static final String UPDATE_AGENTS="/update-agents-candidates";
+
+    public static final String UBOAT_NAME = "uboatName";
 
 
     /**################ AGENT URLs ####################**/
     public static final String AGENT_CONTEXT="/agent";
     public static final String CONTEST_DATA="/update-contest-data";
+
+    public static final String  UPDATE_CANDIDATE="/update-candidate";
+    public static final String  GET_TASKS="/get-tasks";
+
 
 //    public final static String USERS_LIST = FULL_SERVER_PATH + "/userslist";
 //    public final static String LOGOUT = FULL_SERVER_PATH + "/chat/logout";

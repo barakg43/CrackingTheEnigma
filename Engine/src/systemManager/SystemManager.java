@@ -30,6 +30,12 @@ public class SystemManager {
 
 
     }
+
+    public SingleAllyController getSingleAlly(String allyName)
+    {
+        return allyControllerMap.get(allyName);
+    }
+
     public synchronized void addUserName(String username, ApplicationType type)
     {
 
@@ -90,7 +96,7 @@ public class SystemManager {
                               Collections.unmodifiableSet(allyControllerMap.keySet()),
                               Collections.unmodifiableSet(agentToAllyMap.keySet()));
     }
-    public void addAllyUser(String allyName)
+    public  void addAllyUser(String allyName)
     {
 
         if(!allyControllerMap.containsKey(allyName))

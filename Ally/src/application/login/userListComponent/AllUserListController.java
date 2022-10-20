@@ -51,10 +51,9 @@ public class AllUserListController implements Closeable {
         alliesUsersObserve=FXCollections.observableArrayList();
         agentsUsersObserve=FXCollections.observableArrayList();
     }
-    public void updateTableView(UserListDTO allUserList)
-    {
-        if(allUserList!=null)
-            Platform.runLater(()->{
+    public void updateTableView(UserListDTO allUserList) {
+        if (allUserList != null)
+            Platform.runLater(() -> {
                 uboatUsersObserve.setAll(allUserList.getUboatUsersSet());
                 alliesUsersObserve.setAll(allUserList.getAlliesUsersSet());
                 agentsUsersObserve.setAll(allUserList.getAgentsUsersSet());
@@ -64,18 +63,6 @@ public class AllUserListController implements Closeable {
             });
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    public BooleanProperty autoUpdatesProperty() {
 //        return autoUpdate;
