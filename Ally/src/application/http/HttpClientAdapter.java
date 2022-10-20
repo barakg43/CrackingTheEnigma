@@ -2,6 +2,11 @@ package application.http;
 
 
 
+import agent.AgentDataDTO;
+import allyDTOs.AllyContestDataAndTeams;
+import allyDTOs.AllyContestScreenDTO;
+import allyDTOs.AllyDataDTO;
+import allyDTOs.ContestDataDTO;
 import application.ApplicationController;
 import application.login.LoginInterface;
 import com.sun.istack.internal.NotNull;
@@ -18,10 +23,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static general.ConstantsHTTP.*;
@@ -61,16 +63,49 @@ public class HttpClientAdapter {
     {
         return HTTP_CLIENT;
     }
-    public void getInitialCurrentCodeFormat(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
-        HTTP_CLIENT.doGetASync(ALL_CODE, new Callback() {
+    public static void updateContestAndData(Consumer<AllyContestDataAndTeams> allyContestDataAndTeamsConsumer) {
+        HTTP_CLIENT.doGetASync(UPDATE_CONTEST, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                ApplicationController.createErrorAlertWindow("Get all Code Configuration", e.getMessage());
+                ApplicationController.createErrorAlertWindow("Update contest data", e.getMessage());
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                codeConfigurationRequestHandler(response,allCodeFormatDTOConsumer);
+                if (response.code() == HTTP_OK) {
+                    assert response.body() != null;
+                    allyContestDataAndTeamsConsumer.accept(
+                            CustomHttpClient.GSON_INSTANCE.fromJson(
+                                    Objects.requireNonNull(
+                                            response.body()).string(), AllyContestDataAndTeams.class)
+                    );
+                }
+                else
+                    ApplicationController.createErrorAlertWindow("Code Configuration", Objects.requireNonNull(response.body()).string());
+
+            }
+        });
+    }
+
+
+    public static void updateDashboardScreen(Consumer<List<AgentDataDTO>> agentDataListConsumer,Consumer<List<ContestDataDTO>> contestDataListConsumer) {
+        HTTP_CLIENT.doGetASync(UPDATE_DASHBOARD, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                ApplicationController.createErrorAlertWindow("Update dashboard screen", e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() == HTTP_OK) {
+                    assert response.body() != null;
+
+                    AllyContestScreenDTO allyContestScreenDTO=CustomHttpClient.GSON_INSTANCE.fromJson(
+                            Objects.requireNonNull(response.body()).string(), AllyContestScreenDTO.class);
+
+                    agentDataListConsumer.accept(allyContestScreenDTO.getAllyDataDTOList());
+                    contestDataListConsumer.accept(allyContestScreenDTO.getContestDataDTOList());
+                }
+                else
+                    ApplicationController.createErrorAlertWindow("Dashboard screen", Objects.requireNonNull(response.body()).string());
 
             }
         });

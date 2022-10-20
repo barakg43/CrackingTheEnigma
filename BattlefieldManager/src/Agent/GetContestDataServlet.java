@@ -58,10 +58,6 @@ public class GetContestDataServlet extends HttpServlet {
     }
 
 
-
-
-
-
     private void printPart(Part part, PrintWriter out) {
         StringBuilder sb = new StringBuilder();
         sb

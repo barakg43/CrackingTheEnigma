@@ -31,8 +31,6 @@ public class SingleAllyController {
     {
         agentsTasksProgress.put(teamAgentsDataDTO.getAgentName(),teamAgentsDataDTO);
 
-
-
     }
     public List<TeamAgentsDataDTO> getAgentProgressDTOList()
     {
@@ -49,6 +47,7 @@ public class SingleAllyController {
     public void addCandidateToAllyList(AllyCandidateDTO allyCandidateDTO)
     {
         allyCandidateDTOList.add(allyCandidateDTO);
+
     }
 
 
@@ -64,6 +63,7 @@ public class SingleAllyController {
     {
         uboatManager=uboatName;
     }
+
     public String getUboatNameManager()
     {
         if(uboatManager!=null)

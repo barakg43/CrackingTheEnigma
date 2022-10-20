@@ -1,6 +1,7 @@
 package MainAgentApp;
 
 import MainAgentApp.AgentApp.AgentController;
+import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.agentLogin.AgentLoginController;
 import allyDTOs.ContestDataDTO;
 import javafx.application.Platform;
@@ -19,6 +20,8 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
+
+import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
 
 public class MainAgentController {
 
@@ -99,12 +102,24 @@ public class MainAgentController {
         AnchorPane.setTopAnchor(pane, 1.0);
         AnchorPane.setLeftAnchor(pane, 1.0);
         AnchorPane.setRightAnchor(pane, 1.0);
+
+
     }
 
     public void switchToAgentPage() {
         setMainPanelTo(agentComponent);
+        agentController.setActive();
+
+
+       // Platform.runLater(() -> HttpClientAdapter.getContestData(this::updateErrorMessage,this::getContestData));
+
+       // Platform.runLater(HttpClientAdapter::updateCandidate);
     }
 
+    public void updateErrorMessage(String errorMessage)
+    {
+        createErrorAlertWindow("contest error",errorMessage);
+    }
     public void switchToLogin() {
         agentController.resetData();
         Platform.runLater(() -> {

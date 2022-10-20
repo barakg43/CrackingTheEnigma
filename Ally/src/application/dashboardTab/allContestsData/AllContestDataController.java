@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,10 +110,21 @@ public class AllContestDataController {
 
     public void addAllContestsDataToTable(List<ContestDataDTO> contestDataDTOList)
     {
+
+        battlefieldNameColumn.getColumns().clear();
+        battlefieldDataColumn.getColumns().clear();
+        allContestsDataTable.getItems().removeAll(allContestsDataTable.getItems());
         allContestsDataTable.getItems().clear();
+        allContestsDataTable.refresh();
+
+
         for(ContestDataDTO contestData:contestDataDTOList) {
-            allContestsDataTable.setPrefHeight(allContestsDataTable.getPrefHeight()+110);
-            allContestsDataTable.getItems().add(new SingleContestRecord(contestData));
+            if(contestData!=null)
+            {
+                allContestsDataTable.setPrefHeight(allContestsDataTable.getPrefHeight()+110);
+                allContestsDataTable.getItems().add(new SingleContestRecord(contestData));
+            }
+
         }
         Optional<SingleContestRecord> lastSelectedOptional= allContestsDataTable.getItems()
                 .filtered(singleContestRecord ->
@@ -124,6 +136,7 @@ public class AllContestDataController {
         lastSelectedOptional.ifPresent(singleContestRecord ->
                                     allContestsDataTable.getSelectionModel()
                                             .select(singleContestRecord));
+
 //
 //        statisticRecordListObs.setAll(statisticRecordList);
 //        statisticTable.setItems(statisticRecordListObs);
@@ -143,6 +156,11 @@ public class AllContestDataController {
     {
         return allContestsDataTable.getSelectionModel().selectedItemProperty().get().getBattlefieldName();
     }
+    public String getSelectedUbaot()
+    {
+        return allContestsDataTable.getSelectionModel().selectedItemProperty().get().getContestData().getUboatUserName();
+    }
+
     @FXML
     private void initialize(){
         allContestsDataTable.setPrefHeight(50);

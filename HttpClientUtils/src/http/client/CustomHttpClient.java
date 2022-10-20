@@ -78,6 +78,7 @@ public class CustomHttpClient {
                 .url(ConstantsHTTP.FULL_SERVER_PATH+APP_CONTEXT_PATH+urlContext)
                 .build();
 
+        System.out.println("requset:::::::: " + request);
         Call call = HTTP_CLIENT.newCall(request);
         return executeRequest(call);
     }

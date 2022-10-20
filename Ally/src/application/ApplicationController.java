@@ -1,14 +1,11 @@
 package application;
 
 
-import agent.AgentDataDTO;
-import allyDTOs.ContestDataDTO;
 import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
-import application.http.HttpClientAdapter;
 import application.login.LoginController;
-import engineDTOs.DmDTO.BruteForceLevel;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -20,8 +17,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static application.CommonResourcesPaths.*;
 
@@ -31,7 +26,7 @@ public class ApplicationController {
     private final String CONTEST="contest";
     @FXML
     private FlowPane mainPain;
-    private boolean isContestScreenActive;
+    private SimpleBooleanProperty isContestScreenActive;
     private GridPane contestScreen;
     private ContestScreenController contestScreenController;
     private ScrollPane dashboardScreen;
@@ -43,11 +38,14 @@ public class ApplicationController {
 
     @FXML
     private void initialize() throws IOException {
+
         loadLoginScreen();
         loadContestScreen();
         loadDashboardScreen();
 
+        contestScreenController.setMainController(this);
 
+        isContestScreenActive=new SimpleBooleanProperty(true);
         //switchToDashboardScreen();
 //        List<AgentDataDTO> list=new ArrayList<>();
 //        AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);
@@ -93,23 +91,23 @@ public class ApplicationController {
         assert url != null;
         contestScreen=fxmlLoader.load(url.openStream());
         contestScreenController= fxmlLoader.getController();
+
     }
 
     private void getApplicationInformationUpdatesForScreen()
     {
-
-        new Thread(()-> {
-            if(isContestScreenActive)
-            {
-                System.out.print("fff");
-
-            }
-            else
-            {
-                System.out.print("fff");
-            }
-
-        }).start();
+//        new Thread(()-> {
+//            if(isContestScreenActive)
+//            {
+//                System.out.print("fff");
+//
+//            }
+//            else
+//            {
+//                System.out.print("fff");
+//            }
+//
+//        }).start();
 
 
 
@@ -129,25 +127,24 @@ public class ApplicationController {
     {
         mainPain.getChildren().clear();
         mainPain.getChildren().add(contestScreen);
-        isContestScreenActive=true;
+        isContestScreenActive.set(true);
 
     }
     private void readyActionPressedInDashboard()
     {
+        dashboardScreenController.stopListRefresher();
+        contestScreenController.startContestAndTeamDataRefresher();
         switchToContestScreen();
-
     }
-    private void switchToDashboardScreen()
-    {
-        mainPain.getChildren().clear();
-        mainPain.getChildren().add(dashboardScreen);
-        isContestScreenActive=false;
+
+    public String getSelectedUboat(){
+        return dashboardScreenController.getSelectedUboat();
     }
 
     public void switchToDashboard() {
         mainPain.getChildren().clear();
         mainPain.getChildren().add(dashboardScreen);
-        isContestScreenActive=false;
+        isContestScreenActive.set(false);
 
     }
 
@@ -165,5 +162,10 @@ public class ApplicationController {
 
     private void setMainPanelTo(String screenName) {
         screenController.activate(screenName);
+
+    }
+
+    public void updateListRefresher() {
+        dashboardScreenController.startListRefresher();
     }
 }

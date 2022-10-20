@@ -7,6 +7,7 @@ import MainAgentApp.agentLogin.LoginInterface;
 import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
 import com.sun.istack.internal.NotNull;
+import decryptionManager.components.DecryptedTask;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
@@ -20,10 +21,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
@@ -72,9 +70,8 @@ public class HttpClientAdapter {
         HTTP_CLIENT.doGetASync(CONTEST_DATA, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Get all Code Configuration", e.getMessage());
+                errorMessage.accept(e.getMessage());
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 assert response.body() != null;
@@ -94,35 +91,39 @@ public class HttpClientAdapter {
         return machineData;
     }
 
-    public void resetCodePosition() {
-        HTTP_CLIENT.doPostASync(RESET_CODE,"" ,new Callback() {
+    public static void updateCandidate() {
+        HTTP_CLIENT.doPostASync(UPDATE_CANDIDATE,"" ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Reset Code Machine", e.getMessage());
+                createErrorAlertWindow("update candidates", e.getMessage());
             }
-
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 assert response.body() != null;
                 if(response.code()!=HTTP_OK)
-                    createErrorAlertWindow("Reset Code Machine", "Error when trying to reset code machine");
+                    createErrorAlertWindow("update candidates", "Error when trying to update candidates");
             }
         });
 
     }
-    public void sendStartBattlefieldContestCommand()
+    public void getTasksList(Consumer<String> errorMessage)
     {
-        HTTP_CLIENT.doPostASync(READY_TO_START,"", new Callback() {
+        HTTP_CLIENT.doGetASync(GET_TASKS, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Start Battlefield", e.getMessage());
+                errorMessage.accept(e.getMessage());
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 assert response.body() != null;
-                if(response.code()!=HTTP_OK)
-                    createErrorAlertWindow("Start Battlefield", "Error when trying to start Battlefield Contest\n"+ Objects.requireNonNull(response.body()).string());
+                String body = response.body().string();
+                if (response.code() != HTTP_OK) {
+                    AgentController.createErrorAlertWindow("Error in contest data",body);
+                } else {
+//                    System.out.println("Body:"+body);
+//                    contestDataDTO = CustomHttpClient.GSON_INSTANCE.fromJson(body,  .class);
+//                    contestDataDTOConsumer.accept(contestDataDTO);
+                }
             }
         });
 

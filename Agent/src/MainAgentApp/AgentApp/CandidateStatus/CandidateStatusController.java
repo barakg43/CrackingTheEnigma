@@ -2,22 +2,33 @@ package MainAgentApp.AgentApp.CandidateStatus;
 
 
 import MainAgentApp.AgentApp.CandidateStatus.SingleCandidate.SingleCandidateController;
+import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.CommonResources;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class CandidateStatusController {
 
     public ScrollPane candidateStatusScrollPane;
     public FlowPane candidateStatusFlowPane;
+
+    private Timer timer;
+    private TimerTask listRefresher;
+    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
 
@@ -57,6 +68,22 @@ public class CandidateStatusController {
         }
 
 
+    }
+
+    public void startListRefresher() {
+        listRefresher = new CandidatesStatusRefresher(
+                autoUpdate,
+                this::addAllCandidate,
+                HttpClientAdapter.getHttpClient());
+        timer = new Timer();
+        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void closeListRefresher() {
+        if (listRefresher != null && timer != null) {
+            listRefresher.cancel();
+            timer.cancel();
+        }
     }
     public void clearAllTiles()
     {

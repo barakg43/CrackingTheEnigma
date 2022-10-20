@@ -4,6 +4,7 @@ package MainAgentApp.AgentApp;
 import MainAgentApp.AgentApp.AgentStatus.AgentStatusController;
 import MainAgentApp.AgentApp.CandidateStatus.CandidateStatusController;
 import MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataController;
+import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
 import allyDTOs.ContestDataDTO;
 import javafx.application.Platform;
@@ -12,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+
+import java.util.function.Consumer;
 
 public class AgentController {
 
@@ -68,5 +71,8 @@ public class AgentController {
     }
 
 
+    public void setActive() {
+        ContestAndTeamDataController.startListRefresher();
+    }
 }
 

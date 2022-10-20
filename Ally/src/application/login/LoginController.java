@@ -46,17 +46,13 @@ public class LoginController implements LoginInterface {
 
     @FXML
     public void initialize() {
-        UBoatNames=new ArrayList<>();
+        UBoatNames = new ArrayList<>();
         errorAlert.setTitle("Error");
         errorAlert.contentTextProperty().bind(errorMessageProperty);
-        //   userListComponentController.startListRefresher();  TODO : uncomment
+        userListComponentController.startListRefresher();
 
-//        http.client.HttpClientUtil.setCookieManagerLoggingFacility(line ->
-//                Platform.runLater(() ->
-//                        updateHttpStatusLine(line)));
+
     }
-
-
 
     @FXML
     void loginButtonClicked(ActionEvent ignoredEvent) {
@@ -65,8 +61,9 @@ public class LoginController implements LoginInterface {
             createErrorAlertWindow("Login error","User name is empty. You can't login with empty user name");
 //            errorMessageProperty.set();
         }
-        else
-            HttpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
+        else {
+            HttpClientAdapter.sendLoginRequest(this, this::updateErrorMessage, userName);
+        }
 //
     }
     public void stopUpdateUserList()
@@ -88,7 +85,9 @@ public class LoginController implements LoginInterface {
             System.out.println("login success");
             Platform.runLater(() -> {
                 applicationController.updateUserName(userName);
+                userListComponentController.close();
                 applicationController.switchToDashboard();
+                applicationController.updateListRefresher();
             });
         }
     }

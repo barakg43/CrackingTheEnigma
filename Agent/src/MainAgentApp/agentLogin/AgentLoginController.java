@@ -3,24 +3,32 @@ package MainAgentApp.agentLogin;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
 import agent.AgentDataDTO;
-import allyDTOs.ContestDataDTO;
+import general.UserListDTO;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import systemManager.SystemManager;
 
+
+import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
+import static general.ConstantsHTTP.REFRESH_RATE;
 
-public class AgentLoginController implements LoginInterface{
+public class AgentLoginController implements LoginInterface {
 
     @FXML
     private GridPane loginPage;
@@ -39,6 +47,22 @@ public class AgentLoginController implements LoginInterface{
 
     @FXML
     private Spinner<Integer> NumberOfTasks;
+
+    @FXML
+    private ListView<String> uboatUsersColumn;
+
+    @FXML
+    private ListView<String> alliesUsersColumn;
+
+    @FXML
+    private ListView<String> agentsUsersColumn;
+
+    private ObservableList<String> uboatUsersObserve;
+    private ObservableList<String> alliesUsersObserve;
+    private ObservableList<String> agentsUsersObserve;
+    private Timer timer;
+    private TimerTask listRefresher;
+    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -61,10 +85,45 @@ public class AgentLoginController implements LoginInterface{
         integerSpinnerValueFactory.setAmountToStepBy(10);
         NumberOfTasks.setValueFactory(integerSpinnerValueFactory);
         NumberOfTasks.editorProperty().get().setAlignment(Pos.CENTER);
+
+        initializeAllUsers();
+
+        startListRefresher();
 //        HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
     }
+
+    private void initializeAllUsers() {
+        uboatUsersColumn.setPlaceholder(
+                new Label("No rows to display"));
+
+        alliesUsersColumn.setPlaceholder(
+                new Label("No rows to display"));
+        agentsUsersColumn.setPlaceholder(
+                new Label("No rows to display"));
+        uboatUsersColumn.setStyle("-fx-alignment:center");
+        alliesUsersColumn.setStyle("-fx-alignment:center");
+        agentsUsersColumn.setStyle("-fx-alignment:center");
+        uboatUsersObserve= FXCollections.observableArrayList();
+        alliesUsersObserve=FXCollections.observableArrayList();
+        agentsUsersObserve=FXCollections.observableArrayList();
+    }
+
+
+    public void updateTableView(UserListDTO allUserList) {
+        if (allUserList != null)
+            Platform.runLater(() -> {
+                uboatUsersObserve.setAll(allUserList.getUboatUsersSet());
+                alliesUsersObserve.setAll(allUserList.getAlliesUsersSet());
+                agentsUsersObserve.setAll(allUserList.getAgentsUsersSet());
+                uboatUsersColumn.setItems(uboatUsersObserve);
+                alliesUsersColumn.setItems(alliesUsersObserve);
+                agentsUsersColumn.setItems(agentsUsersObserve);
+            });
+
+    }
+
     @FXML
     void loginButtonClicked(ActionEvent event) {
 
@@ -77,16 +136,7 @@ public class AgentLoginController implements LoginInterface{
         {
             HttpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,agentDataDTO);
 
-            Platform.runLater(() -> {
-                HttpClientAdapter.getContestData(this::updateErrorMessage,this::getContestData);
-            });
-
         }
-    }
-
-    public void getContestData(ContestDataDTO contestDataDTO)
-    {
-        mainController.getContestData(contestDataDTO);
     }
 
     public void updateErrorMessage(String errorMessage)
@@ -137,8 +187,7 @@ public class AgentLoginController implements LoginInterface{
             return null;
         }
 
-        //AlliesTeamComboBox.getSelectionModel().getSelectedItem()
-        return new AgentDataDTO(userName,"MOSH"
+        return new AgentDataDTO(userName,AlliesTeamComboBox.getSelectionModel().getSelectedItem()
                 ,numberOfThreads.getValue(), NumberOfTasks.getValue());
     }
 
@@ -160,8 +209,40 @@ public class AgentLoginController implements LoginInterface{
                 agentNameList.add(agentDataDTO.getAgentName());
                 mainController.updateUserName(agentDataDTO.getAgentName());
                 mainController.updateAlliesName(agentDataDTO.getAllyTeamName());
+                stopListRefresher();
                 mainController.switchToAgentPage();
             });
         }
     }
+
+    public void updateAlliesTeams(UserListDTO userListDTO)
+    {
+        Platform.runLater(() -> {
+                ObservableList < String > alliesNames = FXCollections.observableArrayList();
+        alliesNames.setAll(userListDTO.getAlliesUsersSet());
+        AlliesTeamComboBox.setItems(alliesNames);
+        });
+    }
+
+    public void startListRefresher() {
+        listRefresher = new UserListRefresher(
+                autoUpdate,
+                this::updateTableView,
+                this::updateAlliesTeams,
+                HttpClientAdapter.getHttpClient());
+        timer = new Timer();
+        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void stopListRefresher() {
+        uboatUsersColumn.getItems().clear();
+        alliesUsersColumn.getItems().clear();
+        agentsUsersColumn.getItems().clear();
+        autoUpdate.set(false);
+        if (listRefresher != null && timer != null) {
+            listRefresher.cancel();
+            timer.cancel();
+        }
+    }
+
 }

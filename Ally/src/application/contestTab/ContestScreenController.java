@@ -1,12 +1,18 @@
 package application.contestTab;
 
+import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import allyDTOs.TeamAgentsDataDTO;
+import application.ApplicationController;
 import application.contestTab.contestDataComponent.ContestDataController;
 import application.contestTab.contestsTeamsComponent.ContestTeamsController;
 import application.contestTab.teamsAgentsComponent.AllyProgressController;
+import application.contestTab.teamsCandidatesComponent.AgentsCandidatesController;
+import application.http.HttpClientAdapter;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -17,6 +23,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static application.ApplicationController.createErrorAlertWindow;
+import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class ContestScreenController {
 
@@ -30,6 +41,16 @@ public class ContestScreenController {
    @FXML private ContestTeamsController alliesTeamsComponentController;
     @FXML private AnchorPane teamsAgentsComponent;
     @FXML private AllyProgressController teamsAgentsComponentController;
+
+    @FXML private ScrollPane tamsCandidatesComponent;
+    @FXML private AgentsCandidatesController tamsCandidatesComponentController;
+
+
+    private Timer timer;
+    private TimerTask contestAndTeamListRefresher;
+    private TimerTask agentsAndCandidatesListRefresher;
+    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
+    private ApplicationController applicationController;
 
     @FXML
     private void initialize(){
@@ -67,6 +88,11 @@ public class ContestScreenController {
         teamsAgentsComponentController.addAgentsRecordsToAllyAgentTable(agentsRecordList);
     }
 
+    public void addTeamsCandidatesRecordsToTeamsTable(List<AllyCandidateDTO> agentsRecordList) {
+        tamsCandidatesComponentController.addAlliesDataToContestTeamTable(agentsRecordList);
+    }
+
+
     public void addAlliesDataToContestTeamTable(List<AllyDataDTO> allyDataDTOList) {
         alliesTeamsComponentController.addAlliesDataToContestTeamTable(allyDataDTOList);
     }
@@ -81,9 +107,47 @@ public class ContestScreenController {
     }
 
     public void readyButtonAction(ActionEvent actionEvent) {
-
+        closeContestAndTeamDataRefresher();
+        startAllyAgentsProgressAndCandidatesRefresher();
 
     }
+
+    private void closeContestAndTeamDataRefresher() {
+        if (contestAndTeamListRefresher != null && timer != null) {
+            contestAndTeamListRefresher.cancel();
+            timer.cancel();
+        }
+    }
+
+    public void startContestAndTeamDataRefresher() {
+        contestAndTeamListRefresher = new ContestAndTeamDataRefresher(
+                autoUpdate,
+                this::addAlliesDataToContestTeamTable,
+                this::updateContestData,
+                HttpClientAdapter.getHttpClient(),applicationController.getSelectedUboat(),this::updateErrorMessage);
+        timer = new Timer();
+        timer.schedule(contestAndTeamListRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void updateErrorMessage(String errorMessage)
+    {
+        createErrorAlertWindow("Login error",errorMessage);
+    }
+
+    public void startAllyAgentsProgressAndCandidatesRefresher() {
+        agentsAndCandidatesListRefresher = new AllyAgentsProgressAndCandidatesRefresher(
+                autoUpdate,
+                this::addTeamsCandidatesRecordsToTeamsTable,
+                this::addAgentsRecordsToAllyAgentTable,
+                HttpClientAdapter.getHttpClient());
+        timer = new Timer();
+        timer.schedule(agentsAndCandidatesListRefresher, REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void setMainController(ApplicationController applicationController) {
+        this.applicationController=applicationController;
+    }
+
 //    private Runnable pressButton;
 //
 //    public void setPressButton(Runnable pressButton) {
