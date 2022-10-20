@@ -4,6 +4,7 @@ import application.UBoatApp.ContestTab.TeamsStatus.SingleTeamData.SingleTeamCont
 import application.CommonResources;
 import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
+import application.UBoatApp.ContestTab.TeamsStatus.contestsTeamsComponent.ContestTeamsController;
 import http.client.CustomHttpClient;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -17,6 +18,7 @@ import javafx.scene.layout.FlowPane;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static general.ConstantsHTTP.REFRESH_RATE;
 
@@ -29,6 +31,10 @@ public class TeamsStatusController {
 
     @FXML
     private FlowPane flowPaneTeams;
+    @FXML
+    private ScrollPane  teamAlliesComponent;
+    @FXML
+    private ContestTeamsController teamAlliesComponentController;
     private TimerTask listRefresher;
     private Timer timer;
     private CustomHttpClient httpClient;
@@ -45,14 +51,9 @@ public class TeamsStatusController {
     public void setAllTeamAllies(ActiveTeamsDTO allTeamAllies)
     {
 
-        List<Node> allAlliesNodes=new ArrayList<>();
-        for(AllyDataDTO allyDataDTO: allTeamAllies.getAllyDataDTOList())
-        {
-            allAlliesNodes.add(createNewTile(allyDataDTO));
-        }
-
         Platform.runLater(()-> {
-            flowPaneTeams.getChildren().setAll(allAlliesNodes);
+
+            teamAlliesComponentController.addAlliesDataToContestTeamTable(new ArrayList<>(allTeamAllies.getAllyDataDTOList()));
             alliesAmountLabel.setText(
                     String.format("%d/%d",allTeamAllies.getRegisteredAmount(),
                             allTeamAllies.getRequiredAlliesAmount()));
@@ -77,11 +78,6 @@ public class TeamsStatusController {
         }
         return null;
     }
-    public void clearAllTiles()
-    {
-        flowPaneTeams.getChildren().clear();
-
-    }
 
 
 
@@ -93,18 +89,20 @@ public class TeamsStatusController {
 
  //   @Override
     public void close() {
-        clearAllTiles();
+        clearData();
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();
         }
     }
-
+    public void clearData(){
+        teamAlliesComponentController.clearAll();
+    }
     public void stopListRefresher() {
         close();
     }
     public void setHttpClient(CustomHttpClient httpClient) {
         this.httpClient = httpClient;
-        //startListRefresher();
+
     }
 }
