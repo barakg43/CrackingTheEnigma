@@ -1,4 +1,4 @@
-package Agent;
+package agent;
 
 import allyDTOs.ContestDataDTO;
 import com.google.gson.Gson;
@@ -16,9 +16,10 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 import static general.ConstantsHTTP.AGENT_CONTEXT;
-import static general.ConstantsHTTP.CONTEST_DATA;
+import static general.ConstantsHTTP.UPDATE_CONTEST;
 
-@WebServlet(name = "GetContestDataServlet", urlPatterns = {AGENT_CONTEXT+CONTEST_DATA})
+
+@WebServlet(name = "GetContestDataServlet", urlPatterns = AGENT_CONTEXT+UPDATE_CONTEST)
 public class GetContestDataServlet extends HttpServlet {
 
     @Override
@@ -49,36 +50,10 @@ public class GetContestDataServlet extends HttpServlet {
             }
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
-            response.setContentType("text/plain");
-            response.getWriter().println(e.getMessage());
-            response.getWriter().flush();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            ServletUtils.setBadRequestErrorResponse(e,response);
         }
 
     }
 
 
-    private void printPart(Part part, PrintWriter out) {
-        StringBuilder sb = new StringBuilder();
-        sb
-            .append("Parameter Name: ").append(part.getName()).append("\n")
-            .append("Content Type (of the file): ").append(part.getContentType()).append("\n")
-            .append("Size (of the file): ").append(part.getSize()).append("\n")
-            .append("Part Headers:").append("\n");
-
-        for (String header : part.getHeaderNames()) {
-            sb.append(header).append(" : ").append(part.getHeader(header)).append("\n");
-        }
-
-        out.println(sb.toString());
-    }
-
-    private String readFromInputStream(InputStream inputStream) {
-        return new Scanner(inputStream).useDelimiter("\\Z").next();
-    }
-
-    private void printFileContent(String content, PrintWriter out) {
-        out.println("------------------------------------------------------------File content:-----");
-        out.println(content);
-    }
 }

@@ -1,46 +1,50 @@
 package application.dashboardTab;
 
 import agent.AgentDataDTO;
-import allyDTOs.AllyContestScreenDTO;
+import allyDTOs.AllyDashboardScreenDTO;
 import allyDTOs.ContestDataDTO;
-import general.UserListDTO;
+import application.http.HttpClientAdapter;
 import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
 
 import java.util.List;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+import static application.ApplicationController.createErrorAlertWindow;
+import static general.ConstantsHTTP.UPDATE_CONTEST;
 import static general.ConstantsHTTP.UPDATE_DASHBOARD;
-import static general.ConstantsHTTP.USER_LIST;
 
 public class DashboardScreenDataRefresher  extends TimerTask {
 
 
     private final Consumer<List<AgentDataDTO>> usersListConsumer;
-    Consumer<List<ContestDataDTO>> contestListConsumer;
+    private final Consumer<List<ContestDataDTO>> contestListConsumer;
     private final CustomHttpClient httpClientUtil;
-    private final BooleanProperty shouldUpdate;
+
+    private final AtomicInteger counter=new AtomicInteger(0);
 
 
-    public DashboardScreenDataRefresher(BooleanProperty shouldUpdate, Consumer<List<AgentDataDTO>> agentsListConsumer, Consumer<List<ContestDataDTO>> contestListConsumer, CustomHttpClient httpClientUtil) {
-        this.shouldUpdate = shouldUpdate;
+    public DashboardScreenDataRefresher(Consumer<List<AgentDataDTO>> agentsListConsumer, Consumer<List<ContestDataDTO>> contestListConsumer) {
         this.usersListConsumer = agentsListConsumer;
         this.contestListConsumer=contestListConsumer;
-        this.httpClientUtil = httpClientUtil;
+        this.httpClientUtil = HttpClientAdapter.getHttpClient();
     }
 
     @Override
     public void run() {
+        String dashboardRawData=null;
 
-        if (!shouldUpdate.get()) {
-            return;
+        System.out.println(counter.getAndIncrement()+"# Sending dashboard data request to server....");
+        try {
+             dashboardRawData=httpClientUtil.doGetSync(UPDATE_DASHBOARD);
+        } catch (RuntimeException e) {
+            createErrorAlertWindow("Dashboard Update",e.getMessage());
         }
-        System.out.println("Sending dashboard data request to server....");
-        String userListRaw=httpClientUtil.doGetSync(UPDATE_DASHBOARD);
-        if(userListRaw!=null&&!userListRaw.isEmpty())
+        if(dashboardRawData!=null&&!dashboardRawData.isEmpty())
         {
-            AllyContestScreenDTO userListDTO=httpClientUtil.getGson().fromJson(userListRaw, AllyContestScreenDTO.class);
+            AllyDashboardScreenDTO userListDTO=httpClientUtil.getGson().fromJson(dashboardRawData, AllyDashboardScreenDTO.class);
             usersListConsumer.accept(userListDTO.getAllyDataDTOList());
             contestListConsumer.accept(userListDTO.getContestDataDTOList());
         }

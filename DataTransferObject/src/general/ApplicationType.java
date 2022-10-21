@@ -8,7 +8,7 @@ public enum ApplicationType {
     AGENT("agent");
 
 
-    final String name;
+    final private String name;
     ApplicationType(String type)
     {
         name=type;

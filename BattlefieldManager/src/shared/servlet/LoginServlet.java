@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-
 import static general.ConstantsHTTP.*;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {UBOAT_CONTEXT+LOGIN,ALLY_CONTEXT+LOGIN, AGENT_CONTEXT+LOGIN})
@@ -46,60 +45,61 @@ public class LoginServlet extends HttpServlet {
         SystemManager userManager = ServletUtils.getSystemManager();
         if (usernameFromSession == null) {
             //user is not logged in yet
-
             String typeFromUrl = (request.getRequestURI().split("/")[2]).toUpperCase();
-            ApplicationType type = ApplicationType.valueOf(typeFromUrl);
             try {
-                if (type == ApplicationType.AGENT)
-                    ServletUtils.getSystemManager().addAgentData(readAgentDTO(request));
-                else {
-                    String usernameFromParameter = request.getParameter(USERNAME);
-                    if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    } else {
-                        //normalize the username value
-                        usernameFromParameter = usernameFromParameter.trim();
-                        //typeFromUrl = typeFromUrl.trim().toUpperCase();
+                String usernameFromParameter = request.getParameter(USERNAME);
+                ApplicationType type = ApplicationType.valueOf(typeFromUrl);
+                if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
+                    response.getOutputStream().print("must use query parameter '"+USERNAME+"'");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                } else {
+                    //normalize the username value
+                    usernameFromParameter = usernameFromParameter.trim();
+                    //typeFromUrl = typeFromUrl.trim().toUpperCase();
 
-                        synchronized (this) {
-                            if (userManager.isUserExists(usernameFromParameter)) {
-                                System.out.println("user is not exist");
-                                response.getOutputStream().print("Username " + usernameFromParameter + " already exists. Please enter a different username.");
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                synchronized (this) {
+                        if (userManager.isUserExists(usernameFromParameter)) {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getOutputStream().print("Username " + usernameFromParameter + " already exists. Please enter a different username.");
+                            return;
+                        }
+                        //add the new user to the users list
+                        try {
+                            userManager.addUserName(usernameFromParameter, type);
+                            try {
+                                if (type == ApplicationType.AGENT)
+                                    ServletUtils.getSystemManager().addAgentData(readAgentDTO(request));
+                            } catch (RuntimeException ex) {
+                                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.\n" + ex.getMessage());
                                 return;
                             }
-                            //add the new user to the users list
-                            //ApplicationType type= ApplicationType.valueOf(typeFromUrl);
 
-
-                            try {
-                                userManager.addUserName(usernameFromParameter, type);
-//                                try {
-//                                    if(type==ApplicationType.AGENT)
-//                                        ServletUtils.getSystemManager().addAgentData(readAgentDTO(request));
-//                                }
-//                                catch (RuntimeException ex) {
-//                                    response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.\n"+ex.getMessage());
-//                                    return;
-//                                }
-
-                            } catch (RuntimeException ex) {
-                                response.getOutputStream().print("Error: " + ex.getMessage());
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            }
-                            request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
-                            //redirect the request to the chat room - in order to actually change the URL
-                            response.setStatus(HttpServletResponse.SC_OK);
-
-
+                        } catch (RuntimeException ex) {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getOutputStream().print("Error: " + ex.getMessage());
+                            return;
                         }
+                        request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
+                        //redirect the request to the chat room - in order to actually change the URL
+                        response.setStatus(HttpServletResponse.SC_OK);
+
+
                     }
                 }
-            } catch (RuntimeException ex) {
-                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.\n" + ex.getMessage());
-                return;
+            }catch (RuntimeException | IOException ex) {
+                            response.getOutputStream().print("Error: " + ex.getMessage());
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
+        } else {
+            //user is already logged in
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            if (userManager.isUserExists(usernameFromSession)) {
+                System.out.println(usernameFromSession+" is exist");
+                response.getOutputStream().print("Your logged in as " + usernameFromSession + " already.");
+                response.getOutputStream().flush();
+                }
 
+        }
 
 //            if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
 //                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -146,7 +146,7 @@ public class LoginServlet extends HttpServlet {
 //            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 //        }
         }
-    }
+
     
     private AgentDataDTO readAgentDTO(HttpServletRequest request)
     {
@@ -157,7 +157,7 @@ public class LoginServlet extends HttpServlet {
             AgentDataDTO agentDataDTO=gson.fromJson(inputReader, AgentDataDTO.class);
             System.out.println("agent name:" + agentDataDTO.getAgentName());
           //  System.out.println("ally name:" + gson.fromJson(inputReader, AgentDataDTO.class).getAllyTeamName());
-            System.out.println("task size :" + agentDataDTO.getTaskSize());
+            System.out.println("task size :" + agentDataDTO.getTasksSessionAmount());
             return agentDataDTO;
         } catch (IOException e) {
             throw new RuntimeException(e);

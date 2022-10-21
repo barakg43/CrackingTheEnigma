@@ -1,6 +1,5 @@
 package uboat;
 
-import com.google.gson.Gson;
 import enigmaEngine.Engine;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +10,6 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.*;
 

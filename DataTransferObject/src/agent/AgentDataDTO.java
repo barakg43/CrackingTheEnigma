@@ -5,13 +5,13 @@ public class AgentDataDTO{
     private final String agentName;
     private final String allyTeamName;
     private final int threadAmount;
-    private final int taskSize;
+    private final int tasksSessionAmount;
 
-    public AgentDataDTO(String agentName, String allyTeamName, int threadAmount, int taskSize) {
+    public AgentDataDTO(String agentName, String allyTeamName, int threadAmount, int tasksSessionAmount) {
         this.agentName = agentName;
         this.allyTeamName = allyTeamName;
         this.threadAmount = threadAmount;
-        this.taskSize = taskSize;
+        this.tasksSessionAmount = tasksSessionAmount;
     }
 
     public String getAgentName() {
@@ -26,8 +26,8 @@ public class AgentDataDTO{
         return threadAmount;
     }
 
-    public int getTaskSize() {
-        return taskSize;
+    public int getTasksSessionAmount() {
+        return tasksSessionAmount;
     }
 
 
@@ -36,7 +36,7 @@ public class AgentDataDTO{
         int hash = 7;
         hash = 23 * hash + agentName.hashCode() +
                 allyTeamName.hashCode()+
-                threadAmount+taskSize;
+                threadAmount+ tasksSessionAmount;
         return hash;
     }
 
@@ -52,6 +52,6 @@ public class AgentDataDTO{
         return   agentName.equals(other.agentName)&&
                  allyTeamName.equals(other.allyTeamName)&&
                 threadAmount==other.threadAmount &&
-                taskSize== other.taskSize;
+                tasksSessionAmount == other.tasksSessionAmount;
     }
 }

@@ -30,9 +30,9 @@ public class TeamAgentsDataController {
 
 
     public void addAgentsRecordToAgentTable(List<AgentDataDTO> agentRecordList) {
-        System.out.println(Thread.currentThread().getName()+ ": addRecordsToStatisticTable");
-        if (agentRecordList == null) {
-            System.out.println("agentRecordList is empty!");
+       // System.out.println(Thread.currentThread().getName()+ ": addRecordsToStatisticTable");
+        if (agentRecordList == null||agentRecordList.isEmpty()) {
+          //  System.out.println("agentRecordList is empty!");
             return;
         }
         agentsDataListObs.setAll(agentRecordList);

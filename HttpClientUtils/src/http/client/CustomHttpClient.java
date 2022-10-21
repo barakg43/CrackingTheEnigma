@@ -5,7 +5,9 @@ import general.ApplicationType;
 import general.ConstantsHTTP;
 import okhttp3.*;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -78,7 +80,7 @@ public class CustomHttpClient {
                 .url(ConstantsHTTP.FULL_SERVER_PATH+APP_CONTEXT_PATH+urlContext)
                 .build();
 
-        System.out.println("requset:::::::: " + request);
+     //   System.out.println("requset:::::::: " + request);
         Call call = HTTP_CLIENT.newCall(request);
         return executeRequest(call);
     }
@@ -97,9 +99,10 @@ public class CustomHttpClient {
         try {
             // blocking
             response = call.execute();
+            String body=response.body()!=null ? Objects.requireNonNull(response.body()).string() :null;
             if (response.code() != HTTP_OK)
-                throw new RuntimeException(Objects.requireNonNull(response.body()).string());
-            return response.body()!=null ? Objects.requireNonNull(response.body()).string() :null;
+                throw new RuntimeException(body);
+            return body;
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -110,10 +113,7 @@ public class CustomHttpClient {
         }
         return null;
     }
-    public String readFromInputStream(InputStream inputStream) throws IOException {
-        inputStream.reset();
-        return new Scanner(inputStream).useDelimiter("\\Z").next();
-    }
+
     public void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();

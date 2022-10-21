@@ -1,10 +1,10 @@
 package application.TEST_GUI;
 
 
+import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
 import allyDTOs.ContestDataDTO;
-import UBoatDTO.GameStatus;
-import application.contestTab.ContestScreenController;
+import application.dashboardTab.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,37 +57,13 @@ public class HelloFxmlMain extends Application{
 
     }
 
-    public List<int[]> generate(int rotorNumberInSystem, int rotorNumberInUsed) {
-        List<int[]> combinations = new ArrayList<>();
-        int[] combination = new int[rotorNumberInUsed];
-
-        // initialize with lowest lexicographic combination
-        for (int i = 0; i < rotorNumberInUsed; i++) {
-            combination[i] = i;
-        }
-
-        while (combination[rotorNumberInUsed - 1] < rotorNumberInSystem) {
-            combinations.add(combination.clone());
-
-            // generate next combination in lexicographic order
-            int t = rotorNumberInUsed - 1;
-            while (t != 0 && combination[t] == rotorNumberInSystem - rotorNumberInUsed + t) {
-                t--;
-            }
-            combination[t]++;
-            for (int i = t + 1; i < rotorNumberInUsed; i++) {
-                combination[i] = combination[i - 1] + 1;
-            }
-        }
-
-        return combinations;
-    }
 
 
     private void start5(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
         URL url=getClass().getClassLoader().getResource(APP_FXML_INCLUDE_RESOURCE);
         fxmlLoader.setLocation(url);
+
 
         assert url != null;
         Parent root=fxmlLoader.load(url.openStream());

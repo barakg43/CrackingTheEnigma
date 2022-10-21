@@ -1,27 +1,20 @@
 package MainAgentApp.AgentApp.http;
 
 
-
 import MainAgentApp.AgentApp.AgentController;
 import MainAgentApp.agentLogin.LoginInterface;
 import agent.AgentDataDTO;
+import agent.AgentSetupConfigurationDTO;
 import allyDTOs.ContestDataDTO;
 import com.sun.istack.internal.NotNull;
-import decryptionManager.components.DecryptedTask;
-import engineDTOs.AllCodeFormatDTO;
-import engineDTOs.CodeFormatDTO;
-import engineDTOs.MachineDataDTO;
 import general.ApplicationType;
 import http.client.CustomHttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.*;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
@@ -31,26 +24,23 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class HttpClientAdapter {
 
 
-    private Set<String> wordsSet;
+
     private static final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(ApplicationType.AGENT);
-    private MachineDataDTO machineData = null;
+
     private static ContestDataDTO contestDataDTO=null;
 
     public HttpClientAdapter() {
-        this.wordsSet = new HashSet<>();
+
     }
 
 
-    public Set<String> getDictionaryWords() {
-        return wordsSet;
-    }
-
-    public static void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, AgentDataDTO agentDataDTO) {
+    public static void sendLoginRequest(LoginInterface loginInterface,AgentDataDTO agentDataDTO) {
         String agentDataBody= CustomHttpClient.GSON_INSTANCE.toJson(agentDataDTO);
-        HTTP_CLIENT.doPostASync(LOGIN,agentDataBody, new Callback() {
+        String contextUrl = String.format(QUERY_FORMAT, LOGIN, USERNAME, agentDataDTO.getAgentName());
+        HTTP_CLIENT.doPostASync(contextUrl,agentDataBody, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                errorMessage.accept(e.getMessage());
+                createErrorAlertWindow("Login",e.getMessage());
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
@@ -67,7 +57,7 @@ public class HttpClientAdapter {
     }
 
     public static void getContestData(Consumer<String> errorMessage, Consumer<ContestDataDTO> contestDataDTOConsumer) {
-        HTTP_CLIENT.doGetASync(CONTEST_DATA, new Callback() {
+        HTTP_CLIENT.doGetASync(UPDATE_CONTEST, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 errorMessage.accept(e.getMessage());
@@ -87,12 +77,10 @@ public class HttpClientAdapter {
         });
     }
 
-    public MachineDataDTO getMachineData() {
-        return machineData;
-    }
+
 
     public static void updateCandidate() {
-        HTTP_CLIENT.doPostASync(UPDATE_CANDIDATE,"" ,new Callback() {
+        HTTP_CLIENT.doPostASync(UPDATE_CANDIDATES,"" ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 createErrorAlertWindow("update candidates", e.getMessage());
@@ -106,144 +94,49 @@ public class HttpClientAdapter {
         });
 
     }
-    public void getTasksList(Consumer<String> errorMessage)
+    public static void getTasksList(Consumer<AgentSetupConfigurationDTO> configurationDTOConsumer )
     {
         HTTP_CLIENT.doGetASync(GET_TASKS, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                errorMessage.accept(e.getMessage());
+                createErrorAlertWindow("Get Tasks Session",e.getMessage());
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 assert response.body() != null;
                 String body = response.body().string();
                 if (response.code() != HTTP_OK) {
-                    AgentController.createErrorAlertWindow("Error in contest data",body);
+                    AgentController.createErrorAlertWindow("Get Tasks Session",body);
                 } else {
-//                    System.out.println("Body:"+body);
-//                    contestDataDTO = CustomHttpClient.GSON_INSTANCE.fromJson(body,  .class);
-//                    contestDataDTOConsumer.accept(contestDataDTO);
+
+                    AgentSetupConfigurationDTO configurationDTO = CustomHttpClient.GSON_INSTANCE.fromJson(body,AgentSetupConfigurationDTO.class);
+                    configurationDTOConsumer.accept(configurationDTO);
                 }
             }
         });
 
     }
 
-    public boolean checkIfAllLetterInDic(String sentence)
-    {
-        String[] wordsArray = sentence.trim().split(" ");
-        for (String word:wordsArray) {
-            if(!wordsSet.contains(word))
-                return false;
-        }
-        return true;
-    }
 
-    public void processDataInput(String text,Consumer<String> outputHandler) {
-        String body=INPUT_PROPERTY+'='+text;
-        HTTP_CLIENT.doPostASync(INPUT_STRING, body,new Callback() {
+
+    public static void getAgentSetupConfiguration(Consumer<AgentSetupConfigurationDTO> updateAgentSettings) {
+
+        HTTP_CLIENT.doGetASync(AGENT_CONFIGURATION, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Processing Input String", e.getMessage());
-            }
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Properties prop = new Properties();
-                String body=Objects.requireNonNull(response.body()).string();
-                Reader responseStream=new StringReader(body);
-                System.out.println("Body:"+body);
-                prop.load(responseStream);
-                responseStream.close();
-                if(response.code()==HTTP_OK)
-
-                    outputHandler.accept(prop.getProperty(OUTPUT_PROPERTY));
-                else
-                    createErrorAlertWindow("Processing Input String", body);
-
-            }
-        });
-
-    }
-
-    public void uploadXMLFile(Consumer<String> updateFileSettings,Consumer<String> errorMessage,String filePath) {
-
-        HTTP_CLIENT.uploadFileRequest(filePath, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
-                errorMessage.accept(e.getMessage());
+                createErrorAlertWindow("Agent Configuration",e.getMessage());
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseBody = Objects.requireNonNull(response.body()).string();
                 if (response.code() != HTTP_OK) {
-                    createErrorAlertWindow("Upload file to Server", Objects.requireNonNull(response.body()).string());
+                    createErrorAlertWindow("Agent Configuration", Objects.requireNonNull(response.body()).string());
                 } else {
-                    System.out.println(filePath+" uploaded successfully");
-                    machineData= CustomHttpClient.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
-                    wordsSet=machineData.getDictionaryWords();
-                    updateFileSettings.accept(filePath);
+                    AgentSetupConfigurationDTO agentSetupConfigurationDTO = CustomHttpClient.GSON_INSTANCE.fromJson(responseBody, AgentSetupConfigurationDTO.class);
+                    updateAgentSettings.accept(agentSetupConfigurationDTO);
                 }
             }
         });
     }
-    private void codeConfigurationRequestHandler(Response response,Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) throws IOException {
 
-        if (response.code() == HTTP_OK) {
-            assert response.body() != null;
-            allCodeFormatDTOConsumer.accept(
-                    CustomHttpClient.GSON_INSTANCE.fromJson(
-                            Objects.requireNonNull(
-                                    response.body()).string(), AllCodeFormatDTO.class)
-            );
-        }
-        else
-            createErrorAlertWindow("Code Configuration", Objects.requireNonNull(response.body()).string());
-
-    }
-
-
-    public void resetAllData() {
-        HTTP_CLIENT.doPostASync(RESET_MACHINE,"", new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Reset Machine", e.getMessage());
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
-                if(response.code()!=HTTP_OK)
-                    createErrorAlertWindow("Reset Machine", "Error when trying to reset machine configuration\n"+ Objects.requireNonNull(response.body()).string());
-            }
-        });
-
-    }
-
-    public void setCodeManually(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer, CodeFormatDTO selectedCode) {
-
-        String selectedCodeBody= CustomHttpClient.GSON_INSTANCE.toJson(selectedCode);
-        HTTP_CLIENT.doPostASync(MANUALLY_CODE,selectedCodeBody, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Manual Code Configuration", e.getMessage());
-            }
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                codeConfigurationRequestHandler(response,allCodeFormatDTOConsumer);
-            }
-        });
-    }
-    public void setCodeAutomatically(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) {
-        HTTP_CLIENT.doGetASync(AUTOMATIC_CODE, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Automatic Code Configuration", e.getMessage());
-            }
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                codeConfigurationRequestHandler(response,allCodeFormatDTOConsumer);
-            }
-        });
-    }
 }

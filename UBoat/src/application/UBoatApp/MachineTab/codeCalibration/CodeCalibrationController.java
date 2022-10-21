@@ -2,10 +2,10 @@ package application.UBoatApp.MachineTab.codeCalibration;
 
 
 import application.UBoatApp.MachineTab.UBoatMachineController;
+import application.http.HttpClientAdapter;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.RotorInfoDTO;
-import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,7 +14,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.util.*;
 import java.util.stream.Collectors;

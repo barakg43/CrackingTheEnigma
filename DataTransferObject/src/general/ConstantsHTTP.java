@@ -9,16 +9,24 @@ public class ConstantsHTTP {
     public final static int REFRESH_RATE = 2000;
 
     public static final String USERNAME = "username";
+    public static final String AMOUNT="amount";
     public static final String INPUT_PROPERTY = "input";
     public static final String OUTPUT_PROPERTY = "output";
+
+    public static final String QUERY_FORMAT="%s?%s=%s";
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
     private final static String CONTEXT_PATH = "/BattlefieldManager";
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
+    /**################ Common URLs ####################**/
     public final static String LOGIN = "/login";
     public static final String USER_LIST = "/user-list";
+    public static final String  UPDATE_CANDIDATES="/update-candidates";
+//    public static final String CONTEST_DATA="/update-contest-data";
+    public static final String UPDATE_DASHBOARD="/update-dashboard-data";
 
+    public static final String UPDATE_CONTEST="/update-contest-data";
 
     /**################ UBOAT URLs ####################**/
 
@@ -27,7 +35,7 @@ public class ConstantsHTTP {
     public static final String ACTIVE_TEAMS_LIST ="/active-teams-list";
     public static final String INPUT_STRING = "/input-string";
     public static final String MACHINE_DATA = "/machine-data";
-    public static final String CANDIDATES = "/candidates";
+
     public static final String DICTIONARY_WORDS = "/dictionary-words";
     public static final String AUTOMATIC_CODE = "/automatic-code";
     public static final String ALL_CODE = "/code-configuration";
@@ -39,18 +47,16 @@ public class ConstantsHTTP {
 
     /**################ ALLY URLs ####################**/
     public final static  String ALLY_CONTEXT="/ally";
-    public static final String UPDATE_CONTEST="/update-contest-data";
-    public static final String UPDATE_DASHBOARD="/update-dashboard-data";
-    public static final String UPDATE_AGENTS="/update-agents-candidates";
 
-    public static final String UBOAT_NAME = "uboatName";
+    public static final String REGISTER_TO_UBOAT = "/register-to-uboat";
+    public static final String UBOAT_PARAMETER = ApplicationType.UBOAT.toString();
 
 
     /**################ AGENT URLs ####################**/
     public static final String AGENT_CONTEXT="/agent";
-    public static final String CONTEST_DATA="/update-contest-data";
+    public static final String UPDATE_PROGRESS = "/update-progress";
+    public static final String AGENT_CONFIGURATION = "/configuration";
 
-    public static final String  UPDATE_CANDIDATE="/update-candidate";
     public static final String  GET_TASKS="/get-tasks";
 
 

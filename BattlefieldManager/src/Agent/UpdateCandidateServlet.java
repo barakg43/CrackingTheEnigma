@@ -1,4 +1,4 @@
-package Agent;
+package agent;
 
 import allyDTOs.AllyCandidateDTO;
 import com.google.gson.Gson;
@@ -12,8 +12,11 @@ import utils.SessionUtils;
 
 import java.io.*;
 
+import static general.ConstantsHTTP.AGENT_CONTEXT;
+import static general.ConstantsHTTP.UPDATE_CANDIDATES;
 
-@WebServlet(name = "UpdateCandidateServlet", urlPatterns = {"/agent/update-candidate"})
+
+@WebServlet(name = "UpdateCandidateServlet", urlPatterns = AGENT_CONTEXT+UPDATE_CANDIDATES)
 public class UpdateCandidateServlet extends HttpServlet {
 
     @Override
@@ -37,10 +40,7 @@ public class UpdateCandidateServlet extends HttpServlet {
             ServletUtils.getSystemManager().getSingleAllyController(allyCandidateDTO.getAllyName()).addCandidateToAllyList(allyCandidateDTO);
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
-            response.setContentType("text/plain");
-            response.getWriter().println(e.getMessage());
-            response.getWriter().flush();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+          ServletUtils.setBadRequestErrorResponse(e,response);
         }
 
     }

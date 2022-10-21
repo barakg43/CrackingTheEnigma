@@ -1,7 +1,6 @@
 package uboat;
 
-//taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
-// and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
+
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -45,11 +44,12 @@ public class InputDataStringServlet extends HttpServlet {
 
         if(inputString!=null)
         {
-       String output= ServletUtils.getSystemManager()
-                .getBattleFieldController(username)
+       SingleBattleFieldController uboatController= ServletUtils.getSystemManager()
+                    .getBattleFieldController(username);
+       String output=uboatController
                .getEnigmaEngine()
                .processDataInput(inputString);
-
+       uboatController.setContestInitConfiguration(output);
        out.println(OUTPUT_PROPERTY+'='+output);
        out.flush();
         response.setStatus(HttpServletResponse.SC_OK);

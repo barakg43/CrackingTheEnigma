@@ -6,13 +6,15 @@ import application.UBoatApp.UBoatAppController;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
-import general.ApplicationType;
 import http.client.CustomHttpClient;
-
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Properties;
@@ -39,7 +41,7 @@ public class HttpClientAdapter {
     }
 
     public static void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
-        String contextUrl = String.format("%s?%s=%s", LOGIN, USERNAME, userName);
+        String contextUrl = String.format(QUERY_FORMAT, LOGIN, USERNAME, userName);
         HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

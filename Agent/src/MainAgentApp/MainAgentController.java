@@ -1,9 +1,8 @@
 package MainAgentApp;
 
 import MainAgentApp.AgentApp.AgentController;
-import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.agentLogin.AgentLoginController;
-import allyDTOs.ContestDataDTO;
+import agent.AgentDataDTO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -85,14 +84,12 @@ public class MainAgentController {
     }
 
 
-    public void updateUserName(String userName) {
-        currentUserName.set(userName);
-    }
+    public void updateAgentInfo(AgentDataDTO agentDataDTO) {
+        currentUserName.set(agentDataDTO.getAgentName());
+        agentController.setAlliesName(agentDataDTO.getAllyTeamName());
+        agentController.setAgentInfo(agentDataDTO);
 
-    public void updateAlliesName(String alliesName) {
-        agentController.setAlliesName(alliesName);
     }
-
 
     private void setMainPanelTo(Parent pane) {
 
@@ -144,10 +141,7 @@ public class MainAgentController {
 
     }
 
-    public void getContestData(ContestDataDTO contestDataDTO)
-    {
-        agentController.getContestData(contestDataDTO);
-    }
+
 
 
 }

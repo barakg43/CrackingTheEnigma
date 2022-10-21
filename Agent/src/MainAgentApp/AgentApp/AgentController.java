@@ -6,15 +6,15 @@ import MainAgentApp.AgentApp.CandidateStatus.CandidateStatusController;
 import MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataController;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
-import allyDTOs.ContestDataDTO;
+import UBoatDTO.GameStatus;
+import agent.AgentDataDTO;
+import decryptionManager.DecryptionAgent;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-
-import java.util.function.Consumer;
 
 public class AgentController {
 
@@ -27,7 +27,13 @@ public class AgentController {
     @FXML private ScrollPane agentsCandidates;
     @FXML private CandidateStatusController agentsCandidatesController;
     private MainAgentController mainController;
+    private DecryptionAgent decryptionAgent;
+    private boolean isAgentConf=false;
 
+    @FXML
+    public void initialize() {
+        ContestAndTeamDataController.setAgentController(this);
+    }
     public void resetData() {
         ContestAndTeamDataController.resetData();
         agentProgressAndStatusController.resetData();
@@ -46,8 +52,17 @@ public class AgentController {
         //agentProgressAndStatus.prefHeightProperty().bind(Bindings.divide(heightProperty,4));
         agentsCandidates.prefWidthProperty().bind(widthProperty);
         //agentsCandidates.prefHeightProperty().bind(Bindings.divide(heightProperty,3));
-    }
 
+    }
+    public void setAgentInfo(AgentDataDTO agentDataDTO)
+    {
+        decryptionAgent=new DecryptionAgent(agentDataDTO,this::getNewTasksSession);
+    }
+    public void getNewTasksSession()
+    {
+
+
+    }
     public void setMainController(MainAgentController mainAgentController) {
         this.mainController=mainAgentController;
     }
@@ -65,9 +80,16 @@ public class AgentController {
 
     }
 
-    public  void getContestData(ContestDataDTO contestDataDTO)
+
+
+    public void setGameStatus(GameStatus gameStatus)
     {
-        ContestAndTeamDataController.updateContestData(contestDataDTO);
+        if(!isAgentConf&&gameStatus== GameStatus.ACTIVE) {
+            HttpClientAdapter.getAgentSetupConfiguration(decryptionAgent::setSetupConfiguration);
+            isAgentConf=true;
+        }
+
+//        ContestAndTeamDataController.updateContestData(contestDataDTO);
     }
 
 

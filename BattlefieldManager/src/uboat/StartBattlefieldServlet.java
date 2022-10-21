@@ -1,7 +1,5 @@
 package uboat;
 
-//taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
-// and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
 import UBoatDTO.GameStatus;
 import jakarta.servlet.annotation.WebServlet;
@@ -37,7 +35,7 @@ public class StartBattlefieldServlet extends HttpServlet {
         ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getContestDataManager()
-                .changeGameStatus(GameStatus.ACTIVE);
+                .changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
         response.setStatus(HttpServletResponse.SC_OK);
 
     }

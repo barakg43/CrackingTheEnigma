@@ -23,12 +23,12 @@ import static general.ConstantsHTTP.REFRESH_RATE;
 public class DashboardScreenController {
 
     @FXML private ScrollPane mainPane;
-    @FXML private Button readyButton;
+    @FXML private Button registerButton;
     @FXML private ScrollPane agentsDataTableComponent;
     @FXML private TeamAgentsDataController agentsDataTableComponentController;
     @FXML private ScrollPane contestTableComponent;
     @FXML private AllContestDataController contestTableComponentController;
-    private Runnable readyActionParent;
+    private Runnable afterRegisterActionParent;
     private Timer timer;
     private TimerTask listRefresher;
     private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
@@ -45,18 +45,18 @@ public class DashboardScreenController {
 
     @FXML
     private void initialize(){
-        contestTableComponentController.setReadyButtonDisablePropertyParent(readyButton.disableProperty());
+        contestTableComponentController.setReadyButtonDisablePropertyParent(registerButton.disableProperty());
     }
 
     @FXML
-    private void readyMoveToContestScreen(ActionEvent actionEvent) {
-        String battlefieldName= contestTableComponentController.getSelectedBattlefieldName();
-        readyActionParent.run();
+    private void registerMoveToContestScreen(ActionEvent ignoredActionEvent) {
+        String uboatName= contestTableComponentController.getSelectedUbaot();
+        HttpClientAdapter.registerAllyToContest(uboatName,afterRegisterActionParent);
 
     }
 
-    public void setReadyActionParent(Runnable readyActionParent) {
-        this.readyActionParent = readyActionParent;
+    public void setAfterRegisterActionParent(Runnable afterRegisterActionParent) {
+        this.afterRegisterActionParent = afterRegisterActionParent;
     }
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
         mainPane.prefHeightProperty().bind(sceneHeightProperty);
@@ -64,11 +64,7 @@ public class DashboardScreenController {
     }
 
     public void startListRefresher() {
-        listRefresher = new DashboardScreenDataRefresher(
-                autoUpdate,
-                this::addAllAgentsDataToTable,
-                this::addAllContestDataToTable,
-                HttpClientAdapter.getHttpClient());
+        listRefresher = new DashboardScreenDataRefresher(this::addAllAgentsDataToTable, this::addAllContestDataToTable );
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

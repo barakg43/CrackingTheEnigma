@@ -8,7 +8,8 @@ import jakarta.servlet.annotation.WebListener;
 import systemManager.SystemManager;
 import utils.ServletUtils;
 
-import static utils.ServletUtils.*;
+import static utils.ServletUtils.GSON_ATTRIBUTE_NAME;
+import static utils.ServletUtils.SYSTEM_MANAGER_ATTRIBUTE_NAME;
 
 @WebListener
 public class MainContextListener implements ServletContextListener {

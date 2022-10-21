@@ -1,9 +1,8 @@
 package MainAgentApp.AgentApp.ContestTeamData;
 
-import Agent.GetContestDataServlet;
+import MainAgentApp.AgentApp.AgentController;
 import MainAgentApp.AgentApp.ContestTeamData.contestDataComponent.ContestDataController;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
-import MainAgentApp.agentLogin.UserListRefresher;
 import allyDTOs.ContestDataDTO;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,6 +19,7 @@ public class ContestTeamDataController {
     @FXML private Label alliesName;
     @FXML private AnchorPane contestDataComponent;
     @FXML private ContestDataController contestDataComponentController;
+    private AgentController agentController;
     private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
 
     private TimerTask listRefresher;
@@ -31,6 +31,7 @@ public class ContestTeamDataController {
     }
     public void updateContestData(ContestDataDTO contestDataDTO)
     {
+        agentController.setGameStatus(contestDataDTO.getGameStatus());
         contestDataComponentController.updateContestData(contestDataDTO);
         stopListRefresher();
     }
@@ -41,10 +42,7 @@ public class ContestTeamDataController {
 
     public void startListRefresher() {
 
-        listRefresher = new ContestTeamDataListRefresher(
-                autoUpdate,
-                this::updateContestData,
-                HttpClientAdapter.getHttpClient());
+        listRefresher = new ContestTeamDataListRefresher(this::updateContestData);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
 
@@ -56,5 +54,9 @@ public class ContestTeamDataController {
             listRefresher.cancel();
             timer.cancel();
         }
+    }
+
+    public void setAgentController(AgentController agentController) {
+        this.agentController = agentController;
     }
 }

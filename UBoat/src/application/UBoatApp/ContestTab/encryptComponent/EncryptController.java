@@ -6,18 +6,17 @@ package application.UBoatApp.ContestTab.encryptComponent;
 //import UI.application.generalComponents.SimpleCode.SimpleCodeController;
 
 import application.UBoatApp.ContestTab.ContestController;
-import application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.AutomaticEncryptDMController;
 import application.UBoatApp.ContestTab.SimpleCode.SimpleCodeController;
 import application.UBoatApp.ContestTab.Trie.Trie;
 import application.UBoatApp.ContestTab.Trie.TrieNode;
+import application.UBoatApp.ContestTab.encryptComponent.DMencrypt.automaticEncryptDM.AutomaticEncryptDMController;
+import application.http.HttpClientAdapter;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
-import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,8 +30,9 @@ import java.util.ArrayList;
 
 public class EncryptController {
     public VBox encrypteVBox;
-    @FXML
-    private ScrollPane dictionaryScrollPane;
+    @FXML private Button readyButton;
+
+    @FXML private ScrollPane dictionaryScrollPane;
     @FXML
     private StackPane dictionaryStackPane;
     @FXML
@@ -81,7 +81,7 @@ public class EncryptController {
 //        });
 
         createDictionaryList();
-
+        readyButton.setDisable(true);
         outputString = new SimpleStringProperty();
         bindOutputStringBetweenComponent();
         searchBox.textProperty().addListener((ChangeListener) (observable, oldVal, newVal) -> search((String) oldVal, (String) newVal));
@@ -188,9 +188,8 @@ public class EncryptController {
     }
 
     public void doneProcessData() {
-
+        readyButton.setDisable(false);
         HttpClientAdapter.getInitialCurrentCodeFormat(this::setSelectedCode);
-
     }
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
@@ -203,6 +202,9 @@ public class EncryptController {
         return codeEncryptComponentController;
     }
 
+    public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
+        HttpClientAdapter.sendStartBattlefieldContestCommand();
+    }
 }
 
 

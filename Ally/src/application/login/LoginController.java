@@ -4,7 +4,6 @@ package application.login;
 import application.ApplicationController;
 import application.http.HttpClientAdapter;
 import application.login.userListComponent.AllUserListController;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -19,7 +18,6 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import static application.ApplicationController.createErrorAlertWindow;
 
@@ -41,28 +39,23 @@ public class LoginController implements LoginInterface {
 
 
 
-    private final StringProperty errorMessageProperty = new SimpleStringProperty();
-    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
+
 
     @FXML
     public void initialize() {
         UBoatNames = new ArrayList<>();
-        errorAlert.setTitle("Error");
-        errorAlert.contentTextProperty().bind(errorMessageProperty);
         userListComponentController.startListRefresher();
-
-
     }
 
     @FXML
     void loginButtonClicked(ActionEvent ignoredEvent) {
         String userName = userNameTextField.getText();
         if (userName.isEmpty()) {
-            createErrorAlertWindow("Login error","User name is empty. You can't login with empty user name");
-//            errorMessageProperty.set();
+            updateErrorMessage("User name is empty. You can't login with empty user name");
         }
         else {
-            HttpClientAdapter.sendLoginRequest(this, this::updateErrorMessage, userName);
+            HttpClientAdapter.sendLoginRequest(this, userName);
         }
 //
     }
@@ -79,7 +72,7 @@ public class LoginController implements LoginInterface {
     {
         if (!isLoginSuccess) {
 
-            createErrorAlertWindow("Login error",response);
+            updateErrorMessage(response);
                  //  errorMessageProperty.set("Something went wrong: " + response)
         } else {
             System.out.println("login success");
@@ -98,10 +91,7 @@ public class LoginController implements LoginInterface {
         Platform.exit();
     }
 
-    @FXML
-    void userNameKeyTyped(KeyEvent event) {
-        errorMessageProperty.set("");
-    }
+
 
     public void setMainController(ApplicationController applicationController) {
         this.applicationController=applicationController;

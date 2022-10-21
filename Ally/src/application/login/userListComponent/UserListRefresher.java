@@ -1,6 +1,7 @@
 package application.login.userListComponent;
 
 
+import application.http.HttpClientAdapter;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
@@ -15,21 +16,18 @@ public class UserListRefresher extends TimerTask {
 
     private final Consumer<UserListDTO> usersListConsumer;
     private final CustomHttpClient httpClientUtil;
-    private final BooleanProperty shouldUpdate;
 
 
-    public UserListRefresher(BooleanProperty shouldUpdate, Consumer<UserListDTO> usersListConsumer, CustomHttpClient httpClientUtil) {
-        this.shouldUpdate = shouldUpdate;
+
+    public UserListRefresher(Consumer<UserListDTO> usersListConsumer) {
         this.usersListConsumer = usersListConsumer;
-        this.httpClientUtil = httpClientUtil;
+        this.httpClientUtil = HttpClientAdapter.getHttpClient();
     }
 
     @Override
     public void run() {
 
-        if (!shouldUpdate.get()) {
-            return;
-        }
+
         System.out.println("Sending user list request to server....");
         String userListRaw=httpClientUtil.doGetSync(USER_LIST);
         if(userListRaw!=null&&!userListRaw.isEmpty())

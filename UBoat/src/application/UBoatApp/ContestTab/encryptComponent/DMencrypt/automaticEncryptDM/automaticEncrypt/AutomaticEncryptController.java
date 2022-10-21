@@ -31,27 +31,27 @@ public class AutomaticEncryptController {
         this.automaticEncryptDMController=encryptTabDMController;
     }
 
-        @FXML
-        void processStringData(ActionEvent event) {
-            if(automaticEncryptDMController!=null) {
-                String inputText=stringInputTextField.getText();
-               if(HttpClientAdapter.checkIfAllLetterInDic(inputText.toUpperCase()))
-               {
-                   try {
+    @FXML
+    void processStringData(ActionEvent ignoredEvent) {
+    if(automaticEncryptDMController!=null) {
+        String inputText=stringInputTextField.getText();
+       if(HttpClientAdapter.checkIfAllLetterInDic(inputText.toUpperCase()))
+       {
+           try {
 
-                       HttpClientAdapter.processDataInput(stringInputTextField.getText(),this::updateOutputProperty);
-                       inputProperty.setValue(stringInputTextField.getText().toUpperCase());
+               HttpClientAdapter.processDataInput(stringInputTextField.getText(),this::updateOutputProperty);
+               inputProperty.setValue(stringInputTextField.getText().toUpperCase());
 
-                   }catch (Exception ex)
-                   {
-                       Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                       errorAlert.setTitle("Error");
-                       errorAlert.setHeaderText("Invalid input string");
-                       errorAlert.setContentText(ex.getMessage());
-                       errorAlert.showAndWait();
-                   }
-                   automaticEncryptDMController.doneProcessData();
-               }
+           }catch (Exception ex)
+           {
+               Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+               errorAlert.setTitle("Error");
+               errorAlert.setHeaderText("Invalid input string");
+               errorAlert.setContentText(ex.getMessage());
+               errorAlert.showAndWait();
+           }
+           automaticEncryptDMController.doneProcessData();
+       }
 //            }
 //            else{
 //                try {

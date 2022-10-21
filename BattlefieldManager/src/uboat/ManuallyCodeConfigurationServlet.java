@@ -48,10 +48,7 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
             enigmaEngine.setCodeManually(codeFormatDTO);
             getServletContext().getRequestDispatcher(UBOAT_CONTEXT+ALL_CODE).forward(request, response);
         }catch (RuntimeException | ServletException e) {
-            response.setContentType("text/plain");
-            response.getWriter().println(e.getMessage());
-            response.getWriter().flush();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            ServletUtils.setBadRequestErrorResponse(e,response);
         }
 
 

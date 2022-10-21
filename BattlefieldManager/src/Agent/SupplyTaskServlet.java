@@ -1,7 +1,7 @@
-package Agent;
+package agent;
 
 import com.google.gson.Gson;
-import decryptionManager.components.DecryptedTask;
+import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static constants.Constants.AMOUNT;
+import static general.ConstantsHTTP.*;
 
-@WebServlet(name = "SupplyTaskServlet", urlPatterns = {"/agent/get-tasks"})
+@WebServlet(name = "SupplyTaskServlet", urlPatterns = AGENT_CONTEXT+GET_TASKS)
 public class SupplyTaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -44,13 +44,13 @@ public class SupplyTaskServlet extends HttpServlet {
         try {
             amount = Integer.parseInt(amountFromParameter);
         } catch (NumberFormatException nfe) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Error ! amount is not a number");
+            ServletUtils.setBadRequestErrorResponse(nfe,response);
         }
 
         try {
             Gson gson = ServletUtils.getGson();
             String allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
-            List<DecryptedTask> taskList = ServletUtils.getSystemManager()
+            List<SimpleDecryptedTaskDTO> taskList = ServletUtils.getSystemManager()
                     .getSingleAllyController(allyName)
                     .getDecryptionManager()
                     .getTasksForAgentSession(amount);
@@ -60,10 +60,7 @@ public class SupplyTaskServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
 
         } catch (RuntimeException e) {
-            response.setContentType("text/plain");
-            response.getWriter().println(e.getMessage());
-            response.getWriter().flush();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+           ServletUtils.setBadRequestErrorResponse(e,response);
         }
 
     }
