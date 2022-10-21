@@ -1,7 +1,5 @@
 package MainAgentApp;
 
-import java.net.URL;
-
 public class CommonResources {
  public final static String AGENT_MAIN_APP_FXML_LOGIN = "MainAgentApp/MainAgent.fxml";
  public final static String AGENT_APP_FXML_LOGIN = "MainAgentApp/agentLogin/AgainLogin.fxml";

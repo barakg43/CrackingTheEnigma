@@ -1,7 +1,7 @@
 package application.UBoatApp.MachineTab.machineDetails;
 
-import application.UBoatApp.MachineTab.UBoatMachineController;
 import application.UBoatApp.ContestTab.SimpleCode.SimpleCodeController;
+import application.UBoatApp.MachineTab.UBoatMachineController;
 import application.http.HttpClientAdapter;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;

@@ -18,8 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
-
-import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -62,7 +60,7 @@ public class AgentLoginController implements LoginInterface {
     private ObservableList<String> agentsUsersObserve;
     private Timer timer;
     private TimerTask listRefresher;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
+
 
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -89,6 +87,7 @@ public class AgentLoginController implements LoginInterface {
         initializeAllUsers();
 
         startListRefresher();
+
 //        HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
@@ -134,7 +133,7 @@ public class AgentLoginController implements LoginInterface {
         }
         else
         {
-            HttpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,agentDataDTO);
+            HttpClientAdapter.sendLoginRequest(this,agentDataDTO);
 
         }
     }
@@ -166,8 +165,8 @@ public class AgentLoginController implements LoginInterface {
         }
         if(AlliesTeamComboBox.getSelectionModel().getSelectedIndex()==-1)
         {
-        //    errorMessageProperty.set("Allies team is empty. You can't login without choosing team.");
-          //  return false;
+            errorMessageProperty.set("Allies team is empty. You can't login without choosing team.");
+            return null;
         }
         if(numberOfThreads.getValue()==null)
         {
@@ -205,10 +204,8 @@ public class AgentLoginController implements LoginInterface {
         } else {
             System.out.println("login success");
             Platform.runLater(() -> {
-
                 agentNameList.add(agentDataDTO.getAgentName());
-                mainController.updateUserName(agentDataDTO.getAgentName());
-                mainController.updateAlliesName(agentDataDTO.getAllyTeamName());
+                mainController.updateAgentInfo(agentDataDTO);
                 stopListRefresher();
                 mainController.switchToAgentPage();
             });
@@ -225,11 +222,7 @@ public class AgentLoginController implements LoginInterface {
     }
 
     public void startListRefresher() {
-        listRefresher = new UserListRefresher(
-                autoUpdate,
-                this::updateTableView,
-                this::updateAlliesTeams,
-                HttpClientAdapter.getHttpClient());
+        listRefresher = new UserListRefresher(this::updateTableView, this::updateAlliesTeams);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }
@@ -238,7 +231,6 @@ public class AgentLoginController implements LoginInterface {
         uboatUsersColumn.getItems().clear();
         alliesUsersColumn.getItems().clear();
         agentsUsersColumn.getItems().clear();
-        autoUpdate.set(false);
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();

@@ -67,9 +67,7 @@ public class AllUserListController implements Closeable {
 
 
 
-    public void setHttpClientUtil(CustomHttpClient httpClientUtil) {
-        this.httpClientUtil = httpClientUtil;
-    }
+
 
 
 
@@ -84,10 +82,7 @@ public class AllUserListController implements Closeable {
 //    }
 
     public void startListRefresher() {
-        listRefresher = new UserListRefresher(
-                autoUpdate,
-                this::updateTableView,
-                HttpClientAdapter.getHttpClient());
+        listRefresher = new UserListRefresher(this::updateTableView);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

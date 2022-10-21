@@ -20,8 +20,8 @@ public class AllyDataDTO {
     }
 
     private final String allyName;
-    private final int agentsAmount;
-    private final int taskSize;
+    protected int agentsAmount;
+    protected int taskSize;
     private final Status status;
 
     public AllyDataDTO(String allyName, int agentsAmount, int taskSize,Status status) {
@@ -44,5 +44,15 @@ public class AllyDataDTO {
 
     public int getTaskSize() {
         return taskSize;
+    }
+
+    @Override
+    public String toString() {
+        return "AllyDataDTO{" +
+                "allyName='" + allyName + '\'' +
+                ", agentsAmount=" + agentsAmount +
+                ", taskSize=" + taskSize +
+                ", status=" + status +
+                '}';
     }
 }

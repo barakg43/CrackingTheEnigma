@@ -1,7 +1,7 @@
 package application;
 
 
-import application.contestTab.ContestScreenController;
+import application.dashboardTab.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
 import application.login.LoginController;
 import javafx.application.Platform;
@@ -60,7 +60,7 @@ public class ApplicationController {
 //        dashboardScreenController.addAllContestDataToTable(list2);
 //
 
-        dashboardScreenController.setReadyActionParent(this::readyActionPressedInDashboard);
+        dashboardScreenController.setAfterRegisterActionParent(this::registerActionPressedInDashboard);
         contestScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());
         dashboardScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());    }
 
@@ -130,11 +130,14 @@ public class ApplicationController {
         isContestScreenActive.set(true);
 
     }
-    private void readyActionPressedInDashboard()
+    private void registerActionPressedInDashboard()
     {
-        dashboardScreenController.stopListRefresher();
-        contestScreenController.startContestAndTeamDataRefresher();
-        switchToContestScreen();
+        Platform.runLater(()->{
+            dashboardScreenController.stopListRefresher();
+            contestScreenController.startContestAndTeamDataRefresher();
+            switchToContestScreen();
+        });
+
     }
 
     public String getSelectedUboat(){

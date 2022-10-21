@@ -2,7 +2,6 @@ package application.login.userListComponent;
 
 import application.http.HttpClientAdapter;
 import general.UserListDTO;
-import http.client.CustomHttpClient;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -70,10 +69,7 @@ public class AllUserListController implements Closeable {
 
 
     public void startListRefresher() {
-        listRefresher = new UserListRefresher(
-                autoUpdate,
-                this::updateTableView,
-                HttpClientAdapter.getHttpClient());
+        listRefresher = new UserListRefresher(this::updateTableView);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

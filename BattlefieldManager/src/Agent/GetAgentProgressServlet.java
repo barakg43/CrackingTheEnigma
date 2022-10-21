@@ -1,7 +1,6 @@
-package Agent;
+package agent;
 
-//taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
-// and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
+
 
 import allyDTOs.TeamAgentsDataDTO;
 import com.google.gson.Gson;
@@ -16,9 +15,14 @@ import utils.SessionUtils;
 import java.io.*;
 import java.util.Scanner;
 
+import static general.ConstantsHTTP.AGENT_CONTEXT;
+import static general.ConstantsHTTP.UPDATE_PROGRESS;
 
-@WebServlet(name = "GetAgentProgressServlet", urlPatterns = {"/agent/update-progress"})
+
+@WebServlet(name = "GetAgentProgressServlet", urlPatterns =AGENT_CONTEXT + UPDATE_PROGRESS)
 public class GetAgentProgressServlet extends HttpServlet {
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -50,10 +54,7 @@ public class GetAgentProgressServlet extends HttpServlet {
                    .updateAgentProgressData(agentsDataProgressDTO);
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
-            response.setContentType("text/plain");
-            response.getWriter().println(e.getMessage());
-            response.getWriter().flush();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+          ServletUtils.setBadRequestErrorResponse(e,response);
         }
 
     }
@@ -63,27 +64,6 @@ public class GetAgentProgressServlet extends HttpServlet {
 
 
 
-    private void printPart(Part part, PrintWriter out) {
-        StringBuilder sb = new StringBuilder();
-        sb
-            .append("Parameter Name: ").append(part.getName()).append("\n")
-            .append("Content Type (of the file): ").append(part.getContentType()).append("\n")
-            .append("Size (of the file): ").append(part.getSize()).append("\n")
-            .append("Part Headers:").append("\n");
 
-        for (String header : part.getHeaderNames()) {
-            sb.append(header).append(" : ").append(part.getHeader(header)).append("\n");
-        }
 
-        out.println(sb.toString());
-    }
-
-    private String readFromInputStream(InputStream inputStream) {
-        return new Scanner(inputStream).useDelimiter("\\Z").next();
-    }
-
-    private void printFileContent(String content, PrintWriter out) {
-        out.println("------------------------------------------------------------File content:-----");
-        out.println(content);
-    }
 }

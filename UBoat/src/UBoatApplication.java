@@ -1,6 +1,6 @@
-import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
-import application.CommonResources;
 import application.ApplicationController;
+import application.CommonResources;
+import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;

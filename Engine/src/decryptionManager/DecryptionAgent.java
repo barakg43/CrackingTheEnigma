@@ -1,5 +1,6 @@
 package decryptionManager;
 
+import agent.AgentDataDTO;
 import agent.AgentSetupConfigurationDTO;
 import decryptionManager.components.*;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
@@ -21,7 +22,7 @@ public class DecryptionAgent {
     private Dictionary dictionary;
     private final Engine engine;
     private final String alliesTeam;
-    private final int threadNumber;
+    private final int threadAmount;
 
     private long tasksAmount;
     private final String agentName;
@@ -44,12 +45,12 @@ public class DecryptionAgent {
     private Runnable startListener;
     public static final Object pauseLock=new Object();
     private final Runnable notifyFinishTaskSession;
-    public DecryptionAgent(String agentName, String alliesTeam, int threadAmount, long tasksAmount, Runnable notifyFinishTaskSession) {
-        this.alliesTeam = alliesTeam;
-        this.threadNumber = threadAmount;
-        this.tasksAmount = tasksAmount;
+    public DecryptionAgent(AgentDataDTO agentDataDTO, Runnable notifyFinishTaskSession) {
+        this.agentName = agentDataDTO.getAgentName();
+        this.alliesTeam = agentDataDTO.getAllyTeamName();
+        this.threadAmount = agentDataDTO.getThreadAmount();
+        this.tasksAmount = agentDataDTO.getTasksSessionAmount();
         threadAgents =  Executors.newFixedThreadPool(threadAmount);
-        this.agentName = agentName;
         this.notifyFinishTaskSession = notifyFinishTaskSession;
         engine=new EnigmaEngine();
         taskDoneAmount=new AtomicCounter();
@@ -173,8 +174,8 @@ public class DecryptionAgent {
         return alliesTeam;
     }
 
-    public int getThreadNumber() {
-        return threadNumber;
+    public int getThreadAmount() {
+        return threadAmount;
     }
 
     public long getTasksAmount() {

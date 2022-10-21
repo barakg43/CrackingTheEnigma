@@ -1,9 +1,9 @@
 package application.UBoatApp.ContestTab.TeamsStatus;
 
-import application.UBoatApp.ContestTab.TeamsStatus.SingleTeamData.SingleTeamController;
-import application.CommonResources;
 import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
+import application.CommonResources;
+import application.UBoatApp.ContestTab.TeamsStatus.SingleTeamData.SingleTeamController;
 import application.UBoatApp.ContestTab.TeamsStatus.contestsTeamsComponent.ContestTeamsController;
 import http.client.CustomHttpClient;
 import javafx.application.Platform;
@@ -16,9 +16,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static general.ConstantsHTTP.REFRESH_RATE;
 

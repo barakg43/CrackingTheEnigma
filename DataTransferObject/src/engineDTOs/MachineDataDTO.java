@@ -1,7 +1,9 @@
 package engineDTOs;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class MachineDataDTO implements Serializable {
 

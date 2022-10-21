@@ -31,7 +31,7 @@ public class SimpleCookieManager implements CookieJar {
             }
         }
         sb.append(" Total of ").append(cookiesPerDomain.size()).append(" cookie(s) will be loaded !");
-        logData.accept(sb.toString());
+        //ogData.accept(sb.toString());
         return cookiesPerDomain;
     }
 
@@ -50,7 +50,7 @@ public class SimpleCookieManager implements CookieJar {
                     .stream()
                     .filter(cookie -> !cookiesMap.containsKey(cookie.name()))
                     .forEach(cookie -> {
-                        logData.accept(CACHE_MANAGER_PREFIX + "Storing cookie [" + cookie.name() + "] --> [" + cookie.value() + "]");
+                        //logData.accept(CACHE_MANAGER_PREFIX + "Storing cookie [" + cookie.name() + "] --> [" + cookie.value() + "]");
                         cookiesMap.put(cookie.name(), cookie);
                     });
         }

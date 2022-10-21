@@ -1,7 +1,7 @@
 package application.Login;
 
-import application.Login.userListComponent.AllUserListController;
 import application.ApplicationController;
+import application.Login.userListComponent.AllUserListController;
 import application.http.HttpClientAdapter;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;

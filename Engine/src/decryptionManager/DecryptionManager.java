@@ -2,7 +2,6 @@ package decryptionManager;
 
 import decryptionManager.components.AtomicCounter;
 import decryptionManager.components.CodeCalculatorFactory;
-import decryptionManager.components.DecryptedTask;
 import decryptionManager.components.Permuter;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.BruteForceLevel;

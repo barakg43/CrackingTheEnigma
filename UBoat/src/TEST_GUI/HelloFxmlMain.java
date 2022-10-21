@@ -2,7 +2,6 @@ package TEST_GUI;
 
 
 import application.Login.userListComponent.AllUserListController;
-
 import general.UserListDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

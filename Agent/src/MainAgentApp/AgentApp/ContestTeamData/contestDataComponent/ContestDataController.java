@@ -2,9 +2,7 @@ package MainAgentApp.AgentApp.ContestTeamData.contestDataComponent;
 
 import allyDTOs.ContestDataDTO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import okhttp3.internal.platform.Platform;
 
 public class ContestDataController {
 

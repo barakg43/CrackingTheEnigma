@@ -14,7 +14,8 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.ALL_CODE;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
 @WebServlet(name = "AllCodeConfigurationServlet", urlPatterns = {UBOAT_CONTEXT+ALL_CODE})
 public class AllCodeConfigurationServlet extends HttpServlet {

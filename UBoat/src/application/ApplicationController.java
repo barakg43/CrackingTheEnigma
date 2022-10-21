@@ -2,7 +2,6 @@ package application;
 
 import application.Login.LoginController;
 import application.UBoatApp.UBoatAppController;
-import application.http.HttpClientAdapter;
 import general.ApplicationType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;

@@ -15,11 +15,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static general.ConstantsHTTP.CANDIDATES;
 import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.UPDATE_CANDIDATES;
 
 
-@WebServlet(name = "CandidatesServlet", urlPatterns = {UBOAT_CONTEXT+CANDIDATES})
+@WebServlet(name = "CandidatesServlet", urlPatterns = {UBOAT_CONTEXT+UPDATE_CANDIDATES})
 public class CandidatesServlet extends HttpServlet {
 
     @Override

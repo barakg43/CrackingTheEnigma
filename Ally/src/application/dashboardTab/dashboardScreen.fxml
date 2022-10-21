@@ -4,30 +4,26 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<ScrollPane fx:id="mainPane" prefHeight="419.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/8.0.171"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.dashboardTab.DashboardScreenController">
+<ScrollPane fx:id="mainPane" prefHeight="419.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.dashboardTab.DashboardScreenController">
    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
       <left>
          <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <fx:include fx:id="agentsDataTableComponent" source="allAgentsData/agentsDataComponent.fxml"/>
+            <fx:include fx:id="agentsDataTableComponent" source="allAgentsData/agentsDataComponent.fxml" />
          </AnchorPane>
       </left>
       <right>
-         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0"
-                     BorderPane.alignment="CENTER">
-            <fx:include fx:id="contestTableComponent" source="allContestsData/allContestsData.fxml"/>
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <fx:include fx:id="contestTableComponent" source="allContestsData/allContestsData.fxml" />
          </AnchorPane>
       </right>
       <center>
-         <Pane prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER"/>
+         <Pane prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
       </center>
       <bottom>
          <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Button fx:id="readyButton" layoutX="224.0" layoutY="77.0" mnemonicParsing="false"
-                    onAction="#readyMoveToContestScreen" prefHeight="61.0" prefWidth="145.0" text="Ready!"
-                    textFill="#b21111">
+            <Button fx:id="registerButton" layoutX="224.0" layoutY="77.0" mnemonicParsing="false" onAction="#registerMoveToContestScreen" prefHeight="61.0" prefWidth="145.0" text="Register" textFill="#b21111">
                <font>
-                  <Font name="Candara Bold" size="24.0"/>
+                  <Font name="Candara Bold" size="24.0" />
                </font>
             </Button>
          </AnchorPane>

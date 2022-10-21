@@ -1,10 +1,12 @@
 package uboat;
 
-import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import UBoatDTO.ActiveTeamsDTO;
+import agent.AgentSetupConfigurationDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
+import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import engineDTOs.BattlefieldDataDTO;
+import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
@@ -14,6 +16,8 @@ public class SingleBattleFieldController {
 
     private final Set<AllyDataDTO> alliesDataSet;
     private String xmlFileContent;
+    private  CodeFormatDTO codeFormatConfiguration;
+    private  String cipheredString;
     private final Engine enigmaEngine;
     private ContestDataManager contestDataManager;
 
@@ -24,9 +28,14 @@ public class SingleBattleFieldController {
         enigmaEngine=new EnigmaEngine();
         this.uboatName=uboatName;
     }
-    public void assignAllyToUboat(AllyDataDTO agentDataDTO)
+    public void  assignAllyToUboat(AllyDataDTO agentDataDTO)
     {
-            alliesDataSet.add(agentDataDTO);
+        if(contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
+            throw new RuntimeException(contestDataManager.getBattlefieldName()+" is already full!");
+
+        if(alliesDataSet.add(agentDataDTO))//if not already exist
+            contestDataManager.incrementRegisterAmount();
+
     }
 
     public List<AllyDataDTO> getAlliesDataListForUboat()
@@ -63,7 +72,12 @@ public class SingleBattleFieldController {
                 contestDataManager.getRequiredAlliesAmount(),Collections.unmodifiableSet(alliesDataSet));
 
     }
-    public String getXmlFileContent() {
-        return xmlFileContent;
+    public AgentSetupConfigurationDTO getAgentSetupConfigurationDTO()
+    {
+        return new AgentSetupConfigurationDTO(xmlFileContent,codeFormatConfiguration,cipheredString);
+    }
+    public void setContestInitConfiguration(String cipheredString) {
+        this.codeFormatConfiguration = enigmaEngine.getCodeFormat(true);
+        this.cipheredString=cipheredString;
     }
 }

@@ -2,6 +2,7 @@ package Ally;
 
 import agent.AgentDataDTO;
 import allyDTOs.AllyCandidateDTO;
+import allyDTOs.AllyDataDTO;
 import allyDTOs.TeamAgentsDataDTO;
 import decryptionManager.DecryptionManager;
 import engineDTOs.CodeFormatDTO;
@@ -19,12 +20,13 @@ public class SingleAllyController {
 
     private final Map<String, TeamAgentsDataDTO> agentsTasksProgress;
     private int candidateVersion=0;
-
+    private final AllyDataManager allyDataManager;
     public SingleAllyController(String allyName) {
         this.agentSet = new HashSet<>();
         agentsTasksProgress=new HashMap<>();
         uboatManager=null;
         this.allyName=allyName;
+        allyDataManager=new AllyDataManager(allyName);
         allyCandidateDTOList=new ArrayList<>();
     }
     public void updateAgentProgressData(TeamAgentsDataDTO teamAgentsDataDTO)
@@ -49,12 +51,18 @@ public class SingleAllyController {
         allyCandidateDTOList.add(allyCandidateDTO);
 
     }
-
+    public AllyDataDTO getAllyDataDTO()
+    {
+        return allyDataManager;
+    }
 
     public void setDecryptionManager(CodeFormatDTO initialCode, MachineDataDTO machineDataDTO) {
         this.decryptionManager = new DecryptionManager(initialCode,machineDataDTO);
     }
-
+    public void setTaskSize(int taskSize)
+    {
+        allyDataManager.setTaskSize(taskSize);
+    }
     public DecryptionManager getDecryptionManager() {
         return decryptionManager;
     }
@@ -73,9 +81,10 @@ public class SingleAllyController {
         else
             throw new RuntimeException( allyName+ "is not assign to any Uboat manager");
     }
-    public void assignAgentToAlly(AgentDataDTO agentDataDTO)
+    public synchronized void assignAgentToAlly(AgentDataDTO agentDataDTO)
     {
-        agentSet.add(agentDataDTO);
+        if(agentSet.add(agentDataDTO))
+            allyDataManager.increaseAgentNumber();
     }
 
     public List<AgentDataDTO> getAgentDataListForAlly()

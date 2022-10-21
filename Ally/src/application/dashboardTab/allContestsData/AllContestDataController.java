@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,6 +109,9 @@ public class AllContestDataController {
 
     public void addAllContestsDataToTable(List<ContestDataDTO> contestDataDTOList)
     {
+
+        if(contestDataDTOList==null||contestDataDTOList.isEmpty())
+            return;
 
         battlefieldNameColumn.getColumns().clear();
         battlefieldDataColumn.getColumns().clear();

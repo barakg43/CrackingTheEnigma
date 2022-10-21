@@ -4,7 +4,10 @@ package utils;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import systemManager.SystemManager;
+
+import java.io.IOException;
 
 import static constants.Constants.INT_PARAMETER_ERROR;
 
@@ -54,5 +57,11 @@ public class ServletUtils {
 
 	public static void setServletContextRef(ServletContext servletContextRef) {
 		ServletUtils.servletContextRef = servletContextRef;
+	}
+	public static void setBadRequestErrorResponse(Throwable errorResponse, HttpServletResponse response) throws IOException {
+		response.setContentType("text/plain");
+		response.getWriter().println(errorResponse.getMessage());
+		response.getWriter().flush();
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 }

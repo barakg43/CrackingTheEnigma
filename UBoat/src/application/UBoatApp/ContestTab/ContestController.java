@@ -3,12 +3,12 @@ package application.UBoatApp.ContestTab;
 import UBoatDTO.ActiveTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
-import application.UBoatApp.ContestTab.encryptComponent.EncryptController;
 import application.UBoatApp.ContestTab.TeamsStatus.TeamsStatusController;
 import application.UBoatApp.ContestTab.Trie.Trie;
+import application.UBoatApp.ContestTab.encryptComponent.EncryptController;
 import application.UBoatApp.UBoatAppController;
-import engineDTOs.CodeFormatDTO;
 import application.http.HttpClientAdapter;
+import engineDTOs.CodeFormatDTO;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
 
 public class ContestController {
     BooleanProperty allAlliesAreReady=new SimpleBooleanProperty();
-    @FXML private Button readyButton;
+
     @FXML private Button logoutButton;
     @FXML private VBox EncryptComponent;
     @FXML private EncryptController EncryptComponentController;
@@ -45,7 +45,7 @@ public class ContestController {
     @FXML
     private void initialize() {
         EncryptComponentController.setContestController(this);
-        readyButton.setDisable(true);
+
     }
 
     public EncryptController getEncryptComponentController() {
@@ -63,7 +63,7 @@ public class ContestController {
 
 
     }
-    public void enableReadyButtonConsumer(ActiveTeamsDTO activeTeams)
+    public void startContestConsumer(ActiveTeamsDTO activeTeams)
     {
         allAlliesAreReady.set(true);
         for(AllyDataDTO allyData:activeTeams.getAllyDataDTOList())
@@ -71,7 +71,6 @@ public class ContestController {
         Platform.runLater(()-> {
             if(activeTeams.getRegisteredAmount()==activeTeams.getRequiredAlliesAmount()&& allAlliesAreReady.getValue())
         {
-        readyButton.setDisable(false);
         teamsStatusComponentController.stopListRefresher();}
      });
 
@@ -99,10 +98,10 @@ public class ContestController {
 
     public void bindTabDisable(SimpleBooleanProperty isCodeSelected)
     {
-        isCodeSelected.addListener((observable, oldValue, newValue) -> {
-            if (newValue)
-                teamsStatusComponentController.startListRefresher(this::enableReadyButtonConsumer);
-        });
+//        isCodeSelected.addListener((observable, oldValue, newValue) -> {
+//            if (newValue)
+//                teamsStatusComponentController.startListRefresher(this::startContestConsumer);
+//        });
         EncryptComponent.disableProperty().bind(isCodeSelected.not());
     }
 
@@ -120,7 +119,5 @@ public class ContestController {
         uBoatController.logoutButtonPressed();
     }
 
-    public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
 
-    }
 }

@@ -71,10 +71,7 @@ public class CandidateStatusController {
     }
 
     public void startListRefresher() {
-        listRefresher = new CandidatesStatusRefresher(
-                autoUpdate,
-                this::addAllCandidate,
-                HttpClientAdapter.getHttpClient());
+        listRefresher = new CandidatesStatusRefresher(this::addAllCandidate);
         timer = new Timer();
         timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
     }

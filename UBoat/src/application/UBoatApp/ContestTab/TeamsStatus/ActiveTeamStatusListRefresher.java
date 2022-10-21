@@ -3,15 +3,15 @@ package application.UBoatApp.ContestTab.TeamsStatus;
 
 import UBoatDTO.ActiveTeamsDTO;
 import application.http.HttpClientAdapter;
-import general.UserListDTO;
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
 
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+;
+import static application.UBoatApp.UBoatAppController.createErrorAlertWindow;
 import static general.ConstantsHTTP.ACTIVE_TEAMS_LIST;
-import static general.ConstantsHTTP.USER_LIST;
+import static general.ConstantsHTTP.UPDATE_DASHBOARD;
 
 public class ActiveTeamStatusListRefresher extends TimerTask {
 
@@ -28,9 +28,13 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
 
     @Override
     public void run() {
-
+        String userListRaw=null;
         System.out.println("Sending active teams allies request to server....");
-        String userListRaw=httpClientUtil.doGetSync(ACTIVE_TEAMS_LIST);
+        try {
+            userListRaw=httpClientUtil.doGetSync(ACTIVE_TEAMS_LIST);
+        } catch (RuntimeException e) {
+            createErrorAlertWindow("Dashboard Update",e.getMessage());
+        }
         if(userListRaw!=null&&!userListRaw.isEmpty())
         {
         ActiveTeamsDTO activeTeamsDTO=httpClientUtil.getGson().fromJson(userListRaw,ActiveTeamsDTO.class);

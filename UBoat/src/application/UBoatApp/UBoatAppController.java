@@ -1,11 +1,11 @@
 package application.UBoatApp;
 
+import application.ApplicationController;
 import application.UBoatApp.ContestTab.ContestController;
 import application.UBoatApp.FilePathComponent.FilePathController;
 import application.UBoatApp.MachineTab.UBoatMachineController;
-import application.ApplicationController;
-import engineDTOs.CodeFormatDTO;
 import application.http.HttpClientAdapter;
+import engineDTOs.CodeFormatDTO;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
