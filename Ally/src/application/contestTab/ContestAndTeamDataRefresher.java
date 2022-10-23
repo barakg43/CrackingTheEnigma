@@ -5,6 +5,8 @@ import allyDTOs.AllyContestDataAndTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import application.http.HttpClientAdapter;
+import general.HttpResponseDTO;
+import general.UserListDTO;
 import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
 import okhttp3.Call;
@@ -17,8 +19,9 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
-import static general.ConstantsHTTP.UPDATE_CANDIDATES;
-import static general.ConstantsHTTP.UPDATE_CONTEST;
+import static application.ApplicationController.createErrorAlertWindow;
+import static general.ConstantsHTTP.*;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class ContestAndTeamDataRefresher extends TimerTask {
 
@@ -46,15 +49,23 @@ public class ContestAndTeamDataRefresher extends TimerTask {
     @Override
     public void run() {
         System.out.println("Sending contest and teams data request to server....");
-        String bodyRaw=httpClientUtil.doGetSync(UPDATE_CONTEST);
-        if(bodyRaw!=null&&!bodyRaw.isEmpty())
-        {
-            AllyContestDataAndTeamsDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(bodyRaw,(AllyContestDataAndTeamsDTO.class));
-            allyDataList.accept(allyContestDataAndTeams.getOtherAllyDataDTOList());
-            contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());
-            System.out.println(allyContestDataAndTeams.getOtherAllyDataDTOList());
-            System.out.println(allyContestDataAndTeams.getContestDataDTO());
-        }
+
+
+
+        HttpResponseDTO responseDTO=httpClientUtil.doGetSync(UPDATE_CONTEST);
+
+        if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+            if(responseDTO.getCode()==HTTP_OK) {
+                AllyContestDataAndTeamsDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(responseDTO.getBody(),(AllyContestDataAndTeamsDTO.class));
+                allyDataList.accept(allyContestDataAndTeams.getOtherAllyDataDTOList());
+                contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());}
+            else
+                createErrorAlertWindow("Update Contest And Teams",responseDTO.getBody());
+        }else
+            createErrorAlertWindow("Update Contest And Teams","General error");
+
+    }
+
 //        httpClientUtil.doGetASync(UPDATE_CONTEST, new Callback() {
 //            @Override
 //            public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -81,5 +92,5 @@ public class ContestAndTeamDataRefresher extends TimerTask {
 //            contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());
 //        }
 
-    }
+
 }

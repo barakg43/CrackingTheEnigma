@@ -1,7 +1,9 @@
 package agent;
 
+import UBoatDTO.GameStatus;
 import allyDTOs.ContestDataDTO;
 import com.google.gson.Gson;
+import engineDTOs.DmDTO.GameLevel;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +34,9 @@ public class GetContestDataServlet extends HttpServlet {
 
         if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
         {
-            if(username == null)
-                response.getWriter().println("Must login as AGENT first!");
+
+            response.getWriter().println("Must login as AGENT first!");
+            response.getWriter().flush();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -42,12 +45,18 @@ public class GetContestDataServlet extends HttpServlet {
             Gson gson = ServletUtils.getGson();
             String allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
             String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
-            if(uboatNameManager!=null)
+            if(uboatNameManager==null)
             {
-                ContestDataDTO contestDataDTO= ServletUtils.getSystemManager().getBattleFieldController(uboatNameManager).getContestDataDTO();
-                out.println(gson.toJson(contestDataDTO));
-                out.flush();
+
+
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+
+                return;
             }
+            ContestDataDTO contestDataDTO= ServletUtils.getSystemManager().getBattleFieldController(uboatNameManager).getContestDataDTO();
+            out.println(gson.toJson(contestDataDTO));
+            out.flush();
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {

@@ -3,6 +3,7 @@ package shared.servlet;
 
 import agent.AgentDataDTO;
 import com.google.gson.Gson;
+import com.sun.deploy.security.SelectableSecurityManager;
 import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -46,49 +47,42 @@ public class LoginServlet extends HttpServlet {
         if (usernameFromSession == null) {
             //user is not logged in yet
             String typeFromUrl = (request.getRequestURI().split("/")[2]).toUpperCase();
-            try {
-                String usernameFromParameter = request.getParameter(USERNAME);
-                ApplicationType type = ApplicationType.valueOf(typeFromUrl);
-                if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
-                    response.getOutputStream().print("must use query parameter '"+USERNAME+"'");
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                } else {
-                    //normalize the username value
-                    usernameFromParameter = usernameFromParameter.trim();
-                    //typeFromUrl = typeFromUrl.trim().toUpperCase();
+            String usernameFromParameter = request.getParameter(USERNAME);
+            ApplicationType type = ApplicationType.valueOf(typeFromUrl);
+            if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
+                response.getOutputStream().print("must use query parameter '"+USERNAME+"'");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            } else {
+                //normalize the username value
+                usernameFromParameter = usernameFromParameter.trim();
+                //typeFromUrl = typeFromUrl.trim().toUpperCase();
 
                 synchronized (this) {
-                        if (userManager.isUserExists(usernameFromParameter)) {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getOutputStream().print("Username " + usernameFromParameter + " already exists. Please enter a different username.");
-                            return;
-                        }
-                        //add the new user to the users list
-                        try {
-                            userManager.addUserName(usernameFromParameter, type);
-                            try {
-                                if (type == ApplicationType.AGENT)
-                                    ServletUtils.getSystemManager().addNewAgentData(readAgentDTO(request));
-                            } catch (RuntimeException ex) {
-                                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.\n" + ex.getMessage());
-                                return;
-                            }
-
-                        } catch (RuntimeException ex) {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getOutputStream().print("Error: " + ex.getMessage());
-                            return;
-                        }
-                        request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
-                        //redirect the request to the chat room - in order to actually change the URL
-                        response.setStatus(HttpServletResponse.SC_OK);
-
-
+                    if (userManager.isUserExists(usernameFromParameter)) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getOutputStream().print("Username " + usernameFromParameter + " already exists. Please enter a different username.");
+                        return;
                     }
+                    //add the new user to the users list
+
+                    try {
+                        if (type == ApplicationType.AGENT) {
+                            ServletUtils.getSystemManager().addNewAgentData(readAgentDTO(request));
+
+                        } else
+                            userManager.addUserName(usernameFromParameter, type);
+                    } catch (RuntimeException ex) {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getOutputStream().print("Error: " + ex.getMessage());
+                        return;
+                    }
+
+                    request.getSession(true).setAttribute(USERNAME, usernameFromParameter);
+                    //redirect the request to the chat room - in order to actually change the URL
+                    response.setStatus(HttpServletResponse.SC_OK);
+
                 }
-            }catch (RuntimeException | IOException ex) {
-                            response.getOutputStream().print("Error: " + ex.getMessage());
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
             }
         } else {
             //user is already logged in

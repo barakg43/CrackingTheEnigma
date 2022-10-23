@@ -148,6 +148,7 @@ public class ContestScreenController {
         {
             closeContestAndTeamDataRefresher();
             startAllyAgentsProgressAndCandidatesRefresher();
+            HttpClientAdapter.startTaskCreatorCommand();
         }
         contestDataComponentController.updateContestData(contestDataDTO);
     }

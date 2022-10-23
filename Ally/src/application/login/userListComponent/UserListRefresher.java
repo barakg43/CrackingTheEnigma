@@ -2,6 +2,7 @@ package application.login.userListComponent;
 
 
 import application.http.HttpClientAdapter;
+import general.HttpResponseDTO;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
@@ -9,7 +10,9 @@ import javafx.beans.property.BooleanProperty;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+import static application.ApplicationController.createErrorAlertWindow;
 import static general.ConstantsHTTP.USER_LIST;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class UserListRefresher extends TimerTask {
 
@@ -29,12 +32,18 @@ public class UserListRefresher extends TimerTask {
 
 
         System.out.println("Sending user list request to server....");
-        String userListRaw=httpClientUtil.doGetSync(USER_LIST);
-        if(userListRaw!=null&&!userListRaw.isEmpty())
-        {
-        UserListDTO userListDTO=httpClientUtil.getGson().fromJson(userListRaw,UserListDTO.class);
-        usersListConsumer.accept(userListDTO);
-        }
+
+        HttpResponseDTO responseDTO=httpClientUtil.doGetSync(USER_LIST);
+
+        if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+            if(responseDTO.getCode()==HTTP_OK) {
+                UserListDTO userListDTO = httpClientUtil.getGson().fromJson(responseDTO.getBody(), UserListDTO.class);
+                usersListConsumer.accept(userListDTO);}
+            else
+                createErrorAlertWindow("Update user list login",responseDTO.getBody());
+        }else
+            createErrorAlertWindow("Update user list login","General error");
 
     }
+
 }

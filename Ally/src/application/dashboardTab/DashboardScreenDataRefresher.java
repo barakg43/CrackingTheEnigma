@@ -1,9 +1,11 @@
 package application.dashboardTab;
 
 import agent.AgentDataDTO;
+import allyDTOs.AllyContestDataAndTeamsDTO;
 import allyDTOs.AllyDashboardScreenDTO;
 import allyDTOs.ContestDataDTO;
 import application.http.HttpClientAdapter;
+import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
 
@@ -15,6 +17,7 @@ import java.util.function.Consumer;
 import static application.ApplicationController.createErrorAlertWindow;
 import static general.ConstantsHTTP.UPDATE_CONTEST;
 import static general.ConstantsHTTP.UPDATE_DASHBOARD;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class DashboardScreenDataRefresher  extends TimerTask {
 
@@ -34,20 +37,18 @@ public class DashboardScreenDataRefresher  extends TimerTask {
 
     @Override
     public void run() {
-        String dashboardRawData=null;
 
         System.out.println(counter.getAndIncrement()+"# Sending dashboard data request to server....");
-        try {
-             dashboardRawData=httpClientUtil.doGetSync(UPDATE_DASHBOARD);
-        } catch (RuntimeException e) {
-            createErrorAlertWindow("Dashboard Update",e.getMessage());
-        }
-        if(dashboardRawData!=null&&!dashboardRawData.isEmpty())
-        {
-            AllyDashboardScreenDTO userListDTO=httpClientUtil.getGson().fromJson(dashboardRawData, AllyDashboardScreenDTO.class);
-            usersListConsumer.accept(userListDTO.getAllyDataDTOList());
-            contestListConsumer.accept(userListDTO.getContestDataDTOList());
-        }
+        HttpResponseDTO responseDTO=httpClientUtil.doGetSync(UPDATE_DASHBOARD);
+        if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+            if(responseDTO.getCode()==HTTP_OK) {
+                AllyDashboardScreenDTO userListDTO=httpClientUtil.getGson().fromJson(responseDTO.getBody(), AllyDashboardScreenDTO.class);
+                usersListConsumer.accept(userListDTO.getAllyDataDTOList());
+                contestListConsumer.accept(userListDTO.getContestDataDTOList());}
+            else
+                createErrorAlertWindow("Dashboard Update",responseDTO.getBody());
+        }else
+            createErrorAlertWindow("Dashboard Update","General error");
     }
 }
 

@@ -79,12 +79,7 @@ public class SingleAllyController {
 
     public String getUboatNameManager()
     {
-        if(uboatManager!=null)
-        {
             return uboatManager;
-        }
-        else
-            throw new RuntimeException( allyName+ "is not assign to any Uboat manager");
     }
     public synchronized void assignAgentToAlly(AgentDataDTO agentDataDTO)
     {

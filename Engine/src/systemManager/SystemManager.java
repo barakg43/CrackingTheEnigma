@@ -42,7 +42,7 @@ public class SystemManager {
     public synchronized void addUserName(String username, ApplicationType type)
     {
 
-        if(isUserExists(username))
+        if(isUserExists(username)&&type!=ApplicationType.AGENT)
             throw new RuntimeException(username+ " is already exist and logged in to server.");
         switch (type)
         {
@@ -51,9 +51,6 @@ public class SystemManager {
                 break;
             case ALLY:
                 allyControllerMap.put(username,new SingleAllyController(username));
-                break;
-            case AGENT:
-                agentToAllyMap.put(username,null);
                 break;
         }
 
@@ -92,7 +89,7 @@ public class SystemManager {
         return uboatMapControllerSet.containsKey(uboatName);
     }
     public boolean isAllyExist(String allyName){return  allyControllerMap.containsKey(allyName);  }
-    public boolean isAgentExist(String agentName){return  allyControllerMap.containsKey(agentName);}
+    public boolean isAgentExist(String agentName){return  agentToAllyMap.containsKey(agentName);}
     public synchronized UserListDTO getUsers() {
 
       return new UserListDTO(Collections.unmodifiableSet(uboatMapControllerSet.keySet()),

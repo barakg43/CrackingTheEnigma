@@ -8,13 +8,27 @@ import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
 import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
+import allyDTOs.ContestDataDTO;
 import decryptionManager.DecryptionAgent;
+import decryptionManager.components.DecryptedTask;
+import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
+import general.HttpResponseDTO;
+import http.client.CustomHttpClient;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
+import static general.ConstantsHTTP.GET_TASKS;
+import static general.ConstantsHTTP.UPDATE_CONTEST;
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class AgentController {
 
@@ -29,10 +43,13 @@ public class AgentController {
     private MainAgentController mainController;
     private DecryptionAgent decryptionAgent;
     private boolean isAgentConf=false;
-
+    private final CustomHttpClient httpClientUtil=HttpClientAdapter.getHttpClient();
+    private final ExecutorService taskPuller=Executors.newSingleThreadExecutor();
     @FXML
     public void initialize() {
+
         ContestAndTeamDataController.setAgentController(this);
+        ContestAndTeamDataController.setStartTaskPuller(this::getNewTasksSession);
     }
     public void resetData() {
         ContestAndTeamDataController.resetData();
@@ -54,12 +71,25 @@ public class AgentController {
         //agentsCandidates.prefHeightProperty().bind(Bindings.divide(heightProperty,3));
 
     }
+
     public void setAgentInfo(AgentDataDTO agentDataDTO)
     {
         decryptionAgent=new DecryptionAgent(agentDataDTO,this::getNewTasksSession);
     }
     public void getNewTasksSession()
     {
+
+       taskPuller.submit(()->{
+           HttpResponseDTO responseDTO = httpClientUtil.doGetSync(GET_TASKS);
+           if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+               if (responseDTO.getCode() == HTTP_OK) {
+                   DecryptedTask[] decryptedTaskDTOS = httpClientUtil.getGson().fromJson(responseDTO.getBody(),  DecryptedTask[].class);
+                   decryptionAgent.addTasksToAgent(decryptedTaskDTOS);
+               } else
+                   createErrorAlertWindow("Pull task from ally", responseDTO.getBody());
+           } else
+               createErrorAlertWindow("Pull task from ally", "General error");
+       });
 
 
     }
@@ -69,13 +99,13 @@ public class AgentController {
 
     public static void createErrorAlertWindow(String title,String error)
     {
-      /*  Platform.runLater(() -> {
+       Platform.runLater(() -> {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText(title);
             errorAlert.setContentText(error);
             errorAlert.showAndWait();
-        });*/
+        });
 
 
     }

@@ -3,6 +3,7 @@ package http.client;
 import com.google.gson.Gson;
 import general.ApplicationType;
 import general.ConstantsHTTP;
+import general.HttpResponseDTO;
 import okhttp3.*;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 
 import static general.ConstantsHTTP.UPLOAD_FILE;
+import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class CustomHttpClient {
@@ -56,14 +58,14 @@ public class CustomHttpClient {
         call.enqueue(callback);
         //  System.out.println(response.body().string());
     }
-    public void doPostSync(String urlContext,String body) {
+    public HttpResponseDTO doPostSync(String urlContext,String body) {
         Request request = new Request.Builder()
                 .url(ConstantsHTTP.FULL_SERVER_PATH + APP_CONTEXT_PATH + urlContext)
                 .post(RequestBody.create(body.getBytes()))
                 .build();
 
         Call call = HTTP_CLIENT.newCall(request);
-        executeRequest(call);
+        return executeRequest(call);
     }
     public void doPostASync(String urlContext,String body, Callback callback){
 
@@ -75,7 +77,7 @@ public class CustomHttpClient {
         Call call = HTTP_CLIENT.newCall(request);
         call.enqueue(callback);
     }
-    public String doGetSync(String urlContext) {
+    public HttpResponseDTO doGetSync(String urlContext) {
         Request request = new Request.Builder()
                 .url(ConstantsHTTP.FULL_SERVER_PATH+APP_CONTEXT_PATH+urlContext)
                 .build();
@@ -93,25 +95,15 @@ public class CustomHttpClient {
         call.enqueue(callback);
     }
 
-    private String executeRequest(Call call)
+    private HttpResponseDTO executeRequest(Call call)
     {
-        Response response = null;
-        try {
+        try (Response response = call.execute()) {
             // blocking
-            response = call.execute();
-            String body=response.body()!=null ? Objects.requireNonNull(response.body()).string() :null;
-            if (response.code() != HTTP_OK)
-                throw new RuntimeException(body);
-            return body;
+            String body = response.body() != null ? Objects.requireNonNull(response.body()).string() : null;
+            return new HttpResponseDTO(response.code(), body);
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            return new HttpResponseDTO(HTTP_INTERNAL_ERROR, e.getMessage());
         }
-        finally {
-            if (response != null)
-                response.close();
-
-        }
-        return null;
     }
 
     public void shutdown() {

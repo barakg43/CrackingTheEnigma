@@ -3,6 +3,8 @@ package application.UBoatApp.ContestTab.TeamsStatus;
 
 import UBoatDTO.ActiveTeamsDTO;
 import application.http.HttpClientAdapter;
+import general.HttpResponseDTO;
+import general.UserListDTO;
 import http.client.CustomHttpClient;
 
 import java.util.TimerTask;
@@ -10,8 +12,8 @@ import java.util.function.Consumer;
 
 ;
 import static application.UBoatApp.UBoatAppController.createErrorAlertWindow;
-import static general.ConstantsHTTP.ACTIVE_TEAMS_LIST;
-import static general.ConstantsHTTP.UPDATE_DASHBOARD;
+import static general.ConstantsHTTP.*;
+import static java.net.HttpURLConnection.HTTP_OK;
 
 public class ActiveTeamStatusListRefresher extends TimerTask {
 
@@ -28,19 +30,19 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
 
     @Override
     public void run() {
-        String userListRaw=null;
-        System.out.println("Sending active teams allies request to server....");
-        try {
-            userListRaw=httpClientUtil.doGetSync(ACTIVE_TEAMS_LIST);
-        } catch (RuntimeException e) {
-            createErrorAlertWindow("Dashboard Update",e.getMessage());
-        }
-        if(userListRaw!=null&&!userListRaw.isEmpty())
-        {
-        ActiveTeamsDTO activeTeamsDTO=httpClientUtil.getGson().fromJson(userListRaw,ActiveTeamsDTO.class);
-        activeTeamsConsumer.accept(activeTeamsDTO);
-        enableReadyButton.accept(activeTeamsDTO);
-        }
+   System.out.println("Sending active teams allies request to server....");
+    HttpResponseDTO responseDTO=httpClientUtil.doGetSync(ACTIVE_TEAMS_LIST);
+
+        if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+        if(responseDTO.getCode()==HTTP_OK) {
+            ActiveTeamsDTO activeTeamsDTO=httpClientUtil.getGson().fromJson(responseDTO.getBody(),ActiveTeamsDTO.class);
+            activeTeamsConsumer.accept(activeTeamsDTO);
+            enableReadyButton.accept(activeTeamsDTO);}
+        else
+            createErrorAlertWindow("Dashboard Update",responseDTO.getBody());
+    }else
+    createErrorAlertWindow("Dashboard Update","General error");
 
     }
+
 }

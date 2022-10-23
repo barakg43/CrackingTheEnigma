@@ -3,6 +3,7 @@ package MainAgentApp.AgentApp.ContestTeamData;
 import MainAgentApp.AgentApp.AgentController;
 import MainAgentApp.AgentApp.ContestTeamData.contestDataComponent.ContestDataController;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
+import UBoatDTO.GameStatus;
 import allyDTOs.ContestDataDTO;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,9 +23,10 @@ public class ContestTeamDataController {
     @FXML private ContestDataController contestDataComponentController;
     private AgentController agentController;
     private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
-
+    private Runnable startTaskPuller;
     private TimerTask listRefresher;
     private Timer timer;
+    private boolean isAgentStartContest=false;
 
     public void setAlliesName(String alliesName)
     {
@@ -32,9 +34,17 @@ public class ContestTeamDataController {
     }
     public void updateContestData(ContestDataDTO contestDataDTO)
     {
+        if(!isAgentStartContest&&contestDataDTO.getGameStatus()== GameStatus.ACTIVE)
+            startContestInAgent();
         agentController.setGameStatus(contestDataDTO.getGameStatus());
         contestDataComponentController.updateContestData(contestDataDTO);
       //  stopListRefresher();
+    }
+    private void startContestInAgent()
+    {
+        isAgentStartContest=true;
+        startTaskPuller.run();
+
     }
     public void resetData() {
         contestDataComponentController.resetData();
@@ -59,5 +69,9 @@ public class ContestTeamDataController {
 
     public void setAgentController(AgentController agentController) {
         this.agentController = agentController;
+    }
+
+    public void setStartTaskPuller(Runnable startTaskPuller) {
+        this.startTaskPuller = startTaskPuller;
     }
 }

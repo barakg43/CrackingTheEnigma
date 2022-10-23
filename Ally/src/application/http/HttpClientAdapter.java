@@ -127,7 +127,7 @@ public class HttpClientAdapter {
 
     public static void readyToStartCommand(Consumer<Boolean> isSuccess,int taskAmount) {
         String body=TASK_AMOUNT+'='+taskAmount;
-        HTTP_CLIENT.doPostASync(READY_TO_START,"" ,new Callback() {
+        HTTP_CLIENT.doPostASync(READY_TO_START,body ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 createErrorAlertWindow("Reset Code Machine", e.getMessage());
@@ -144,18 +144,17 @@ public class HttpClientAdapter {
 
     }
 
-    public void resetCodePosition() {
-        HTTP_CLIENT.doPostASync(RESET_CODE,"" ,new Callback() {
+    public static void startTaskCreatorCommand() {
+        HTTP_CLIENT.doPostASync(START_TASKS_CREATOR,"" ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Reset Code Machine", e.getMessage());
+                createErrorAlertWindow("Start Task creator", e.getMessage());
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 assert response.body() != null;
                 if(response.code()!=HTTP_OK)
-                    createErrorAlertWindow("Reset Code Machine", "Error when trying to reset code machine");
+                    createErrorAlertWindow("Start Task creator", "Error when trying to start game in ally");
             }
         });
 

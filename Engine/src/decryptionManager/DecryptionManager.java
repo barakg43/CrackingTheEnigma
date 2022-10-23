@@ -118,7 +118,6 @@ public class DecryptionManager {
 
     public void startCreatingContestTasks()
     {
-
         totalTaskAmount=0;
         isFinishAllTask=false;
         isSystemPause =false;
