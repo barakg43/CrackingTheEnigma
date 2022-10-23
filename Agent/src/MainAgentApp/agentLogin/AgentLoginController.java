@@ -24,6 +24,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class AgentLoginController implements LoginInterface {
@@ -174,9 +175,9 @@ public class AgentLoginController implements LoginInterface {
             return null;
 
         }
-        if(NumberOfTasks.getValue()==null)
+        if(NumberOfTasks.getValue()<1)
         {
-            errorMessageProperty.set("You need to choose number of tasks.");
+            errorMessageProperty.set("You need to choose positive number of tasks.");
             return null;
 
         }
@@ -224,7 +225,7 @@ public class AgentLoginController implements LoginInterface {
     public void startListRefresher() {
         listRefresher = new UserListRefresher(this::updateTableView, this::updateAlliesTeams);
         timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
     public void stopListRefresher() {

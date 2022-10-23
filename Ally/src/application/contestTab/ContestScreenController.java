@@ -1,37 +1,41 @@
-package application.dashboardTab.contestTab;
+package application.contestTab;
 
+import UBoatDTO.GameStatus;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
-import allyDTOs.TeamAgentsDataDTO;
+import allyDTOs.AgentsTeamProgressDTO;
 import application.ApplicationController;
-import application.dashboardTab.contestTab.contestDataComponent.ContestDataController;
-import application.dashboardTab.contestTab.contestsTeamsComponent.ContestTeamsController;
-import application.dashboardTab.contestTab.teamsAgentsComponent.AllyProgressController;
-import application.dashboardTab.contestTab.teamsCandidatesComponent.AgentsCandidatesController;
+import application.contestTab.contestDataComponent.ContestDataController;
+import application.contestTab.contestsTeamsComponent.ContestTeamsController;
+import application.contestTab.teamsAgentsComponent.AllyProgressController;
+import application.contestTab.teamsCandidatesComponent.AgentsCandidatesController;
 import application.http.HttpClientAdapter;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static application.ApplicationController.createErrorAlertWindow;
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class ContestScreenController {
 
-
+    @FXML
+    private Button readyButton;
     @FXML
     private Spinner<Integer> taskSizeTextSpinner;
     @FXML private GridPane mainPane;
@@ -44,14 +48,19 @@ public class ContestScreenController {
 
     @FXML private ScrollPane tamsCandidatesComponent;
     @FXML private AgentsCandidatesController tamsCandidatesComponentController;
-
+    @FXML
+    private Label statusAmountLabel;
+    @FXML
+    private Label agentAmountLabel;
 
     private Timer timer;
     private TimerTask contestAndTeamListRefresher;
     private TimerTask agentsAndCandidatesListRefresher;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
+    private String allyName;
     private ApplicationController applicationController;
-
+    private final BooleanProperty isAgentsAssign=new SimpleBooleanProperty(false);
+    private final BooleanProperty isTaskSizePositive=new SimpleBooleanProperty(false);
+    private final BooleanProperty readyDisableProperty =new SimpleBooleanProperty(true);
     @FXML
     private void initialize(){
 
@@ -59,6 +68,16 @@ public class ContestScreenController {
         SpinnerValueFactory.IntegerSpinnerValueFactory integerSpinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE);
         integerSpinnerValueFactory.setAmountToStepBy(10);
         integerSpinnerValueFactory.setValue(0);
+        taskSizeTextSpinner.editorProperty().addListener(((observable, oldValue, newValue) ->
+        {
+            if( Integer.parseInt(newValue.getText())>0)
+                isTaskSizePositive.set(true);
+
+        }));
+        taskSizeTextSpinner.valueProperty().addListener((observable, oldValue, newValue) -> isTaskSizePositive.set(newValue >0));
+
+        readyDisableProperty.bind(Bindings.and(isAgentsAssign.not(), isTaskSizePositive.not()));
+        readyDisableProperty.addListener(((observable, oldValue, newValue) ->readyButton.setDisable(newValue)));
         taskSizeTextSpinner.setValueFactory(integerSpinnerValueFactory);
         taskSizeTextSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
         taskSizeTextSpinner.editorProperty().get().setAlignment(Pos.CENTER);
@@ -84,7 +103,7 @@ public class ContestScreenController {
         teamsAgentsComponentController.updateAgentsTasksDone(taskDoneAmount);
     }
 
-    public void addAgentsRecordsToAllyAgentTable(List<TeamAgentsDataDTO> agentsRecordList) {
+    public void addAgentsRecordsToAllyAgentTable(List<AgentsTeamProgressDTO> agentsRecordList) {
         teamsAgentsComponentController.addAgentsRecordsToAllyAgentTable(agentsRecordList);
     }
 
@@ -94,10 +113,42 @@ public class ContestScreenController {
 
 
     public void addAlliesDataToContestTeamTable(List<AllyDataDTO> allyDataDTOList) {
-        alliesTeamsComponentController.addAlliesDataToContestTeamTable(allyDataDTOList);
-    }
 
+        AllyDataDTO currentAllyData=null;
+        for(AllyDataDTO allyDataDTO:allyDataDTOList)
+        {
+            if(allyName.equals(allyDataDTO.getAllyName()))
+            {
+                currentAllyData=allyDataDTO;
+            }
+        }
+        allyDataDTOList.remove(currentAllyData);
+        assert currentAllyData != null;
+        AllyDataDTO finalCurrentAllyData = currentAllyData;
+        Platform.runLater(()->{
+            setAllyStatusLabels(finalCurrentAllyData);
+            alliesTeamsComponentController.addAlliesDataToContestTeamTable(allyDataDTOList);
+        });
+
+    }
+    private void setAllyStatusLabels(AllyDataDTO allyDataDTO)
+    {
+        agentAmountLabel.setText(String.valueOf(allyDataDTO.getAgentsAmount()));
+        statusAmountLabel.setText(allyDataDTO.getStatus().toString());
+//        if(allyDataDTO.getStatus()== AllyDataDTO.Status.READY)
+//        {
+//            statusAmountLabel.setTextFill(Color.GREEN);
+//        }
+//        else
+//            statusAmountLabel.setTextFill(Color.ORANGE);
+
+    }
     public void updateContestData(ContestDataDTO contestDataDTO) {
+        if(contestDataDTO.getGameStatus()== GameStatus.ACTIVE)
+        {
+            closeContestAndTeamDataRefresher();
+            startAllyAgentsProgressAndCandidatesRefresher();
+        }
         contestDataComponentController.updateContestData(contestDataDTO);
     }
 
@@ -106,12 +157,17 @@ public class ContestScreenController {
         mainPane.prefWidthProperty().bind(sceneWidthProperty);
     }
 
-    public void readyButtonAction(ActionEvent actionEvent) {
-        closeContestAndTeamDataRefresher();
-        startAllyAgentsProgressAndCandidatesRefresher();
+    public void readyButtonAction(ActionEvent ignoredActionEvent) {
+        HttpClientAdapter.readyToStartCommand(this::afterReadyAction,getTaskSizeFromSpinner());
 
     }
-
+    public void afterReadyAction(boolean isSuccess){
+        if(isSuccess) {
+            Platform.runLater(()->readyButton.setDisable(true));
+        }
+        else
+            createErrorAlertWindow("Ready Action", "Error when trying to send ready command");
+    }
     private void closeContestAndTeamDataRefresher() {
         if (contestAndTeamListRefresher != null && timer != null) {
             contestAndTeamListRefresher.cancel();
@@ -125,7 +181,7 @@ public class ContestScreenController {
                                                                         applicationController.getSelectedUboat(),
                                                                         this::updateErrorMessage);
         timer = new Timer();
-        timer.schedule(contestAndTeamListRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(contestAndTeamListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
     public void updateErrorMessage(String errorMessage)
@@ -137,11 +193,14 @@ public class ContestScreenController {
         agentsAndCandidatesListRefresher = new AllyAgentsProgressAndCandidatesRefresher(this::addTeamsCandidatesRecordsToTeamsTable,
                                                                                          this::addAgentsRecordsToAllyAgentTable);
         timer = new Timer();
-        timer.schedule(agentsAndCandidatesListRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(agentsAndCandidatesListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
-
     public void setMainController(ApplicationController applicationController) {
         this.applicationController=applicationController;
+    }
+
+    public void setAllyName(String allyName) {
+        this.allyName = allyName;
     }
 
 //    private Runnable pressButton;

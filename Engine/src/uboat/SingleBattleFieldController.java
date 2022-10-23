@@ -1,6 +1,7 @@
 package uboat;
 
 import UBoatDTO.ActiveTeamsDTO;
+import UBoatDTO.GameStatus;
 import agent.AgentSetupConfigurationDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
@@ -46,8 +47,20 @@ public class SingleBattleFieldController {
     public Engine getEnigmaEngine() {
         return enigmaEngine;
     }
+    public void checkIfAllReady()
+    {
+        boolean isAllReady=true;
+        for(AllyDataDTO allyData:alliesDataSet)
+        {
+            isAllReady=isAllReady&&(allyData.getStatus()== AllyDataDTO.Status.READY);
+        }
+        if(isAllReady &&
+                contestDataManager.getGameStatus()== GameStatus.WAITING_FOR_ALLIES &&
+                contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
+            contestDataManager.changeGameStatus(GameStatus.ACTIVE);
 
 
+    }
     public void assignXMLFileToUboat(String XmlContent)
     {
 

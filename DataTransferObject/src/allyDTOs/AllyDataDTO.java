@@ -22,7 +22,7 @@ public class AllyDataDTO {
     private final String allyName;
     protected int agentsAmount;
     protected int taskSize;
-    private final Status status;
+    protected Status status;
 
     public AllyDataDTO(String allyName, int agentsAmount, int taskSize,Status status) {
         this.allyName = allyName;

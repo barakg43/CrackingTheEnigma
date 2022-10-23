@@ -3,7 +3,7 @@ package Ally;
 import agent.AgentDataDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
-import allyDTOs.TeamAgentsDataDTO;
+import allyDTOs.AgentsTeamProgressDTO;
 import decryptionManager.DecryptionManager;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
@@ -18,7 +18,7 @@ public class SingleAllyController {
     private DecryptionManager decryptionManager;
     private final List<AllyCandidateDTO> allyCandidateDTOList;
 
-    private final Map<String, TeamAgentsDataDTO> agentsTasksProgress;
+    private final Map<String, AgentsTeamProgressDTO> agentsTasksProgress;
     private int candidateVersion=0;
     private final AllyDataManager allyDataManager;
     public SingleAllyController(String allyName) {
@@ -29,12 +29,12 @@ public class SingleAllyController {
         allyDataManager=new AllyDataManager(allyName);
         allyCandidateDTOList=new ArrayList<>();
     }
-    public void updateAgentProgressData(TeamAgentsDataDTO teamAgentsDataDTO)
+    public void updateAgentProgressData(AgentsTeamProgressDTO teamAgentsDataDTO)
     {
         agentsTasksProgress.put(teamAgentsDataDTO.getAgentName(),teamAgentsDataDTO);
 
     }
-    public List<TeamAgentsDataDTO> getAgentProgressDTOList()
+    public List<AgentsTeamProgressDTO> getAgentProgressDTOList()
     {
         return new ArrayList<>(agentsTasksProgress.values());
     }
@@ -55,6 +55,11 @@ public class SingleAllyController {
     {
         return allyDataManager;
     }
+    public AllyDataManager getAllyDataManager()
+    {
+        return allyDataManager;
+    }
+
 
     public void setDecryptionManager(CodeFormatDTO initialCode, MachineDataDTO machineDataDTO) {
         this.decryptionManager = new DecryptionManager(initialCode,machineDataDTO);

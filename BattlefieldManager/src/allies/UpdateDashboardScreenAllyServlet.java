@@ -25,13 +25,13 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain");
+
         PrintWriter out = response.getWriter();
-        String username = SessionUtils.getUsername(request);
-        if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
+        String allyName = SessionUtils.getUsername(request);
+        if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
-            if(username == null)
-                response.getWriter().println("Must login as Ally first!");
+            response.setContentType("text/plain");
+            response.getWriter().println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -40,7 +40,7 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
             Gson gson = ServletUtils.getGson();
             List<ContestDataDTO> contestDataDTOList= ServletUtils.getSystemManager().getAllContestDataList();
             List<AgentDataDTO> agentDataDTOList= ServletUtils.getSystemManager()
-                    .getSingleAllyController(username)
+                    .getSingleAllyController(allyName)
                     .getAgentDataListForAlly();
 
 
@@ -49,6 +49,7 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
                             new AllyDashboardScreenDTO(agentDataDTOList,contestDataDTOList)
                     ));
             out.flush();
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);

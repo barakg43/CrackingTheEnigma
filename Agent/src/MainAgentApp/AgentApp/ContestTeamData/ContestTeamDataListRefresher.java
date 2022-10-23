@@ -32,7 +32,7 @@ public class ContestTeamDataListRefresher extends TimerTask {
         try {
             userListRaw = httpClientUtil.doGetSync(UPDATE_CONTEST);
         } catch (RuntimeException e) {
-        //    createErrorAlertWindow("Contest Table Update",e.getMessage()); TODO: uncomment
+//            createErrorAlertWindow("Contest Table Update",e.getMessage());// TODO: uncomment
         }
         if(userListRaw!=null&&!userListRaw.isEmpty())
         {

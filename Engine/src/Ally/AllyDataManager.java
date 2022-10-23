@@ -15,4 +15,8 @@ public class AllyDataManager extends AllyDataDTO {
     public void setTaskSize(int taskSize) {
        this.taskSize=taskSize;
     }
+    public void changeStatus(Status status){
+        this.status=status;
+    }
+
 }

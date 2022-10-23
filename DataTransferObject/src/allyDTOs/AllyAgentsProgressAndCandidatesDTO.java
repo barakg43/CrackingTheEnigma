@@ -5,17 +5,17 @@ import java.util.List;
 public class AllyAgentsProgressAndCandidatesDTO {
 
     List<AllyCandidateDTO> updatedAllyCandidates;
-    List<TeamAgentsDataDTO> agentsDataProgressDTOS;
+    List<AgentsTeamProgressDTO> agentsDataProgressDTOS;
 
     public List<AllyCandidateDTO> getUpdatedAllyCandidates() {
         return updatedAllyCandidates;
     }
 
-    public List<TeamAgentsDataDTO> getAgentsDataProgressDTOS() {
+    public List<AgentsTeamProgressDTO> getAgentsDataProgressDTOS() {
         return agentsDataProgressDTOS;
     }
 
-    public AllyAgentsProgressAndCandidatesDTO(List<AllyCandidateDTO> updatedAllyCandidates, List<TeamAgentsDataDTO> agentsDataProgressDTOS) {
+    public AllyAgentsProgressAndCandidatesDTO(List<AllyCandidateDTO> updatedAllyCandidates, List<AgentsTeamProgressDTO> agentsDataProgressDTOS) {
         this.updatedAllyCandidates = updatedAllyCandidates;
         this.agentsDataProgressDTOS = agentsDataProgressDTOS;
 

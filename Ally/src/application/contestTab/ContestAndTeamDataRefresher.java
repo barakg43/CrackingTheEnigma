@@ -1,5 +1,6 @@
-package application.dashboardTab.contestTab;
+package application.contestTab;
 
+import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyContestDataAndTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+import static general.ConstantsHTTP.UPDATE_CANDIDATES;
 import static general.ConstantsHTTP.UPDATE_CONTEST;
 
 public class ContestAndTeamDataRefresher extends TimerTask {
@@ -43,36 +45,37 @@ public class ContestAndTeamDataRefresher extends TimerTask {
 
     @Override
     public void run() {
-
-
         System.out.println("Sending contest and teams data request to server....");
-        httpClientUtil.doGetASync(UPDATE_CONTEST, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                errorMessage.accept(e.getMessage());
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
-                String userListRaw=response.body().string();
-                if(userListRaw!=null&&!userListRaw.isEmpty())
-                {
-                    AllyContestDataAndTeamsDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(userListRaw,(AllyContestDataAndTeamsDTO.class));
-
-                    allyDataList.accept(allyContestDataAndTeams.getOtherAllyDataDTOList());
-                    contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());
-                }
-            }
-        });
-
-
-
-//        String userListRaw=httpClientUtil.doGetSync(UPDATE_CONTEST);
+        String bodyRaw=httpClientUtil.doGetSync(UPDATE_CONTEST);
+        if(bodyRaw!=null&&!bodyRaw.isEmpty())
+        {
+            AllyContestDataAndTeamsDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(bodyRaw,(AllyContestDataAndTeamsDTO.class));
+            allyDataList.accept(allyContestDataAndTeams.getOtherAllyDataDTOList());
+            contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());
+            System.out.println(allyContestDataAndTeams.getOtherAllyDataDTOList());
+            System.out.println(allyContestDataAndTeams.getContestDataDTO());
+        }
+//        httpClientUtil.doGetASync(UPDATE_CONTEST, new Callback() {
+//            @Override
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                errorMessage.accept(e.getMessage());
+//            }
 //
-//        if(userListRaw!=null&&!userListRaw.isEmpty())
+//            @Override
+//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                assert response.body() != null;
+//                String userListRaw=response.body().string();
+//
+//            }
+//        });
+
+
+
+//        String bodyRaw=httpClientUtil.doGetSync(UPDATE_CONTEST);
+//
+//        if(bodyRaw!=null&&!bodyRaw.isEmpty())
 //        {
-//            AllyContestDataAndTeams allyContestDataAndTeams=httpClientUtil.getGson().fromJson(userListRaw,(AllyContestDataAndTeams.class));
+//            AllyContestDataAndTeams allyContestDataAndTeams=httpClientUtil.getGson().fromJson(bodyRaw,(AllyContestDataAndTeams.class));
 //
 //            allyDataList.accept(allyContestDataAndTeams.getOtherAllyDataDTOList());
 //            contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());

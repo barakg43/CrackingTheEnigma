@@ -48,6 +48,7 @@ public class GetContestDataServlet extends HttpServlet {
                 out.println(gson.toJson(contestDataDTO));
                 out.flush();
             }
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);

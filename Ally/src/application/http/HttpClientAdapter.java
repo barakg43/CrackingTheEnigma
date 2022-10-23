@@ -125,7 +125,24 @@ public class HttpClientAdapter {
         });
     }
 
+    public static void readyToStartCommand(Consumer<Boolean> isSuccess,int taskAmount) {
+        String body=TASK_AMOUNT+'='+taskAmount;
+        HTTP_CLIENT.doPostASync(READY_TO_START,"" ,new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                createErrorAlertWindow("Reset Code Machine", e.getMessage());
+            }
 
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                isSuccess.accept(response.code()==HTTP_OK);
+//                assert response.body() != null;
+//                if(response.code()!=HTTP_OK)
+//
+            }
+        });
+
+    }
 
     public void resetCodePosition() {
         HTTP_CLIENT.doPostASync(RESET_CODE,"" ,new Callback() {

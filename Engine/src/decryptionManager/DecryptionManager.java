@@ -4,7 +4,7 @@ import decryptionManager.components.AtomicCounter;
 import decryptionManager.components.CodeCalculatorFactory;
 import decryptionManager.components.Permuter;
 import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.GameLevel;
 import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import engineDTOs.MachineDataDTO;
 import engineDTOs.RotorInfoDTO;
@@ -22,7 +22,7 @@ public class DecryptionManager {
 
     private final MachineDataDTO machineData;
     // private final Engine engine;
-    private BruteForceLevel level=null;
+    private GameLevel level=null;
     private int taskSize=0;
     private final CodeCalculatorFactory codeCalculatorFactory;
     private BlockingQueue<SimpleDecryptedTaskDTO> taskQueue;
@@ -72,7 +72,7 @@ public class DecryptionManager {
         return decryptedTaskList;
     }
 
-    public void setSetupConfiguration(BruteForceLevel level,int taskSize)
+    public void setSetupConfiguration(GameLevel level, int taskSize)
     {
     this.level=level;
     this.taskSize=taskSize;
@@ -116,7 +116,7 @@ public class DecryptionManager {
     }
 
 
-    public void startCreatingBruteforceTasks()
+    public void startCreatingContestTasks()
     {
 
         totalTaskAmount=0;
@@ -129,19 +129,19 @@ public class DecryptionManager {
 
                     switch (level) {
                         case EASY:
-                            messageConsumer.accept("Starting brute force easy level");
+                            messageConsumer.accept("Starting easy level contest");
                             createTaskEasyLevel(startingCode);
                             break;
                         case MEDIUM:
-                            messageConsumer.accept("Starting brute force medium level");
+                            messageConsumer.accept("Starting medium level contest");
                             createTaskMediumLevel(startingCode);
                             break;
                         case HARD:
-                            messageConsumer.accept("Starting brute force hard level");
+                            messageConsumer.accept("Starting hard level contest");
                             createTaskHardLevel(startingCode);
                             break;
                         case INSANE:
-                            messageConsumer.accept("Starting brute force impossible level");
+                            messageConsumer.accept("Starting insane level contest");
                             createTaskImpossibleLevel();
                             break;
                     }
@@ -326,7 +326,7 @@ public class DecryptionManager {
         }
         return fact;
     }
-    private void calculateTotalTaskAmount(BruteForceLevel level)
+    private void calculateTotalTaskAmount(GameLevel level)
     {
             switch (level)
             {

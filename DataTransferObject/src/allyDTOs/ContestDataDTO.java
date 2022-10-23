@@ -2,7 +2,7 @@ package allyDTOs;
 
 import UBoatDTO.GameStatus;
 import engineDTOs.BattlefieldDataDTO;
-import engineDTOs.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.GameLevel;
 
 
 
@@ -16,7 +16,7 @@ public class ContestDataDTO extends BattlefieldDataDTO {
     protected int registeredAmount;
 
     public ContestDataDTO(String battlefieldName,String uboatUserName,
-                          GameStatus gameStatus, BruteForceLevel gameLevel,
+                          GameStatus gameStatus, GameLevel gameLevel,
                            int requiredAmount) {
         super(battlefieldName,requiredAmount,gameLevel.toString());
         this.uboatUserName = uboatUserName;
@@ -26,7 +26,7 @@ public class ContestDataDTO extends BattlefieldDataDTO {
     }
 
     public ContestDataDTO(String battlefieldName,String uboatUserName,
-                          GameStatus gameStatus, BruteForceLevel gameLevel,
+                          GameStatus gameStatus, GameLevel gameLevel,
                           int requiredAmount,int registeredAmount ) {
         super(battlefieldName,requiredAmount,gameLevel.toString());
         this.uboatUserName = uboatUserName;
@@ -52,5 +52,12 @@ public class ContestDataDTO extends BattlefieldDataDTO {
         return registeredAmount;
     }
 
-
+    @Override
+    public String toString() {
+        return "ContestDataDTO{" +
+                "uboatUserName='" + uboatUserName + '\'' +
+                ", gameStatus=" + gameStatus +
+                ", registeredAmount=" + registeredAmount +
+                '}';
+    }
 }

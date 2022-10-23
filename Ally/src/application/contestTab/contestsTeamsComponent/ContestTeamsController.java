@@ -1,4 +1,4 @@
-package application.dashboardTab.contestTab.contestsTeamsComponent;
+package application.contestTab.contestsTeamsComponent;
 
 import allyDTOs.AllyDataDTO;
 import javafx.collections.FXCollections;

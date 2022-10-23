@@ -2,18 +2,16 @@ package agent;
 
 
 
-import allyDTOs.TeamAgentsDataDTO;
+import allyDTOs.AgentsTeamProgressDTO;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.*;
-import java.util.Scanner;
 
 import static general.ConstantsHTTP.AGENT_CONTEXT;
 import static general.ConstantsHTTP.UPDATE_PROGRESS;
@@ -43,7 +41,7 @@ public class GetAgentProgressServlet extends HttpServlet {
         try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
-           TeamAgentsDataDTO agentsDataProgressDTO = gson.fromJson(inputReader,TeamAgentsDataDTO.class);
+           AgentsTeamProgressDTO agentsDataProgressDTO = gson.fromJson(inputReader, AgentsTeamProgressDTO.class);
 
            String allyName=ServletUtils.getSystemManager()
                    .getAgentData(username)
@@ -52,6 +50,7 @@ public class GetAgentProgressServlet extends HttpServlet {
            ServletUtils.getSystemManager()
                    .getSingleAllyController(allyName)
                    .updateAgentProgressData(agentsDataProgressDTO);
+
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
           ServletUtils.setBadRequestErrorResponse(e,response);

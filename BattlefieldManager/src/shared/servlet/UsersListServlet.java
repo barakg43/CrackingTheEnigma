@@ -19,7 +19,7 @@ public class UsersListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //returning JSON objects, not HTML
-        response.setContentType("application/json");
+
         try (PrintWriter out = response.getWriter()) {
             Gson gson = ServletUtils.getGson();
             SystemManager userManager = ServletUtils.getSystemManager();
@@ -27,6 +27,8 @@ public class UsersListServlet extends HttpServlet {
             String json = gson.toJson(usersList);
             out.println(json);
             out.flush();
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
         }
     }
 
