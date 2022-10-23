@@ -1,4 +1,4 @@
-package application.dashboardTab.contestTab.teamsCandidatesComponent;
+package application.contestTab.teamsCandidatesComponent;
 
 import allyDTOs.AllyCandidateDTO;
 import engineDTOs.CodeFormatDTO;

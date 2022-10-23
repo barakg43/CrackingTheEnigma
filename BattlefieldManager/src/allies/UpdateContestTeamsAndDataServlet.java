@@ -27,37 +27,30 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain");
+
         PrintWriter out = response.getWriter();
+        String allyName = SessionUtils.getUsername(request);
 
-        String username = SessionUtils.getUsername(request);
-
-
-        if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
+        if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
-            if(username == null)
-                response.getWriter().println("Must login as Ally first!");
+            response.setContentType("text/plain");
+            response.getWriter().println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
         try {
+
             Gson gson = ServletUtils.getGson();
-            String uboatManager=ServletUtils.getSystemManager().getSingleAllyController(username).getUboatNameManager();
+            String uboatManager=ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
             SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
                     .getBattleFieldController(uboatManager);
-            List<AllyDataDTO> otherAllyDataDTOList= uboatController
-                    .getAlliesDataListForUboat()
-                    .stream()
-                    .filter(AllyData->
-                            !AllyData.getAllyName().equals(username))
-                    .collect(Collectors.toList());
+            List<AllyDataDTO> allyDataDTOList= uboatController.getAlliesDataListForUboat();
             ContestDataDTO contestDataDTO=uboatController.getContestDataDTO();
             out.println(
                     gson.toJson(
-                            new AllyContestDataAndTeamsDTO(otherAllyDataDTOList,contestDataDTO)
-                    ));
+                            new AllyContestDataAndTeamsDTO(allyDataDTOList,contestDataDTO)));
             out.flush();
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);

@@ -103,6 +103,8 @@ public class ContestController {
 //                teamsStatusComponentController.startListRefresher(this::startContestConsumer);
 //        });
         EncryptComponent.disableProperty().bind(isCodeSelected.not());
+//        EncryptComponentController.getReadyButtonDisableProperty().addListener((
+//                (observable, oldValue, newValue) -> isCodeSelected.set(newValue)));
     }
 
     public void setSimpleCurrentCode(CodeFormatDTO currentCode) {

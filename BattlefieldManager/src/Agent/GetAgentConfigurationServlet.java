@@ -23,7 +23,7 @@ public class GetAgentConfigurationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain");
+
         PrintWriter out = response.getWriter();
 
 
@@ -31,8 +31,8 @@ public class GetAgentConfigurationServlet extends HttpServlet {
 
         if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
         {
-            if(username == null)
-                response.getWriter().println("Must login as AGENT first!");
+            response.setContentType("text/plain");
+            response.getWriter().println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -48,6 +48,7 @@ public class GetAgentConfigurationServlet extends HttpServlet {
              String body= ServletUtils.getGson().toJson(agentSetupConfigurationDTO,AgentSetupConfigurationDTO.class);
              out.println(body);
              out.flush();
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);

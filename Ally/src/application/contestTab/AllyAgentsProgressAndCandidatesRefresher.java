@@ -1,11 +1,10 @@
-package application.dashboardTab.contestTab;
+package application.contestTab;
 
 import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyCandidateDTO;
-import allyDTOs.TeamAgentsDataDTO;
+import allyDTOs.AgentsTeamProgressDTO;
 import application.http.HttpClientAdapter;
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
 
 import java.util.List;
 import java.util.TimerTask;
@@ -17,11 +16,11 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
 
         private final Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer;
 
-        private final Consumer<List<TeamAgentsDataDTO>> teamAgentsConsumer;
+        private final Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer;
         private final CustomHttpClient httpClientUtil;
 
 
-    public AllyAgentsProgressAndCandidatesRefresher(  Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer, Consumer<List<TeamAgentsDataDTO>> teamAgentsConsumer) {
+    public AllyAgentsProgressAndCandidatesRefresher(  Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer, Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer) {
         this.allyCandidatesListConsumer = allyCandidatesListConsumer;
         this.teamAgentsConsumer=teamAgentsConsumer;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
@@ -30,7 +29,7 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
     @Override
     public void run() {
 
-        System.out.println("Sending contest and teams data request to server....");
+        System.out.println("Sending ally progress and candidate....");
         String userListRaw=httpClientUtil.doGetSync(UPDATE_CANDIDATES);
         if(userListRaw!=null&&!userListRaw.isEmpty())
         {

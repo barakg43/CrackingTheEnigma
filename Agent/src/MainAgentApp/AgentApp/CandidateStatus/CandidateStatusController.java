@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class CandidateStatusController {
@@ -73,7 +74,7 @@ public class CandidateStatusController {
     public void startListRefresher() {
         listRefresher = new CandidatesStatusRefresher(this::addAllCandidate);
         timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
     public void closeListRefresher() {

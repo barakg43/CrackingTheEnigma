@@ -136,18 +136,20 @@ public class SystemManager {
     public AgentDataDTO getAgentData(String agentName) {
         return agentToAllyMap.get(agentName);
     }
-    public void addAgentData(AgentDataDTO agentDataDTO)
+    public void addNewAgentData(AgentDataDTO agentDataDTO)
     {
+
         String agentName=agentDataDTO.getAgentName();
-        if(!isAgentExist(agentName))
-            agentToAllyMap.replace(agentName,agentDataDTO);
+
+        if(!isAgentExist(agentName)) {
+            agentToAllyMap.put(agentName, agentDataDTO);
+            allyControllerMap.get(agentDataDTO.getAllyTeamName()).assignAgentToAlly(agentDataDTO);
+        }
         else
         {
-            throw new RuntimeException( agentName+ " not exist!");
+            throw new RuntimeException( agentName+ " already exist!");
         }
     }
-
-
 
 
 }

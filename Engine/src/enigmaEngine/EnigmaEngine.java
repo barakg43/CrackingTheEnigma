@@ -2,7 +2,7 @@ package enigmaEngine;
 
 import decryptionManager.components.Dictionary;
 import engineDTOs.*;
-import engineDTOs.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.GameLevel;
 import enigmaMachine.EnigmaMachine;
 import enigmaMachine.parts.Reflector;
 import enigmaMachine.parts.Rotor;
@@ -533,19 +533,19 @@ public class EnigmaEngine implements Engine , Serializable {
             int alliesAmount=cteBattlefield.getAllies();
             String level=cteBattlefield.getLevel().toUpperCase();
             String battlefieldName=cteBattlefield.getBattleName();
-            BruteForceLevel bruteForceLevel;
+            GameLevel gameLevel;
             if(loadedBattlefieldName.contains(battlefieldName))
                 throw new RuntimeException(battlefieldName+" already loaded in server!");
             if(alliesAmount<1)
                 throw new RuntimeException("invalid allies amount: "+alliesAmount);
             try {
-                 bruteForceLevel = BruteForceLevel.valueOf(level);
+                 gameLevel = GameLevel.valueOf(level);
 
             }catch (IllegalArgumentException e)
             {
                 throw new RuntimeException("the "+level+" isn't valid game level");
             }
-            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,bruteForceLevel.toString());
+            battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,gameLevel.toString());
         }
 
         private List<Character> copyExcludeChars(String excludeChars) {

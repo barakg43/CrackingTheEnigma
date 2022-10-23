@@ -21,6 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class TeamsStatusController {
@@ -85,7 +86,7 @@ public class TeamsStatusController {
     public void startListRefresher(Consumer<ActiveTeamsDTO> enableReadyButton) {
         listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies, enableReadyButton);
         timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
  //   @Override

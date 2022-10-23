@@ -15,6 +15,7 @@ import java.io.Closeable;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class AllUserListController implements Closeable {
@@ -71,7 +72,7 @@ public class AllUserListController implements Closeable {
     public void startListRefresher() {
         listRefresher = new UserListRefresher(this::updateTableView);
         timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
     @Override

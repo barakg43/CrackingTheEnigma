@@ -24,18 +24,17 @@ public class RegisterAllyToUboatServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String username = SessionUtils.getUsername(request);
-        if (username == null||!ServletUtils.getSystemManager().isAllyExist(username))
+        String allyName = SessionUtils.getUsername(request);
+        if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
-            if(username == null)
-                response.getWriter().println("Must login as Ally first!");
+            response.getWriter().println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         try {
             String uboatName = request.getParameter(UBOAT_PARAMETER);
-            SingleAllyController singleAllyController= ServletUtils.getSystemManager().getSingleAlly(username);
+            SingleAllyController singleAllyController= ServletUtils.getSystemManager().getSingleAlly(allyName);
             synchronized (getServletContext())
             {
                 singleAllyController.assignAllyToUboat(uboatName);

@@ -94,7 +94,7 @@ public class HttpClientAdapter {
         });
 
     }
-    public static void sendStartBattlefieldContestCommand()
+    public static void sendStartBattlefieldContestCommand(Consumer<Boolean> isSuccess)
     {
         HTTP_CLIENT.doPostASync(READY_TO_START,"", new Callback() {
             @Override
@@ -107,6 +107,7 @@ public class HttpClientAdapter {
                 assert response.body() != null;
                 if(response.code()!=HTTP_OK)
                     UBoatAppController.createErrorAlertWindow("Start Battlefield", "Error when trying to start Battlefield Contest\n"+ Objects.requireNonNull(response.body()).string());
+                isSuccess.accept(response.code()==HTTP_OK);
             }
         });
 

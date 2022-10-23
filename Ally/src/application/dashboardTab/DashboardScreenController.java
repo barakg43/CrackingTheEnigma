@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class DashboardScreenController {
@@ -66,7 +67,7 @@ public class DashboardScreenController {
     public void startListRefresher() {
         listRefresher = new DashboardScreenDataRefresher(this::addAllAgentsDataToTable, this::addAllContestDataToTable );
         timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
     public void stopListRefresher() {

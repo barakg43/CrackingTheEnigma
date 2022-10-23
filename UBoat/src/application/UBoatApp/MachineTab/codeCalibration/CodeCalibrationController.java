@@ -147,9 +147,8 @@ public class CodeCalibrationController {
 
 
     public void SetCodeConfActionListener(ActionEvent actionEvent) {
-        uBoatMachineController.getIsSelected().set(true);
-        List<Integer> selectedRotorsID = new ArrayList<>();
-        List<Character> selectedPositions =new ArrayList<>();
+//        uBoatMachineController.getIsSelected().set(true);
+
         int rotorSize=rotorsAndPositionsFlowPane.getChildren().size();
         RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[rotorSize];
         try {
@@ -191,14 +190,6 @@ public class CodeCalibrationController {
 
         }
 
-    }
-    public void updateManaullyCodeView(AllCodeFormatDTO allCodeFormatDTO)
-    {
-
-        uBoatMachineController.getMachineDetailsController().getCurrentMachineCodeController().clearCurrentCodeView();
-        uBoatMachineController.getMachineDetailsController().getSelectedMachineCodeController().clearCurrentCodeView();
-
-        uBoatMachineController.showAndGetAllCodes();
     }
 
     public void resetSelectedData()

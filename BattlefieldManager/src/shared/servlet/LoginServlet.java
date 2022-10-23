@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
                             userManager.addUserName(usernameFromParameter, type);
                             try {
                                 if (type == ApplicationType.AGENT)
-                                    ServletUtils.getSystemManager().addAgentData(readAgentDTO(request));
+                                    ServletUtils.getSystemManager().addNewAgentData(readAgentDTO(request));
                             } catch (RuntimeException ex) {
                                 response.sendError(HttpServletResponse.SC_NO_CONTENT, "Error reading agent data from request.\n" + ex.getMessage());
                                 return;

@@ -1,12 +1,12 @@
 package allyDTOs;
 
-public class TeamAgentsDataDTO {
+public class AgentsTeamProgressDTO {
     private final String agentName;
     private final int receivedTaskAmount;
     private final int waitingTaskAmount;
     private final int candidatesAmount;
 
-    public TeamAgentsDataDTO(String agentName, int receivedTaskAmount, int waitingTaskAmount, int candidatesAmount) {
+    public AgentsTeamProgressDTO(String agentName, int receivedTaskAmount, int waitingTaskAmount, int candidatesAmount) {
         this.agentName = agentName;
         this.receivedTaskAmount = receivedTaskAmount;
         this.waitingTaskAmount = waitingTaskAmount;

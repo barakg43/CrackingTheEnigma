@@ -3,11 +3,11 @@ package uboat;
 import UBoatDTO.GameStatus;
 import allyDTOs.ContestDataDTO;
 import engineDTOs.BattlefieldDataDTO;
-import engineDTOs.DmDTO.BruteForceLevel;
+import engineDTOs.DmDTO.GameLevel;
 
 public class ContestDataManager extends ContestDataDTO {
 
-    public ContestDataManager(String battlefieldName, String uboatUserName, GameStatus gameStatus, BruteForceLevel gameLevel, int requiredAmount) {
+    public ContestDataManager(String battlefieldName, String uboatUserName, GameStatus gameStatus, GameLevel gameLevel, int requiredAmount) {
         super(battlefieldName, uboatUserName, gameStatus, gameLevel, requiredAmount);
     }
 

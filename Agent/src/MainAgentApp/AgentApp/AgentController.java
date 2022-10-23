@@ -69,13 +69,13 @@ public class AgentController {
 
     public static void createErrorAlertWindow(String title,String error)
     {
-        Platform.runLater(() -> {
+      /*  Platform.runLater(() -> {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Error");
             errorAlert.setHeaderText(title);
             errorAlert.setContentText(error);
             errorAlert.showAndWait();
-        });
+        });*/
 
 
     }

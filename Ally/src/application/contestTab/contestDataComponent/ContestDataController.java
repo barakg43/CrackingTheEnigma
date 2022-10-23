@@ -1,4 +1,4 @@
-package application.dashboardTab.contestTab.contestDataComponent;
+package application.contestTab.contestDataComponent;
 
 import allyDTOs.ContestDataDTO;
 import javafx.application.Platform;

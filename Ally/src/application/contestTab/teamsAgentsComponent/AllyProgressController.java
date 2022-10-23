@@ -1,6 +1,7 @@
-package application.dashboardTab.contestTab.teamsAgentsComponent;
+package application.contestTab.teamsAgentsComponent;
 
-import allyDTOs.TeamAgentsDataDTO;
+import allyDTOs.AgentsTeamProgressDTO;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
@@ -18,19 +19,19 @@ public class AllyProgressController {
 
 
     @FXML
-    private TableView<TeamAgentsDataDTO> allyAgentDataTable;
+    private TableView<AgentsTeamProgressDTO> allyAgentDataTable;
 
     @FXML
-    private TableColumn<TeamAgentsDataDTO, String> agentNameColumn;
+    private TableColumn<AgentsTeamProgressDTO, String> agentNameColumn;
 
     @FXML
-    private TableColumn<TeamAgentsDataDTO, Integer> receivedTaskColumn;
+    private TableColumn<AgentsTeamProgressDTO, Integer> receivedTaskColumn;
 
     @FXML
-    private TableColumn<TeamAgentsDataDTO, Integer> waitingTaskColumn;
+    private TableColumn<AgentsTeamProgressDTO, Integer> waitingTaskColumn;
 
     @FXML
-    private TableColumn<TeamAgentsDataDTO, Integer> candidatesColumn;
+    private TableColumn<AgentsTeamProgressDTO, Integer> candidatesColumn;
 
     @FXML
     private Label totalTaskAmount;
@@ -55,16 +56,16 @@ public class AllyProgressController {
     private Label agentsTasksDonePercent;
     @FXML
     private ProgressBar agentsTasksProgressBar;
-    private  ObservableList<TeamAgentsDataDTO> allyAgentsDataListObs;
+    private  ObservableList<AgentsTeamProgressDTO> allyAgentsDataListObs;
     private final SimpleDoubleProperty produceProgressProperty = new SimpleDoubleProperty(0);
     private final SimpleDoubleProperty doneProgressProperty = new SimpleDoubleProperty(0);
-    public void addAgentsRecordsToAllyAgentTable(List<TeamAgentsDataDTO> agentRecordList) {
+    public void addAgentsRecordsToAllyAgentTable(List<AgentsTeamProgressDTO> agentRecordList) {
 
         if (agentRecordList == null||agentRecordList.isEmpty())
             return;
 
         allyAgentsDataListObs.setAll(agentRecordList);
-        allyAgentDataTable.setItems(allyAgentsDataListObs);
+        Platform.runLater(()-> allyAgentDataTable.setItems(allyAgentsDataListObs));
     }
 
     public void setTotalTaskAmount(long totalTaskAmount) {

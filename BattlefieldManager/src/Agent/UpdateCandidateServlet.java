@@ -38,6 +38,7 @@ public class UpdateCandidateServlet extends HttpServlet {
             Gson gson = ServletUtils.getGson();
             AllyCandidateDTO allyCandidateDTO = gson.fromJson(inputReader,AllyCandidateDTO.class);
             ServletUtils.getSystemManager().getSingleAllyController(allyCandidateDTO.getAllyName()).addCandidateToAllyList(allyCandidateDTO);
+
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
           ServletUtils.setBadRequestErrorResponse(e,response);

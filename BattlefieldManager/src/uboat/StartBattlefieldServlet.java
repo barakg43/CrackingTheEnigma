@@ -18,8 +18,6 @@ import static general.ConstantsHTTP.UBOAT_CONTEXT;
 @WebServlet(name = "StartBattlefieldServlet", urlPatterns = {UBOAT_CONTEXT+READY_TO_START})
 public class StartBattlefieldServlet extends HttpServlet {
 
-
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
@@ -32,10 +30,10 @@ public class StartBattlefieldServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"StartBattlefieldServlet");
-        ServletUtils.getSystemManager()
-                .getBattleFieldController(username)
-                .getContestDataManager()
-                .changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
+        SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
+                .getBattleFieldController(username);
+        uboatController.getContestDataManager().changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
+        uboatController.checkIfAllReady();
         response.setStatus(HttpServletResponse.SC_OK);
 
     }

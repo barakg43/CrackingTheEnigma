@@ -6,13 +6,14 @@ public class ConstantsHTTP {
     // global constants
     public final static String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    public final static int REFRESH_RATE = 2000;
+    public final static int REFRESH_RATE = 10000;
+    public final static int FAST_REFRESH_RATE = 500;
 
     public static final String USERNAME = "username";
     public static final String AMOUNT="amount";
     public static final String INPUT_PROPERTY = "input";
     public static final String OUTPUT_PROPERTY = "output";
-
+    public static final String TASK_AMOUNT = "task-amount";
     public static final String QUERY_FORMAT="%s?%s=%s";
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
@@ -25,8 +26,8 @@ public class ConstantsHTTP {
     public static final String  UPDATE_CANDIDATES="/update-candidates";
 //    public static final String CONTEST_DATA="/update-contest-data";
     public static final String UPDATE_DASHBOARD="/update-dashboard-data";
-
     public static final String UPDATE_CONTEST="/update-contest-data";
+    public static final String READY_TO_START = "/ready-to-start";
 
     /**################ UBOAT URLs ####################**/
 
@@ -42,15 +43,13 @@ public class ConstantsHTTP {
     public static final String MANUALLY_CODE = "/manually-code";
     public static final String RESET_CODE = "/reset-code";
     public static final String RESET_MACHINE = "/reset-machine";
-    public static final String READY_TO_START = "/ready-to-start";
 
 
     /**################ ALLY URLs ####################**/
     public final static  String ALLY_CONTEXT="/ally";
-
     public static final String REGISTER_TO_UBOAT = "/register-to-uboat";
+    public static final String START_TASKS_CREATOR = "/start-task-creator";
     public static final String UBOAT_PARAMETER = ApplicationType.UBOAT.toString();
-
 
     /**################ AGENT URLs ####################**/
     public static final String AGENT_CONTEXT="/agent";

@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class ContestTeamDataController {
@@ -33,7 +34,7 @@ public class ContestTeamDataController {
     {
         agentController.setGameStatus(contestDataDTO.getGameStatus());
         contestDataComponentController.updateContestData(contestDataDTO);
-        stopListRefresher();
+      //  stopListRefresher();
     }
     public void resetData() {
         contestDataComponentController.resetData();
@@ -44,7 +45,7 @@ public class ContestTeamDataController {
 
         listRefresher = new ContestTeamDataListRefresher(this::updateContestData);
         timer = new Timer();
-        timer.schedule(listRefresher, REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
 
     }
 

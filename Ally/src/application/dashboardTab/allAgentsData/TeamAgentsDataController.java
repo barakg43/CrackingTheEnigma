@@ -47,7 +47,7 @@ public class TeamAgentsDataController {
                 new Label("No rows to display"));
         agentNameColumn.setCellValueFactory(new PropertyValueFactory<>("agentName"));
         threadAmountColumn.setCellValueFactory(new PropertyValueFactory<>("threadAmount"));
-        taskAmountColumn.setCellValueFactory(new PropertyValueFactory<>("taskAmountSession"));
+        taskAmountColumn.setCellValueFactory(new PropertyValueFactory<>("tasksSessionAmount"));
         agentsDataListObs= FXCollections.observableArrayList();
         agentNameColumn.setStyle("-fx-alignment:center");
         threadAmountColumn.setStyle("-fx-alignment:center");

@@ -57,8 +57,8 @@ public class SupplyTaskServlet extends HttpServlet {
             String json = gson.toJson(taskList);
             out.println(json);
             out.flush();
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
-
         } catch (RuntimeException e) {
            ServletUtils.setBadRequestErrorResponse(e,response);
         }

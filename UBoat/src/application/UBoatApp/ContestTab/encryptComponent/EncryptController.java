@@ -14,6 +14,7 @@ import application.http.HttpClientAdapter;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -116,6 +117,9 @@ public class EncryptController {
 
 
     }
+    public BooleanProperty getReadyButtonDisableProperty(){
+        return readyButton.disableProperty();
+    }
     public void bindOutputStringBetweenComponent()
     {
         codeEncryptComponentController.bindParentToOutputString(outputString);
@@ -158,11 +162,10 @@ public class EncryptController {
     }
     public void setSelectedCode(AllCodeFormatDTO allCodeFormatDTO)
     {
-        Platform.runLater(()->
-            simpleCodeComponentController.setSelectedCode(allCodeFormatDTO.getCurrentCode()));
-
-        Platform.runLater(()->
-            contestController.bindCurrentCode());
+        Platform.runLater(()->{
+                    simpleCodeComponentController.setSelectedCode(allCodeFormatDTO.getCurrentCode());
+                    contestController.bindCurrentCode();
+                });
 
     }
     public void clearListView() {
@@ -203,7 +206,7 @@ public class EncryptController {
     }
 
     public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
-        HttpClientAdapter.sendStartBattlefieldContestCommand();
+        HttpClientAdapter.sendStartBattlefieldContestCommand(readyButton::setDisable);
     }
 }
 

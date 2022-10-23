@@ -1,12 +1,12 @@
 package engineDTOs.DmDTO;
 
-public enum BruteForceLevel {
+public enum GameLevel {
     EASY("Easy"),
     MEDIUM("Medium"),
     HARD("Hard"),
     INSANE("Insane");
     final String name;
-    BruteForceLevel(String level) {
+    GameLevel(String level) {
         name=level;
     }
     @Override
