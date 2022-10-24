@@ -63,6 +63,35 @@
 					"response": []
 				},
 				{
+					"name": "Upload a file",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/E:/aviad/courses/Java and Internet course/leftovers.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/upload-file",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"upload-file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Automatic Code",
 					"request": {
 						"method": "GET",

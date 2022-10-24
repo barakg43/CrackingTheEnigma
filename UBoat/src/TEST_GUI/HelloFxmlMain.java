@@ -103,7 +103,7 @@ public class HelloFxmlMain extends Application{
         agentUser.add("agent3");
         agentUser.add("agent4");
         UserListDTO alluser=new UserListDTO(uboatUser,alliesUser,agentUser);
-        controller.updateTableView(alluser);
+      //  controller.updateTableView(alluser);
         Scene scene = new Scene(root,1020,905);
         primaryStage.setScene(scene);
         primaryStage.show();

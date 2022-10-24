@@ -160,7 +160,7 @@ public class EncryptController {
         contestController.bindCurrentCode();
 
     }
-    public void setSelectedCode(AllCodeFormatDTO allCodeFormatDTO)
+    private void setSelectedCode(AllCodeFormatDTO allCodeFormatDTO)
     {
         Platform.runLater(()->{
                     simpleCodeComponentController.setSelectedCode(allCodeFormatDTO.getCurrentCode());

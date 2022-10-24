@@ -32,7 +32,7 @@ public class ContestTeamDataController {
     {
         this.alliesName.setText(alliesName);
     }
-    public void updateContestData(ContestDataDTO contestDataDTO)
+    private void updateContestData(ContestDataDTO contestDataDTO)
     {
         if(!isAgentStartContest&&contestDataDTO.getGameStatus()== GameStatus.ACTIVE)
             startContestInAgent();

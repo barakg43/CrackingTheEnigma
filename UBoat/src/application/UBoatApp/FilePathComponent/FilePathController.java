@@ -124,7 +124,7 @@ public class FilePathController {
         );
     }
 
-    public void fileUploadSettings(String filePath)
+    private void fileUploadSettings(String filePath)
     {
         Platform.runLater(() -> {
 

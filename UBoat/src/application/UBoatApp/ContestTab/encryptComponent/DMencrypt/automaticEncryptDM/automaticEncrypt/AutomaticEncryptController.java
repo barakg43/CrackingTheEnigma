@@ -70,7 +70,7 @@ public class AutomaticEncryptController {
             }
 
         }
-        public void updateOutputProperty(String output)
+        private void updateOutputProperty(String output)
         {
             Platform.runLater(()->outputProperty.setValue(output));
         }

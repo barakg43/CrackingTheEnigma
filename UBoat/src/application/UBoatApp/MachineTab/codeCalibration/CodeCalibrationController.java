@@ -94,7 +94,7 @@ public class CodeCalibrationController {
         HttpClientAdapter.setCodeAutomatically(this::updateCodeAfterCodeConfiguration);
 
     }
-    public void updateCodeAfterCodeConfiguration(AllCodeFormatDTO allCodeFormatDTO)
+    private void updateCodeAfterCodeConfiguration(AllCodeFormatDTO allCodeFormatDTO)
     {
         Platform.runLater(()-> {
 

@@ -76,7 +76,7 @@ public class AgentController {
     {
         decryptionAgent=new DecryptionAgent(agentDataDTO,this::getNewTasksSession);
     }
-    public void getNewTasksSession()
+    private void getNewTasksSession()
     {
 
        taskPuller.submit(()->{

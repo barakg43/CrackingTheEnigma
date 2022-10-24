@@ -51,7 +51,7 @@ public class AllUserListController implements Closeable {
         alliesUsersObserve=FXCollections.observableArrayList();
         agentsUsersObserve=FXCollections.observableArrayList();
     }
-    public void updateTableView(UserListDTO allUserList) {
+    private void updateTableView(UserListDTO allUserList) {
         if (allUserList != null)
             Platform.runLater(() -> {
                 uboatUsersObserve.setAll(allUserList.getUboatUsersSet());

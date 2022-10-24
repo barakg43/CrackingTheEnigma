@@ -50,7 +50,7 @@ public class TeamsStatusController {
         scrollPaneTeams.prefHeightProperty().bind(sceneHeightProperty);
     }
 
-    public void setAllTeamAllies(ActiveTeamsDTO allTeamAllies)
+    private void setAllTeamAllies(ActiveTeamsDTO allTeamAllies)
     {
 
         Platform.runLater(()-> {

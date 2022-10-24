@@ -40,7 +40,7 @@ public class CandidateStatusController {
         candidateStatusScrollPane.prefHeightProperty().bind(sceneHeightProperty);
     }
 
-    public void addAllCandidate(TaskFinishDataDTO taskFinishDataDTO)
+    private void addAllCandidate(TaskFinishDataDTO taskFinishDataDTO)
     {
 
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())

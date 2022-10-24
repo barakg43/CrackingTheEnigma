@@ -34,13 +34,13 @@ public class DashboardScreenController {
     private TimerTask listRefresher;
     private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
 
-    public void addAllContestDataToTable(List<ContestDataDTO> contestDataDTOList) {
+    private void addAllContestDataToTable(List<ContestDataDTO> contestDataDTOList) {
         contestTableComponentController.addAllContestsDataToTable(contestDataDTOList);
     }
     public String  getSelectedUboat(){
         return contestTableComponentController.getSelectedUbaot();
     }
-    public void addAllAgentsDataToTable(List<AgentDataDTO> agentDataDTOList) {
+    private void addAllAgentsDataToTable(List<AgentDataDTO> agentDataDTOList) {
         agentsDataTableComponentController.addAgentsRecordToAgentTable(agentDataDTOList);
     }
 

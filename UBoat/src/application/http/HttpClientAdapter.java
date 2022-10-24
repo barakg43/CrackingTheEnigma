@@ -1,6 +1,7 @@
 package application.http;
 
 
+import application.ApplicationController;
 import application.Login.LoginInterface;
 import application.UBoatApp.UBoatAppController;
 import engineDTOs.AllCodeFormatDTO;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import static application.ApplicationController.TYPE;
+import static application.UBoatApp.UBoatAppController.createErrorAlertWindow;
 import static general.ConstantsHTTP.*;
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -40,12 +42,12 @@ public class HttpClientAdapter {
         return wordsSet;
     }
 
-    public static void sendLoginRequest(LoginInterface loginInterface, Consumer<String> errorMessage, String userName) {
+    public static void sendLoginRequest(LoginInterface loginInterface, String userName) {
         String contextUrl = String.format(QUERY_FORMAT, LOGIN, USERNAME, userName);
         HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                errorMessage.accept(e.getMessage());
+                createErrorAlertWindow("Login error",e.getMessage());
             }
 
             @Override

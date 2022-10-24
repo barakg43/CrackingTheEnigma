@@ -45,10 +45,14 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
             if(responseDTO.getCode()==HTTP_OK) {
                 AllyAgentsProgressAndCandidatesDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(responseDTO.getBody(),(AllyAgentsProgressAndCandidatesDTO.class));
+                if(allyContestDataAndTeams.getTaskAmountProduced()>0) {
+                    taskProducedConsumer.accept(allyContestDataAndTeams.getTaskAmountProduced());
+                }
+                if(allyContestDataAndTeams.getUpdatedAllyCandidates()!=null)
+                    allyCandidatesListConsumer.accept(allyContestDataAndTeams.getUpdatedAllyCandidates());
 
-                allyCandidatesListConsumer.accept(allyContestDataAndTeams.getUpdatedAllyCandidates());
-                taskProducedConsumer.accept(allyContestDataAndTeams.getTaskAmountProduced());
-                teamAgentsConsumer.accept(allyContestDataAndTeams.getAgentsDataProgressDTOS());}
+                if(allyContestDataAndTeams.getAgentsDataProgressDTOS()!=null)
+                    teamAgentsConsumer.accept(allyContestDataAndTeams.getAgentsDataProgressDTOS());}
             else
                 createErrorAlertWindow("Candidates And Agent Progress",responseDTO.getBody());
         }else

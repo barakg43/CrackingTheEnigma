@@ -35,7 +35,7 @@ public class AllUserListController implements Closeable {
     private ObservableList<String> agentsUsersObserve;
     private Timer timer;
     private TimerTask listRefresher;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
+
     @FXML
     private void initialize() {
         uboatUsersColumn.setPlaceholder(
@@ -52,7 +52,7 @@ public class AllUserListController implements Closeable {
         alliesUsersObserve=FXCollections.observableArrayList();
         agentsUsersObserve=FXCollections.observableArrayList();
     }
-    public void updateTableView(UserListDTO allUserList)
+    private void updateTableView(UserListDTO allUserList)
     {
         if(allUserList!=null)
             Platform.runLater(()->{
@@ -67,21 +67,6 @@ public class AllUserListController implements Closeable {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-//    public BooleanProperty autoUpdatesProperty() {
-//        return autoUpdate;
-//    }
-
     public void startListRefresher() {
         listRefresher = new UserListRefresher(this::updateTableView);
         timer = new Timer();
@@ -93,7 +78,6 @@ public class AllUserListController implements Closeable {
         uboatUsersColumn.getItems().clear();
         alliesUsersColumn.getItems().clear();
         agentsUsersColumn.getItems().clear();
-        autoUpdate.set(false);
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();
@@ -101,6 +85,9 @@ public class AllUserListController implements Closeable {
     }
 
     public void closeListRefresher() {
+        uboatUsersColumn.getItems().clear();
+        alliesUsersColumn.getItems().clear();
+        agentsUsersColumn.getItems().clear();
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();

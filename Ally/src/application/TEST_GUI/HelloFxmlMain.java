@@ -83,13 +83,13 @@ public class HelloFxmlMain extends Application{
         AgentDataDTO nn=new AgentDataDTO("allyTeamName1", "agent1",10,500);
         list.add(nn);
         list.add(new AgentDataDTO("allyTeamName2", "agent2",30,400));
-        controller.addAllAgentsDataToTable(list);
+       // controller.addAllAgentsDataToTable(list);
         List<ContestDataDTO> list2=new ArrayList<>();
         list2.add(new ContestDataDTO("battle1","uboat1", GameStatus.ACTIVE, GameLevel.HARD,2));
         list2.add(new ContestDataDTO("battle2","uboat2", GameStatus.IDLE, GameLevel.INSANE,4));
         list2.add(new ContestDataDTO("battle3","uboat3", GameStatus.IDLE, GameLevel.INSANE,1));
         list2.add(new ContestDataDTO("battle4","uboat4", GameStatus.IDLE, GameLevel.INSANE,3));
-        controller.addAllContestDataToTable(list2);
+      //  controller.addAllContestDataToTable(list2);
         Scene scene = new Scene(root,1020,905);
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -63,7 +63,7 @@ public class LoginController implements LoginInterface {
 //            errorMessageProperty.set();
         }
         else
-            HttpClientAdapter.sendLoginRequest(this,this::updateErrorMessage,userName);
+            HttpClientAdapter.sendLoginRequest(this,userName);
 //
     }
     public void stopUpdateUserList()
@@ -71,10 +71,7 @@ public class LoginController implements LoginInterface {
 
         userListComponentController.close();
     }
-    public void updateErrorMessage(String errorMessage)
-    {
-        createErrorAlertWindow("Login error",errorMessage);
-    }
+
     public void doLoginRequest(boolean isLoginSuccess, String response, String userName)
     {
         if (!isLoginSuccess) {

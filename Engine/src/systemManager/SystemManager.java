@@ -1,7 +1,9 @@
 package systemManager;
 
 import Ally.SingleAllyController;
+import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
+import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import general.ApplicationType;
 import general.UserListDTO;
@@ -47,7 +49,7 @@ public class SystemManager {
         switch (type)
         {
             case UBOAT:
-                uboatMapControllerSet.put(username,new SingleBattleFieldController(username));
+                uboatMapControllerSet.put(username,new SingleBattleFieldController(username,this::startContestInAssignAllies));
                 break;
             case ALLY:
                 allyControllerMap.put(username,new SingleAllyController(username));
@@ -96,17 +98,7 @@ public class SystemManager {
                               Collections.unmodifiableSet(allyControllerMap.keySet()),
                               Collections.unmodifiableSet(agentToAllyMap.keySet()));
     }
-    public  void addAllyUser(String allyName)
-    {
 
-        if(!allyControllerMap.containsKey(allyName))
-            allyControllerMap.put(allyName,new SingleAllyController(allyName));
-        else
-        {
-            throw new RuntimeException(allyName+ " is already exist and logged in to server.");
-        }
-
-    }
 
     public SingleBattleFieldController getBattleFieldController(String uboatUserName)
     {
@@ -118,6 +110,16 @@ public class SystemManager {
                 .stream()
                 .map(SingleBattleFieldController::getContestDataDTO)
                 .collect(Collectors.toList());
+
+    }
+    private void startContestInAssignAllies(String uboatName)
+    {
+        SingleBattleFieldController uboatController=this.getBattleFieldController(uboatName);
+
+        List<AllyDataDTO> alliesDataListForUboat = uboatController.getAlliesDataListForUboat();
+        for(AllyDataDTO allyData:alliesDataListForUboat)
+          getSingleAllyController(allyData.getAllyName()).getDecryptionManager().startCreatingContestTasks();
+
 
     }
     public SingleAllyController getSingleAllyController(String allyName)

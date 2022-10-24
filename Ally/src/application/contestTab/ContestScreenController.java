@@ -92,7 +92,7 @@ public class ContestScreenController {
         teamsAgentsComponentController.updateMassageLabel(massage);
     }
 
-    public void updateTasksAmountProduced(long taskDoneProduced) {
+    private void updateTasksAmountProduced(long taskDoneProduced) {
         Platform.runLater(()-> teamsAgentsComponentController.updateTasksAmountProduced(taskDoneProduced));
     }
     private int getTaskSizeFromSpinner() {
@@ -108,16 +108,16 @@ public class ContestScreenController {
         teamsAgentsComponentController.updateAgentsTasksDone(taskDoneAmount);
     }
 
-    public void addAgentsRecordsToAllyAgentTable(List<AgentsTeamProgressDTO> agentsRecordList) {
+    private void addAgentsRecordsToAllyAgentTable(List<AgentsTeamProgressDTO> agentsRecordList) {
         teamsAgentsComponentController.addAgentsRecordsToAllyAgentTable(agentsRecordList);
     }
 
-    public void addTeamsCandidatesRecordsToTeamsTable(List<AllyCandidateDTO> agentsRecordList) {
+    private void addTeamsCandidatesRecordsToTeamsTable(List<AllyCandidateDTO> agentsRecordList) {
         tamsCandidatesComponentController.addAlliesDataToContestTeamTable(agentsRecordList);
     }
 
 
-    public void addAlliesDataToContestTeamTable(List<AllyDataDTO> allyDataDTOList) {
+    private void addAlliesDataToContestTeamTable(List<AllyDataDTO> allyDataDTOList) {
 
         AllyDataDTO currentAllyData=null;
         for(AllyDataDTO allyDataDTO:allyDataDTOList)
@@ -150,12 +150,12 @@ public class ContestScreenController {
             statusAmountLabel.setTextFill(Color.ORANGE);
 
     }
-    public void updateContestData(ContestDataDTO contestDataDTO) {
+    private void updateContestData(ContestDataDTO contestDataDTO) {
         if(contestDataDTO.getGameStatus()== GameStatus.ACTIVE)
         {
             closeContestAndTeamDataRefresher();
             startAllyAgentsProgressAndCandidatesRefresher();
-            HttpClientAdapter.startTaskCreatorCommand();
+           // HttpClientAdapter.startTaskCreatorCommand();
         }
         contestDataComponentController.updateContestData(contestDataDTO);
     }
@@ -171,7 +171,7 @@ public class ContestScreenController {
                                             teamsAgentsComponentController::setTotalTaskAmount);
 
     }
-    public void afterReadyAction(boolean isSuccess){
+    private void afterReadyAction(boolean isSuccess){
         if(isSuccess) {
             Platform.runLater(()-> {
                 readyDisableProperty.set(true);

@@ -111,7 +111,7 @@ public class AgentLoginController implements LoginInterface {
     }
 
 
-    public void updateTableView(UserListDTO allUserList) {
+    private void updateTableView(UserListDTO allUserList) {
         if (allUserList != null)
             Platform.runLater(() -> {
                 uboatUsersObserve.setAll(allUserList.getUboatUsersSet());
@@ -213,7 +213,7 @@ public class AgentLoginController implements LoginInterface {
         }
     }
 
-    public void updateAlliesTeams(UserListDTO userListDTO)
+    private void updateAlliesTeams(UserListDTO userListDTO)
     {
         Platform.runLater(() -> {
                 ObservableList < String > alliesNames = FXCollections.observableArrayList();

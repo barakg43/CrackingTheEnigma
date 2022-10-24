@@ -12,10 +12,12 @@ import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class SingleBattleFieldController {
 
     private final Set<AllyDataDTO> alliesDataSet;
+    private final Consumer<String> startContestInAllies;
     private String xmlFileContent;
     private  CodeFormatDTO codeFormatConfiguration;
     private  String cipheredString;
@@ -24,12 +26,13 @@ public class SingleBattleFieldController {
 
     private CandidatesStatusController candidatesStatusController;
     private final String uboatName;
-    public SingleBattleFieldController(String uboatName) {
+    public SingleBattleFieldController(String uboatName, Consumer<String> startContestInAllies) {
+        this.startContestInAllies = startContestInAllies;
         alliesDataSet=new HashSet<>();
         enigmaEngine=new EnigmaEngine();
         this.uboatName=uboatName;
     }
-    public void  assignAllyToUboat(AllyDataDTO agentDataDTO)
+    public synchronized void assignAllyToUboat(AllyDataDTO agentDataDTO)
     {
         if(contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
             throw new RuntimeException(contestDataManager.getBattlefieldName()+" is already full!");
@@ -49,7 +52,7 @@ public class SingleBattleFieldController {
     }
 
 
-    public void checkIfAllReady()
+    public synchronized void checkIfAllReady()
     {
         boolean isAllReady=true;
         for(AllyDataDTO allyData:alliesDataSet)
@@ -59,8 +62,9 @@ public class SingleBattleFieldController {
         if(isAllReady &&
                 contestDataManager.getGameStatus()== GameStatus.WAITING_FOR_ALLIES &&
                 contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
-            contestDataManager.changeGameStatus(GameStatus.ACTIVE);
-
+                                contestDataManager.changeGameStatus(GameStatus.ACTIVE);
+        if(contestDataManager.getGameStatus()==GameStatus.ACTIVE)
+            startContestInAllies.accept(uboatName);
 
     }
     private void setupCodeConfigurationAndMachineDataAllAllies()
