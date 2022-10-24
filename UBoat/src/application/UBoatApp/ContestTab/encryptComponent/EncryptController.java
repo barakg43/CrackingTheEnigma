@@ -206,7 +206,7 @@ public class EncryptController {
     }
 
     public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
-        HttpClientAdapter.sendStartBattlefieldContestCommand(readyButton::setDisable);
+        HttpClientAdapter.sendReadyToContestCommand(readyButton::setDisable);
     }
 }
 

@@ -30,9 +30,9 @@ public class GetContestDataServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
 
-        String username = SessionUtils.getUsername(request);
+        String agentName = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
+        if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
 
             response.getWriter().println("Must login as AGENT first!");
@@ -40,10 +40,10 @@ public class GetContestDataServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(agentName,"GetContestDataServlet");
         try {
             Gson gson = ServletUtils.getGson();
-            String allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
+            String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
             String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
             if(uboatNameManager==null)
             {

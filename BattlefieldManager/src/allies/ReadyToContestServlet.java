@@ -33,30 +33,33 @@ public class ReadyToContestServlet extends HttpServlet {
         ServletUtils.logRequestAndTime(allyName,"ReadyToContestServlet");
         SingleAllyController allyController= ServletUtils.getSystemManager()
                 .getSingleAllyController(allyName);
-        String uboatManager=allyController.getUboatNameManager();
-        SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
-                .getBattleFieldController(uboatManager);
+
         allyController.getAllyDataManager().changeStatus(AllyDataDTO.Status.READY);
+
 //        List<AllyDataDTO> allyDataDTOList= uboatController.getAlliesDataListForUboat();
 //        ContestDataDTO contestDataDTO=uboatController.getContestDataDTO();
-        GameLevel gameLevel=ServletUtils.getSystemManager()
-                .getBattleFieldController(uboatManager)
-                        .getContestDataDTO().getLevel();
         Properties prop = new Properties();
-        int taskAmount;
+        int taskSize;
         prop.load(request.getReader());
         try {
-                if((taskAmount =
-                        Integer.parseInt(prop.getProperty(TASK_AMOUNT)))<1)
-                    throw new RuntimeException("Task Size must be positive number");
+                if((taskSize =
+                        Integer.parseInt(prop.getProperty(TASK_SIZE)))<1)
+                    throw new RuntimeException("Task Amount must be positive number");
 
         }catch ( RuntimeException e){
            ServletUtils.setBadRequestErrorResponse(e,response);
             return;
         }
-        allyController.getDecryptionManager().setSetupConfiguration(gameLevel,taskAmount);
-        response.getWriter().format("%s=%f\n",TASK_AMOUNT, allyController.getDecryptionManager().getTotalTasksAmount());
+        System.out.println(allyName+" Task size: "+taskSize);
+
+        allyController.setTaskSize(taskSize);
+        response.getWriter().format("%s=%.0f\n",TOTAL_TASK_AMOUNT, allyController.getDecryptionManager().getTotalTasksAmount());
         response.getWriter().flush();
+        String uboatManager=allyController.getUboatNameManager();
+        SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
+                .getBattleFieldController(uboatManager);
+        uboatController.checkIfAllReady();
+
 //            List<AllyDataDTO> alliesDataListForUboat =uboatController.getAlliesDataListForUboat();
 //            for(AllyDataDTO allyData:alliesDataListForUboat)
 //            {

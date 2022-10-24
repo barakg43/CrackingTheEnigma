@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "34097acb-7d9f-473a-8132-8cd3a228f6d2",
+		"name": "Cracking the enigma",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20782088"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "User List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/user-list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"user-list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Uboat",
+			"item": [
+				{
+					"name": "Login uboat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/login?username=ubrr122552",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "ubrr122552"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Automatic Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/automatic-code",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"automatic-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Input String",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "input=MIDNIGHT FRONT"
+						},
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/input-string",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"input-string"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ready Command",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "input=MIDNIGHT FRONT"
+						},
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/input-string",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"input-string"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manually Code",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rotorInfoArray\": [\r\n        {\r\n            \"id\": 100,\r\n            \"distanceToWindow\": 21,\r\n            \"statingLetter\": \"I\"\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"distanceToWindow\": 14,\r\n            \"statingLetter\": \"H\"\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"distanceToWindow\": 27,\r\n            \"statingLetter\": \"E\"\r\n        }\r\n    ],\r\n    \"reflectorID\": \"II\",\r\n    \"plugboardPairDTOList\": [\r\n        {\r\n            \"firstLetter\": \"W\",\r\n            \"secondLetter\": \"O\"\r\n        }\r\n    ],\r\n    \"isCurrentMachineCode\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/manually-code",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"manually-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Machine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/uboat/reset-machine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"uboat",
+								"reset-machine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ally",
+			"item": [
+				{
+					"name": "dashboard refresher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/ally/update-dashboard-data",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"ally",
+								"update-dashboard-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register uboat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/ally/register-to-uboat?uboat=b121",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"ally",
+								"register-to-uboat"
+							],
+							"query": [
+								{
+									"key": "uboat",
+									"value": "b121"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest refresher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/ally/update-contest-data",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"ally",
+								"update-contest-data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "progress refresher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/ally/update-candidates",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"ally",
+								"update-candidates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login ally",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/ally/login?username=ally12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"ally",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "ally12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "agent",
+			"item": [
+				{
+					"name": "Login agent",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"agentName\":\"agent5\",\"allyTeamName\":\"ally12\",\"threadAmount\":1,\"taskSize\":30}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/agent/login?username=agent5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"agent",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "agent5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "contest refresher Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/BattlefieldManager/agent/update-contest-data",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"BattlefieldManager",
+								"agent",
+								"update-contest-data"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

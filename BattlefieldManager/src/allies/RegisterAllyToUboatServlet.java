@@ -4,10 +4,13 @@ package allies;
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
 import Ally.SingleAllyController;
+import engineDTOs.DmDTO.GameLevel;
+import engineDTOs.MachineDataDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import uboat.SingleBattleFieldController;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -31,22 +34,21 @@ public class RegisterAllyToUboatServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(allyName,"RegisterAllyToUboatServlet");
         try {
             String uboatName = request.getParameter(UBOAT_PARAMETER);
+            SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
+                    .getBattleFieldController(uboatName);
             SingleAllyController singleAllyController= ServletUtils.getSystemManager().getSingleAlly(allyName);
             synchronized (getServletContext())
             {
                 singleAllyController.assignAllyToUboat(uboatName);
-                ServletUtils.getSystemManager()
-                        .getBattleFieldController(uboatName)
-                        .assignAllyToUboat(
-                                singleAllyController
-                                        .getAllyDataDTO()
-                        );
+                uboatController.assignAllyToUboat(singleAllyController.getAllyDataDTO());
 
             }
-
+            GameLevel gameLevel=uboatController.getContestDataDTO().getLevel();
+            MachineDataDTO machineData=uboatController.getEnigmaEngine().getMachineData();
+            singleAllyController.createDecryptionManager(machineData,gameLevel);
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
           ServletUtils.setBadRequestErrorResponse(e,response);

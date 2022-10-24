@@ -2,6 +2,7 @@ package allies;
 
 
 
+import Ally.SingleAllyController;
 import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AgentsTeamProgressDTO;
@@ -37,23 +38,19 @@ public class UpdateAgentsAndCandidatesServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(allyName,"UpdateAgentsAndCandidatesServlet");
         try {
             Gson gson = ServletUtils.getGson();
-            List<AllyCandidateDTO> updatedAllyCandidates= ServletUtils.getSystemManager()
-                    .getSingleAllyController(allyName)
-                    .getAllyCandidateDTOListWithVersion();
+            SingleAllyController allyController=ServletUtils.getSystemManager()
+                    .getSingleAllyController(allyName);
+            List<AllyCandidateDTO> updatedAllyCandidates=allyController.getAllyCandidateDTOListWithVersion();
 
-            ServletUtils.getSystemManager()
-                    .getSingleAllyController(allyName)
-                    .updateAllyCandidateVersion();
-            List<AgentsTeamProgressDTO> agentsDataProgressDTOS=ServletUtils.getSystemManager()
-                    .getSingleAllyController(allyName)
-                    .getAgentProgressDTOList();
-
+            allyController.updateAllyCandidateVersion();
+            List<AgentsTeamProgressDTO> agentsDataProgressDTOS=allyController.getAgentProgressDTOList();
+            long taskAmountProduced=allyController.getDecryptionManager().getTaskProducedAmount();
             out.println(
                     gson.toJson(
-                            new AllyAgentsProgressAndCandidatesDTO(updatedAllyCandidates,agentsDataProgressDTOS)
+                            new AllyAgentsProgressAndCandidatesDTO(updatedAllyCandidates, taskAmountProduced, agentsDataProgressDTOS)
                     ));
             out.flush();
             response.setContentType("application/json");

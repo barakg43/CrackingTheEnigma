@@ -30,7 +30,6 @@ public class ContestTeamsController {
 
    private ObservableList<AllyDataDTO> contestTeamsListObs;
 
-
    public void addAlliesDataToContestTeamTable(List<AllyDataDTO> otherAlliesDataList) {
 
         contestTeamsListObs.setAll(otherAlliesDataList);

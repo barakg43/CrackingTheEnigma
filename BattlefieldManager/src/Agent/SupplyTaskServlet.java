@@ -23,18 +23,18 @@ public class SupplyTaskServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
 
-        String username = SessionUtils.getUsername(request);
+        String agentName = SessionUtils.getUsername(request);
 
-        if (username == null || !ServletUtils.getSystemManager().isAgentExist(username)) {
-            if (username == null)
-                response.getWriter().println("Must login as AGENT first!");
+        if (agentName == null || !ServletUtils.getSystemManager().isAgentExist(agentName)) {
+
+            response.getWriter().println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(agentName,"SupplyTaskServlet");
         String amountFromParameter = request.getParameter(AMOUNT);
         if (amountFromParameter == null || amountFromParameter.isEmpty()) {
-            //no username in session and no username in parameter - not standard situation. it's a conflict
+            //no agentName in session and no agentName in parameter - not standard situation. it's a conflict
 
             // stands for conflict in server state
             response.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -49,7 +49,7 @@ public class SupplyTaskServlet extends HttpServlet {
 
         try {
             Gson gson = ServletUtils.getGson();
-            String allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
+            String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
             List<SimpleDecryptedTaskDTO> taskList = ServletUtils.getSystemManager()
                     .getSingleAllyController(allyName)
                     .getDecryptionManager()

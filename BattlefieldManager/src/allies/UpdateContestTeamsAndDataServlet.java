@@ -38,6 +38,7 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(allyName,"UpdateContestTeamsAndDataServlet");
         try {
 
             Gson gson = ServletUtils.getGson();

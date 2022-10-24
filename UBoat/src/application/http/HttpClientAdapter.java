@@ -94,7 +94,7 @@ public class HttpClientAdapter {
         });
 
     }
-    public static void sendStartBattlefieldContestCommand(Consumer<Boolean> isSuccess)
+    public static void sendReadyToContestCommand(Consumer<Boolean> isSuccess)
     {
         HTTP_CLIENT.doPostASync(READY_TO_START,"", new Callback() {
             @Override

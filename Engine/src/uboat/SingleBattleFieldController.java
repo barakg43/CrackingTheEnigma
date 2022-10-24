@@ -47,6 +47,8 @@ public class SingleBattleFieldController {
     public Engine getEnigmaEngine() {
         return enigmaEngine;
     }
+
+
     public void checkIfAllReady()
     {
         boolean isAllReady=true;
@@ -58,6 +60,11 @@ public class SingleBattleFieldController {
                 contestDataManager.getGameStatus()== GameStatus.WAITING_FOR_ALLIES &&
                 contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
             contestDataManager.changeGameStatus(GameStatus.ACTIVE);
+
+
+    }
+    private void setupCodeConfigurationAndMachineDataAllAllies()
+    {
 
 
     }

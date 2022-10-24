@@ -16,14 +16,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import static application.CommonResourcesPaths.APP_FXML_INCLUDE_RESOURCE;
 import static application.CommonResourcesPaths.CONTEST_SCREEN_FXML_RESOURCE;
+import static general.ConstantsHTTP.TOTAL_TASK_AMOUNT;
 
 
 //video: 100189 - FXML Hello World [JAD, JavaFX] | Powered by SpeaCode
@@ -63,8 +67,15 @@ public class HelloFxmlMain extends Application{
         FXMLLoader fxmlLoader=new FXMLLoader();
         URL url=getClass().getClassLoader().getResource(APP_FXML_INCLUDE_RESOURCE);
         fxmlLoader.setLocation(url);
+        Properties prop = new Properties();
+        long totalTaskAmount;
 
+        Reader input=new StringReader("total-task=675");
+        prop.load(input);
+        if ((totalTaskAmount =
+                Long.parseLong(prop.getProperty(TOTAL_TASK_AMOUNT))) < 1)
 
+            System.out.println("total Task Amount"+totalTaskAmount);
         assert url != null;
         Parent root=fxmlLoader.load(url.openStream());
         DashboardScreenController controller= fxmlLoader.getController();

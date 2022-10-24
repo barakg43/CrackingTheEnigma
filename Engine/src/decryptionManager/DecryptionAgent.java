@@ -94,6 +94,7 @@ public class DecryptionAgent {
         engine.setCodeManually(agentSetupConfiguration.getCodeFormatDTO());
         MachineDataDTO machineData = engine.getMachineData();
         cipheredString=agentSetupConfiguration.getCipheredString();
+        System.out.println("----------------------Contest cipheredString:"+cipheredString);
         dictionary=engine.getDictionary();
         saveEngineCopy();
         codeCalculatorFactory=new CodeCalculatorFactory(machineData.getAlphabetString(), machineData.getNumberOfRotorsInUse());

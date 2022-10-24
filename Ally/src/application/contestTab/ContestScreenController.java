@@ -60,7 +60,8 @@ public class ContestScreenController {
     private ApplicationController applicationController;
     private final BooleanProperty isAgentsAssign=new SimpleBooleanProperty(false);
     private final BooleanProperty isTaskSizePositive=new SimpleBooleanProperty(false);
-    private final BooleanProperty readyDisableProperty =new SimpleBooleanProperty(true);
+    private final BooleanProperty readyDisableProperty =new SimpleBooleanProperty(false);
+
     @FXML
     private void initialize(){
 
@@ -76,8 +77,12 @@ public class ContestScreenController {
         }));
         taskSizeTextSpinner.valueProperty().addListener((observable, oldValue, newValue) -> isTaskSizePositive.set(newValue >0));
 
-        readyDisableProperty.bind(Bindings.and(isAgentsAssign.not(), isTaskSizePositive.not()));
-        readyDisableProperty.addListener(((observable, oldValue, newValue) ->readyButton.setDisable(newValue)));
+        readyButton.disableProperty().bind(Bindings.or(readyDisableProperty,
+                Bindings.or(isAgentsAssign.not(), isTaskSizePositive.not())));
+     //   isAgentsAssign.addListener(((observable, oldValue, newValue) ->System.out.println("AGENTS is:"+newValue )));
+//        readyDisableProperty.addListener(((observable, oldValue, newValue) ->{
+//            readyButton.setDisable(newValue);}));
+        readyButton.disableProperty().bind(readyDisableProperty);
         taskSizeTextSpinner.setValueFactory(integerSpinnerValueFactory);
         taskSizeTextSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
         taskSizeTextSpinner.editorProperty().get().setAlignment(Pos.CENTER);
@@ -88,7 +93,7 @@ public class ContestScreenController {
     }
 
     public void updateTasksAmountProduced(long taskDoneProduced) {
-        teamsAgentsComponentController.updateTasksAmountProduced(taskDoneProduced);
+        Platform.runLater(()-> teamsAgentsComponentController.updateTasksAmountProduced(taskDoneProduced));
     }
     private int getTaskSizeFromSpinner() {
         if (taskSizeTextSpinner.getValue() > 0)
@@ -125,6 +130,7 @@ public class ContestScreenController {
         allyDataDTOList.remove(currentAllyData);
         assert currentAllyData != null;
         AllyDataDTO finalCurrentAllyData = currentAllyData;
+        System.out.println("ready is:"+readyDisableProperty.get()+" Agents="+isAgentsAssign.not().get()+" isTask:"+isTaskSizePositive.not().get());
         Platform.runLater(()->{
             setAllyStatusLabels(finalCurrentAllyData);
             alliesTeamsComponentController.addAlliesDataToContestTeamTable(allyDataDTOList);
@@ -133,14 +139,15 @@ public class ContestScreenController {
     }
     private void setAllyStatusLabels(AllyDataDTO allyDataDTO)
     {
+        isAgentsAssign.set(allyDataDTO.getAgentsAmount()>0);
         agentAmountLabel.setText(String.valueOf(allyDataDTO.getAgentsAmount()));
         statusAmountLabel.setText(allyDataDTO.getStatus().toString());
-//        if(allyDataDTO.getStatus()== AllyDataDTO.Status.READY)
-//        {
-//            statusAmountLabel.setTextFill(Color.GREEN);
-//        }
-//        else
-//            statusAmountLabel.setTextFill(Color.ORANGE);
+        if(allyDataDTO.getStatus()== AllyDataDTO.Status.READY)
+        {
+            statusAmountLabel.setTextFill(Color.GREEN);
+        }
+        else
+            statusAmountLabel.setTextFill(Color.ORANGE);
 
     }
     public void updateContestData(ContestDataDTO contestDataDTO) {
@@ -159,12 +166,18 @@ public class ContestScreenController {
     }
 
     public void readyButtonAction(ActionEvent ignoredActionEvent) {
-        HttpClientAdapter.readyToStartCommand(this::afterReadyAction,getTaskSizeFromSpinner());
+        HttpClientAdapter.readyToStartCommand(this::afterReadyAction,
+                                            getTaskSizeFromSpinner(),
+                                            teamsAgentsComponentController::setTotalTaskAmount);
 
     }
     public void afterReadyAction(boolean isSuccess){
         if(isSuccess) {
-            Platform.runLater(()->readyButton.setDisable(true));
+            Platform.runLater(()-> {
+                readyDisableProperty.set(true);
+                taskSizeTextSpinner.setDisable(true);
+            });
+
         }
         else
             createErrorAlertWindow("Ready Action", "Error when trying to send ready command");
@@ -179,8 +192,7 @@ public class ContestScreenController {
     public void startContestAndTeamDataRefresher() {
         contestAndTeamListRefresher = new ContestAndTeamDataRefresher(this::addAlliesDataToContestTeamTable,
                                                                         this::updateContestData,
-                                                                        applicationController.getSelectedUboat(),
-                                                                        this::updateErrorMessage);
+                                                                        applicationController.getSelectedUboat());
         timer = new Timer();
         timer.schedule(contestAndTeamListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
@@ -192,7 +204,8 @@ public class ContestScreenController {
 
     public void startAllyAgentsProgressAndCandidatesRefresher() {
         agentsAndCandidatesListRefresher = new AllyAgentsProgressAndCandidatesRefresher(this::addTeamsCandidatesRecordsToTeamsTable,
-                                                                                         this::addAgentsRecordsToAllyAgentTable);
+                                                                                         this::addAgentsRecordsToAllyAgentTable,
+                                                                                         this::updateTasksAmountProduced);
         timer = new Timer();
         timer.schedule(agentsAndCandidatesListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }

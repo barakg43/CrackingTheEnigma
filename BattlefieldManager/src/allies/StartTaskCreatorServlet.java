@@ -26,8 +26,9 @@ public class StartTaskCreatorServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+        ServletUtils.logRequestAndTime(allyName,"StartTaskCreatorServlet");
         try {
-            ServletUtils.logRequestAndTime(allyName,"StartTaskCreatorServlet");
+
             ServletUtils.getSystemManager()
                     .getSingleAllyController(allyName)
                     .getDecryptionManager()

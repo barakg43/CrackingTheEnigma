@@ -8,6 +8,7 @@ import general.UserListDTO;
 import http.client.CustomHttpClient;
 
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 ;
@@ -21,6 +22,7 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
     private final Consumer<ActiveTeamsDTO> activeTeamsConsumer;
     private final Consumer<ActiveTeamsDTO> enableReadyButton;
     private final CustomHttpClient httpClientUtil;
+    private final AtomicInteger counter=new AtomicInteger(0);
     public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer,Consumer<ActiveTeamsDTO> enableReadyButton) {
 
         this.activeTeamsConsumer = activeTeamsConsumer;
@@ -30,7 +32,7 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
 
     @Override
     public void run() {
-   System.out.println("Sending active teams allies request to server....");
+    System.out.println(counter.getAndIncrement()+"#Sending active teams allies request to server....");
     HttpResponseDTO responseDTO=httpClientUtil.doGetSync(ACTIVE_TEAMS_LIST);
 
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
@@ -39,9 +41,9 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
             activeTeamsConsumer.accept(activeTeamsDTO);
             enableReadyButton.accept(activeTeamsDTO);}
         else
-            createErrorAlertWindow("Dashboard Update",responseDTO.getBody());
+            createErrorAlertWindow("Contest Lower Side Update",responseDTO.getBody());
     }else
-    createErrorAlertWindow("Dashboard Update","General error");
+    createErrorAlertWindow("Contest Lower Side Update","General error");
 
     }
 

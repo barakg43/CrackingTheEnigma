@@ -23,16 +23,15 @@ public class UpdateCandidateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
 
-        String username = SessionUtils.getUsername(request);
+        String agentName = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
+        if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
-            if(username == null)
-                response.getWriter().println("Must login as AGENT first!");
+            response.getWriter().println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(agentName,"UpdateCandidateServlet");
         try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();

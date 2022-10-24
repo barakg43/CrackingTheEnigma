@@ -33,7 +33,7 @@ public class LoginController implements LoginInterface {
     @FXML
     private Button loginButton;
 
-    private List<String> UBoatNames;
+
 
     private ApplicationController applicationController;
 
@@ -44,7 +44,6 @@ public class LoginController implements LoginInterface {
 
     @FXML
     public void initialize() {
-        UBoatNames = new ArrayList<>();
         userListComponentController.startListRefresher();
     }
 
@@ -61,8 +60,7 @@ public class LoginController implements LoginInterface {
     }
     public void stopUpdateUserList()
     {
-
-        userListComponentController.close();
+        Platform.runLater(()-> userListComponentController.close());
     }
     public void updateErrorMessage(String errorMessage)
     {
@@ -76,6 +74,7 @@ public class LoginController implements LoginInterface {
                  //  errorMessageProperty.set("Something went wrong: " + response)
         } else {
             System.out.println("login success");
+            stopUpdateUserList();
             Platform.runLater(() -> {
                 applicationController.updateUserName(userName);
                 userListComponentController.close();
@@ -92,12 +91,9 @@ public class LoginController implements LoginInterface {
     }
 
 
-
     public void setMainController(ApplicationController applicationController) {
         this.applicationController=applicationController;
     }
 
-    public TextField getName() {
-        return userNameTextField;
-    }
+
 }

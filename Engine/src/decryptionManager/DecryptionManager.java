@@ -12,13 +12,16 @@ import engineDTOs.RotorInfoDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 
 public class DecryptionManager {
 
 
-    private final CodeFormatDTO startingCode;
+    private  CodeFormatDTO startingCode;
+
 
     private final MachineDataDTO machineData;
     // private final Engine engine;
@@ -31,6 +34,7 @@ public class DecryptionManager {
 
     private Thread taskCreator;
     private double totalTaskAmount;
+    private final AtomicLong taskProducedCounter;
 //    private static Consumer<String> messageConsumer;
    // public static Consumer<Long> currentTaskTimeConsumer;
 //    private long taskCounter;
@@ -41,14 +45,13 @@ public class DecryptionManager {
     public static final Object pauseLock=new Object();
     private Consumer<String> messageConsumer;
 
-    public DecryptionManager(CodeFormatDTO initialCode, MachineDataDTO machineDataDTO) {
+    public DecryptionManager(MachineDataDTO machineDataDTO,GameLevel level) {
 
     this.machineData =machineDataDTO;
        // this.engine = engine;
-         startingCode =initialCode;
-
+        this.level=level;
         totalTaskAmount=0;
-
+        taskProducedCounter=new AtomicLong(0);
         codeCalculatorFactory =new CodeCalculatorFactory(machineDataDTO.getAlphabetString(), machineDataDTO.getNumberOfRotorsInUse());
 
         isFinishAllTask= Boolean.FALSE;
@@ -58,6 +61,9 @@ public class DecryptionManager {
 //    public void setTaskDoneAmount(AtomicCounter taskDoneAmount) {
 //        this.taskDoneAmount = taskDoneAmount;
 //    }
+    public void setStartingCode(CodeFormatDTO startingCode) {
+        this.startingCode = startingCode;
+    }
 
     public void setDataConsumer(Consumer<String> messageConsumer) {
         this.messageConsumer = messageConsumer;
@@ -72,18 +78,15 @@ public class DecryptionManager {
         return decryptedTaskList;
     }
 
-    public void setSetupConfiguration(GameLevel level, int taskSize)
-    {
-    this.level=level;
-    this.taskSize=taskSize;
-    totalTaskAmount=0;
-    calculateTotalTaskAmount(level);
-
+    public void setTaskSize(int taskSize) {
+        this.taskSize=taskSize;
+        totalTaskAmount=0;
+        calculateTotalTaskAmount(level);
 
     }
+
     public double getTotalTasksAmount() {
-        if(totalTaskAmount==0)
-            calculateTotalTaskAmount(level);
+
         return totalTaskAmount;
     }
 
@@ -271,6 +274,8 @@ public class DecryptionManager {
               //  System.out.println("Task creator is running!");
 
                 taskQueue.put(new SimpleDecryptedTaskDTO(currentCode, taskSize));
+                taskProducedCounter.incrementAndGet();
+
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -345,6 +350,9 @@ public class DecryptionManager {
 
     }
 
+    public long getTaskProducedAmount() {
+        return taskProducedCounter.get();
+    }
 }
 
 

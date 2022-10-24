@@ -35,7 +35,7 @@ public class UpdateDashboardScreenAllyServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(allyName,"UpdateDashboardScreenAllyServlet");
         try {
             Gson gson = ServletUtils.getGson();
             List<ContestDataDTO> contestDataDTOList= ServletUtils.getSystemManager().getAllContestDataList();

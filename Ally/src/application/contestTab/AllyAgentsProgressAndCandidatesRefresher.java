@@ -10,6 +10,7 @@ import http.client.CustomHttpClient;
 
 import java.util.List;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static application.ApplicationController.createErrorAlertWindow;
@@ -22,30 +23,36 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
         private final Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer;
 
         private final Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer;
-        private final CustomHttpClient httpClientUtil;
+    private final Consumer<Long> taskProducedConsumer;
+    private final CustomHttpClient httpClientUtil;
+    private final AtomicInteger counter=new AtomicInteger(0);
 
-
-    public AllyAgentsProgressAndCandidatesRefresher(  Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer, Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer) {
+    public AllyAgentsProgressAndCandidatesRefresher(  Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer,
+                                                      Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer,
+                                                      Consumer<Long> taskProducedConsumer) {
         this.allyCandidatesListConsumer = allyCandidatesListConsumer;
         this.teamAgentsConsumer=teamAgentsConsumer;
+        this.taskProducedConsumer = taskProducedConsumer;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
     }
 
     @Override
     public void run() {
 
-        System.out.println("Sending ally progress and candidate....");
+        System.out.println(counter.getAndIncrement()+"#Sending ally progress and candidate....");
         HttpResponseDTO responseDTO=httpClientUtil.doGetSync(UPDATE_CONTEST);
 
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
             if(responseDTO.getCode()==HTTP_OK) {
                 AllyAgentsProgressAndCandidatesDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(responseDTO.getBody(),(AllyAgentsProgressAndCandidatesDTO.class));
+
                 allyCandidatesListConsumer.accept(allyContestDataAndTeams.getUpdatedAllyCandidates());
+                taskProducedConsumer.accept(allyContestDataAndTeams.getTaskAmountProduced());
                 teamAgentsConsumer.accept(allyContestDataAndTeams.getAgentsDataProgressDTOS());}
             else
-                createErrorAlertWindow("Update Contest And Teams",responseDTO.getBody());
+                createErrorAlertWindow("Candidates And Agent Progress",responseDTO.getBody());
         }else
-            createErrorAlertWindow("Update Contest And Teams","General error");
+            createErrorAlertWindow("Candidates And Agent Progress","General error");
 
     }
 

@@ -27,19 +27,19 @@ public class GetAgentConfigurationServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
 
-        String username = SessionUtils.getUsername(request);
+        String agentName = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemManager().isAgentExist(username))
+        if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
             response.setContentType("text/plain");
             response.getWriter().println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        ServletUtils.logRequestAndTime(agentName,"GetAgentConfigurationServlet");
         try {
             String allyName=ServletUtils.getSystemManager()
-                    .getAgentData(username)
+                    .getAgentData(agentName)
                     .getAllyTeamName();
             String uboatManager=ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
             AgentSetupConfigurationDTO agentSetupConfigurationDTO=ServletUtils.getSystemManager()

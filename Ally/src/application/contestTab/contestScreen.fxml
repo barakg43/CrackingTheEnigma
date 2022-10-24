@@ -98,7 +98,7 @@
     </HBox>
    <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0" GridPane.rowIndex="1">
       <children>
-         <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="text-label" text="Tasks Session Amount" textAlignment="CENTER" textFill="#8a1515">
+         <Label contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="text-label" text="Tasks Size" textAlignment="CENTER" textFill="#8a1515">
             <font>
                <Font size="21.0" />
             </font>

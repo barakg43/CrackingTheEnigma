@@ -69,7 +69,8 @@ public class AllyProgressController {
     }
 
     public void setTotalTaskAmount(long totalTaskAmount) {
-        this.totalTaskAmount.setText(String.valueOf(totalTaskAmount));
+        System.out.println("total task amount:"+totalTaskAmount);
+       Platform.runLater(()->this.totalTaskAmount.setText(String.valueOf(totalTaskAmount)));
         totalTaskAmountValue=totalTaskAmount;
     }
 

@@ -13,7 +13,8 @@ public class ConstantsHTTP {
     public static final String AMOUNT="amount";
     public static final String INPUT_PROPERTY = "input";
     public static final String OUTPUT_PROPERTY = "output";
-    public static final String TASK_AMOUNT = "task-amount";
+    public static final String TASK_SIZE = "task-size";
+    public static final String TOTAL_TASK_AMOUNT = "total-task";
     public static final String QUERY_FORMAT="%s?%s=%s";
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";

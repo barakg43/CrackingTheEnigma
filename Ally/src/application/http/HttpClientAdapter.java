@@ -7,7 +7,6 @@ import allyDTOs.AllyDashboardScreenDTO;
 import allyDTOs.ContestDataDTO;
 import application.login.LoginInterface;
 import com.sun.istack.internal.NotNull;
-import engineDTOs.MachineDataDTO;
 import general.ApplicationType;
 import http.client.CustomHttpClient;
 import okhttp3.Call;
@@ -125,20 +124,32 @@ public class HttpClientAdapter {
         });
     }
 
-    public static void readyToStartCommand(Consumer<Boolean> isSuccess,int taskAmount) {
-        String body=TASK_AMOUNT+'='+taskAmount;
+    public static void readyToStartCommand(Consumer<Boolean> isSuccess,int taskSize,Consumer<Long> totalTaskAmountConsumer) {
+        String body= TASK_SIZE +'='+taskSize;
         HTTP_CLIENT.doPostASync(READY_TO_START,body ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Reset Code Machine", e.getMessage());
+                createErrorAlertWindow("Ready to Start -Ally", e.getMessage());
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                isSuccess.accept(response.code()==HTTP_OK);
-//                assert response.body() != null;
-//                if(response.code()!=HTTP_OK)
-//
+                if(response.body()!=null) {
+                    if (response.code() == HTTP_OK) {
+                        Properties prop = new Properties();
+                        long totalTaskAmount;
+                        prop.load(response.body().byteStream());
+                        if ((totalTaskAmount =
+                                Long.parseLong(prop.getProperty(TOTAL_TASK_AMOUNT))) < 1)
+                            createErrorAlertWindow("Ready to Start -Ally", "Error:Total Amount must be positive number");
+                        else
+                            totalTaskAmountConsumer.accept(totalTaskAmount);
+                        isSuccess.accept(response.code() == HTTP_OK);
+                    }
+                    else
+                        createErrorAlertWindow("Ready to Start -Ally", response.body().string());
+                }
+
             }
         });
 

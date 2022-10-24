@@ -9,6 +9,7 @@ import http.client.CustomHttpClient;
 import javafx.beans.property.BooleanProperty;
 
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static application.UBoatApp.UBoatAppController.createErrorAlertWindow;
@@ -21,7 +22,7 @@ public class UserListRefresher extends TimerTask {
     private final Consumer<UserListDTO> usersListConsumer;
     private final CustomHttpClient httpClientUtil;
 
-
+    private final AtomicInteger counter=new AtomicInteger(0);
     public UserListRefresher(Consumer<UserListDTO> usersListConsumer) {
         this.usersListConsumer = usersListConsumer;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
@@ -30,7 +31,7 @@ public class UserListRefresher extends TimerTask {
     @Override
     public void run() {
 
-        System.out.println("Sending user list request to server....");
+        System.out.println(counter.getAndIncrement()+"#Sending user list request to server....");
         HttpResponseDTO responseDTO=httpClientUtil.doGetSync(USER_LIST);
 
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
