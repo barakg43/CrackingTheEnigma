@@ -114,6 +114,9 @@ public class SystemManager {
                 .collect(Collectors.toList());
 
     }
+
+
+    //TODO: check this start function
     private void startContestInAssignAllies(String uboatName) {
         SingleBattleFieldController uboatController = this.getBattleFieldController(uboatName);
         CodeFormatDTO codeFormatConfiguration = uboatController.getCodeFormatConfiguration();

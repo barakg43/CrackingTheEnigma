@@ -67,8 +67,7 @@ public class SingleBattleFieldController {
                 contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
                                 contestDataManager.changeGameStatus(GameStatus.ACTIVE);
         if(contestDataManager.getGameStatus()==GameStatus.ACTIVE)
-            System.out.println("some");
-          //  startContestInAllies.accept(uboatName);
+          //  startContestInAllies.accept(uboatName);//TODO: fix start contest
 
     }
     public CodeFormatDTO getCodeFormatConfiguration() {
