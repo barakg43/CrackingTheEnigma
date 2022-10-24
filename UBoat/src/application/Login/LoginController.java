@@ -79,7 +79,7 @@ public class LoginController implements LoginInterface {
             createErrorAlertWindow("Login error",response);
                  //  errorMessageProperty.set("Something went wrong: " + response)
         } else {
-            System.out.println("login success");
+            System.out.println(userName+" login success");
             Platform.runLater(() -> {
                 mainUboatController.updateUserName(userName);
                 userListComponentController.closeListRefresher();

@@ -5,6 +5,8 @@ import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
+import decryptionManager.DecryptionManager;
+import engineDTOs.CodeFormatDTO;
 import general.ApplicationType;
 import general.UserListDTO;
 import uboat.SingleBattleFieldController;
@@ -112,13 +114,15 @@ public class SystemManager {
                 .collect(Collectors.toList());
 
     }
-    private void startContestInAssignAllies(String uboatName)
-    {
-        SingleBattleFieldController uboatController=this.getBattleFieldController(uboatName);
-
+    private void startContestInAssignAllies(String uboatName) {
+        SingleBattleFieldController uboatController = this.getBattleFieldController(uboatName);
+        CodeFormatDTO codeFormatConfiguration = uboatController.getCodeFormatConfiguration();
         List<AllyDataDTO> alliesDataListForUboat = uboatController.getAlliesDataListForUboat();
-        for(AllyDataDTO allyData:alliesDataListForUboat)
-          getSingleAllyController(allyData.getAllyName()).getDecryptionManager().startCreatingContestTasks();
+        for (AllyDataDTO allyData : alliesDataListForUboat) {
+            DecryptionManager decryptionManager=getSingleAllyController(allyData.getAllyName()).getDecryptionManager();
+            decryptionManager.setStartingCode(codeFormatConfiguration);
+            decryptionManager.startCreatingContestTasks();
+        }
 
 
     }

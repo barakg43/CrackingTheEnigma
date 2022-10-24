@@ -19,6 +19,9 @@ public class SingleBattleFieldController {
     private final Set<AllyDataDTO> alliesDataSet;
     private final Consumer<String> startContestInAllies;
     private String xmlFileContent;
+
+
+
     private  CodeFormatDTO codeFormatConfiguration;
     private  String cipheredString;
     private final Engine enigmaEngine;
@@ -64,9 +67,14 @@ public class SingleBattleFieldController {
                 contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
                                 contestDataManager.changeGameStatus(GameStatus.ACTIVE);
         if(contestDataManager.getGameStatus()==GameStatus.ACTIVE)
-            startContestInAllies.accept(uboatName);
+            System.out.println("some");
+          //  startContestInAllies.accept(uboatName);
 
     }
+    public CodeFormatDTO getCodeFormatConfiguration() {
+        return codeFormatConfiguration;
+    }
+
     private void setupCodeConfigurationAndMachineDataAllAllies()
     {
 

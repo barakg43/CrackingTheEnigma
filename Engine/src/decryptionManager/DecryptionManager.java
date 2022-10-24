@@ -272,9 +272,10 @@ public class DecryptionManager {
 
                // Thread.sleep(5000);//TODO: thread pool delayed
               //  System.out.println("Task creator is running!");
-
+                System.out.println("Produced:"+taskProducedCounter.get());
                 taskQueue.put(new SimpleDecryptedTaskDTO(currentCode, taskSize));
                 taskProducedCounter.incrementAndGet();
+
 
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

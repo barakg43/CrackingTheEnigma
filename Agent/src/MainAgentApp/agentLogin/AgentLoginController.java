@@ -203,7 +203,7 @@ public class AgentLoginController implements LoginInterface {
             createErrorAlertWindow("Login error",response);
             //  errorMessageProperty.set("Something went wrong: " + response)
         } else {
-            System.out.println("login success");
+            System.out.println( agentDataDTO.getAgentName() +" login success");
             Platform.runLater(() -> {
                 agentNameList.add(agentDataDTO.getAgentName());
                 mainController.updateAgentInfo(agentDataDTO);

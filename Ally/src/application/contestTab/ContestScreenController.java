@@ -120,6 +120,8 @@ public class ContestScreenController {
     private void addAlliesDataToContestTeamTable(List<AllyDataDTO> allyDataDTOList) {
 
         AllyDataDTO currentAllyData=null;
+        if(allyDataDTOList.isEmpty())
+            return;
         for(AllyDataDTO allyDataDTO:allyDataDTOList)
         {
             if(allyName.equals(allyDataDTO.getAllyName()))
@@ -172,6 +174,7 @@ public class ContestScreenController {
 
     }
     private void afterReadyAction(boolean isSuccess){
+        System.out.println("after ready command");
         if(isSuccess) {
             Platform.runLater(()-> {
                 readyDisableProperty.set(true);

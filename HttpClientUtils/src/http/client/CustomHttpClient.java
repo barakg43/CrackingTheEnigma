@@ -25,6 +25,7 @@ public class CustomHttpClient {
             new OkHttpClient.Builder()
                     .cookieJar(simpleCookieManager)
                     .followRedirects(false)
+                    .retryOnConnectionFailure(true)
                     .build();
     private static String APP_CONTEXT_PATH;
     public CustomHttpClient(ApplicationType type) {

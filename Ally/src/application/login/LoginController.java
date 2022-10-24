@@ -73,7 +73,7 @@ public class LoginController implements LoginInterface {
             updateErrorMessage(response);
                  //  errorMessageProperty.set("Something went wrong: " + response)
         } else {
-            System.out.println("login success");
+            System.out.println(userName+ " login success");
             stopUpdateUserList();
             Platform.runLater(() -> {
                 applicationController.updateUserName(userName);

@@ -14,6 +14,8 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -131,25 +133,35 @@ public class HttpClientAdapter {
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 createErrorAlertWindow("Ready to Start -Ally", e.getMessage());
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if(response.body()!=null) {
-                    if (response.code() == HTTP_OK) {
-                        Properties prop = new Properties();
-                        long totalTaskAmount;
-                        prop.load(response.body().byteStream());
-                        if ((totalTaskAmount =
-                                Long.parseLong(prop.getProperty(TOTAL_TASK_AMOUNT))) < 1)
-                            createErrorAlertWindow("Ready to Start -Ally", "Error:Total Amount must be positive number");
-                        else
-                            totalTaskAmountConsumer.accept(totalTaskAmount);
-                        isSuccess.accept(response.code() == HTTP_OK);
-                    }
-                    else
-                        createErrorAlertWindow("Ready to Start -Ally", response.body().string());
+                    try {
+                        if (response.code() == HTTP_OK) {
+                            Properties prop = new Properties();
+                            long totalTaskAmount;
+                            String body= Objects.requireNonNull(response.body()).string();
+                            if(!body.isEmpty()) {
+                                Reader input = new StringReader(body);
+                                prop.load(input);
+                                if ((totalTaskAmount =
+                                        Long.parseLong(prop.getProperty(TOTAL_TASK_AMOUNT))) < 1)
+                                    createErrorAlertWindow("Ready to Start -Ally", "Error:Total Amount must be positive number");
+                                else
+                                    totalTaskAmountConsumer.accept(totalTaskAmount);
+                                isSuccess.accept(response.code() == HTTP_OK);
+                                input.close();
+                            }
+                        } else
+                            createErrorAlertWindow("Ready to Start -Ally", response.body().string());
+                }catch(RuntimeException e)
+                {
+                    createErrorAlertWindow("Ready to Start -Ally", e.getMessage());
                 }
-
+                    finally {
+                        response.close();
+                    }
+                }
             }
         });
 
