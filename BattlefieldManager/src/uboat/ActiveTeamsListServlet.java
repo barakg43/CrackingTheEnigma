@@ -22,29 +22,32 @@ public class ActiveTeamsListServlet extends HttpServlet {
 
         String username = SessionUtils.getUsername(request);
 
-        if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
-        {
+        if (username == null || !ServletUtils.getSystemManager().isUboatExist(username)) {
 
-            if(username == null)
+            if (username == null)
                 response.getWriter().println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        ServletUtils.logRequestAndTime(username,"ActiveTeamsListServlet");
+        ServletUtils.logRequestAndTime(username, "ActiveTeamsListServlet");
+        try {
+            ActiveTeamsDTO activeTeamsDTO = ServletUtils.getSystemManager()
+                    .getBattleFieldController(username)
+                    .getActiveTeamsDTO();
 
-       ActiveTeamsDTO activeTeamsDTO =ServletUtils.getSystemManager()
-                       .getBattleFieldController(username)
-                        .getActiveTeamsDTO();
+            //returning JSON objects, not HTML
+            response.setContentType("application/json");
+            try (PrintWriter out = response.getWriter()) {
+                Gson gson = ServletUtils.getGson();
+                String json = gson.toJson(activeTeamsDTO);
+                out.println(json);
+                out.flush();
+            }
+            response.setStatus(HttpServletResponse.SC_OK);
 
-        //returning JSON objects, not HTML
-        response.setContentType("application/json");
-        try (PrintWriter out = response.getWriter()) {
-            Gson gson = ServletUtils.getGson();
-            String json = gson.toJson(activeTeamsDTO);
-            out.println(json);
-            out.flush();
+        } catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e, response);
         }
-        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 }

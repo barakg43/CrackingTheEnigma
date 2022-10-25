@@ -32,7 +32,7 @@ public class EnigmaMachineDataServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"EnigmaMachineDataServlet");
-
+        try{
         Engine enigmaEngine=ServletUtils.getSystemManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
@@ -45,6 +45,9 @@ public class EnigmaMachineDataServlet extends HttpServlet {
             out.flush();
         }
         response.setStatus(HttpServletResponse.SC_OK);
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 
 }

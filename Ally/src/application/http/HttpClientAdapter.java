@@ -128,6 +128,7 @@ public class HttpClientAdapter {
 
     public static void readyToStartCommand(Consumer<Boolean> isSuccess,int taskSize,Consumer<Long> totalTaskAmountConsumer) {
         String body= TASK_SIZE +'='+taskSize;
+        System.out.println(body);
         HTTP_CLIENT.doPostASync(READY_TO_START,body ,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -144,8 +145,10 @@ public class HttpClientAdapter {
                             if(!body.isEmpty()) {
                                 Reader input = new StringReader(body);
                                 prop.load(input);
+                                String taskRaw=prop.getProperty(TOTAL_TASK_AMOUNT);
+                                System.out.println(taskRaw);
                                 if ((totalTaskAmount =
-                                        Long.parseLong(prop.getProperty(TOTAL_TASK_AMOUNT))) < 1)
+                                        Long.parseLong(taskRaw)) < 1)
                                     createErrorAlertWindow("Ready to Start -Ally", "Error:Total Amount must be positive number");
                                 else
                                     totalTaskAmountConsumer.accept(totalTaskAmount);

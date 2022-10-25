@@ -122,6 +122,7 @@ public class SystemManager {
         CodeFormatDTO codeFormatConfiguration = uboatController.getCodeFormatConfiguration();
         List<AllyDataDTO> alliesDataListForUboat = uboatController.getAlliesDataListForUboat();
         for (AllyDataDTO allyData : alliesDataListForUboat) {
+            System.out.println(allyData.getAllyName()+ "::Start Task Creator....");
             DecryptionManager decryptionManager=getSingleAllyController(allyData.getAllyName()).getDecryptionManager();
             decryptionManager.setStartingCode(codeFormatConfiguration);
             decryptionManager.startCreatingContestTasks();

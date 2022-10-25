@@ -23,10 +23,10 @@ public class ContestTeamDataController {
     @FXML private ContestDataController contestDataComponentController;
     private AgentController agentController;
     private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
-    private Runnable startTaskPuller;
+
     private TimerTask listRefresher;
     private Timer timer;
-    private boolean isAgentStartContest=false;
+
 
     public void setAlliesName(String alliesName)
     {
@@ -34,18 +34,11 @@ public class ContestTeamDataController {
     }
     private void updateContestData(ContestDataDTO contestDataDTO)
     {
-        if(!isAgentStartContest&&contestDataDTO.getGameStatus()== GameStatus.ACTIVE)
-            startContestInAgent();
         agentController.setGameStatus(contestDataDTO.getGameStatus());
         contestDataComponentController.updateContestData(contestDataDTO);
       //  stopListRefresher();
     }
-    private void startContestInAgent()
-    {
-        isAgentStartContest=true;
-        startTaskPuller.run();
 
-    }
     public void resetData() {
         contestDataComponentController.resetData();
 
@@ -71,7 +64,5 @@ public class ContestTeamDataController {
         this.agentController = agentController;
     }
 
-    public void setStartTaskPuller(Runnable startTaskPuller) {
-        this.startTaskPuller = startTaskPuller;
-    }
+
 }

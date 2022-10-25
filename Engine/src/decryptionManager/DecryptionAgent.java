@@ -9,10 +9,7 @@ import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
 import java.io.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -23,34 +20,30 @@ public class DecryptionAgent {
     private final Engine engine;
     private final String alliesTeam;
     private final int threadAmount;
-
     private long tasksAmount;
     private final String agentName;
     private CodeCalculatorFactory codeCalculatorFactory;
-    private BlockingQueue<Runnable> taskQueue;
+//    private Consumer<Long> queueTaskConsumer;
+//    private Consumer<Long> completeTaskConsumer;
+
     private BlockingQueue<TaskFinishDataDTO> successfulDecryption;
-    private final ExecutorService threadAgents;
+    private final AgentThreadPool threadsAgent;
     private byte[] engineCopyBytes;
     private AtomicCounter taskDoneAmount;
     private String cipheredString;
+    private final BlockingQueue<Runnable> taskQueue;
 
-//    private Thread taskCreator;
-    private double totalTaskAmount;
-//    private static Consumer<String> messageConsumer;
-//    public static Consumer<Long> currentTaskTimeConsumer;
-    //    private long taskCounter;
-    private static Boolean isFinishAllTask;
-    public static volatile boolean isSystemPause;
-    private boolean stopFlag;
+
+    private Boolean isContestEnded;
     private Runnable startListener;
-    public static final Object pauseLock=new Object();
+
     private final Runnable notifyFinishTaskSession;
     public DecryptionAgent(AgentDataDTO agentDataDTO, Runnable notifyFinishTaskSession) {
         this.agentName = agentDataDTO.getAgentName();
         this.alliesTeam = agentDataDTO.getAllyTeamName();
         this.threadAmount = agentDataDTO.getThreadAmount();
         this.tasksAmount = agentDataDTO.getTasksSessionAmount();
-        threadAgents =  Executors.newFixedThreadPool(threadAmount);
+//        threadsAgent =  Executors.newFixedThreadPool(threadAmount);
         this.notifyFinishTaskSession = notifyFinishTaskSession;
         engine=new EnigmaEngine();
         taskDoneAmount=new AtomicCounter();
@@ -60,30 +53,19 @@ public class DecryptionAgent {
                 doneRunningTaskSession();
             }
         });
-//        this.engine = engine;
-//        dictionary=engine.getDictionary();
-//        machineData=engine.getMachineData();
-//        totalTaskAmount=0;
+        taskQueue=new LinkedBlockingDeque<>(agentDataDTO.getTasksSessionAmount());
+        threadsAgent =new AgentThreadPool(threadAmount,threadAmount,20, TimeUnit.SECONDS,
+                taskQueue,new AgentThreadFactory(),taskDoneAmount);
 
-//        codeCalculatorFactory =new CodeCalculatorFactory(engine.getMachineData().getAlphabetString(),
-//                machineData.getNumberOfRotorsInUse());
-
-//        isFinishAllTask= Boolean.FALSE;
-
+    }
+    public Boolean getContestEndedFlag() {
+        return isContestEnded;
     }
     private void doneRunningTaskSession()
     {
         taskDoneAmount.resetCounter();
         notifyFinishTaskSession.run();
 
-    }
-    public void setTaskDoneAmount(AtomicCounter taskDoneAmount) {
-        this.taskDoneAmount = taskDoneAmount;
-    }
-
-    public void setDataConsumer(Consumer<String> messageConsumer, Consumer<Long> currentTaskTimeConsumer) {
-        //DecryptionManager.messageConsumer = messageConsumer;
-       // DecryptionManager.currentTaskTimeConsumer =currentTaskTimeConsumer;
     }
 
 
@@ -108,16 +90,28 @@ public class DecryptionAgent {
 
     }
 
+    public void setCounterConsumers(Consumer<Integer> queueTaskConsumer,Consumer<Long> incrementCompleteTaskConsumer) {
 
+        taskDoneAmount.addPropertyChangeListener((counter) -> {
+
+            long newVal=(Long)counter.getNewValue();
+            long oldVal=(Long)counter.getOldValue();
+            incrementCompleteTaskConsumer.accept(1L);
+            queueTaskConsumer.accept(taskQueue.size());
+            if(newVal == tasksAmount) {
+                doneRunningTaskSession();
+            }
+        });
+    }
 
     public void stop(){
-        isFinishAllTask=true;
-        threadAgents.shutdownNow();
+        isContestEnded=true;
+        threadsAgent.shutdownNow();
     }
 
     public Supplier<TaskFinishDataDTO> getFinishQueueSupplier()
     {
-        return new TaskFinishSupplier(successfulDecryption,isFinishAllTask);
+        return new TaskFinishSupplier(successfulDecryption,isContestEnded);
     }
 
     public void addTasksToAgent(DecryptedTask[] decryptedTasksArray)
@@ -132,7 +126,7 @@ public class DecryptionAgent {
                                 taskDoneAmount,
                                 agentName,
                                 cipheredString);
-            threadAgents.submit(task);
+            threadsAgent.submit(task);
         }
     }
     public void saveEngineCopy()
@@ -166,7 +160,7 @@ public class DecryptionAgent {
     {
 
      //   messageConsumer.accept("Finish running all tasks,finishing update all possible candidate.....");
-        isFinishAllTask=true;
+
 
     }
 
@@ -182,4 +176,8 @@ public class DecryptionAgent {
     public long getTasksAmount() {
         return tasksAmount;
     }
+
+
+
+
 }

@@ -6,13 +6,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-public class AgentsThreadPool extends ThreadPoolExecutor {
+public class AgentThreadPool extends ThreadPoolExecutor {
 
     AtomicCounter totalDoneCounter;
-    private double totalTaskAmount;
-    public AgentsThreadPool(int corePoolSize, int maximumPoolSize,
-                            long keepAliveTime, TimeUnit unit,
-                            BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory,AtomicCounter totalDoneCounter) {
+
+    public AgentThreadPool(int corePoolSize, int maximumPoolSize,
+                           long keepAliveTime, TimeUnit unit,
+                           BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, AtomicCounter totalDoneCounter) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,threadFactory);
 
         this.totalDoneCounter=totalDoneCounter;
@@ -20,10 +20,7 @@ public class AgentsThreadPool extends ThreadPoolExecutor {
     }
 
 
-    public void setTotalTaskAmount(double taskAmount)
-    {
-        totalTaskAmount=taskAmount;
-    }
+
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);

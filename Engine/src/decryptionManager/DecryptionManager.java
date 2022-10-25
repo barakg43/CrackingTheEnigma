@@ -11,91 +11,74 @@ import engineDTOs.RotorInfoDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
+import static engineDTOs.CodeFormatDTO.copyOf;
+
 
 public class DecryptionManager {
-
-
     private  CodeFormatDTO startingCode;
-
-
     private final MachineDataDTO machineData;
-    // private final Engine engine;
     private GameLevel level=null;
+    private final String allyName;
     private int taskSize=0;
     private final CodeCalculatorFactory codeCalculatorFactory;
-    private BlockingQueue<SimpleDecryptedTaskDTO> taskQueue;
+    private final BlockingQueue<SimpleDecryptedTaskDTO> taskQueue;
     private final int QUEUE_SIZE=1000;
-    public  AtomicCounter taskDoneAmount;
-
     private Thread taskCreator;
     private double totalTaskAmount;
     private final AtomicLong taskProducedCounter;
-//    private static Consumer<String> messageConsumer;
-   // public static Consumer<Long> currentTaskTimeConsumer;
-//    private long taskCounter;
-    private static Boolean isFinishAllTask;
-    public static volatile boolean isSystemPause;
+
+
     private boolean stopFlag;
-    private Runnable startListener;
-    public static final Object pauseLock=new Object();
-    private Consumer<String> messageConsumer;
 
-    public DecryptionManager(MachineDataDTO machineDataDTO,GameLevel level) {
 
-    this.machineData =machineDataDTO;
-       // this.engine = engine;
+    public DecryptionManager(MachineDataDTO machineDataDTO,GameLevel level,String allyName) {
+
+        this.machineData =machineDataDTO;
         this.level=level;
+        this.allyName = allyName;
         totalTaskAmount=0;
         taskProducedCounter=new AtomicLong(0);
         codeCalculatorFactory =new CodeCalculatorFactory(machineDataDTO.getAlphabetString(), machineDataDTO.getNumberOfRotorsInUse());
-
-        isFinishAllTask= Boolean.FALSE;
+        taskQueue=new ArrayBlockingQueue<>(QUEUE_SIZE);
 
     }
 
-//    public void setTaskDoneAmount(AtomicCounter taskDoneAmount) {
-//        this.taskDoneAmount = taskDoneAmount;
-//    }
+
     public void setStartingCode(CodeFormatDTO startingCode) {
         this.startingCode = startingCode;
     }
 
-    public void setDataConsumer(Consumer<String> messageConsumer) {
-        this.messageConsumer = messageConsumer;
 
-    }
     public List<SimpleDecryptedTaskDTO> getTasksForAgentSession(int amount)
     {
-
-        //TODO: fix sync between put and take from blocking queue
         List<SimpleDecryptedTaskDTO> decryptedTaskList=new ArrayList<>(amount);
-        taskQueue.drainTo(decryptedTaskList,amount);
+        for (int i = 0; i <amount ; i++) {
+            SimpleDecryptedTaskDTO decryptedTaskDTO=taskQueue.poll();
+            if(decryptedTaskDTO==null)
+                break;
+            decryptedTaskList.add(decryptedTaskDTO);
+        }
         return decryptedTaskList;
     }
-
     public void setTaskSize(int taskSize) {
         this.taskSize=taskSize;
         totalTaskAmount=0;
         calculateTotalTaskAmount(level);
-
     }
-
     public double getTotalTasksAmount() {
-
         return totalTaskAmount;
     }
 
-
-    public void setCandidateListenerStarter(Runnable startListener)
-    {
-        this.startListener=startListener;
-
+    public long getTaskProducedAmount() {
+        return taskProducedCounter.get();
     }
+
 //
 //    public void pause()  {
 //        isSystemPause =true;
@@ -115,44 +98,37 @@ public class DecryptionManager {
 //    }
     public void stop(){
         stopFlag=true;
-        isFinishAllTask=true;
+
     }
 
 
     public void startCreatingContestTasks()
     {
-        totalTaskAmount=0;
-        isFinishAllTask=false;
-        isSystemPause =false;
         stopFlag=false;
-        startListener.run();
-        new Thread(()-> {
+        taskCreator=  new Thread(()-> {
                 try {
-
                     switch (level) {
                         case EASY:
-                            messageConsumer.accept("Starting easy level contest");
                             createTaskEasyLevel(startingCode);
                             break;
                         case MEDIUM:
-                            messageConsumer.accept("Starting medium level contest");
+
                             createTaskMediumLevel(startingCode);
                             break;
                         case HARD:
-                            messageConsumer.accept("Starting hard level contest");
+
                             createTaskHardLevel(startingCode);
                             break;
                         case INSANE:
-                            messageConsumer.accept("Starting insane level contest");
                             createTaskImpossibleLevel();
                             break;
                     }
-
                 } catch (RuntimeException e) {
-                    throw new RuntimeException("Error when creating tasks: "+e);
+                    throw new RuntimeException("Error when creating tasks: "+e.getMessage());
                 }
-        },"Task Creator DM Thread").start();
-
+        },allyName+" Task Creator Thread");
+        taskCreator.start();
+        System.out.println(allyName+" Finish create all task!");
     }
 
 //    static public void doneBruteForceTasks()
@@ -204,7 +180,7 @@ public class DecryptionManager {
 
     private void createTaskHardLevel(CodeFormatDTO codeFormatDTO)
     {
-        CodeFormatDTO currentCode=codeFormatDTO;
+        CodeFormatDTO currentCode;
         int rotorUsedNumber=machineData.getNumberOfRotorsInUse();
         Permuter permuteFactory=new Permuter(rotorUsedNumber);
         int[] rotorId=new int[ rotorUsedNumber];
@@ -259,23 +235,18 @@ public class DecryptionManager {
         CodeFormatDTO currentCode=null,temp;
 
         temp=resetAllPositionToFirstPosition(codeFormatDTO);
+        System.out.println("First code:"+temp);
         double i = 0;
 
         while(temp!=null&&!stopFlag){
-            currentCode=temp;
-            try {
-                if(isSystemPause) {
-                    synchronized (pauseLock) {
-                        pauseLock.wait();
-                    }
-                }
 
+            try {
+                currentCode=temp;
                // Thread.sleep(5000);//TODO: thread pool delayed
               //  System.out.println("Task creator is running!");
-                System.out.println("Produced:"+taskProducedCounter.get());
-                taskQueue.put(new SimpleDecryptedTaskDTO(currentCode, taskSize));
+             //   System.out.println(allyName+" Produced:"+taskProducedCounter.get());
+                taskQueue.put(new SimpleDecryptedTaskDTO(CodeFormatDTO.copyOf(currentCode), taskSize));
                 taskProducedCounter.incrementAndGet();
-
 
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -351,9 +322,7 @@ public class DecryptionManager {
 
     }
 
-    public long getTaskProducedAmount() {
-        return taskProducedCounter.get();
-    }
+
 }
 
 

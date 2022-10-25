@@ -36,10 +36,10 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"ManuallyCodeConfigurationServlet");
+        try{
         Engine enigmaEngine=ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();
-        try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
             CodeFormatDTO codeFormatDTO = gson.fromJson(inputReader, CodeFormatDTO.class);
@@ -53,7 +53,7 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
 
 
 
-        }
+    }
 }
 
 

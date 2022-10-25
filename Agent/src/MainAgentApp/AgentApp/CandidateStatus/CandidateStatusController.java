@@ -40,7 +40,7 @@ public class CandidateStatusController {
         candidateStatusScrollPane.prefHeightProperty().bind(sceneHeightProperty);
     }
 
-    private void addAllCandidate(TaskFinishDataDTO taskFinishDataDTO)
+    public void addAllCandidate(TaskFinishDataDTO taskFinishDataDTO)
     {
 
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())
@@ -53,9 +53,10 @@ public class CandidateStatusController {
     {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource(CommonResources.CANDIDATE_SINGLE_TILE));
+            loader.setLocation(getClass().getClassLoader().getResource(CommonResources.CANDIDATE_SINGLE_TILE));
             Node singledCandidateTile = loader.load();
             SingleCandidateController singledCandidateTileController = loader.getController();
+            System.out.println("new Candidate::"+candidateDTO.getCodeConf());
             singledCandidateTileController.setData(candidateDTO,agentID);
             Platform.runLater(
                     ()->candidateStatusFlowPane.getChildren().add(singledCandidateTile)
@@ -64,7 +65,7 @@ public class CandidateStatusController {
 //                    ()->taskDataController.getNumberOfCandidates().setText(String.valueOf(numberOfCandidates.getValue()))
 //            );
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

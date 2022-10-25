@@ -5,14 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 import static general.ConstantsHTTP.AGENT_CONFIGURATION;
 import static general.ConstantsHTTP.AGENT_CONTEXT;

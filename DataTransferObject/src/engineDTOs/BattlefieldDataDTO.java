@@ -2,7 +2,9 @@ package engineDTOs;
 
 import engineDTOs.DmDTO.GameLevel;
 
-public class BattlefieldDataDTO {
+import java.io.Serializable;
+
+public class BattlefieldDataDTO implements Serializable {
 
     private final String battlefieldName;
     private final int alliesAmount;

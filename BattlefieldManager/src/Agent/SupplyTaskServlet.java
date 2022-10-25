@@ -32,20 +32,15 @@ public class SupplyTaskServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(agentName,"SupplyTaskServlet");
-        String amountFromParameter = request.getParameter(AMOUNT);
-        if (amountFromParameter == null || amountFromParameter.isEmpty()) {
-            //no agentName in session and no agentName in parameter - not standard situation. it's a conflict
 
-            // stands for conflict in server state
-            response.setStatus(HttpServletResponse.SC_CONFLICT);
+        int amountFromParameter = ServletUtils.getIntParameter(request, AMOUNT);
+        if (amountFromParameter <1) {
+            response.getWriter().println("Must use '"+AMOUNT+"' query parameter with positive in this request");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
         }
 
-        int amount=0;
-        try {
-            amount = Integer.parseInt(amountFromParameter);
-        } catch (NumberFormatException nfe) {
-            ServletUtils.setBadRequestErrorResponse(nfe,response);
-        }
+
 
         try {
             Gson gson = ServletUtils.getGson();
@@ -53,7 +48,7 @@ public class SupplyTaskServlet extends HttpServlet {
             List<SimpleDecryptedTaskDTO> taskList = ServletUtils.getSystemManager()
                     .getSingleAllyController(allyName)
                     .getDecryptionManager()
-                    .getTasksForAgentSession(amount);
+                    .getTasksForAgentSession(amountFromParameter);
             String json = gson.toJson(taskList);
             out.println(json);
             out.flush();

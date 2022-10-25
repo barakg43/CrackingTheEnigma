@@ -30,13 +30,16 @@ public class StartBattlefieldServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"StartBattlefieldServlet");
-        SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
-                .getBattleFieldController(username);
+        try {
+            SingleBattleFieldController uboatController = ServletUtils.getSystemManager()
+                    .getBattleFieldController(username);
 
-        uboatController.getContestDataManager().changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
-        uboatController.checkIfAllReady();
-        response.setStatus(HttpServletResponse.SC_OK);
-
+            uboatController.getContestDataManager().changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
+            uboatController.checkIfAllReady();
+            response.setStatus(HttpServletResponse.SC_OK);
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 
 

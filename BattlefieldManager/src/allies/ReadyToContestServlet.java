@@ -2,7 +2,6 @@ package allies;
 
 import Ally.SingleAllyController;
 import allyDTOs.AllyDataDTO;
-import engineDTOs.DmDTO.GameLevel;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,35 +29,37 @@ public class ReadyToContestServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        ServletUtils.logRequestAndTime(allyName,"ReadyToContestServlet");
-        SingleAllyController allyController= ServletUtils.getSystemManager()
-                .getSingleAllyController(allyName);
+        try {
+            ServletUtils.logRequestAndTime(allyName, "ReadyToContestServlet");
+            SingleAllyController allyController = ServletUtils.getSystemManager()
+                    .getSingleAllyController(allyName);
 
-        allyController.getAllyDataManager().changeStatus(AllyDataDTO.Status.READY);
+            allyController.getAllyDataManager().changeStatus(AllyDataDTO.Status.READY);
 
 //        List<AllyDataDTO> allyDataDTOList= uboatController.getAlliesDataListForUboat();
 //        ContestDataDTO contestDataDTO=uboatController.getContestDataDTO();
-        Properties prop = new Properties();
-        int taskSize;
-        prop.load(request.getReader());
-        try {
-                if((taskSize =
-                        Integer.parseInt(prop.getProperty(TASK_SIZE)))<1)
-                    throw new RuntimeException("Task Amount must be positive number");
-
-        }catch ( RuntimeException e){
-           ServletUtils.setBadRequestErrorResponse(e,response);
-            return;
-        }
-        System.out.println(allyName+" Task size: "+taskSize);
-
-        allyController.setTaskSize(taskSize);
-        response.getWriter().format("%s=%.0f\n",TOTAL_TASK_AMOUNT, allyController.getDecryptionManager().getTotalTasksAmount());
-        response.getWriter().flush();
-        String uboatManager=allyController.getUboatNameManager();
-        SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
-                .getBattleFieldController(uboatManager);
-        uboatController.checkIfAllReady();
+            Properties prop = new Properties();
+            int taskSize;
+            prop.load(request.getReader());
+            String sizeRaw=prop.getProperty(TASK_SIZE);
+//            System.out.println(allyName+ " size raw:"+sizeRaw);
+            try {
+                taskSize = Integer.parseInt(sizeRaw);
+//                    throw new RuntimeException("Task Size must be positive number");
+            } catch (RuntimeException e) {
+                ServletUtils.setBadRequestErrorResponse(e, response);
+                return;
+            }
+//            System.out.println(allyName + " Task size: " + taskSize);
+            allyController.setTaskSize(taskSize);
+            String body=String.format("%s=%.0f\n", TOTAL_TASK_AMOUNT, allyController.getDecryptionManager().getTotalTasksAmount());
+//            System.out.println(allyName+"::"+body);
+            String uboatManager = allyController.getUboatNameManager();
+            SingleBattleFieldController uboatController = ServletUtils.getSystemManager()
+                    .getBattleFieldController(uboatManager);
+            uboatController.checkIfAllReady();
+            response.getWriter().println(body);
+            response.getWriter().flush();
 
 //            List<AllyDataDTO> alliesDataListForUboat =uboatController.getAlliesDataListForUboat();
 //            for(AllyDataDTO allyData:alliesDataListForUboat)
@@ -70,8 +71,9 @@ public class ReadyToContestServlet extends HttpServlet {
 //                contestDataManager.changeGameStatus(GameStatus.ACTIVE);
 //
 //        }
-        response.setStatus(HttpServletResponse.SC_OK);
-
+            response.setStatus(HttpServletResponse.SC_OK);
+        }catch (RuntimeException e){
+            ServletUtils.setBadRequestErrorResponse(e,response);}
     }
 
 

@@ -7,11 +7,13 @@ import agent.AgentDataDTO;
 import agent.AgentSetupConfigurationDTO;
 import allyDTOs.ContestDataDTO;
 import com.sun.istack.internal.NotNull;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import general.ApplicationType;
 import http.client.CustomHttpClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
 
 import java.io.IOException;
 import java.util.Objects;
@@ -79,8 +81,10 @@ public class HttpClientAdapter {
 
 
 
-    public static void updateCandidate() {
-        HTTP_CLIENT.doPostASync(UPDATE_CANDIDATES,"" ,new Callback() {
+    public static void updateCandidate(TaskFinishDataDTO taskFinishDataDTO) {
+
+        String body= HTTP_CLIENT.getGson().toJson(taskFinishDataDTO);
+        HTTP_CLIENT.doPostASync(UPDATE_CANDIDATES,body,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 createErrorAlertWindow("update candidates", e.getMessage());
@@ -119,7 +123,7 @@ public class HttpClientAdapter {
 
 
 
-    public static void getAgentSetupConfiguration(Consumer<AgentSetupConfigurationDTO> updateAgentSettings) {
+    public static void getAgentSetupConfiguration(Consumer<AgentSetupConfigurationDTO> updateAgentSettings,Runnable taskPullerStarter,Runnable startCandidateListener,Consumer<Boolean> isSuccess) {
 
         HTTP_CLIENT.doGetASync(AGENT_CONFIGURATION, new Callback() {
             @Override
@@ -129,12 +133,16 @@ public class HttpClientAdapter {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseBody = Objects.requireNonNull(response.body()).string();
+
                 if (response.code() != HTTP_OK) {
                     createErrorAlertWindow("Agent Configuration", Objects.requireNonNull(response.body()).string());
                 } else {
                     AgentSetupConfigurationDTO agentSetupConfigurationDTO = CustomHttpClient.GSON_INSTANCE.fromJson(responseBody, AgentSetupConfigurationDTO.class);
                     updateAgentSettings.accept(agentSetupConfigurationDTO);
+                    taskPullerStarter.run();
+                    startCandidateListener.run();
                 }
+                isSuccess.accept(response.code()== HTTP_OK);
             }
         });
     }

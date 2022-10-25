@@ -89,6 +89,7 @@ public class MainAgentController {
         agentController.setAlliesName(agentDataDTO.getAllyTeamName());
         agentController.setAgentInfo(agentDataDTO);
 
+
     }
 
     private void setMainPanelTo(Parent pane) {

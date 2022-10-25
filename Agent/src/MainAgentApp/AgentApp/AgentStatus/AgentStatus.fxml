@@ -20,7 +20,7 @@
             <Insets left="15.0" />
          </GridPane.margin>
       </Label>
-      <Label fx:id="NumerOfTasksQueueLabel" GridPane.columnIndex="1" />
+      <Label fx:id="numberOfTasksQueueLabel" GridPane.columnIndex="1" />
       <Label styleClass="title-label" text="Number of completed tasks:" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="15.0" />

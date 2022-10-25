@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import systemManager.SystemManager;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import static constants.Constants.INT_PARAMETER_ERROR;
+
+import static general.ConstantsHTTP.INT_PARAMETER_ERROR;
 
 
 public class ServletUtils {
@@ -59,9 +61,11 @@ public class ServletUtils {
 		ServletUtils.servletContextRef = servletContextRef;
 	}
 	public static void setBadRequestErrorResponse(Throwable errorResponse, HttpServletResponse response) throws IOException {
+		PrintWriter out=response.getWriter();
 		response.setContentType("text/plain");
-		response.getWriter().println(errorResponse.getMessage());
-		response.getWriter().flush();
+		out.println(errorResponse.getMessage());
+		errorResponse.printStackTrace();
+		out.flush();
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 }

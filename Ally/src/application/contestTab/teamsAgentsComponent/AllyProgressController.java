@@ -4,6 +4,8 @@ import allyDTOs.AgentsTeamProgressDTO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -59,6 +61,8 @@ public class AllyProgressController {
     private  ObservableList<AgentsTeamProgressDTO> allyAgentsDataListObs;
     private final SimpleDoubleProperty produceProgressProperty = new SimpleDoubleProperty(0);
     private final SimpleDoubleProperty doneProgressProperty = new SimpleDoubleProperty(0);
+    private final SimpleLongProperty tasksProducedProperty= new SimpleLongProperty(0);
+    private final SimpleLongProperty tasksDoneProperty= new SimpleLongProperty(0);
     public void addAgentsRecordsToAllyAgentTable(List<AgentsTeamProgressDTO> agentRecordList) {
 
         if (agentRecordList == null||agentRecordList.isEmpty())
@@ -70,14 +74,17 @@ public class AllyProgressController {
 
     public void setTotalTaskAmount(long totalTaskAmount) {
         System.out.println("total task amount:"+totalTaskAmount);
-       Platform.runLater(()->this.totalTaskAmount.setText(String.valueOf(totalTaskAmount)));
+       Platform.runLater(()->this.totalTaskAmount.setText(String.format("%,d",totalTaskAmount)));
         totalTaskAmountValue=totalTaskAmount;
+        produceProgressProperty.bind(Bindings.divide(tasksProducedProperty,totalTaskAmount));
+        doneProgressProperty.bind(Bindings.divide(tasksDoneProperty,totalTaskAmount));
+
     }
 
     public void updateTasksAmountProduced(long tasksProduced) {
+        System.out.println("task produced:"+tasksProduced);
+        tasksProducedProperty.set(tasksProduced);
 
-        tasksAmountProduced.setText(String.valueOf(tasksProduced));
-        produceProgressProperty.set(tasksProduced*1.0/totalTaskAmountValue);
     }
     public void updateMassageLabel(String massage)
     {
@@ -89,23 +96,20 @@ public class AllyProgressController {
         doneProgressProperty.set(agentsTasksDone*1.0/totalTaskAmountValue);
     }
 
+    private void bindProgressUIComponents() {
+        // task message
 
+        // task progress bar
 
-    @FXML
-    private void initialize() {
-        allyAgentDataTable.setPlaceholder(
-                new Label("No rows to display"));
-        agentNameColumn.setCellValueFactory(new PropertyValueFactory<>("agentName"));
-        receivedTaskColumn.setCellValueFactory(new PropertyValueFactory<>("receivedTaskAmount"));
-        waitingTaskColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTaskAmount"));
-        candidatesColumn.setCellValueFactory(new PropertyValueFactory<>("candidateAmount"));
-        allyAgentsDataListObs = FXCollections.observableArrayList();
-        agentNameColumn.setStyle("-fx-alignment:center");
-        receivedTaskColumn.setStyle("-fx-alignment:center");
-        waitingTaskColumn.setStyle("-fx-alignment:center");
-        candidatesColumn.setStyle("-fx-alignment:center");
         agentsTasksProgressBar.progressProperty().bind(doneProgressProperty);
         taskProducedProgressBar.progressProperty().bind(produceProgressProperty);
+
+        tasksAmountProduced.textProperty().bind(tasksProducedProperty.asString());
+
+        produceProgressProperty.bind(Bindings.divide(
+                tasksProducedProperty,
+                totalTaskAmountValue));
+
         agentsTasksDonePercent.textProperty().bind(Bindings.concat(
                 Bindings.format(
                         "%.0f",
@@ -120,6 +124,27 @@ public class AllyProgressController {
                                 this.produceProgressProperty,
                                 100)),
                 " %"));
+
+
+        // task percent label
+
+
+
+    }
+
+    @FXML
+    private void initialize() {
+        allyAgentDataTable.setPlaceholder(
+                new Label("No rows to display"));
+        agentNameColumn.setCellValueFactory(new PropertyValueFactory<>("agentName"));
+        receivedTaskColumn.setCellValueFactory(new PropertyValueFactory<>("receivedTaskAmount"));
+        waitingTaskColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTaskAmount"));
+        candidatesColumn.setCellValueFactory(new PropertyValueFactory<>("candidatesAmount"));
+        allyAgentsDataListObs = FXCollections.observableArrayList();
+        agentNameColumn.setStyle("-fx-alignment:center");
+        receivedTaskColumn.setStyle("-fx-alignment:center");
+        waitingTaskColumn.setStyle("-fx-alignment:center");
+        candidatesColumn.setStyle("-fx-alignment:center");
     }
 
 

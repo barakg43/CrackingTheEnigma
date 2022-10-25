@@ -48,6 +48,7 @@ public class FileUploadServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"FileUploadServlet");
+        try{
         Part input=parts.stream().findFirst().orElse(null);
         if(input!=null)
         {
@@ -69,6 +70,9 @@ public class FileUploadServlet extends HttpServlet {
         }
         else
             response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 
     private String readFromInputStream(InputStream inputStream) {

@@ -7,6 +7,7 @@ import allyDTOs.AgentsTeamProgressDTO;
 import decryptionManager.DecryptionManager;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.GameLevel;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.MachineDataDTO;
 
 import java.util.*;
@@ -41,17 +42,20 @@ public class SingleAllyController {
     {
         return new ArrayList<>(agentsTasksProgress.values());
     }
-    public List<AllyCandidateDTO> getAllyCandidateDTOListWithVersion() {
 
-        return allyCandidateDTOList.subList(candidateVersion,allyCandidateDTOList.size());
+    public synchronized List<AllyCandidateDTO> getAllyCandidateDTOListWithVersion(int candidatesVersion) {
+        if (candidatesVersion < 0 || candidatesVersion > allyCandidateDTOList.size()) {
+            candidatesVersion = 0;
+        }
+        return allyCandidateDTOList.subList(candidatesVersion,allyCandidateDTOList.size());
     }
     public void updateAllyCandidateVersion(){
         candidateVersion=allyCandidateDTOList.size();
     }
 
-    public void addCandidateToAllyList(AllyCandidateDTO allyCandidateDTO)
+    public synchronized void addCandidateToAllyList(TaskFinishDataDTO agentCandidate)
     {
-        allyCandidateDTOList.add(allyCandidateDTO);
+        allyCandidateDTOList.add(new AllyCandidateDTO(agentCandidate, allyDataManager.getAllyName()));
 
     }
     public AllyDataDTO getAllyDataDTO()
@@ -70,7 +74,7 @@ public class SingleAllyController {
 
     public void createDecryptionManager( MachineDataDTO machineDataDTO,GameLevel level) {
 
-        this.decryptionManager = new DecryptionManager(machineDataDTO,level);
+        this.decryptionManager = new DecryptionManager(machineDataDTO,level,allyDataManager.getAllyName());
     }
 
     public DecryptionManager getDecryptionManager() {

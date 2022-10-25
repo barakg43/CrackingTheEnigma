@@ -61,6 +61,7 @@ public class ContestScreenController {
     private final BooleanProperty isAgentsAssign=new SimpleBooleanProperty(false);
     private final BooleanProperty isTaskSizePositive=new SimpleBooleanProperty(false);
     private final BooleanProperty readyDisableProperty =new SimpleBooleanProperty(false);
+    private final Integer candidatesVersion=0;
 
     @FXML
     private void initialize(){
@@ -93,7 +94,9 @@ public class ContestScreenController {
     }
 
     private void updateTasksAmountProduced(long taskDoneProduced) {
+
         Platform.runLater(()-> teamsAgentsComponentController.updateTasksAmountProduced(taskDoneProduced));
+
     }
     private int getTaskSizeFromSpinner() {
         if (taskSizeTextSpinner.getValue() > 0)

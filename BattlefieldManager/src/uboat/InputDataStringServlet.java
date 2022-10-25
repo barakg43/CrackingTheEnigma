@@ -38,6 +38,7 @@ public class InputDataStringServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"InputDataStringServlet");
+        try{
             Properties prop = new Properties();
             prop.load(request.getInputStream());
             String inputString = prop.getProperty(INPUT_PROPERTY);
@@ -57,6 +58,9 @@ public class InputDataStringServlet extends HttpServlet {
         }
         else
             response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 
 

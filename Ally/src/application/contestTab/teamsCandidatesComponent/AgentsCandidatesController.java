@@ -29,10 +29,13 @@ public class AgentsCandidatesController {
     private ObservableList<CandidateDTO> agentsCandidatesListObs;
 
     public void addAlliesDataToContestTeamTable(List<AllyCandidateDTO> alliesCandidateDTOList) {
-        for(AllyCandidateDTO allCandidateDTO:alliesCandidateDTOList)
+
+        for(AllyCandidateDTO allCandidateDTO:alliesCandidateDTOList) {
             agentsCandidatesListObs.addAll(allCandidateDTO.getPossibleCandidates());
 
+        }
         agentsCandidatesTable.setItems(agentsCandidatesListObs);
+
     }
 
 
@@ -41,7 +44,7 @@ public class AgentsCandidatesController {
         agentsCandidatesTable.setPlaceholder(
                 new Label("No rows to display"));
 
-        agentNameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        agentNameColumn.setCellValueFactory(new PropertyValueFactory<>("agentName"));
         outputStringColumn.setCellValueFactory(new PropertyValueFactory<>("output"));
         codeConfColumn.setCellValueFactory(new PropertyValueFactory<>("codeConf"));
         agentsCandidatesListObs= FXCollections.observableArrayList();

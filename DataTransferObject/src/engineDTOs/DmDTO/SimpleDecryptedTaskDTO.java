@@ -11,5 +11,15 @@ public class SimpleDecryptedTaskDTO {
 
     }
 
+    public CodeFormatDTO getInitialCode() {
+        return initialCode;
+    }
 
+    @Override
+    public String toString() {
+        return "SimpleDecryptedTaskDTO{" +
+                "initialCode=" + initialCode +
+                ", taskSize=" + taskSize +
+                '}';
+    }
 }

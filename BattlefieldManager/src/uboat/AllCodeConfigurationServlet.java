@@ -35,6 +35,7 @@ public class AllCodeConfigurationServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"AllCodeConfigurationServlet");
+        try{
         Engine enigmaEngine=ServletUtils.getSystemManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
@@ -51,6 +52,9 @@ public class AllCodeConfigurationServlet extends HttpServlet {
             out.flush();
         }
         response.setStatus(HttpServletResponse.SC_OK);
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

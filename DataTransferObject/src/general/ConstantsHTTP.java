@@ -8,7 +8,9 @@ public class ConstantsHTTP {
 
     public final static int REFRESH_RATE = 10000;
     public final static int FAST_REFRESH_RATE = 500;
+    public static final String CANDIDATES_VERSION_PARAMETER = "candidates-version";
 
+    public static final int INT_PARAMETER_ERROR = Integer.MIN_VALUE;
     public static final String USERNAME = "username";
     public static final String AMOUNT="amount";
     public static final String INPUT_PROPERTY = "input";

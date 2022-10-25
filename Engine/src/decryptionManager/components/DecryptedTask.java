@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static decryptionManager.DecryptionManager.isSystemPause;
-import static decryptionManager.DecryptionManager.pauseLock;
+
 
 
 public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
@@ -47,12 +46,9 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
     }
     @Override
     public void run() {
-
-        long startTime=System.nanoTime();
         CodeFormatDTO currentCode=initialCode;
+        for (long i = 0; i < taskSize && currentCode!=null ; i++) {
 
-        for (double i = 0; i < taskSize && currentCode!=null ; i++) {
-            isPauseRunningTask();
       //     System.out.println(Thread.currentThread().getName() + " is running!");
             copyEngine.setCodeManually(currentCode);
             String processedOutput;
@@ -61,20 +57,20 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
             if(dictionary.checkIfAllLetterInDic(processedOutput))
                     {
-                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput,agentName));
-//                        System.out.println(currentCode);
+                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput));
+                        System.out.println(currentCode);
 //
-//                        System.out.println("Output: "+ processedOutput+"\n********************************************" );
+                        System.out.println("Output: "+ processedOutput+"\n********************************************" );
 
                     }
                     currentCode= codeCalculatorFactory.getNextCode(currentCode);
                 }
-        long totalTime=System.nanoTime()-startTime;
         try {
             if(possibleCandidates.size()>0)
-                 successfulDecryption.put(new TaskFinishDataDTO(possibleCandidates,Thread.currentThread().getName()));
+                 successfulDecryption.put(new TaskFinishDataDTO(possibleCandidates,agentName));
 
 
        // Thread.sleep(DecryptionManager.UI_SLEEP_TIME);//to
@@ -83,28 +79,16 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
 
        // throw new RuntimeException(e);
         }
-
-        atomicCounter.increment();
+      //  atomicCounter.increment();
     }
 
-        private void isPauseRunningTask() {
-            if (isSystemPause) {
-                synchronized (pauseLock) {
-                    if (isSystemPause) {
-                        try {
-                            System.out.println(Thread.currentThread().getName() + " is pause!");
-                            pauseLock.wait();
-                             System.out.println(Thread.currentThread().getName() + " is resume!");
-                        } catch (InterruptedException ignored) {
-                           // throw new RuntimeException(e);
-                        }
-
-                    }
-                }
-
-            }
-
-        }
+    @Override
+    public String toString() {
+        return "DecryptedTask{" +
+                "initialCode=" + initialCode +
+                ", taskSize=" + taskSize +
+                '}';
+    }
 
     public void setAgentName(String agentName) {
         this.agentName = agentName;

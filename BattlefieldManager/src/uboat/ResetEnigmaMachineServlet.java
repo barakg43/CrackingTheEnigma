@@ -31,6 +31,7 @@ public class ResetEnigmaMachineServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"ResetEnigmaMachineServlet");
+        try{
         Engine enigmaEngine=ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();
@@ -38,7 +39,9 @@ public class ResetEnigmaMachineServlet extends HttpServlet {
         enigmaEngine.resetAllData();
         //returning JSON objects, not HTML
         response.setStatus(HttpServletResponse.SC_OK);
-
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 
 }

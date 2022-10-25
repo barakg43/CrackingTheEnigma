@@ -30,6 +30,7 @@ public class AutomaticCodeConfigurationServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"AutomaticCodeConfigurationServlet");
+        try{
         Engine enigmaEngine=ServletUtils.getSystemManager().
                 getBattleFieldController(username).
                 getEnigmaEngine();
@@ -37,6 +38,9 @@ public class AutomaticCodeConfigurationServlet extends HttpServlet {
         System.out.println(enigmaEngine.getCodeFormat(true));
         //returning JSON objects, not HTML
         getServletContext().getRequestDispatcher(UBOAT_CONTEXT+ALL_CODE).forward(request, response);
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 
 }

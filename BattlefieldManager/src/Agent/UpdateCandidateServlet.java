@@ -2,6 +2,7 @@ package agent;
 
 import allyDTOs.AllyCandidateDTO;
 import com.google.gson.Gson;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,9 +36,9 @@ public class UpdateCandidateServlet extends HttpServlet {
         try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
-            AllyCandidateDTO allyCandidateDTO = gson.fromJson(inputReader,AllyCandidateDTO.class);
-            ServletUtils.getSystemManager().getSingleAllyController(allyCandidateDTO.getAllyName()).addCandidateToAllyList(allyCandidateDTO);
-
+            TaskFinishDataDTO agentCandidateDTO = gson.fromJson(inputReader,TaskFinishDataDTO.class);
+            String allyName= ServletUtils.getSystemManager().getAgentData(agentCandidateDTO.getAgentName()).getAllyTeamName();
+            ServletUtils.getSystemManager().getSingleAllyController(allyName).addCandidateToAllyList(agentCandidateDTO);
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
           ServletUtils.setBadRequestErrorResponse(e,response);

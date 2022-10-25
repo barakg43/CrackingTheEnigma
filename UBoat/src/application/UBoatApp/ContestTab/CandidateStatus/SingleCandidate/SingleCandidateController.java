@@ -18,13 +18,13 @@ public class SingleCandidateController {
     @FXML
     private SimpleCodeController simpleCodeFormatController;
 
-    public void setData(CandidateDTO candidateDataDTO){
-        this.agentID.setText(candidateDataDTO.getUserName());
-        Text output=new Text(candidateDataDTO.getOutput());
-        outputString.getChildren().add(output);
-        simpleCodeFormatController.loadSmallFontStyle();
-        simpleCodeFormatController.setSelectedCode(candidateDataDTO.getCodeConf());
-    }
+//    public void setData(CandidateDTO candidateDataDTO){
+//        this.agentID.setText(candidateDataDTO.getUserName());
+//        Text output=new Text(candidateDataDTO.getOutput());
+//        outputString.getChildren().add(output);
+//        simpleCodeFormatController.loadSmallFontStyle();
+//        simpleCodeFormatController.setSelectedCode(candidateDataDTO.getCodeConf());
+//    }
 
 
 }

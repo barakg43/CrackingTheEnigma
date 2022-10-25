@@ -29,6 +29,7 @@ public class ResetCodeServlet extends HttpServlet {
             return;
         }
         ServletUtils.logRequestAndTime(username,"ResetEnigmaMachineServlet");
+        try{
         Engine enigmaEngine = ServletUtils.getSystemManager()
                 .getBattleFieldController(username)
                 .getEnigmaEngine();
@@ -43,6 +44,8 @@ public class ResetCodeServlet extends HttpServlet {
             out.println(json);
             out.flush();
         }
-
+        }catch (RuntimeException e) {
+            ServletUtils.setBadRequestErrorResponse(e,response);
+        }
     }
 }

@@ -1,18 +1,13 @@
 package application.contestTab;
 
-import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyContestDataAndTeamsDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
-import general.UserListDTO;
+
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.IOException;
 import java.util.List;

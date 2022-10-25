@@ -3,9 +3,10 @@ package uboat;
 import UBoatDTO.ActiveTeamsDTO;
 import UBoatDTO.GameStatus;
 import agent.AgentSetupConfigurationDTO;
+
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
-import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
+
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;
@@ -27,7 +28,6 @@ public class SingleBattleFieldController {
     private final Engine enigmaEngine;
     private ContestDataManager contestDataManager;
 
-    private CandidatesStatusController candidatesStatusController;
     private final String uboatName;
     public SingleBattleFieldController(String uboatName, Consumer<String> startContestInAllies) {
         this.startContestInAllies = startContestInAllies;
@@ -35,6 +35,7 @@ public class SingleBattleFieldController {
         enigmaEngine=new EnigmaEngine();
         this.uboatName=uboatName;
     }
+
     public synchronized void assignAllyToUboat(AllyDataDTO agentDataDTO)
     {
         if(contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
@@ -67,18 +68,14 @@ public class SingleBattleFieldController {
                 contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
                                 contestDataManager.changeGameStatus(GameStatus.ACTIVE);
         if(contestDataManager.getGameStatus()==GameStatus.ACTIVE)
-          //  startContestInAllies.accept(uboatName);//TODO: fix start contest
+            startContestInAllies.accept(uboatName);//TODO: fix start contest
 
     }
     public CodeFormatDTO getCodeFormatConfiguration() {
         return codeFormatConfiguration;
     }
 
-    private void setupCodeConfigurationAndMachineDataAllAllies()
-    {
 
-
-    }
     public void assignXMLFileToUboat(String XmlContent)
     {
 
