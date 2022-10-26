@@ -1,11 +1,14 @@
 package decryptionManager.components;
 
+import com.sun.deploy.nativesandbox.NativeSandboxOutputStream;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import enigmaEngine.Engine;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -21,8 +24,9 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
     private List<CandidateDTO> possibleCandidates=null;
     private CodeCalculatorFactory codeCalculatorFactory=null;
     BlockingQueue<TaskFinishDataDTO> successfulDecryption=null;
-    private AtomicCounter atomicCounter=null;
     private String cipheredString;
+    private Runnable countersIncrementer;
+    private FileWriter myWriter;
 
     public DecryptedTask(CodeFormatDTO initialCode, long taskSize) {
         super(initialCode,taskSize);
@@ -31,24 +35,37 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
                                Engine copyEngine,
                                BlockingQueue<TaskFinishDataDTO> successfulDecryption,
                                Dictionary dictionary,
-                               AtomicCounter atomicCounter,
+                              Runnable countersIncrementer,
                                String agentName,
-                               String cipheredString)
+                               String cipheredString,
+                               FileWriter myWriter)
     {
         this.copyEngine = copyEngine;
+        this.countersIncrementer = countersIncrementer;
+
         possibleCandidates=new ArrayList<>();
-        this.atomicCounter = atomicCounter;
+
         this.dictionary=dictionary;
         this.successfulDecryption=successfulDecryption;
         this.codeCalculatorFactory=codeCalculatorFactory;
         this.agentName=agentName;
         this.cipheredString=cipheredString;
+
+
+        this.myWriter = myWriter;
     }
     @Override
     public void run() {
         CodeFormatDTO currentCode=initialCode;
         for (long i = 0; i < taskSize && currentCode!=null ; i++) {
 
+            try {
+                myWriter.write(currentCode.toString()+"\n");
+                myWriter.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+//            System.out.println(currentCode);
       //     System.out.println(Thread.currentThread().getName() + " is running!");
             copyEngine.setCodeManually(currentCode);
             String processedOutput;
@@ -61,9 +78,9 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
             if(dictionary.checkIfAllLetterInDic(processedOutput))
                     {
                         possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput));
-                        System.out.println(currentCode);
+
 //
-                        System.out.println("Output: "+ processedOutput+"\n********************************************" );
+                        System.out.println("code: "+currentCode+" Output: "+ processedOutput);
 
                     }
                     currentCode= codeCalculatorFactory.getNextCode(currentCode);
@@ -79,6 +96,7 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
 
        // throw new RuntimeException(e);
         }
+        countersIncrementer.run();
       //  atomicCounter.increment();
     }
 

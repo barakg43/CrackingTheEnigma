@@ -1,5 +1,7 @@
 package uboat;
 
+import UBoatDTO.GameStatus;
+import UBoatDTO.UboatCandidatesDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
 import com.google.gson.Gson;
@@ -24,7 +26,7 @@ import static general.ConstantsHTTP.*;
 public class CandidatesServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String uboatName = SessionUtils.getUsername(request);
 
@@ -52,14 +54,17 @@ public class CandidatesServlet extends HttpServlet {
                 for (AllyDataDTO allyData:allyDataDTOSet) {
                     String allyName=allyData.getAllyName();
                     int version=alliesVersionMap.get(allyName);
-                    alliesCandidatesList.addAll(ServletUtils.getSystemManager()
+                    List<AllyCandidateDTO> allyCandidateDTOList=ServletUtils.getSystemManager()
                             .getSingleAllyController(allyName)
-                            .getAllyCandidateDTOListWithVersion(version));
+                            .getAllyCandidateDTOListWithVersion(version);
+                    alliesVersionMap.put(allyName,allyCandidateDTOList.size());
+                    alliesCandidatesList.addAll(allyCandidateDTOList);
                 }
+                GameStatus gameStatus=uboatController.getContestDataDTO().getGameStatus();
                 //returning JSON objects, not HTML
                 response.setContentType("application/json");
                 try (PrintWriter out = response.getWriter()) {
-                    String json = gson.toJson(alliesCandidatesList);
+                    String json = gson.toJson(new UboatCandidatesDTO(alliesCandidatesList,gameStatus,alliesVersionMap));
                     out.println(json);
                     out.flush();
                 }

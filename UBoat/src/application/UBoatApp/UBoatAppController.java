@@ -64,7 +64,9 @@ public class UBoatAppController {
         });
 
     }
-
+    public void startAlliesTeamRefresher() {
+        ContestTabController.startAlliesTeamRefresher();
+    }
 
     public void bindCurrentCode()
     {

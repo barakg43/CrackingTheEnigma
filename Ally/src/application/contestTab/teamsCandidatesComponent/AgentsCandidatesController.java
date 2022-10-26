@@ -16,26 +16,43 @@ import java.util.List;
 public class AgentsCandidatesController {
 
     @FXML
-    private TableView<CandidateDTO> agentsCandidatesTable;
+    private TableView<CandidateTableRow> agentsCandidatesTable;
 
     @FXML
-    private TableColumn<AllyCandidateDTO, String> agentNameColumn;
+    private TableColumn<CandidateTableRow, String> agentNameColumn;
 
     @FXML
-    private TableColumn<CandidateDTO, String> outputStringColumn;
+    private TableColumn<CandidateTableRow, String> outputStringColumn;
 
     @FXML
-    private TableColumn<CandidateDTO, CodeFormatDTO> codeConfColumn;
-    private ObservableList<CandidateDTO> agentsCandidatesListObs;
+    private TableColumn<CandidateTableRow, CodeFormatDTO> codeConfColumn;
+    private ObservableList<CandidateTableRow> agentsCandidatesListObs;
+    public class CandidateTableRow extends CandidateDTO{
 
+        private final String agentName;
+        private CandidateTableRow(CandidateDTO candidateDTO, String agentName) {
+            super(candidateDTO.getCodeConf(),candidateDTO.getOutput());
+            this.agentName = agentName;
+        }
+
+
+        public String getAgentName() {
+            return agentName;
+        }
+    }
 
     public void addAlliesDataToContestTeamTable(List<AllyCandidateDTO> alliesCandidateDTOList) {
 
-        for(AllyCandidateDTO allCandidateDTO:alliesCandidateDTOList) {
-            agentsCandidatesListObs.addAll(allCandidateDTO.getPossibleCandidates());
-
+        if (alliesCandidateDTOList == null||alliesCandidateDTOList.isEmpty()) {
+            System.out.println("alliesCandidateDTOList is empty!");
+            return;
         }
-        agentsCandidatesTable.setItems(agentsCandidatesListObs);
+        agentsCandidatesListObs= FXCollections.observableArrayList();
+        for(AllyCandidateDTO allyCandidateDTO:alliesCandidateDTOList) {
+            for(CandidateDTO candidateDTO: allyCandidateDTO.getPossibleCandidates())
+                agentsCandidatesListObs.add(new CandidateTableRow(candidateDTO,allyCandidateDTO.getAgentName()));
+        }
+        agentsCandidatesTable.getItems().addAll(agentsCandidatesListObs);
 
     }
 

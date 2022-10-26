@@ -42,7 +42,7 @@ public class GetAgentProgressServlet extends HttpServlet {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
            AgentsTeamProgressDTO agentsDataProgressDTO = gson.fromJson(inputReader, AgentsTeamProgressDTO.class);
-
+            inputReader.close();
            String allyName=ServletUtils.getSystemManager()
                    .getAgentData(agentName)
                    .getAllyTeamName();

@@ -158,7 +158,7 @@ public class UIUpdater {
                 completeTaskAmountProperty,
                 pulledTaskAmountProperty,
                 candidatesAmountProperty);
-        decryptionAgent.setCounterConsumers(this::setQueueTaskAmountValue,this::incrementTotalTaskAmount);
+        decryptionAgent.setCounterConsumers(this::setQueueTaskAmountValue,this::setTotalTaskComplete);
         // task message
         createNewCandidateTask();
         candidateListener=new Thread(candidateListenerTask,"Candidate Updater");
@@ -169,9 +169,9 @@ public class UIUpdater {
     {
         Platform.runLater(()->queueTaskAmountProperty.set(value));
     }
-    public void incrementTotalTaskAmount(long amount)
+    public void setTotalTaskComplete(long totalTaskComplete)
     {
-        Platform.runLater(()->completeTaskAmountProperty.set(completeTaskAmountProperty.get()+amount));
+        Platform.runLater(()->completeTaskAmountProperty.set(totalTaskComplete));
     }
     public static boolean isCandidateListenerAlive()
     {

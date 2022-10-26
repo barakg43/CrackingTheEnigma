@@ -55,7 +55,7 @@ public class DecryptionManager {
     }
 
 
-    public List<SimpleDecryptedTaskDTO> getTasksForAgentSession(int amount)
+    public synchronized List<SimpleDecryptedTaskDTO> getTasksForAgentSession(int amount)
     {
         List<SimpleDecryptedTaskDTO> decryptedTaskList=new ArrayList<>(amount);
         for (int i = 0; i <amount ; i++) {

@@ -37,6 +37,7 @@ public class UpdateCandidateServlet extends HttpServlet {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();
             TaskFinishDataDTO agentCandidateDTO = gson.fromJson(inputReader,TaskFinishDataDTO.class);
+            inputReader.close();
             String allyName= ServletUtils.getSystemManager().getAgentData(agentCandidateDTO.getAgentName()).getAllyTeamName();
             ServletUtils.getSystemManager().getSingleAllyController(allyName).addCandidateToAllyList(agentCandidateDTO);
             response.setStatus(HttpServletResponse.SC_OK);

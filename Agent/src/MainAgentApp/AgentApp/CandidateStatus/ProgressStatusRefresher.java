@@ -44,7 +44,7 @@ public class ProgressStatusRefresher extends TimerTask {
     @Override
     public void run() {
 
-           System.out.println("#Sending agent progress to server....");
+          // System.out.println("#Sending agent progress to server...."); TODO : uncomment
         AgentsTeamProgressDTO agentsTeamProgressDTO=new AgentsTeamProgressDTO(agentName,
                 pulledTaskAmountProperty.intValue(),
                 pulledTaskAmountProperty.intValue()-completeTaskAmountProperty.intValue(),

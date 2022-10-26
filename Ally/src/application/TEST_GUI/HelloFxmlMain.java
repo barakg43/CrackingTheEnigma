@@ -3,12 +3,19 @@ package application.TEST_GUI;
 
 import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
+import allyDTOs.AllyCandidateDTO;
 import allyDTOs.ContestDataDTO;
 import application.contestTab.ContestScreenController;
+import application.contestTab.teamsCandidatesComponent.AgentsCandidatesController;
 import application.dashboardTab.DashboardScreenController;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.GameLevel;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,12 +54,12 @@ public class HelloFxmlMain extends Application{
 //        }
 
 
-//        start1(primaryStage);
+        start1(primaryStage);
         //start1(primaryStage);
 
 //         start2(primaryStage);
 //        start3(primaryStage);
-        start5(primaryStage);
+//        start5(primaryStage);
 //long time=619200000000L;
 //        System.out.println("time is "+Duration.ofNanos(1000000000L));
 //
@@ -100,89 +107,29 @@ public class HelloFxmlMain extends Application{
 
           FXMLLoader fxmlLoader = new FXMLLoader();
 
-          URL url = getClass().getClassLoader().getResource(CONTEST_SCREEN_FXML_RESOURCE);
+          URL url = getClass().getClassLoader().getResource("application/contestTab/teamsCandidatesComponent/teamsCandidates.fxml");
 //          System.out.println("before 1");
           fxmlLoader.setLocation(url);
-//          System.out.println("before 2");
-//          assert url != null;
-//          System.out.println("before 2.5:"+url);
+         Parent root=fxmlLoader.load(url.openStream());
+         AgentsCandidatesController controller= fxmlLoader.getController();
 
-          Parent load = fxmlLoader.load(url.openStream());
-          String json="[\n" +
-                  "    [\n" +
-                  "        \"ubrr1\"\n" +
-                  "    ],\n" +
-                  "    [\n" +
-                  "        \"ally1\",\n" +
-                  "        \"ally2\"\n" +
-                  "    ],\n" +
-                  "    []\n" +
-                  "]";
-         Gson gson=new Gson();
-         Type type=new TypeToken<List<Set<String>>>(){}.getType();
-         List<Set<String>> fromJson=gson.fromJson(json,type);
-         System.out.println();
-//          System.out.println("before 3");
-           ContestScreenController controller= fxmlLoader.getController();
-//          EncryptTabController controller= fxmlLoader.getController();
-//          System.out.println("before 4");
-//          List<StatisticRecordDTO> statisticRecordDTOList=new ArrayList<>();
-//          statisticRecordDTOList.add(new StatisticRecordDTO("aaa","bbb",500));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          System.out.println("before 7");
-////        controller.addRecordsToStatisticTable(statisticRecordDTOList);
-//          Map<CodeFormatDTO, List<StatisticRecordDTO>> statisticsDataHistory= new HashMap<>();
-//          RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[3];
-//          List<PlugboardPairDTO> plugboardPairDTOList=new ArrayList<>();
-//          CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"I",plugboardPairDTOList);
-//         CodeCalculatorFactory codeCalculatorFactory=new CodeCalculatorFactory("AB",rotorInfoDTOS.length);
-//          statisticsDataHistory.put(codeFormatDTO,statisticRecordDTOList);
-//          rotorInfoDTOS[0]=new RotorInfoDTO(1,1,'A');
-//          rotorInfoDTOS[1]=new RotorInfoDTO(2,0,'A');
-//          rotorInfoDTOS[2]=new RotorInfoDTO(3,2,'A');
-//          codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"II",plugboardPairDTOList);
-//          CodeFormatDTO currentCode=codeFormatDTO;
-//         for (int i = 0; i < 27&&currentCode!=null; i++) {
-//             System.out.println("current Code::"+currentCode);
-//             System.out.println("remain code work::"+codeCalculatorFactory.remainCodeConfTask(currentCode));
-//             currentCode=codeCalculatorFactory.getNextCodeIndexOffset(currentCode,1);
-//             System.out.println("after calc  ::"+currentCode);
-//
-//         }
-//          plugboardPairDTOList=new ArrayList<>();
-//          plugboardPairDTOList.add(new PlugboardPairDTO('A','B'));
-//          plugboardPairDTOList.add(new PlugboardPairDTO('G','E'));
-//          statisticsDataHistory.put(codeFormatDTO,statisticRecordDTOList);
-//          statisticRecordDTOList=new ArrayList<>();
-//          statisticRecordDTOList.add(new StatisticRecordDTO("aaa","bbb",500));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"IV",plugboardPairDTOList);
-//
-//          statisticsDataHistory.put(codeFormatDTO,statisticRecordDTOList);
-//          statisticRecordDTOList=new ArrayList<>();
-//          statisticRecordDTOList.add(new StatisticRecordDTO("aaa","bbb",500));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"V",plugboardPairDTOList);
-//          statisticRecordDTOList=new ArrayList<>();
-//          statisticRecordDTOList.add(new StatisticRecordDTO("aaa","bbb",500));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticRecordDTOList.add(new StatisticRecordDTO("bbb","ccc",600));
-//          statisticsDataHistory.put(codeFormatDTO,statisticRecordDTOList);
-//          statisticRecordDTOList.add(new StatisticRecordDTO("rrr","aaa",600));
-//          statisticsDataHistory.put(codeFormatDTO,statisticRecordDTOList);
-//
-//
-//          //controller.updateCodeStatisticsView(statisticsDataHistory);
-//
-//          System.out.println("before 8");
-          Scene scene = new Scene(load,800,600);
+         RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[2];
+         List<PlugboardPairDTO> plugboardPairDTOList=new ArrayList<>();
+         rotorInfoDTOS[0]=new RotorInfoDTO(1,5,'A');
+         rotorInfoDTOS[1]=new RotorInfoDTO(2,10,'N');
+         CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"I",plugboardPairDTOList);
+
+         CandidateDTO candidateDTO=new CandidateDTO(codeFormatDTO,"Blala");
+         List<CandidateDTO> candidateDTOS=new ArrayList<>();
+         candidateDTOS.add(candidateDTO);
+         TaskFinishDataDTO taskFinishDataDTO=new TaskFinishDataDTO(candidateDTOS,"agent1");
+         AllyCandidateDTO allyCandidateDTO=new AllyCandidateDTO(taskFinishDataDTO,"ally1");
+         List<AllyCandidateDTO> alliesDataList=new ArrayList<>();
+         alliesDataList.add(allyCandidateDTO);
+
+         controller.addAlliesDataToContestTeamTable(alliesDataList);
+
+          Scene scene = new Scene(root,800,600);
 //          System.out.println("before 9");
          primaryStage.setScene(scene);
      //    controller.bindComponentsWidthToScene(scene.widthProperty(),scene.heightProperty());

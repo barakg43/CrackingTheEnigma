@@ -29,6 +29,7 @@ public class FilePathController {
     private UBoatAppController UBoatController;
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+    private Runnable startTeamStatus;
 
     public void setMainAppController(UBoatAppController MainController) {
         UBoatController = MainController;
@@ -48,52 +49,6 @@ public class FilePathController {
         errorAlert.contentTextProperty().bind(errorMessageProperty);
 
     }
-//    @FXML
-//    public void LoadFileButtonActionListener(javafx.event.ActionEvent actionEvent) {
-//        try {
-//            Stage stage = new Stage();
-//            FileChooser fileChooser = new FileChooser();
-//            fileChooser.setTitle("Select file");
-//            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("xml files", "*.xml"));
-//            File selectedFile = fileChooser.showOpenDialog(stage);
-//            if (selectedFile == null) {
-//                return;
-//            }
-//
-//            String absolutePath = selectedFile.getAbsolutePath();
-//            Engine mEngine = new EnigmaEngine();
-//            try {
-//                mEngine.loadXMLFile(absolutePath);
-//                mEngine.resetAllData();
-//                mainAppController.resetAllData();
-//                selectedFileProperty.set(absolutePath);
-//                mainAppController.setmEngine(mEngine);
-//                mainAppController.setMachineDetails();
-//
-//                mainAppController.setConfPanel();
-//                //mainAppController.setInitializeCodeConf();
-//                mainAppController.getFirstLoadFileLabel().setText("File loaded successfully.");
-//                mainAppController.setEncrypteTab();
-//
-//                mainAppController.setDMTab();
-//
-//
-//                isFileSelected.set(true);
-//            } catch (Exception ex) {
-//                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-//                errorAlert.setTitle("Error");
-//                errorAlert.setHeaderText("Invalid file details");
-//                errorAlert.setContentText("In file " + selectedFile.getPath() +"\n\n" + ex.getMessage());
-//                errorAlert.showAndWait();
-//                //mainAppController.getFirstLoadFileLabel().setVisible(true);
-//                //mainAppController.getFirstLoadFileLabel().setText("In file: " + absolutePath +"\n" + ex.getMessage());
-//            }
-//        }catch (Exception ex)
-//        {
-//            mainAppController.setConfPanel();
-//        }
-
-    //   }
 
     @FXML
     public void LoadFileButtonActionListener(javafx.event.ActionEvent actionEvent) {
@@ -141,6 +96,7 @@ public class FilePathController {
 
                 // UBoatController.setDMTab();
                 isFileSelected.set(true);
+                UBoatController.startAlliesTeamRefresher();
             } catch (Exception ex) {
                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
                 errorAlert.setTitle("Error");
@@ -163,4 +119,7 @@ public class FilePathController {
     }
 
 
+    public void setStartTeamStatus(Runnable startTeamStatus) {
+        this.startTeamStatus = startTeamStatus;
+    }
 }

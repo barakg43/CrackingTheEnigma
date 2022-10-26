@@ -6,6 +6,7 @@ import allyDTOs.ContestDataDTO;
 import application.dashboardTab.allAgentsData.TeamAgentsDataController;
 import application.dashboardTab.allContestsData.AllContestDataController;
 import application.http.HttpClientAdapter;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -62,6 +63,10 @@ public class DashboardScreenController {
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
         mainPane.prefHeightProperty().bind(sceneHeightProperty);
         mainPane.prefWidthProperty().bind(sceneWidthProperty);
+
+
+        agentsDataTableComponent.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
+        contestTableComponent.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
     }
 
     public void startListRefresher() {

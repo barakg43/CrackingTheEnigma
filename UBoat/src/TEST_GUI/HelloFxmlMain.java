@@ -1,7 +1,14 @@
 package TEST_GUI;
 
 
+import allyDTOs.AllyCandidateDTO;
 import application.Login.userListComponent.AllUserListController;
+import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
+import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.CandidateDTO;
+import engineDTOs.DmDTO.TaskFinishDataDTO;
+import engineDTOs.PlugboardPairDTO;
+import engineDTOs.RotorInfoDTO;
 import general.UserListDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -78,31 +85,29 @@ public class HelloFxmlMain extends Application{
 
     private void start5(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader=new FXMLLoader();
-        URL url=getClass().getClassLoader().getResource("application/Login/userListComponent/userListTable.fxml");
+        URL url=getClass().getClassLoader().getResource("application/UBoatApp/ContestTab/CandidateStatus/CandidateStatus.fxml");
         fxmlLoader.setLocation(url);
 
         assert url != null;
         Parent root=fxmlLoader.load(url.openStream());
-        AllUserListController controller= fxmlLoader.getController();
-        Set<String> uboatUser=new HashSet<>();
-        uboatUser.add("uboat1");
-        uboatUser.add("uboat2");
-        uboatUser.add("uboat3");
-        uboatUser.add("uboat4");
+        CandidatesStatusController controller= fxmlLoader.getController();
 
-        Set<String> alliesUser=new HashSet<>();
-        alliesUser.add("ally1");
-        alliesUser.add("ally2");
-        alliesUser.add("ally3");
-        alliesUser.add("ally4");
-        alliesUser.add("ally5");
-        alliesUser.add("ally6");
-        Set<String> agentUser=new HashSet<>();
-        agentUser.add("agent1");
-        agentUser.add("agent2");
-        agentUser.add("agent3");
-        agentUser.add("agent4");
-        UserListDTO alluser=new UserListDTO(uboatUser,alliesUser,agentUser);
+
+        RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[2];
+        List<PlugboardPairDTO> plugboardPairDTOList=new ArrayList<>();
+        rotorInfoDTOS[0]=new RotorInfoDTO(1,5,'A');
+        rotorInfoDTOS[1]=new RotorInfoDTO(2,10,'N');
+        CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"I",plugboardPairDTOList);
+
+        CandidateDTO candidateDTO=new CandidateDTO(codeFormatDTO,"Blala");
+        List<CandidateDTO> candidateDTOS=new ArrayList<>();
+        candidateDTOS.add(candidateDTO);
+        TaskFinishDataDTO taskFinishDataDTO=new TaskFinishDataDTO(candidateDTOS,"agent1");
+        AllyCandidateDTO allyCandidateDTO=new AllyCandidateDTO(taskFinishDataDTO,"ally1");
+        List<AllyCandidateDTO> alliesDataList=new ArrayList<>();
+        alliesDataList.add(allyCandidateDTO);
+
+        controller.addAllyDataToCandidatesTable(alliesDataList);
       //  controller.updateTableView(alluser);
         Scene scene = new Scene(root,1020,905);
         primaryStage.setScene(scene);

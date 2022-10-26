@@ -32,6 +32,8 @@ public class ContestTeamsController {
 
 
    public void addAlliesDataToContestTeamTable(List<AllyDataDTO> otherAlliesDataList) {
+        if(otherAlliesDataList.size()>0)
+            System.out.println(otherAlliesDataList.get(0));
 
         contestTeamsListObs.setAll(otherAlliesDataList);
         contestsTeamsTable.setItems(contestTeamsListObs);

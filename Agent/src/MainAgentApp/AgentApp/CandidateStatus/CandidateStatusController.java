@@ -56,7 +56,6 @@ public class CandidateStatusController {
             loader.setLocation(getClass().getClassLoader().getResource(CommonResources.CANDIDATE_SINGLE_TILE));
             Node singledCandidateTile = loader.load();
             SingleCandidateController singledCandidateTileController = loader.getController();
-            System.out.println("new Candidate::"+candidateDTO.getCodeConf());
             singledCandidateTileController.setData(candidateDTO,agentID);
             Platform.runLater(
                     ()->candidateStatusFlowPane.getChildren().add(singledCandidateTile)
