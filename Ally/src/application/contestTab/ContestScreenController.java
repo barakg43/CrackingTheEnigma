@@ -22,6 +22,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.List;
@@ -34,11 +36,17 @@ import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class ContestScreenController {
 
+    public AnchorPane contestDataPane;
+    public AnchorPane alliesTeamComponentPane;
+    public ScrollPane tamsCandidatesComponentPane;
+    public ScrollPane teamsAgentsComponentPane;
+    public HBox contestHbox;
+    public HBox teamsHbox;
     @FXML
     private Button readyButton;
     @FXML
     private Spinner<Integer> taskSizeTextSpinner;
-    @FXML private GridPane mainPane;
+    @FXML private VBox mainPane;
     @FXML private AnchorPane contestDataComponent;
    @FXML private ContestDataController contestDataComponentController;
    @FXML private ScrollPane alliesTeamsComponent;
@@ -46,7 +54,7 @@ public class ContestScreenController {
     @FXML private AnchorPane teamsAgentsComponent;
     @FXML private AllyProgressController teamsAgentsComponentController;
 
-    @FXML private ScrollPane tamsCandidatesComponent;
+    @FXML private AnchorPane tamsCandidatesComponent;
     @FXML private AgentsCandidatesController tamsCandidatesComponentController;
     @FXML
     private Label statusAmountLabel;
@@ -168,6 +176,11 @@ public class ContestScreenController {
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
         mainPane.prefHeightProperty().bind(sceneHeightProperty);
         mainPane.prefWidthProperty().bind(sceneWidthProperty);
+        contestHbox.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
+        contestHbox.prefHeightProperty().bind(Bindings.divide(sceneHeightProperty,3));
+        teamsHbox.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
+        teamsHbox.prefHeightProperty().bind(Bindings.subtract(Bindings.divide(sceneHeightProperty,2),100));
+
     }
 
     public void readyButtonAction(ActionEvent ignoredActionEvent) {

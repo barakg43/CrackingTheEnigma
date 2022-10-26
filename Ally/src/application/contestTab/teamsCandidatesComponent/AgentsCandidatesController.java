@@ -19,7 +19,7 @@ public class AgentsCandidatesController {
     private TableView<CandidateDTO> agentsCandidatesTable;
 
     @FXML
-    private TableColumn<CandidateDTO, String> agentNameColumn;
+    private TableColumn<AllyCandidateDTO, String> agentNameColumn;
 
     @FXML
     private TableColumn<CandidateDTO, String> outputStringColumn;
@@ -27,6 +27,7 @@ public class AgentsCandidatesController {
     @FXML
     private TableColumn<CandidateDTO, CodeFormatDTO> codeConfColumn;
     private ObservableList<CandidateDTO> agentsCandidatesListObs;
+
 
     public void addAlliesDataToContestTeamTable(List<AllyCandidateDTO> alliesCandidateDTOList) {
 

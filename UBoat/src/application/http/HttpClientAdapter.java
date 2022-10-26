@@ -161,16 +161,22 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseBody = Objects.requireNonNull(response.body()).string();
-                if (response.code() != HTTP_OK) {
-                    UBoatAppController.createErrorAlertWindow("Upload file to Server", Objects.requireNonNull(response.body()).string());
-                } else {
-                    System.out.println(filePath+" uploaded successfully");
-                    machineData= CustomHttpClient.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
-                    wordsSet.clear();
-                    wordsSet.addAll(machineData.getDictionaryWords());
-                    updateFileSettings.accept(filePath);
+                try {
+                    String responseBody = Objects.requireNonNull(response.body()).string();
+                    if (response.code() != HTTP_OK) {
+                        UBoatAppController.createErrorAlertWindow("Upload file to Server", Objects.requireNonNull(response.body()).string());
+                    } else {
+                        System.out.println(filePath+" uploaded successfully");
+                        machineData= CustomHttpClient.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
+                        wordsSet.clear();
+                        wordsSet.addAll(machineData.getDictionaryWords());
+                        updateFileSettings.accept(filePath);
+                    }
+                }catch (Exception ex)
+                {
+                    UBoatAppController.createErrorAlertWindow("Error in upload file", "Battlefield already exists. Please choose a different battlefield.");
                 }
+
             }
         });
     }

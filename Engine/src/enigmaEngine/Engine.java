@@ -4,9 +4,12 @@ import decryptionManager.components.Dictionary;
 import engineDTOs.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface Engine extends Encryptor {
+
+     Set<String> getLoadedBattlefieldName();
 
     void loadXMLFileFromStringContent(String inputStreamXml);
     void loadXMLFile(String filePath);

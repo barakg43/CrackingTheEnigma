@@ -22,6 +22,7 @@ public class JavaFXAllyApplication extends Application {
             Scene scene = new Scene(root,1100,980);
             ApplicationController machineController=fxmlLoader.getController();
 
+            machineController.bindWidthAndHeightScene(scene.widthProperty(),scene.heightProperty());
             //AllMachineController machineController=fxmlLoader.getController();
 
            // machineController.setScene(scene);

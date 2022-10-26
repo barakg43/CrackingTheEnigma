@@ -136,12 +136,12 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                if(response.body()!=null) {
+                String body= response.body().string();
+                if(body!=null) {
                     try {
                         if (response.code() == HTTP_OK) {
                             Properties prop = new Properties();
                             long totalTaskAmount;
-                            String body= Objects.requireNonNull(response.body()).string();
                             if(!body.isEmpty()) {
                                 Reader input = new StringReader(body);
                                 prop.load(input);
@@ -156,7 +156,7 @@ public class HttpClientAdapter {
                                 input.close();
                             }
                         } else
-                            createErrorAlertWindow("Ready to Start -Ally", response.body().string());
+                            createErrorAlertWindow("Ready to Start -Ally", body);
                 }catch(RuntimeException e)
                 {
                     createErrorAlertWindow("Ready to Start -Ally", e.getMessage());

@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +33,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class AgentController {
 
 
+    public VBox agentVbox;
     @FXML private GridPane ContestAndTeamData;
     @FXML private ContestTeamDataController ContestAndTeamDataController;
     @FXML private GridPane agentProgressAndStatus;
@@ -72,6 +74,8 @@ public class AgentController {
 
         //agentProgressAndStatus.prefHeightProperty().bind(Bindings.divide(heightProperty,4));
         agentsCandidates.prefWidthProperty().bind(widthProperty);
+        agentsCandidatesController.bindComponentsWidthToScene(widthProperty,heightProperty);
+        agentVbox.prefWidthProperty().bind(widthProperty);
         //agentsCandidates.prefHeightProperty().bind(Bindings.divide(heightProperty,3));
 
     }

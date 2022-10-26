@@ -17,10 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,7 +34,7 @@ public class ApplicationController {
     @FXML
     private FlowPane mainPain;
     private SimpleBooleanProperty isContestScreenActive;
-    private GridPane contestScreen;
+    private VBox contestScreen;
     private ContestScreenController contestScreenController;
     private ScrollPane dashboardScreen;
     private Region loginScreen;
@@ -45,6 +42,8 @@ public class ApplicationController {
     private DashboardScreenController dashboardScreenController;
 
     private ScreenController screenController;
+    private ReadOnlyDoubleProperty widthProperty;
+    private ReadOnlyDoubleProperty heightProperty;
 
     @FXML
     private void initialize() throws IOException {
@@ -55,10 +54,11 @@ public class ApplicationController {
 
         contestScreenController.setMainController(this);
 
-        isContestScreenActive=new SimpleBooleanProperty(true);
+        isContestScreenActive = new SimpleBooleanProperty(true);
         dashboardScreenController.setAfterRegisterActionParent(this::registerActionPressedInDashboard);
-        contestScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());
-        dashboardScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());    }
+    }
+   //     contestScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());
+    //    dashboardScreenController.bindComponentsWidthToScene(mainPain.widthProperty(),mainPain.heightProperty());    }
 
     private void loadLoginScreen() throws IOException {
 
@@ -155,4 +155,15 @@ public class ApplicationController {
         contestScreenController.setAllyName(userName);
     }
 
+    public void bindWidthAndHeightScene(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty) {
+        this.widthProperty=widthProperty;
+        this.heightProperty=heightProperty;
+
+        mainPain.prefWidthProperty().bind(widthProperty);
+        mainPain.prefHeightProperty().bind(heightProperty);
+
+        contestScreenController.bindComponentsWidthToScene(widthProperty,heightProperty);
+        dashboardScreenController.bindComponentsWidthToScene(widthProperty,heightProperty);
+
+    }
 }
