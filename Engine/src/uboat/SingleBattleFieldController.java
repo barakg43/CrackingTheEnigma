@@ -97,7 +97,7 @@ public class SingleBattleFieldController {
     public ActiveTeamsDTO getActiveTeamsDTO()
     {
         return new ActiveTeamsDTO(contestDataManager.getRegisteredAmount(),
-                contestDataManager.getRequiredAlliesAmount(),Collections.unmodifiableSet(alliesDataSet));
+                contestDataManager.getRequiredAlliesAmount(),getContestDataDTO().getGameStatus(),Collections.unmodifiableSet(alliesDataSet));
 
     }
     public AgentSetupConfigurationDTO getAgentSetupConfigurationDTO()

@@ -1,6 +1,7 @@
 package application.UBoatApp.ContestTab;
 
 import UBoatDTO.ActiveTeamsDTO;
+import UBoatDTO.GameStatus;
 import allyDTOs.AllyDataDTO;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import application.UBoatApp.ContestTab.TeamsStatus.TeamsStatusController;
@@ -63,6 +64,7 @@ public class ContestController {
 
 
     }
+
     public void startContestConsumer(ActiveTeamsDTO activeTeams)
     {
         allAlliesAreReady.set(true);
@@ -77,7 +79,6 @@ public class ContestController {
 
 
     }
-
     public void resetAllData() {
         EncryptComponentController.clearAllData();
        // candidatesStatusComponentController.clearAllTiles();
@@ -121,5 +122,12 @@ public class ContestController {
         uBoatController.logoutButtonPressed();
     }
 
-
+    private void updateGameStatus(GameStatus gameStatus)
+    {
+        if (gameStatus==GameStatus.ACTIVE)
+            candidatesStatusComponentController.startCandidatesRefresher(teamsStatusComponentController.getAlliesNames());
+    }
+    public void startAlliesTeamRefresher() {
+        teamsStatusComponentController.startTeamStatusRefresher(this::updateGameStatus);
+    }
 }

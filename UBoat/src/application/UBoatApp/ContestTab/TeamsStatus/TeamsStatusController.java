@@ -1,6 +1,7 @@
 package application.UBoatApp.ContestTab.TeamsStatus;
 
 import UBoatDTO.ActiveTeamsDTO;
+import UBoatDTO.GameStatus;
 import allyDTOs.AllyDataDTO;
 import application.CommonResources;
 import application.UBoatApp.ContestTab.TeamsStatus.SingleTeamData.SingleTeamController;
@@ -16,10 +17,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static general.ConstantsHTTP.FAST_REFRESH_RATE;
 import static general.ConstantsHTTP.REFRESH_RATE;
@@ -40,6 +40,12 @@ public class TeamsStatusController {
     private TimerTask listRefresher;
     private Timer timer;
     private CustomHttpClient httpClient;
+    private Set<String> alliesNames;
+    @FXML
+    private void initialize() {
+        alliesNames=new HashSet<>();
+
+    }
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
 
@@ -53,8 +59,11 @@ public class TeamsStatusController {
     private void setAllTeamAllies(ActiveTeamsDTO allTeamAllies)
     {
 
+        alliesNames.addAll(allTeamAllies.getAllyDataDTOList()
+                .stream()
+                .map(AllyDataDTO::getAllyName)
+                .collect(Collectors.toList()));
         Platform.runLater(()-> {
-
             teamAlliesComponentController.addAlliesDataToContestTeamTable(new ArrayList<>(allTeamAllies.getAllyDataDTOList()));
             alliesAmountLabel.setText(
                     String.format("%d/%d",allTeamAllies.getRegisteredAmount(),
@@ -81,10 +90,8 @@ public class TeamsStatusController {
         return null;
     }
 
-
-
-    public void startListRefresher(Consumer<ActiveTeamsDTO> enableReadyButton) {
-        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies, enableReadyButton);
+    public void startTeamStatusRefresher(Consumer<GameStatus> gameStatusConsumer) {
+        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies,gameStatusConsumer);
         timer = new Timer();
         timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
@@ -100,11 +107,9 @@ public class TeamsStatusController {
     public void clearData(){
         teamAlliesComponentController.clearAll();
     }
-    public void stopListRefresher() {
-        close();
-    }
-    public void setHttpClient(CustomHttpClient httpClient) {
-        this.httpClient = httpClient;
+    public void stopListRefresher() {close();}
 
+    public Set<String> getAlliesNames() {
+         return alliesNames;
     }
 }

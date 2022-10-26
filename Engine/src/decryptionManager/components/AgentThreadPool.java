@@ -8,14 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 public class AgentThreadPool extends ThreadPoolExecutor {
 
-    AtomicCounter totalDoneCounter;
+
 
     public AgentThreadPool(int corePoolSize, int maximumPoolSize,
                            long keepAliveTime, TimeUnit unit,
-                           BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, AtomicCounter totalDoneCounter) {
+                           BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,threadFactory);
 
-        this.totalDoneCounter=totalDoneCounter;
+
 
     }
 
@@ -34,7 +34,6 @@ public class AgentThreadPool extends ThreadPoolExecutor {
             return;
             //throw new RuntimeException(t);
         }
-        totalDoneCounter.increment();
         //if(totalDoneCounter.getValue()==totalTaskAmount)
           //  doneBruteForceTasks();
        // System.out.println("Perform afterExecute() logic");

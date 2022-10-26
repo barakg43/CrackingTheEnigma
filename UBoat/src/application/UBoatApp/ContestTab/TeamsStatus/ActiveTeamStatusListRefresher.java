@@ -2,6 +2,7 @@ package application.UBoatApp.ContestTab.TeamsStatus;
 
 
 import UBoatDTO.ActiveTeamsDTO;
+import UBoatDTO.GameStatus;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
 import general.UserListDTO;
@@ -20,13 +21,15 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
 
 
     private final Consumer<ActiveTeamsDTO> activeTeamsConsumer;
-    private final Consumer<ActiveTeamsDTO> enableReadyButton;
+    private final Consumer<GameStatus> gameStatusConsumer;
+
     private final CustomHttpClient httpClientUtil;
     private final AtomicInteger counter=new AtomicInteger(0);
-    public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer,Consumer<ActiveTeamsDTO> enableReadyButton) {
+    public ActiveTeamStatusListRefresher(Consumer<ActiveTeamsDTO> activeTeamsConsumer, Consumer<GameStatus> gameStatusConsumer) {
 
         this.activeTeamsConsumer = activeTeamsConsumer;
-        this.enableReadyButton = enableReadyButton;
+        this.gameStatusConsumer = gameStatusConsumer;
+
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
     }
 
@@ -37,9 +40,10 @@ public class ActiveTeamStatusListRefresher extends TimerTask {
 
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
         if(responseDTO.getCode()==HTTP_OK) {
-            ActiveTeamsDTO activeTeamsDTO=httpClientUtil.getGson().fromJson(responseDTO.getBody(),ActiveTeamsDTO.class);
+            ActiveTeamsDTO activeTeamsDTO = httpClientUtil.getGson().fromJson(responseDTO.getBody(), ActiveTeamsDTO.class);
             activeTeamsConsumer.accept(activeTeamsDTO);
-            enableReadyButton.accept(activeTeamsDTO);}
+            gameStatusConsumer.accept(activeTeamsDTO.getGameStatus());
+        }
         else
             createErrorAlertWindow("Contest Lower Side Update",responseDTO.getBody());
     }else
