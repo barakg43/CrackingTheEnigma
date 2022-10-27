@@ -92,8 +92,10 @@ public class AllyProgressController {
     }
 
     public void updateAgentsTasksDone(long agentsTasksDone) {
-        agentsTasksDoneLabel.setText(String.valueOf(agentsTasksDone));
-        doneProgressProperty.set(agentsTasksDone*1.0/totalTaskAmountValue);
+        Platform.runLater(() ->
+                    agentsTasksDoneLabel.setText(String.valueOf(agentsTasksDone)) );
+       // doneProgressProperty.set(agentsTasksDone*1.0/totalTaskAmountValue);
+        tasksDoneProperty.set(agentsTasksDone);
     }
 
     private void bindProgressUIComponents() {
@@ -145,6 +147,8 @@ public class AllyProgressController {
         receivedTaskColumn.setStyle("-fx-alignment:center");
         waitingTaskColumn.setStyle("-fx-alignment:center");
         candidatesColumn.setStyle("-fx-alignment:center");
+
+        bindProgressUIComponents();
     }
 
 

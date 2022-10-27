@@ -5,6 +5,7 @@ package uboat;
 
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
+import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -67,6 +68,7 @@ public class FileUploadServlet extends HttpServlet {
                     String battleFieldName=uboatController.getBattlefieldDataDTO().getBattlefieldName();
                     if(ServletUtils.getSystemManager().ifBattleFieldExist(battleFieldName))
                     {
+                        ServletUtils.getSystemManager().removeUserName(username,ApplicationType.UBOAT);
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         response.getOutputStream().print("Battlefield " + battleFieldName + " already exists. Please choose a different battlefield.");
                         return;

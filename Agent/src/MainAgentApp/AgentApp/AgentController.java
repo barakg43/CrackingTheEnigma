@@ -14,6 +14,7 @@ import decryptionManager.DecryptionAgent;
 import decryptionManager.components.DecryptedTask;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
+
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -89,21 +90,20 @@ public class AgentController {
     private void getNewTasksSession()
     {
 
-       taskPuller.submit(()->{
-           //System.out.println(++counter +" Getting new Task Session...");
-           String urlContext=String.format(QUERY_FORMAT,GET_TASKS,AMOUNT,agentDataDTO.getTasksSessionAmount());
-           HttpResponseDTO responseDTO = httpClientUtil.doGetSync(urlContext);
-           if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
-               if (responseDTO.getCode() == HTTP_OK) {
-                   DecryptedTask[] decryptedTaskDTOS = httpClientUtil.getGson().fromJson(responseDTO.getBody(),  DecryptedTask[].class);
-                    uiUpdater.updatePulledTaskAmount(decryptedTaskDTOS.length);
-                   decryptionAgent.addTasksToAgent(decryptedTaskDTOS);
-               } else
-                   createErrorAlertWindow("Pull task from ally", responseDTO.getBody());
-           } else
-               createErrorAlertWindow("Pull task from ally", "General error");
-       });
-
+            taskPuller.submit(()->{
+                //System.out.println(++counter +" Getting new Task Session...");
+                String urlContext=String.format(QUERY_FORMAT,GET_TASKS,AMOUNT,agentDataDTO.getTasksSessionAmount());
+                HttpResponseDTO responseDTO = httpClientUtil.doGetSync(urlContext);
+                if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+                    if (responseDTO.getCode() == HTTP_OK) {
+                        DecryptedTask[] decryptedTaskDTOS = httpClientUtil.getGson().fromJson(responseDTO.getBody(),  DecryptedTask[].class);
+                        uiUpdater.updatePulledTaskAmount(decryptedTaskDTOS.length);
+                        decryptionAgent.addTasksToAgent(decryptedTaskDTOS);
+                    } else
+                        createErrorAlertWindow("Pull task from ally", responseDTO.getBody());
+                } else
+                    createErrorAlertWindow("Pull task from ally", "General error");
+            });
 
     }
     public void setMainController(MainAgentController mainAgentController) {

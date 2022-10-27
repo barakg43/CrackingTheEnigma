@@ -224,7 +224,8 @@ public class ContestScreenController {
     public void startAllyAgentsProgressAndCandidatesRefresher() {
         agentsAndCandidatesListRefresher = new AllyAgentsProgressAndCandidatesRefresher(this::addTeamsCandidatesRecordsToTeamsTable,
                                                                                          this::addAgentsRecordsToAllyAgentTable,
-                                                                                         this::updateTasksAmountProduced);
+                                                                                         this::updateTasksAmountProduced,
+                                                                                         this::updateAgentsTasksDone);
         timer = new Timer();
         timer.schedule(agentsAndCandidatesListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
