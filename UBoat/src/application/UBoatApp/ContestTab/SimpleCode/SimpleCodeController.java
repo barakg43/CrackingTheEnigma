@@ -90,25 +90,7 @@ public class SimpleCodeController {
 
     }
 
-//    public TextFlow getRotorIDsList() {
-//        return rotorIDsList;
-//    }
-//
-//    public TextFlow getPositionDistance() {
-//        return positionDistance;
-//    }
-//
-//    public Text getReflectorIDtext() {
-//        return reflectorIDtext;
-//    }
-//
-//    public GridPane getPlugboardGridComp() {
-//        return plugboardGridComp;
-//    }
-//
-//    public TextFlow getPlugboardPairsList() {
-//        return plugboardPairsList;
-//    }
+
     private CodeFormatDTO currentCode;
 
     public void loadSmallFontStyle()

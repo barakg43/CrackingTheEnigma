@@ -2,8 +2,8 @@ package uboat;
 
 
 
+import UBoatDTO.GameStatus;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,16 +18,16 @@ import java.util.Properties;
 import static general.ConstantsHTTP.*;
 
 
-@WebServlet(name = "InputDataStringServlet", urlPatterns = {UBOAT_CONTEXT+INPUT_STRING})
-public class InputDataStringServlet extends HttpServlet {
+@WebServlet(name = "SetWinnerContestServlet", urlPatterns = {UBOAT_CONTEXT+WINNER_TEAM})
+public class SetWinnerContestServlet extends HttpServlet {
 
 
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/plain");
-        PrintWriter out = response.getWriter();
+
+
 
 
         String username = SessionUtils.getUsername(request);
@@ -39,26 +39,24 @@ public class InputDataStringServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        ServletUtils.logRequestAndTime(username,"InputDataStringServlet");
+        ServletUtils.logRequestAndTime(username,"SetWinnerContestServlet");
         try{
-        String inputString= ServletUtils.getGson().fromJson(request.getReader(), JsonObject.class).get(INPUT_PROPERTY).getAsString();
+            String winnerName =ServletUtils.getGson().fromJson(request.getReader(), JsonObject.class).get(WINNER_NAME).getAsString();
 
-
-        if(inputString!=null)
+        if(winnerName!=null)
         {
        SingleBattleFieldController uboatController= ServletUtils.getSystemManager()
                     .getBattleFieldController(username);
-       String output=uboatController
-               .getEnigmaEngine()
-               .processDataInput(inputString);
-       uboatController.setContestInitConfiguration(output);
-       out.format(SINGLE_JSON_FORMAT+"\n",OUTPUT_PROPERTY,output);
-       out.flush();
+       uboatController.setWinnerName(winnerName);
+       uboatController.getContestDataManager().changeGameStatus(GameStatus.FINISH);
         response.setStatus(HttpServletResponse.SC_OK);
 
         }
-        else
-            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        else {
+            response.getWriter().println("Missing winner Json body!");
+            response.getWriter().flush();
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);
         }

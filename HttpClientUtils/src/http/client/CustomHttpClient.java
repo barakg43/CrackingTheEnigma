@@ -8,14 +8,11 @@ import okhttp3.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.function.Consumer;
 
 import static general.ConstantsHTTP.UPLOAD_FILE;
 import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
-import static java.net.HttpURLConnection.HTTP_OK;
 
 public class CustomHttpClient {
 
@@ -54,10 +51,9 @@ public class CustomHttpClient {
                 .url(ConstantsHTTP.FULL_SERVER_PATH  + APP_CONTEXT_PATH+UPLOAD_FILE)
                 .post(body)
                 .build();
-        Response response=null;
         Call call = HTTP_CLIENT.newCall(request);
         call.enqueue(callback);
-        //  System.out.println(response.body().string());
+
     }
     public HttpResponseDTO doPostSync(String urlContext,String body) {
         Request request = new Request.Builder()
@@ -100,13 +96,23 @@ public class CustomHttpClient {
     {
         try (Response response = call.execute()) {
             // blocking
-            String body = response.body() != null ? Objects.requireNonNull(response.body()).string() : null;
+            String body = CustomHttpClient.getResponseBodyAsString(response);
             return new HttpResponseDTO(response.code(), body);
         } catch (IOException e) {
             return new HttpResponseDTO(HTTP_INTERNAL_ERROR, e.getMessage());
         }
     }
+    public static String getResponseBodyAsString(Response response)
+    {
+        try {
+            return response.body()==null? "": Objects.requireNonNull(response.body()).string();
+        } catch (IOException |NullPointerException e) {
+            throw new RuntimeException(e);
+        }finally{
+            response.close();
+        }
 
+    }
     public void shutdown() {
         System.out.println("Shutting down HTTP CLIENT");
         HTTP_CLIENT.dispatcher().executorService().shutdown();

@@ -6,6 +6,7 @@ import MainAgentApp.agentLogin.LoginInterface;
 import agent.AgentDataDTO;
 import agent.AgentSetupConfigurationDTO;
 import allyDTOs.ContestDataDTO;
+import com.google.gson.JsonObject;
 import com.sun.istack.internal.NotNull;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import general.ApplicationType;
@@ -29,7 +30,7 @@ public class HttpClientAdapter {
 
     private static final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(ApplicationType.AGENT);
 
-    private static ContestDataDTO contestDataDTO=null;
+
 
     public HttpClientAdapter() {
 
@@ -46,40 +47,14 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
-                loginInterface.doLoginRequest(response.code() == HTTP_OK, response.body().string(), agentDataDTO);
+
+                loginInterface.doLoginRequest(response.code() == HTTP_OK, CustomHttpClient.getResponseBodyAsString(response), agentDataDTO);
             }
         });
     }
 
 
-    public static CustomHttpClient getHttpClient()
-    {
-        return HTTP_CLIENT;
-    }
-
-    public static void getContestData(Consumer<String> errorMessage, Consumer<ContestDataDTO> contestDataDTOConsumer) {
-        HTTP_CLIENT.doGetASync(UPDATE_CONTEST, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                errorMessage.accept(e.getMessage());
-            }
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
-                String body = response.body().string();
-                if (response.code() != HTTP_OK) {
-                   AgentController.createErrorAlertWindow("Error in contest data",body);
-                } else {
-                    System.out.println("Body:"+body);
-                    contestDataDTO = CustomHttpClient.GSON_INSTANCE.fromJson(body, ContestDataDTO.class);
-                    contestDataDTOConsumer.accept(contestDataDTO);
-                }
-            }
-        });
-    }
-
-
+    public static CustomHttpClient getHttpClient() { return HTTP_CLIENT; }
 
     public static void updateCandidate(TaskFinishDataDTO taskFinishDataDTO) {
 
@@ -91,37 +66,41 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) {
-                assert response.body() != null;
+                String body = CustomHttpClient.getResponseBodyAsString(response);
                 if(response.code()!=HTTP_OK)
-                    createErrorAlertWindow("update candidates", "Error when trying to update candidates");
-            }
-        });
-
-    }
-    public static void getTasksList(Consumer<AgentSetupConfigurationDTO> configurationDTOConsumer )
-    {
-        HTTP_CLIENT.doGetASync(GET_TASKS, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                createErrorAlertWindow("Get Tasks Session",e.getMessage());
-            }
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
-                String body = response.body().string();
-                if (response.code() != HTTP_OK) {
-                    AgentController.createErrorAlertWindow("Get Tasks Session",body);
-                } else {
-
-                    AgentSetupConfigurationDTO configurationDTO = CustomHttpClient.GSON_INSTANCE.fromJson(body,AgentSetupConfigurationDTO.class);
-                    configurationDTOConsumer.accept(configurationDTO);
-                }
+                    createErrorAlertWindow("update candidates", "Error when trying to update candidates\n"+body);
             }
         });
 
     }
 
 
+public static void getWinnerContestName(Consumer<String> winnerNameConsumer) {
+    HTTP_CLIENT.doGetASync(WINNER_TEAM, new Callback() {
+        @Override
+        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            createErrorAlertWindow("Agent Configuration", e.getMessage());
+        }
+
+        @Override
+        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            String responseBody = CustomHttpClient.getResponseBodyAsString(response);
+            if (response.code() != HTTP_OK) {
+                createErrorAlertWindow("Agent Configuration", responseBody);
+            } else {
+                winnerNameConsumer.accept( CustomHttpClient
+                        .GSON_INSTANCE
+                        .fromJson(responseBody, JsonObject.class)
+                        .get(WINNER_NAME)
+                        .getAsString());
+//                updateAgentSettings.accept(agentSetupConfigurationDTO);
+//                taskPullerStarter.run();
+//                startCandidateListener.run();
+            }
+//            isSuccess.accept(response.code()== HTTP_OK);
+        }
+    });
+}
 
     public static void getAgentSetupConfiguration(Consumer<AgentSetupConfigurationDTO> updateAgentSettings,Runnable taskPullerStarter,Runnable startCandidateListener,Consumer<Boolean> isSuccess) {
 
@@ -132,10 +111,10 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseBody = Objects.requireNonNull(response.body()).string();
+                String responseBody = CustomHttpClient.getResponseBodyAsString(response);
 
                 if (response.code() != HTTP_OK) {
-                    createErrorAlertWindow("Agent Configuration", Objects.requireNonNull(response.body()).string());
+                    createErrorAlertWindow("Agent Configuration", responseBody);
                 } else {
                     AgentSetupConfigurationDTO agentSetupConfigurationDTO = CustomHttpClient.GSON_INSTANCE.fromJson(responseBody, AgentSetupConfigurationDTO.class);
                     updateAgentSettings.accept(agentSetupConfigurationDTO);

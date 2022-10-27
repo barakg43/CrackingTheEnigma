@@ -27,9 +27,7 @@ public class CandidateStatusController {
     public ScrollPane candidateStatusScrollPane;
     public FlowPane candidateStatusFlowPane;
 
-    private Timer timer;
-    private TimerTask listRefresher;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
+
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
 
@@ -42,48 +40,29 @@ public class CandidateStatusController {
 
     public void addAllCandidate(TaskFinishDataDTO taskFinishDataDTO)
     {
-
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())
         {
-            addNewTile(candidateDTO,taskFinishDataDTO.getAgentName());
+            addNewTile(candidateDTO);
         }
-
     }
-    private void addNewTile(CandidateDTO candidateDTO,String agentID)
+    private void addNewTile(CandidateDTO candidateDTO)
     {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource(CommonResources.CANDIDATE_SINGLE_TILE));
             Node singledCandidateTile = loader.load();
             SingleCandidateController singledCandidateTileController = loader.getController();
-            singledCandidateTileController.setData(candidateDTO,agentID);
+            singledCandidateTileController.setData(candidateDTO);
             Platform.runLater(
                     ()->candidateStatusFlowPane.getChildren().add(singledCandidateTile)
             );
-//            Platform.runLater(
-//                    ()->taskDataController.getNumberOfCandidates().setText(String.valueOf(numberOfCandidates.getValue()))
-//            );
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
-    public void startListRefresher() {
-        listRefresher = new CandidatesStatusRefresher(this::addAllCandidate);
-        timer = new Timer();
-        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
-    }
-
-    public void closeListRefresher() {
-        if (listRefresher != null && timer != null) {
-            listRefresher.cancel();
-            timer.cancel();
-        }
-    }
-    public void clearAllTiles()
+      public void clearAllTiles()
     {
         //  taskDataController.getNumberOfCandidates().setText(String.valueOf(numberOfCandidates.getValue()));
         candidateStatusFlowPane.getChildren().clear();

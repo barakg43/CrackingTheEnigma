@@ -18,16 +18,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 public class ContestController {
     BooleanProperty allAlliesAreReady=new SimpleBooleanProperty();
 
     @FXML private Button logoutButton;
-    @FXML private VBox EncryptComponent;
-    @FXML private EncryptController EncryptComponentController;
+    @FXML private VBox encryptComponent;
+    @FXML private EncryptController encryptComponentController;
 
     @FXML private ScrollPane teamsStatusComponent;
     @FXML private TeamsStatusController teamsStatusComponentController;
@@ -45,12 +44,20 @@ public class ContestController {
 
     @FXML
     private void initialize() {
-        EncryptComponentController.setContestController(this);
+        encryptComponentController.setContestController(this);
+//        logoutButton.disableProperty().bind(
+//                encryptComponentController.
+//                        getReadyButtonDisableProperty().not());
 
+        candidatesStatusComponentController
+                .originalInputStringProperty()
+                .bind(encryptComponentController.
+                                getInputStringProperty());
+        candidatesStatusComponentController.setWinnerAllyTeamConsumer(this::notifyAllyTeamWinner);
     }
 
     public EncryptController getEncryptComponentController() {
-        return EncryptComponentController;
+        return encryptComponentController;
     }
 
     public void setMainAppController(UBoatAppController uBoatController) {
@@ -58,39 +65,59 @@ public class ContestController {
     }
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
-        EncryptComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
+        encryptComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
      //  candidatesStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
         teamsStatusComponentController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
 
 
     }
-
-    public void startContestConsumer(ActiveTeamsDTO activeTeams)
+    public void notifyAllyTeamWinner(String allyNameWinner)
     {
-        allAlliesAreReady.set(true);
-        for(AllyDataDTO allyData:activeTeams.getAllyDataDTOList())
-            allAlliesAreReady.set(allAlliesAreReady.get()&& allyData.getStatus()== AllyDataDTO.Status.READY);
-        Platform.runLater(()-> {
-            if(activeTeams.getRegisteredAmount()==activeTeams.getRequiredAlliesAmount()&& allAlliesAreReady.getValue())
-        {
-        teamsStatusComponentController.stopListRefresher();}
-     });
-
-
+       // System.out.println("winner is::"+allyNameWinner);
+//        candidatesStatusComponentController.stopCandidatesRefresher();
+//        HttpClientAdapter.notifyWinnerTeamToAlliesCompetitors(allyNameWinner);
+//        createWinnerDialogPopup(allyNameWinner);
 
     }
+    private void createWinnerDialogPopup(String allyNameWinner){
+
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("The Contest Finish ");
+        alert.setHeaderText("The Winner is: "+allyNameWinner);
+        alert.setContentText("Clearing ALL contest data");
+        ButtonType clear = new ButtonType("Clear Data");
+        alert.getButtonTypes().setAll(clear);
+//            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
+
+        // Listen for the Alert to close and get the result
+        alert.setOnCloseRequest(e -> {
+            // Get the result
+            ButtonType result = alert.getResult();
+            if (result != null && result == clear) {
+                resetAllData();
+            } else {
+                System.out.println("Quit!");
+            }
+        });
+
+        alert.show();
+
+    }
+
     public void resetAllData() {
-        EncryptComponentController.clearAllData();
-       // candidatesStatusComponentController.clearAllTiles();
+        encryptComponentController.clearAllData();
+        candidatesStatusComponentController.clearData();
         teamsStatusComponentController.clearData();
 
     }
 
     public void setDictionaryList() {
         dictionaryWords.addAll(HttpClientAdapter.getDictionaryWords());
-        EncryptComponentController.getDictionaryListView().setItems(dictionaryWords);
-        EncryptComponentController.setDictionaryTrie();
-        Trie trieDic = EncryptComponentController.getTrieDictionary();
+        encryptComponentController.getDictionaryListView().setItems(dictionaryWords);
+        encryptComponentController.setDictionaryTrie();
+        Trie trieDic = encryptComponentController.getTrieDictionary();
         for (String word:HttpClientAdapter.getDictionaryWords()) {
             trieDic.insert(word);
         }
@@ -103,13 +130,13 @@ public class ContestController {
 //            if (newValue)
 //                teamsStatusComponentController.startListRefresher(this::startContestConsumer);
 //        });
-        EncryptComponent.disableProperty().bind(isCodeSelected.not());
+        encryptComponent.disableProperty().bind(isCodeSelected.not());
 //        EncryptComponentController.getReadyButtonDisableProperty().addListener((
 //                (observable, oldValue, newValue) -> isCodeSelected.set(newValue)));
     }
 
     public void setSimpleCurrentCode(CodeFormatDTO currentCode) {
-        EncryptComponentController.setSelectedCode(currentCode);
+        encryptComponentController.setSelectedCode(currentCode);
 
     }
 
@@ -129,5 +156,9 @@ public class ContestController {
     }
     public void startAlliesTeamRefresher() {
         teamsStatusComponentController.startTeamStatusRefresher(this::updateGameStatus);
+    }
+
+    public void clearAllData(ActionEvent actionEvent) {
+        createWinnerDialogPopup("Ally1");
     }
 }

@@ -1,7 +1,7 @@
 package MainAgentApp.AgentApp.SimpleCode;
 
 
-import MainAgentApp.AgentApp.NewCodeFormat.NewCodeFormatController;
+
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.PlugboardPairDTO;
 import engineDTOs.RotorInfoDTO;
@@ -71,13 +71,10 @@ public class SimpleCodeController {
     @FXML
     private Label plugboardLabel;
     private String isSmallFont;
-    private NewCodeFormatController currentCodeController;
+
     private List<Label> labelList;
 
-    public void setCurrCodeController(NewCodeFormatController currCodeController)
-    {
-        currentCodeController=currCodeController;
-    }
+
 
     @FXML
     private void initialize() {

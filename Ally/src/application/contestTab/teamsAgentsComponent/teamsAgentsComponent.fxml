@@ -8,7 +8,7 @@
    <children>
       <TableView fx:id="allyAgentDataTable" layoutX="14.0" layoutY="23.0" prefHeight="200.0" prefWidth="559.0">
         <columns>
-          <TableColumn fx:id="agentNameColumn" prefWidth="242.0" text="Agent Name" />
+          <TableColumn fx:id="agentNameColumn" prefWidth="242.0" text="agent Name" />
             <TableColumn prefWidth="286.0" style="-fx-text-fill: RED;" text="Tasks Information">
                <columns>
                 <TableColumn fx:id="receivedTaskColumn" prefWidth="83.0" text="Received" />

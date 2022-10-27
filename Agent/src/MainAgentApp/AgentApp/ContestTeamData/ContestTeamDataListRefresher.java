@@ -3,9 +3,7 @@ package MainAgentApp.AgentApp.ContestTeamData;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import allyDTOs.ContestDataDTO;
 import general.HttpResponseDTO;
-import general.UserListDTO;
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
 
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,12 +16,12 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 
 public class ContestTeamDataListRefresher extends TimerTask {
-    private final Consumer<ContestDataDTO> ContestTeamsConsumer;
+    private final Consumer<ContestDataDTO> contestDataDTOConsumer;
     private final CustomHttpClient httpClientUtil;
     private final AtomicInteger counter=new AtomicInteger(0);
-    public ContestTeamDataListRefresher(Consumer<ContestDataDTO> ContestTeamsConsumer) {
+    public ContestTeamDataListRefresher(Consumer<ContestDataDTO> contestDataDTOConsumer) {
 
-        this.ContestTeamsConsumer = ContestTeamsConsumer;
+        this.contestDataDTOConsumer = contestDataDTOConsumer;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
 
      }
@@ -40,7 +38,7 @@ public class ContestTeamDataListRefresher extends TimerTask {
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
             if (responseDTO.getCode() == HTTP_OK) {
                 ContestDataDTO userListDTO = httpClientUtil.getGson().fromJson(responseDTO.getBody(), ContestDataDTO.class);
-                ContestTeamsConsumer.accept(userListDTO);
+                contestDataDTOConsumer.accept(userListDTO);
             } else
                 createErrorAlertWindow("Update Contest Data", responseDTO.getBody());
         } else

@@ -37,7 +37,7 @@ public class GetAgentProgressServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        ServletUtils.logRequestAndTime(agentName,"GetAgentProgressServlet");
+       // ServletUtils.logRequestAndTime(agentName,"GetAgentProgressServlet"); TODO :uncomment
         try {
             Reader inputReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
             Gson gson = ServletUtils.getGson();

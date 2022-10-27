@@ -34,7 +34,6 @@ public class AllUserListController implements Closeable {
     private ObservableList<String> agentsUsersObserve;
     private Timer timer;
     private TimerTask listRefresher;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
     @FXML
     private void initialize() {
         uboatUsersColumn.setPlaceholder(
@@ -64,9 +63,7 @@ public class AllUserListController implements Closeable {
 
     }
 
-//    public BooleanProperty autoUpdatesProperty() {
-//        return autoUpdate;
-//    }
+
 
 
     public void startListRefresher() {
@@ -80,7 +77,6 @@ public class AllUserListController implements Closeable {
         uboatUsersColumn.getItems().clear();
         alliesUsersColumn.getItems().clear();
         agentsUsersColumn.getItems().clear();
-        autoUpdate.set(false);
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();

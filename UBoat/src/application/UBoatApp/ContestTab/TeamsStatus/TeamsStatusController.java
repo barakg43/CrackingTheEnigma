@@ -64,7 +64,7 @@ public class TeamsStatusController {
                 .map(AllyDataDTO::getAllyName)
                 .collect(Collectors.toList()));
         Platform.runLater(()-> {
-            teamAlliesComponentController.addAlliesDataToContestTeamTable(new ArrayList<>(allTeamAllies.getAllyDataDTOList()));
+            teamAlliesComponentController.setAlliesDataToContestTeamTable(new ArrayList<>(allTeamAllies.getAllyDataDTOList()));
             alliesAmountLabel.setText(
                     String.format("%d/%d",allTeamAllies.getRegisteredAmount(),
                             allTeamAllies.getRequiredAlliesAmount()));
@@ -105,6 +105,7 @@ public class TeamsStatusController {
         }
     }
     public void clearData(){
+        alliesAmountLabel.setText("");
         teamAlliesComponentController.clearAll();
     }
     public void stopListRefresher() {close();}

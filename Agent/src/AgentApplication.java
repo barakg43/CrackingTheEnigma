@@ -18,7 +18,7 @@ public class AgentApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        Parameters parameters = getParameters();
 
 
         this.primaryStage=primaryStage;

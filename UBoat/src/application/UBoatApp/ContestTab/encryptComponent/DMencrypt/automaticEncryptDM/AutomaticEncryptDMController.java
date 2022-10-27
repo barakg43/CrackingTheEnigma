@@ -5,6 +5,7 @@ import application.UBoatApp.ContestTab.encryptComponent.EncryptController;
 import application.http.HttpClientAdapter;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -66,7 +67,11 @@ public class AutomaticEncryptDMController {
 
 
     }
+    public StringProperty getInputStringProperty()
+    {
+        return encryptDataController.getInputProperty();
 
+    }
     public void setParentComponentTab(EncryptController parentComponentTab) {
         this.encryptController = parentComponentTab;
 

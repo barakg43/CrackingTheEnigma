@@ -30,7 +30,11 @@ public class AutomaticEncryptController {
     {
         this.automaticEncryptDMController=encryptTabDMController;
     }
+    public StringProperty getInputProperty()
+    {
+        return stringInputTextField.textProperty();
 
+    }
     @FXML
     void processStringData(ActionEvent ignoredEvent) {
     if(automaticEncryptDMController!=null) {

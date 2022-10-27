@@ -1,9 +1,9 @@
 package application.http;
 
 
-import application.ApplicationController;
 import application.Login.LoginInterface;
 import application.UBoatApp.UBoatAppController;
+import com.google.gson.JsonObject;
 import engineDTOs.AllCodeFormatDTO;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.MachineDataDTO;
@@ -34,9 +34,6 @@ public class HttpClientAdapter {
     private static final CustomHttpClient HTTP_CLIENT = new CustomHttpClient(TYPE);
     private static MachineDataDTO machineData = null;
 
-    public  HttpClientAdapter() {
-
-    }
 
     public static Set<String> getDictionaryWords() {
         return wordsSet;
@@ -51,9 +48,8 @@ public class HttpClientAdapter {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
-                loginInterface.doLoginRequest(response.code() == HTTP_OK, response.body().string(), userName);
+            public void onResponse(@NotNull Call call, @NotNull Response response)  {
+                loginInterface.doLoginRequest(response.code() == HTTP_OK,CustomHttpClient.getResponseBodyAsString(response), userName);
             }
         });
     }
@@ -75,11 +71,9 @@ public class HttpClientAdapter {
             }
         });
     }
-
     public static MachineDataDTO getMachineData() {
         return machineData;
     }
-
     public static void resetCodePosition() {
         HTTP_CLIENT.doPostASync(RESET_CODE,"" ,new Callback() {
             @Override
@@ -88,10 +82,30 @@ public class HttpClientAdapter {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                String body=CustomHttpClient.getResponseBodyAsString(response);
                 if(response.code()!=HTTP_OK)
-                    UBoatAppController.createErrorAlertWindow("Reset Code Machine", "Error when trying to reset code machine");
+                    UBoatAppController.createErrorAlertWindow("Reset Code Machine", "Error when trying to reset code machine\n"+body);
+            }
+        });
+
+    }
+    public static void notifyWinnerTeamToAlliesCompetitors(String winnerTeamName) {
+
+        String body=String.format(SINGLE_JSON_FORMAT,WINNER_NAME,winnerTeamName);
+        HTTP_CLIENT.doPostASync(WINNER_TEAM,body, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call,@NotNull IOException e) {
+                createErrorAlertWindow("Winner Notifier", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                String body=CustomHttpClient.getResponseBodyAsString(response);
+
+                if (response.code() != HTTP_OK) {
+                    createErrorAlertWindow("Winner Notifier", body );
+                }
             }
         });
 
@@ -105,10 +119,10 @@ public class HttpClientAdapter {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
+            public void onResponse(@NotNull Call call, @NotNull Response response)  {
+                String body=CustomHttpClient.getResponseBodyAsString(response);
                 if(response.code()!=HTTP_OK)
-                    UBoatAppController.createErrorAlertWindow("Start Battlefield", "Error when trying to start Battlefield Contest\n"+ Objects.requireNonNull(response.body()).string());
+                    UBoatAppController.createErrorAlertWindow("Start Battlefield", "Error when trying to start Battlefield Contest\n"+body);
                 isSuccess.accept(response.code()==HTTP_OK);
             }
         });
@@ -126,7 +140,7 @@ public class HttpClientAdapter {
     }
 
     public static void processDataInput(String text,Consumer<String> outputHandler) {
-        String body=INPUT_PROPERTY+'='+text;
+        String body=String.format(SINGLE_JSON_FORMAT,INPUT_PROPERTY,text);
         HTTP_CLIENT.doPostASync(INPUT_STRING, body,new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -134,15 +148,11 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Properties prop = new Properties();
-                String body=Objects.requireNonNull(response.body()).string();
-                Reader responseStream=new StringReader(body);
-                System.out.println("Body:"+body);
-                prop.load(responseStream);
-                responseStream.close();
-                if(response.code()==HTTP_OK)
-
-                    outputHandler.accept(prop.getProperty(OUTPUT_PROPERTY));
+                String body=CustomHttpClient.getResponseBodyAsString(response);
+                if(response.code()==HTTP_OK) {
+                    String outputString=HTTP_CLIENT.getGson().fromJson(body, JsonObject.class).get(OUTPUT_PROPERTY).getAsString();
+                    outputHandler.accept(outputString);
+                }
                 else
                     UBoatAppController.createErrorAlertWindow("Processing Input String", body);
 
@@ -161,9 +171,9 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseBody = Objects.requireNonNull(response.body()).string();
+                String responseBody = CustomHttpClient.getResponseBodyAsString(response);
                 if (response.code() != HTTP_OK) {
-                    UBoatAppController.createErrorAlertWindow("Upload file to Server", Objects.requireNonNull(response.body()).string());
+                    UBoatAppController.createErrorAlertWindow("Upload file to Server",responseBody);
                 } else {
                     System.out.println(filePath+" uploaded successfully");
                     machineData= CustomHttpClient.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
@@ -175,17 +185,14 @@ public class HttpClientAdapter {
         });
     }
         static private void codeConfigurationRequestHandler(Response response,Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer) throws IOException {
-
+            String body=CustomHttpClient.getResponseBodyAsString(response);
             if (response.code() == HTTP_OK) {
-                assert response.body() != null;
                 allCodeFormatDTOConsumer.accept(
-                        CustomHttpClient.GSON_INSTANCE.fromJson(
-                                Objects.requireNonNull(
-                                        response.body()).string(), AllCodeFormatDTO.class)
+                        CustomHttpClient.GSON_INSTANCE.fromJson(body, AllCodeFormatDTO.class)
                 );
             }
             else
-                UBoatAppController.createErrorAlertWindow("Code Configuration", Objects.requireNonNull(response.body()).string());
+                UBoatAppController.createErrorAlertWindow("Code Configuration error:", body);
 
         }
 
@@ -198,10 +205,10 @@ public class HttpClientAdapter {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                assert response.body() != null;
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                String body=CustomHttpClient.getResponseBodyAsString(response);
                 if(response.code()!=HTTP_OK)
-                    UBoatAppController.createErrorAlertWindow("Reset Machine", "Error when trying to reset machine configuration\n"+ Objects.requireNonNull(response.body()).string());
+                    UBoatAppController.createErrorAlertWindow("Reset Machine", "Error when trying to reset machine configuration\n"+body);
             }
         });
 

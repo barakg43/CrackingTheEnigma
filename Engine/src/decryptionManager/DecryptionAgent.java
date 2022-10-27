@@ -9,9 +9,7 @@ import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
 import java.io.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -29,11 +27,11 @@ public class DecryptionAgent {
 
 
     private BlockingQueue<TaskFinishDataDTO> successfulDecryption;
-    private final AgentThreadPool threadsAgent;
+    private final ExecutorService threadsAgent;
     private byte[] engineCopyBytes;
     private AtomicCounter taskDoneAmount;
     private String cipheredString;
-    private final BlockingQueue<Runnable> taskQueue;
+
     private final AtomicInteger taskSessionCounter;
     private final AtomicLong totalTaskDoneCounter;
 
@@ -41,7 +39,6 @@ public class DecryptionAgent {
     private final Runnable notifyFinishTaskSession;
     private Consumer<Integer> queueTaskConsumer;
     private Consumer<Long> totalCompleteTaskConsumer;
-    public final  FileWriter myWriter;
 
 
 
@@ -51,11 +48,7 @@ public class DecryptionAgent {
         this.taskSessionAmount = agentDataDTO.getTasksSessionAmount();
 //        threadsAgent =  Executors.newFixedThreadPool(threadAmount);
         this.notifyFinishTaskSession = notifyFinishTaskSession;
-        try {
-            myWriter = new FileWriter("output_"+agentDataDTO.getAgentName()+".txt");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
         engine=new EnigmaEngine();
 
 
@@ -65,9 +58,8 @@ public class DecryptionAgent {
 //            taskDoneAmount=new AtomicCounter();
 
 
-        taskQueue=new LinkedBlockingDeque<>(agentDataDTO.getTasksSessionAmount());
-        threadsAgent =new AgentThreadPool(threadAmount,threadAmount,20, TimeUnit.SECONDS,
-                taskQueue,new AgentThreadFactory());
+
+        threadsAgent = Executors.newFixedThreadPool(threadAmount);
 
         taskSessionCounter = new AtomicInteger(0);
         totalTaskDoneCounter =new AtomicLong(0);
@@ -90,7 +82,6 @@ public class DecryptionAgent {
         engine.setCodeManually(agentSetupConfiguration.getCodeFormatDTO());
         MachineDataDTO machineData = engine.getMachineData();
         cipheredString=agentSetupConfiguration.getCipheredString();
-        System.out.println("----------------------Contest cipheredString:"+cipheredString);
         dictionary=engine.getDictionary();
         saveEngineCopy();
         codeCalculatorFactory=new CodeCalculatorFactory(machineData.getAlphabetString(), machineData.getNumberOfRotorsInUse());
@@ -127,19 +118,19 @@ public class DecryptionAgent {
                                 dictionary,
                                 this::countersIncrement,
                                 agentName,
-                                cipheredString
-                                ,myWriter);
+                                cipheredString);
             threadsAgent.submit(task);
         }
     }
     public void countersIncrement()
     {
 
-
         queueTaskConsumer.accept(taskSessionAmount-taskSessionCounter.incrementAndGet());
         totalCompleteTaskConsumer.accept(totalTaskDoneCounter.incrementAndGet());
-        if(taskSessionCounter.get() == taskSessionAmount)
+        if(taskSessionCounter.get() == taskSessionAmount) {
+//            System.out.println("getting new session done:" + totalTaskDoneCounter.get());
             doneRunningTaskSession();
+        }
 
     }
     public void saveEngineCopy()

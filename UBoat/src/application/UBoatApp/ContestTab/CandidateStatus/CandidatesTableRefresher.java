@@ -49,6 +49,10 @@ public class CandidatesTableRefresher extends TimerTask {
 
 //        String urlContext=String.format(QUERY_FORMAT,UPDATE_CANDIDATES,CANDIDATES_VERSION_PARAMETER,candidatesVersion);
         String body = httpClientUtil.getGson().toJson(alliesVersionMap);
+        for (String allyName:alliesVersionMap.keySet()) {
+            System.out.println(allyName +" version before:"+ alliesVersionMap.get(allyName));
+        }
+
         HttpResponseDTO responseDTO = httpClientUtil.doPostSync(UPDATE_CANDIDATES,body );
 
 
@@ -61,12 +65,15 @@ public class CandidatesTableRefresher extends TimerTask {
                     List<AllyCandidateDTO> allyCandidateDTOS = alliesCandidatesDTO.getAlliesCandidatesList();
                     if (allyCandidateDTOS != null && !allyCandidateDTOS.isEmpty()) {
                         allyCandidatesListConsumer.accept(allyCandidateDTOS);
+
+                        Map<String, Integer> alliesMapCandidatesAmount = alliesCandidatesDTO.getAlliesMapCandidatesAmount();
+                        for (String allyName : alliesMapCandidatesAmount.keySet()) {
+                            System.out.println(allyName+" received :"+alliesMapCandidatesAmount.get(allyName));
+                            Integer version = alliesVersionMap.get(allyName)+ alliesMapCandidatesAmount.get(allyName);
+                            alliesVersionMap.put(allyName,version);
+                        }
                     }
-                    Map<String, Integer> alliesMapCandidatesAmount = alliesCandidatesDTO.getAlliesMapCandidatesAmount();
-                    for (String allyName : alliesMapCandidatesAmount.keySet()) {
-                        Integer version = alliesVersionMap.get(allyName);
-                        version += alliesMapCandidatesAmount.get(allyName);
-                    }
+
                 } else
                     createErrorAlertWindow("Candidates And Agent Progress", responseDTO.getBody());
             }catch (RuntimeException e)
@@ -77,6 +84,10 @@ public class CandidatesTableRefresher extends TimerTask {
         } else
             createErrorAlertWindow("Candidates And Agent Progress", "General error");
 
+        for (String allyName:alliesVersionMap.keySet()) {
+            System.out.println(allyName +" version after:"+ alliesVersionMap.get(allyName));
+        }
     }
+
 
 }

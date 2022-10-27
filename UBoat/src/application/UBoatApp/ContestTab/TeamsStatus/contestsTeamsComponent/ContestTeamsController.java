@@ -31,9 +31,7 @@ public class ContestTeamsController {
    private ObservableList<AllyDataDTO> contestTeamsListObs;
 
 
-   public void addAlliesDataToContestTeamTable(List<AllyDataDTO> otherAlliesDataList) {
-        if(otherAlliesDataList.size()>0)
-            System.out.println(otherAlliesDataList.get(0));
+   public void setAlliesDataToContestTeamTable(List<AllyDataDTO> otherAlliesDataList) {
 
         contestTeamsListObs.setAll(otherAlliesDataList);
         contestsTeamsTable.setItems(contestTeamsListObs);

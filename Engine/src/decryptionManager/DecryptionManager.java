@@ -1,6 +1,5 @@
 package decryptionManager;
 
-import decryptionManager.components.AtomicCounter;
 import decryptionManager.components.CodeCalculatorFactory;
 import decryptionManager.components.Permuter;
 import engineDTOs.CodeFormatDTO;
@@ -13,11 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Consumer;
-
-import static engineDTOs.CodeFormatDTO.copyOf;
 
 
 public class DecryptionManager {
@@ -34,7 +30,10 @@ public class DecryptionManager {
     private final AtomicLong taskProducedCounter;
 
 
+    private AtomicLong PulledCounter=new AtomicLong(0);
     private boolean stopFlag;
+
+    private final AtomicLong idTask=new AtomicLong(1);
 
 
     public DecryptionManager(MachineDataDTO machineDataDTO,GameLevel level,String allyName) {
@@ -51,19 +50,29 @@ public class DecryptionManager {
 
 
     public void setStartingCode(CodeFormatDTO startingCode) {
-        this.startingCode = startingCode;
+        this.startingCode = CodeFormatDTO.copyOf(startingCode);
     }
 
 
-    public synchronized List<SimpleDecryptedTaskDTO> getTasksForAgentSession(int amount)
-    {
+    public List<SimpleDecryptedTaskDTO> getTasksForAgentSession(int amount)  {
         List<SimpleDecryptedTaskDTO> decryptedTaskList=new ArrayList<>(amount);
+
         for (int i = 0; i <amount ; i++) {
-            SimpleDecryptedTaskDTO decryptedTaskDTO=taskQueue.poll();
+            SimpleDecryptedTaskDTO decryptedTaskDTO= null;
+            try {
+
+                decryptedTaskDTO = taskQueue.poll(100, TimeUnit.MILLISECONDS);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
             if(decryptedTaskDTO==null)
                 break;
+            PulledCounter.incrementAndGet();
             decryptedTaskList.add(decryptedTaskDTO);
         }
+
         return decryptedTaskList;
     }
     public void setTaskSize(int taskSize) {
@@ -105,7 +114,7 @@ public class DecryptionManager {
     public void startCreatingContestTasks()
     {
         stopFlag=false;
-        taskCreator=  new Thread(()-> {
+         new Thread(()-> {
                 try {
                     switch (level) {
                         case EASY:
@@ -124,11 +133,11 @@ public class DecryptionManager {
                             break;
                     }
                 } catch (RuntimeException e) {
+                    e.printStackTrace();
                     throw new RuntimeException("Error when creating tasks: "+e.getMessage());
                 }
-        },allyName+" Task Creator Thread");
-        taskCreator.start();
-        System.out.println(allyName+" Finish create all task!");
+        },allyName+ " Task Creator").start();
+        System.out.println(allyName+" Finish create all task! ");
     }
 
 //    static public void doneBruteForceTasks()
@@ -235,25 +244,19 @@ public class DecryptionManager {
         CodeFormatDTO currentCode=null,temp;
 
         temp=resetAllPositionToFirstPosition(codeFormatDTO);
-        System.out.println("First code:"+temp);
-        double i = 0;
+
 
         while(temp!=null&&!stopFlag){
 
             try {
                 currentCode=temp;
-               // Thread.sleep(5000);//TODO: thread pool delayed
-              //  System.out.println("Task creator is running!");
-             //   System.out.println(allyName+" Produced:"+taskProducedCounter.get());
                 taskQueue.put(new SimpleDecryptedTaskDTO(CodeFormatDTO.copyOf(currentCode), taskSize));
                 taskProducedCounter.incrementAndGet();
-
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
             temp=codeCalculatorFactory.getNextCodeIndexOffset(temp,taskSize);
-            //System.out.println("current code  " + currentCode);
+
         }
 
 

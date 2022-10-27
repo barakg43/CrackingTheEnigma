@@ -22,7 +22,6 @@ public class ContestTeamDataController {
     @FXML private AnchorPane contestDataComponent;
     @FXML private ContestDataController contestDataComponentController;
     private AgentController agentController;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
 
     private TimerTask listRefresher;
     private Timer timer;
@@ -53,7 +52,6 @@ public class ContestTeamDataController {
     }
 
     public void stopListRefresher() {
-        autoUpdate.set(false);
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();

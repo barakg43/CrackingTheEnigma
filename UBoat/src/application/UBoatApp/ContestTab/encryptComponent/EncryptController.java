@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -87,7 +88,11 @@ public class EncryptController {
         bindOutputStringBetweenComponent();
         searchBox.textProperty().addListener((ChangeListener) (observable, oldVal, newVal) -> search((String) oldVal, (String) newVal));
     }
+    public StringProperty getInputStringProperty()
+    {
+        return codeEncryptComponentController.getInputStringProperty();
 
+    }
 
     public SimpleCodeController bindCodeComponentController()
     {
@@ -146,7 +151,8 @@ public class EncryptController {
     public void clearAllData() {
         simpleCodeComponentController.clearCurrentCodeView();
        codeEncryptComponentController.clearListView();
-        clearListView();
+
+     //   clearListView();
         codeEncryptComponentController.resetAllData();
 
     }

@@ -4,6 +4,11 @@ package TEST_GUI;
 import allyDTOs.AllyCandidateDTO;
 import application.Login.userListComponent.AllUserListController;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
+import application.http.HttpClientAdapter;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
@@ -14,6 +19,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static general.ConstantsHTTP.*;
 
 
 //video: 100189 - FXML Hello World [JAD, JavaFX] | Powered by SpeaCode
@@ -56,31 +64,7 @@ public class HelloFxmlMain extends Application{
 
     }
 
-    public List<int[]> generate(int rotorNumberInSystem, int rotorNumberInUsed) {
-        List<int[]> combinations = new ArrayList<>();
-        int[] combination = new int[rotorNumberInUsed];
-
-        // initialize with lowest lexicographic combination
-        for (int i = 0; i < rotorNumberInUsed; i++) {
-            combination[i] = i;
-        }
-
-        while (combination[rotorNumberInUsed - 1] < rotorNumberInSystem) {
-            combinations.add(combination.clone());
-
-            // generate next combination in lexicographic order
-            int t = rotorNumberInUsed - 1;
-            while (t != 0 && combination[t] == rotorNumberInSystem - rotorNumberInUsed + t) {
-                t--;
-            }
-            combination[t]++;
-            for (int i = t + 1; i < rotorNumberInUsed; i++) {
-                combination[i] = combination[i - 1] + 1;
-            }
-        }
-
-        return combinations;
-    }
+ 
 
 
     private void start5(Stage primaryStage) throws IOException {
@@ -91,25 +75,35 @@ public class HelloFxmlMain extends Application{
         assert url != null;
         Parent root=fxmlLoader.load(url.openStream());
         CandidatesStatusController controller= fxmlLoader.getController();
+        JsonPrimitive json=new JsonPrimitive(567);
 
+        String jObj1 = HttpClientAdapter.getHttpClient().getGson().toJson(json);
+        System.out.println(jObj1);
+        String jObj= String.format(SINGLE_JSON_FORMAT,WINNER_NAME,567);
 
-        RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[2];
-        List<PlugboardPairDTO> plugboardPairDTOList=new ArrayList<>();
-        rotorInfoDTOS[0]=new RotorInfoDTO(1,5,'A');
-        rotorInfoDTOS[1]=new RotorInfoDTO(2,10,'N');
-        CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"I",plugboardPairDTOList);
+//        HttpClientAdapter.getHttpClient().getGson().toJson(json);
+//        System.out.println(jObj);
+        int num= HttpClientAdapter.getHttpClient().getGson().fromJson(jObj,JsonObject.class).get(WINNER_NAME).getAsInt();
 
-        CandidateDTO candidateDTO=new CandidateDTO(codeFormatDTO,"Blala");
-        List<CandidateDTO> candidateDTOS=new ArrayList<>();
-        candidateDTOS.add(candidateDTO);
-        TaskFinishDataDTO taskFinishDataDTO=new TaskFinishDataDTO(candidateDTOS,"agent1");
-        AllyCandidateDTO allyCandidateDTO=new AllyCandidateDTO(taskFinishDataDTO,"ally1");
-        List<AllyCandidateDTO> alliesDataList=new ArrayList<>();
-        alliesDataList.add(allyCandidateDTO);
-
-        controller.addAllyDataToCandidatesTable(alliesDataList);
+        System.out.println("num:"+num);
+//        RotorInfoDTO[] rotorInfoDTOS=new RotorInfoDTO[2];
+//        List<PlugboardPairDTO> plugboardPairDTOList=new ArrayList<>();
+//        rotorInfoDTOS[0]=new RotorInfoDTO(1,5,'A');
+//        rotorInfoDTOS[1]=new RotorInfoDTO(2,10,'N');
+//        CodeFormatDTO codeFormatDTO=new CodeFormatDTO(rotorInfoDTOS,"I",plugboardPairDTOList);
+//
+//        CandidateDTO candidateDTO=new CandidateDTO(codeFormatDTO,"Blala");
+//        List<CandidateDTO> candidateDTOS=new ArrayList<>();
+//        candidateDTOS.add(candidateDTO);
+//        TaskFinishDataDTO taskFinishDataDTO=new TaskFinishDataDTO(candidateDTOS,"agent1");
+//        AllyCandidateDTO allyCandidateDTO=new AllyCandidateDTO(taskFinishDataDTO,"ally1");
+//        List<AllyCandidateDTO> alliesDataList=new ArrayList<>();
+//        alliesDataList.add(allyCandidateDTO);
+//
+//        controller.addAllyDataToCandidatesTable(alliesDataList);
       //  controller.updateTableView(alluser);
         Scene scene = new Scene(root,1020,905);
+
         primaryStage.setScene(scene);
         primaryStage.show();
 

@@ -5,25 +5,17 @@ import MainAgentApp.AgentApp.CandidateStatus.CandidateStatusController;
 
 import MainAgentApp.AgentApp.CandidateStatus.ProgressStatusRefresher;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
-import UBoatDTO.GameStatus;
 import decryptionManager.DecryptionAgent;
-
-import decryptionManager.components.AtomicCounter;
 
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 
-import java.time.Duration;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static general.ConstantsHTTP.FAST_REFRESH_RATE;
@@ -89,7 +81,7 @@ public class UIUpdater {
     }
 
 
-    public void startCandidateListenerTread()
+    public void startCandidateListenerThread()
     {
         candidateListener.start();
     }

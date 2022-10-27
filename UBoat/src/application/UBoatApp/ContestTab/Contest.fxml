@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -13,7 +14,8 @@
                <children>
                   <AnchorPane prefHeight="199.0" prefWidth="103.0">
                      <children>
-                        <fx:include fx:id="EncryptComponent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="encryptComponent/EncryptTab.fxml" />
+                        <fx:include fx:id="encryptComponent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="encryptComponent/EncryptTab.fxml" />
+                        <Button layoutX="206.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearAllData" text="Button" />
                      </children>
                   </AnchorPane>
                   <fx:include fx:id="teamsStatusComponent" source="TeamsStatus/TeamStatus.fxml" />

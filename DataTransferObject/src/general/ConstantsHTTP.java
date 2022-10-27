@@ -13,11 +13,13 @@ public class ConstantsHTTP {
     public static final int INT_PARAMETER_ERROR = Integer.MIN_VALUE;
     public static final String USERNAME = "username";
     public static final String AMOUNT="amount";
+    public static final String WINNER_NAME="winner-name";
     public static final String INPUT_PROPERTY = "input";
     public static final String OUTPUT_PROPERTY = "output";
     public static final String TASK_SIZE = "task-size";
     public static final String TOTAL_TASK_AMOUNT = "total-task";
     public static final String QUERY_FORMAT="%s?%s=%s";
+    public static final String SINGLE_JSON_FORMAT="{\"%s\":%s}";
     // Server resources locations
     public final static String BASE_DOMAIN = "localhost";
     private final static String BASE_URL = "http://" + BASE_DOMAIN + ":8080";
@@ -31,6 +33,7 @@ public class ConstantsHTTP {
     public static final String UPDATE_DASHBOARD="/update-dashboard-data";
     public static final String UPDATE_CONTEST="/update-contest-data";
     public static final String READY_TO_START = "/ready-to-start";
+    public static final String WINNER_TEAM = "/winner-team";
 
     /**################ UBOAT URLs ####################**/
 

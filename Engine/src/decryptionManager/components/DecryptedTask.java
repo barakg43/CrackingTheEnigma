@@ -1,13 +1,12 @@
 package decryptionManager.components;
 
-import com.sun.deploy.nativesandbox.NativeSandboxOutputStream;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import enigmaEngine.Engine;
 
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +25,10 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
     BlockingQueue<TaskFinishDataDTO> successfulDecryption=null;
     private String cipheredString;
     private Runnable countersIncrementer;
-    private FileWriter myWriter;
+
 
     public DecryptedTask(CodeFormatDTO initialCode, long taskSize) {
+
         super(initialCode,taskSize);
     }
     public void setupAgentConf(CodeCalculatorFactory codeCalculatorFactory,
@@ -37,8 +37,7 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
                                Dictionary dictionary,
                               Runnable countersIncrementer,
                                String agentName,
-                               String cipheredString,
-                               FileWriter myWriter)
+                               String cipheredString)
     {
         this.copyEngine = copyEngine;
         this.countersIncrementer = countersIncrementer;
@@ -51,52 +50,45 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
         this.agentName=agentName;
         this.cipheredString=cipheredString;
 
-
-        this.myWriter = myWriter;
     }
     @Override
     public void run() {
         CodeFormatDTO currentCode=initialCode;
-        for (long i = 0; i < taskSize && currentCode!=null ; i++) {
+        try {
+            for (long i = 0; i < taskSize && currentCode != null; i++) {
 
-            try {
-                myWriter.write(currentCode.toString()+"\n");
-                myWriter.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-//            System.out.println(currentCode);
-      //     System.out.println(Thread.currentThread().getName() + " is running!");
-            copyEngine.setCodeManually(currentCode);
-            String processedOutput;
-            try {
-                processedOutput = copyEngine.processDataInput(cipheredString);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            if(dictionary.checkIfAllLetterInDic(processedOutput))
-                    {
-                        possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput));
 
 //
-                        System.out.println("code: "+currentCode+" Output: "+ processedOutput);
+                copyEngine.setCodeManually(currentCode);
+                String processedOutput;
 
-                    }
-                    currentCode= codeCalculatorFactory.getNextCode(currentCode);
+                processedOutput = copyEngine.processDataInput(cipheredString);
+
+
+                if (dictionary.checkIfAllLetterInDic(processedOutput)) {
+                    possibleCandidates.add(new CandidateDTO(copyEngine.getCodeFormat(true), processedOutput));
+
+//
+                    //System.out.println("code: " + currentCode + " Output: " + processedOutput);
+
                 }
-        try {
-            if(possibleCandidates.size()>0)
-                 successfulDecryption.put(new TaskFinishDataDTO(possibleCandidates,agentName));
+                currentCode = codeCalculatorFactory.getNextCode(currentCode);
+            }
+            try {
+                if (possibleCandidates.size() > 0)
+                    successfulDecryption.put(new TaskFinishDataDTO(possibleCandidates, agentName));
 
+            } catch (InterruptedException ignored) {
 
-       // Thread.sleep(DecryptionManager.UI_SLEEP_TIME);//to
-         //   currentTaskTimeConsumer.accept(totalTime);
-    } catch (InterruptedException ignored) {
+                // throw new RuntimeException(e);
+            }
 
-       // throw new RuntimeException(e);
+            countersIncrementer.run();
+        }catch (Exception e) {
+            System.out.println("Error:::"+e.getMessage());
+            e.printStackTrace();
         }
-        countersIncrementer.run();
+
       //  atomicCounter.increment();
     }
 
@@ -108,7 +100,4 @@ public class DecryptedTask extends SimpleDecryptedTaskDTO implements Runnable {
                 '}';
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
-    }
 }

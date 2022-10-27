@@ -82,7 +82,6 @@ public class AllyProgressController {
     }
 
     public void updateTasksAmountProduced(long tasksProduced) {
-        System.out.println("task produced:"+tasksProduced);
         tasksProducedProperty.set(tasksProduced);
 
     }

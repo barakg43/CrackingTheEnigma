@@ -3,9 +3,7 @@ package MainAgentApp.AgentApp;
 
 import MainAgentApp.AgentApp.AgentStatus.AgentStatusController;
 import MainAgentApp.AgentApp.CandidateStatus.CandidateStatusController;
-import MainAgentApp.AgentApp.CandidateStatus.ProgressStatusRefresher;
 import MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataController;
-import MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataListRefresher;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
 import UBoatDTO.GameStatus;
@@ -18,11 +16,10 @@ import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +30,7 @@ public class AgentController {
 
 
     @FXML private GridPane ContestAndTeamData;
-    @FXML private ContestTeamDataController ContestAndTeamDataController;
+    @FXML private ContestTeamDataController contestAndTeamDataController;
     @FXML private GridPane agentProgressAndStatus;
     @FXML private AgentStatusController agentProgressAndStatusController;
     @FXML private ScrollPane agentsCandidates;
@@ -47,22 +44,23 @@ public class AgentController {
 
     private UIUpdater uiUpdater;
     private int counter=0;
+    private GameStatus gameStatus;
 
     @FXML
     public void initialize() {
 
-        ContestAndTeamDataController.setAgentController(this);
+        contestAndTeamDataController.setAgentController(this);
 
 
     }
     public void resetData() {
-        ContestAndTeamDataController.resetData();
+        contestAndTeamDataController.resetData();
         uiUpdater.resetAllUIData();
        // agentsCandidatesController.clearAllTiles(); TODO: move to winner func
     }
 
     public void setAlliesName(String alliesName){
-        ContestAndTeamDataController.setAlliesName(alliesName);
+        contestAndTeamDataController.setAlliesName(alliesName);
     }
 
     public void bindScene(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty) {
@@ -73,9 +71,7 @@ public class AgentController {
         //agentProgressAndStatus.prefHeightProperty().bind(Bindings.divide(heightProperty,4));
         agentsCandidates.prefWidthProperty().bind(widthProperty);
         //agentsCandidates.prefHeightProperty().bind(Bindings.divide(heightProperty,3));
-
     }
-
     public void setAgentInfo(AgentDataDTO agentDataDTO)
     {
        this.agentDataDTO=agentDataDTO;
@@ -84,23 +80,45 @@ public class AgentController {
     }
     private void getNewTasksSession()
     {
-
+        System.out.println(++counter +" # before getting new Task Session...");
        taskPuller.submit(()->{
-           //System.out.println(++counter +" Getting new Task Session...");
-           String urlContext=String.format(QUERY_FORMAT,GET_TASKS,AMOUNT,agentDataDTO.getTasksSessionAmount());
-           HttpResponseDTO responseDTO = httpClientUtil.doGetSync(urlContext);
-           if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
-               if (responseDTO.getCode() == HTTP_OK) {
-                   DecryptedTask[] decryptedTaskDTOS = httpClientUtil.getGson().fromJson(responseDTO.getBody(),  DecryptedTask[].class);
-                    uiUpdater.updatePulledTaskAmount(decryptedTaskDTOS.length);
-                   decryptionAgent.addTasksToAgent(decryptedTaskDTOS);
-               } else
-                   createErrorAlertWindow("Pull task from ally", responseDTO.getBody());
-           } else
-               createErrorAlertWindow("Pull task from ally", "General error");
+           boolean successGetNewTaskSession=false;
+           while(!successGetNewTaskSession&&gameStatus==GameStatus.ACTIVE) {
+               System.out.println(counter + " # Getting new Task Session...");
+               String urlContext = String.format(QUERY_FORMAT, GET_TASKS, AMOUNT, agentDataDTO.getTasksSessionAmount());
+               HttpResponseDTO responseDTO = httpClientUtil.doGetSync(urlContext);
+               System.out.println(counter + " # received Task Session...");
+               if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
+                   if (responseDTO.getCode() == HTTP_OK) {
+                       System.out.println(counter + " # received session OK!...");
+                       DecryptedTask[] decryptedTaskDTOS = httpClientUtil.getGson().fromJson(responseDTO.getBody(), DecryptedTask[].class);
+                       System.out.println(counter + " # after making json!...length:" + decryptedTaskDTOS.length);
+
+                       if (decryptedTaskDTOS.length > 0) {
+                           System.out.println("first task is:   " + decryptedTaskDTOS[0]);
+                           uiUpdater.updatePulledTaskAmount(decryptedTaskDTOS.length);
+                           System.out.println("after update pulled amount..");
+                           decryptionAgent.addTasksToAgent(decryptedTaskDTOS);
+                           System.out.println("after task pushed....");
+                           successGetNewTaskSession=true;
+                       }else
+                       {
+                           try {
+                               Thread.sleep(REFRESH_RATE);
+                           } catch (InterruptedException ignored) {}
+
+                       }
+                       System.out.println(counter + " # finish pushed !...");
+                   } else {
+                       System.out.println(counter + " # received session NOT_OK!..." + responseDTO.getCode());
+                       createErrorAlertWindow("Pull task from ally", responseDTO.getBody());
+                   }
+               } else {
+                   System.out.println(counter + " # general error!");
+                   createErrorAlertWindow("Pull task from ally", "General error");
+               }
+           }
        });
-
-
     }
     public void setMainController(MainAgentController mainAgentController) {
         this.mainController=mainAgentController;
@@ -123,22 +141,59 @@ public class AgentController {
 
     public void setGameStatus(GameStatus gameStatus)
     {
+        this.gameStatus = gameStatus;
         uiUpdater.setIsGameEndedValue(gameStatus==GameStatus.FINISH);
         if(!isAgentConf.get()&&gameStatus== GameStatus.ACTIVE) {
             isAgentConf.set(true);
 
             HttpClientAdapter.getAgentSetupConfiguration(decryptionAgent::setSetupConfiguration,
                     this::getNewTasksSession,
-                    uiUpdater::startCandidateListenerTread,isAgentConf::set);
+                    uiUpdater::startCandidateListenerThread,isAgentConf::set);
             uiUpdater.startProgressStatusUpdater();
+        }
+        if(gameStatus==GameStatus.FINISH) {
+            System.out.println("");//TODO
+        HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup);
+
         }
 
 //        ContestAndTeamDataController.updateContestData(contestDataDTO);
     }
+    private void createWinnerDialogPopup(String allyNameWinner){
+
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("The Contest Finish ");
+        alert.setHeaderText("The Winner is: "+allyNameWinner);
+        alert.setContentText("Clearing ALL contest data");
+        ButtonType clear = new ButtonType("Clear Data");
+        alert.getButtonTypes().setAll(clear);
+//            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
+
+        // Listen for the Alert to close and get the result
+        alert.setOnCloseRequest(e -> {
+            // Get the result
+            ButtonType result = alert.getResult();
+            if (result != null && result == clear) {
+                {
+                    uiUpdater.stopCandidateListener();
+                    uiUpdater.stopProgressStatusUpdater();
+                    contestAndTeamDataController.stopListRefresher();
+                    resetData();
+                }
+            } else {
+                System.out.println("Quit!");
+            }
+        });
+
+        alert.show();
+
+    }
 
 
     public void setActive() {
-        ContestAndTeamDataController.startListRefresher();
+        contestAndTeamDataController.startListRefresher();
     }
 }
 

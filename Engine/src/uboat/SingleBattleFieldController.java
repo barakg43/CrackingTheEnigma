@@ -20,7 +20,7 @@ public class SingleBattleFieldController {
     private final Set<AllyDataDTO> alliesDataSet;
     private final Consumer<String> startContestInAllies;
     private String xmlFileContent;
-
+    private String winnerName;
 
 
     private  CodeFormatDTO codeFormatConfiguration;
@@ -34,6 +34,7 @@ public class SingleBattleFieldController {
         alliesDataSet=new HashSet<>();
         enigmaEngine=new EnigmaEngine();
         this.uboatName=uboatName;
+        winnerName="";
     }
 
     public synchronized void assignAllyToUboat(AllyDataDTO agentDataDTO)
@@ -107,5 +108,13 @@ public class SingleBattleFieldController {
     public void setContestInitConfiguration(String cipheredString) {
         this.codeFormatConfiguration = enigmaEngine.getCodeFormat(true);
         this.cipheredString=cipheredString;
+    }
+
+    public void setWinnerName(String winnerName) {
+        this.winnerName = winnerName;
+    }
+
+    public String getWinnerName() {
+        return winnerName;
     }
 }

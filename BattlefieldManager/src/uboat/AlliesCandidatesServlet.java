@@ -23,7 +23,7 @@ import static general.ConstantsHTTP.*;
 
 
 @WebServlet(name = "CandidatesServlet", urlPatterns = {UBOAT_CONTEXT+UPDATE_CANDIDATES})
-public class CandidatesServlet extends HttpServlet {
+public class AlliesCandidatesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -54,11 +54,16 @@ public class CandidatesServlet extends HttpServlet {
                 for (AllyDataDTO allyData:allyDataDTOSet) {
                     String allyName=allyData.getAllyName();
                     int version=alliesVersionMap.get(allyName);
+                    System.out.println(allyName +" version before:"+ version);
                     List<AllyCandidateDTO> allyCandidateDTOList=ServletUtils.getSystemManager()
                             .getSingleAllyController(allyName)
                             .getAllyCandidateDTOListWithVersion(version);
                     alliesVersionMap.put(allyName,allyCandidateDTOList.size());
                     alliesCandidatesList.addAll(allyCandidateDTOList);
+                }
+                System.out.println("after update map:");
+                for (String allyName:alliesVersionMap.keySet()) {
+                    System.out.println(allyName +" version after:"+ alliesVersionMap.get(allyName));
                 }
                 GameStatus gameStatus=uboatController.getContestDataDTO().getGameStatus();
                 //returning JSON objects, not HTML

@@ -162,6 +162,7 @@ public class ContestScreenController {
             startAllyAgentsProgressAndCandidatesRefresher();
            // HttpClientAdapter.startTaskCreatorCommand();
         }
+
         contestDataComponentController.updateContestData(contestDataDTO);
     }
 
@@ -197,10 +198,15 @@ public class ContestScreenController {
 
     public void startContestAndTeamDataRefresher() {
         contestAndTeamListRefresher = new ContestAndTeamDataRefresher(this::addAlliesDataToContestTeamTable,
-                                                                        this::updateContestData,
-                                                                        applicationController.getSelectedUboat());
+                                                                        this::updateContestData);
         timer = new Timer();
         timer.schedule(contestAndTeamListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+    }
+    public void setGameStatus(GameStatus gameStatus)
+    {
+
+        if(gameStatus== GameStatus.FINISH)
+            HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup);
     }
 
     public void updateErrorMessage(String errorMessage)
@@ -222,7 +228,46 @@ public class ContestScreenController {
     public void setAllyName(String allyName) {
         this.allyName = allyName;
     }
+    private void createWinnerDialogPopup(String allyNameWinner){
 
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("The Contest Finish ");
+        alert.setHeaderText("The Winner is: "+allyNameWinner);
+        alert.setContentText("Clearing ALL contest data");
+        ButtonType clear = new ButtonType("Clear Data");
+        alert.getButtonTypes().setAll(clear);
+//            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
+
+        // Listen for the Alert to close and get the result
+        alert.setOnCloseRequest(e -> {
+            // Get the result
+            ButtonType result = alert.getResult();
+            if (result != null && result == clear) {
+                {
+
+//                  contestDataComponentController;
+//
+//                    alliesTeamsComponentController.clearAll();
+//
+//                    teamsAgentsComponentController.;
+//
+//                tamsCandidatesComponent.;
+//                    tamsCandidatesComponentController.;
+//                    uiUpdater.stopCandidateListener();
+//                    uiUpdater.stopProgressStatusUpdater();
+//                    contestAndTeamDataController.stopListRefresher();
+//                    resetData();
+                }
+            } else {
+                System.out.println("Quit!");
+            }
+        });
+
+        alert.show();
+
+    }
 //    private Runnable pressButton;
 //
 //    public void setPressButton(Runnable pressButton) {

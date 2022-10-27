@@ -33,7 +33,6 @@ public class DashboardScreenController {
     private Runnable afterRegisterActionParent;
     private Timer timer;
     private TimerTask listRefresher;
-    private final BooleanProperty autoUpdate=new SimpleBooleanProperty(true);
 
     private void addAllContestDataToTable(List<ContestDataDTO> contestDataDTOList) {
         contestTableComponentController.addAllContestsDataToTable(contestDataDTOList);

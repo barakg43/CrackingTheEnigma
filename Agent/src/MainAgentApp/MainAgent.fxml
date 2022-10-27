@@ -7,7 +7,7 @@
    <children>
       <VBox stylesheets="@MainAgentCSS.css">
          <children>
-            <Label fx:id="agentTitle" styleClass="title-label" text="Agent Application">
+            <Label fx:id="agentTitle" styleClass="title-label" text="agent Application">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
