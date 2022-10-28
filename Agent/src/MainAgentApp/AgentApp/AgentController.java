@@ -85,37 +85,27 @@ public class AgentController {
        taskPuller.submit(()->{
            boolean successGetNewTaskSession=false;
            while(!successGetNewTaskSession&&gameStatus==GameStatus.ACTIVE) {
-               System.out.println(counter + " # Getting new Task Session...");
                String urlContext = String.format(QUERY_FORMAT, GET_TASKS, AMOUNT, agentDataDTO.getTasksSessionAmount());
                HttpResponseDTO responseDTO = httpClientUtil.doGetSync(urlContext);
-               System.out.println(counter + " # received Task Session...");
                if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
                    if (responseDTO.getCode() == HTTP_OK) {
-                       System.out.println(counter + " # received session OK!...");
                        DecryptedTask[] decryptedTaskDTOS = httpClientUtil.getGson().fromJson(responseDTO.getBody(), DecryptedTask[].class);
-                       System.out.println(counter + " # after making json!...length:" + decryptedTaskDTOS.length);
-
                        if (decryptedTaskDTOS.length > 0) {
-                           System.out.println("first task is:   " + decryptedTaskDTOS[0]);
                            uiUpdater.updatePulledTaskAmount(decryptedTaskDTOS.length);
-                           System.out.println("after update pulled amount..");
                            decryptionAgent.addTasksToAgent(decryptedTaskDTOS);
-                           System.out.println("after task pushed....");
                            successGetNewTaskSession=true;
                        }else
                        {
                            try {
                                Thread.sleep(REFRESH_RATE);
                            } catch (InterruptedException ignored) {}
-
                        }
-                       System.out.println(counter + " # finish pushed !...");
                    } else {
-                       System.out.println(counter + " # received session NOT_OK!..." + responseDTO.getCode());
+
                        createErrorAlertWindow("Pull task from ally", responseDTO.getBody());
                    }
                } else {
-                   System.out.println(counter + " # general error!");
+
                    createErrorAlertWindow("Pull task from ally", "General error");
                }
            }

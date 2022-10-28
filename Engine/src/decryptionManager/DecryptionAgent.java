@@ -107,7 +107,7 @@ public class DecryptionAgent {
 
     public Supplier<TaskFinishDataDTO> getFinishQueueSupplier()
     {
-        return new TaskFinishSupplier(successfulDecryption,isContestEnded);
+        return new TaskFinishSupplier(successfulDecryption);
     }
 
     public void addTasksToAgent(DecryptedTask[] decryptedTasksArray)
