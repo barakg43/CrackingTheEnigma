@@ -23,14 +23,14 @@ public class SingleBattleFieldController {
 
     private  CodeFormatDTO codeFormatConfiguration;
     private  String cipheredString;
-    private final Engine enigmaEngine;
+    private Engine enigmaEngine;
     private ContestDataManager contestDataManager;
 
     private final String uboatName;
     public SingleBattleFieldController(String uboatName, Consumer<String> startContestInAllies) {
         this.startContestInAllies = startContestInAllies;
         alliesDataSet=new HashSet<>();
-        enigmaEngine=new EnigmaEngine();
+        enigmaEngine=null;
         this.uboatName=uboatName;
         winnerName="";
     }
@@ -75,11 +75,11 @@ public class SingleBattleFieldController {
     }
 
 
-    public void assignXMLFileToUboat(String XmlContent)
+    public void assignXMLFileToUboat(String XmlContent,Engine loadedEngine)
     {
 
         xmlFileContent=XmlContent;
-        enigmaEngine.loadXMLFileFromStringContent(XmlContent);
+        enigmaEngine=loadedEngine;
         contestDataManager=new ContestDataManager(uboatName,enigmaEngine.getBattlefieldDataDTO());
     }
 

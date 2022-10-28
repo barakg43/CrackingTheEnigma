@@ -33,8 +33,8 @@ public class AgentController {
 
 
     public VBox agentVbox;
-    @FXML private GridPane ContestAndTeamData;
-    @FXML private ContestTeamDataController ContestAndTeamDataController;
+    @FXML private GridPane contestAndTeamData;
+    @FXML private ContestTeamDataController contestAndTeamDataController;
 
     @FXML private GridPane agentProgressAndStatus;
     @FXML private AgentStatusController agentProgressAndStatusController;

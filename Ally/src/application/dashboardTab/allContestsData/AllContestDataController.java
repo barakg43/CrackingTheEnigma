@@ -113,21 +113,18 @@ public class AllContestDataController {
         if(contestDataDTOList==null||contestDataDTOList.isEmpty())
             return;
 
-        battlefieldNameColumn.getColumns().clear();
-        battlefieldDataColumn.getColumns().clear();
-        allContestsDataTable.getItems().removeAll(allContestsDataTable.getItems());
-        allContestsDataTable.getItems().clear();
-        allContestsDataTable.refresh();
 
-
+        int prefHeight=50;
+        ObservableList<SingleContestRecord> singleContestRecordObservableList=FXCollections.observableArrayList();
         for(ContestDataDTO contestData:contestDataDTOList) {
             if(contestData!=null)
             {
-                allContestsDataTable.setPrefHeight(allContestsDataTable.getPrefHeight()+110);
-                allContestsDataTable.getItems().add(new SingleContestRecord(contestData));
+                singleContestRecordObservableList.add(new SingleContestRecord(contestData));
             }
-
         }
+        prefHeight+=singleContestRecordObservableList.size()*110;
+        allContestsDataTable.setPrefHeight(prefHeight);
+        allContestsDataTable.getItems().setAll(singleContestRecordObservableList);
         Optional<SingleContestRecord> lastSelectedOptional= allContestsDataTable.getItems()
                 .filtered(singleContestRecord ->
                         singleContestRecord.battlefieldName

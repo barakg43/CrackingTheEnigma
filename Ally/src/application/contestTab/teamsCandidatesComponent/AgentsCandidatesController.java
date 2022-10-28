@@ -44,7 +44,7 @@ public class AgentsCandidatesController {
     public void addAlliesDataToContestTeamTable(List<AllyCandidateDTO> alliesCandidateDTOList) {
 
         if (alliesCandidateDTOList == null||alliesCandidateDTOList.isEmpty()) {
-            System.out.println("alliesCandidateDTOList is empty!");
+           // System.out.println("alliesCandidateDTOList is empty!");
             return;
         }
         agentsCandidatesListObs= FXCollections.observableArrayList();

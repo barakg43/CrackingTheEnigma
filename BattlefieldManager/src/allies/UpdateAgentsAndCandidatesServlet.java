@@ -32,7 +32,7 @@ public class UpdateAgentsAndCandidatesServlet extends HttpServlet {
         String allyName = SessionUtils.getUsername(request);
         if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
-            response.getWriter().println("Must login as Ally first!");
+            out.println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

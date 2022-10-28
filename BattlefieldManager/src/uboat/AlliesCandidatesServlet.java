@@ -30,11 +30,11 @@ public class AlliesCandidatesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String uboatName = SessionUtils.getUsername(request);
-
+        PrintWriter out = response.getWriter();
         if (uboatName == null||!ServletUtils.getSystemManager().isUboatExist(uboatName))
         {
             if(uboatName == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -69,11 +69,11 @@ public class AlliesCandidatesServlet extends HttpServlet {
                 GameStatus gameStatus=uboatController.getContestDataDTO().getGameStatus();
                 //returning JSON objects, not HTML
                 response.setContentType("application/json");
-                try (PrintWriter out = response.getWriter()) {
+
                     String json = gson.toJson(new UboatCandidatesDTO(alliesCandidatesList,gameStatus,alliesVersionMap));
                     out.println(json);
                     out.flush();
-                }
+
                 response.setStatus(HttpServletResponse.SC_OK);
             }catch (RuntimeException e) {
                 ServletUtils.setBadRequestErrorResponse(e,response);

@@ -11,10 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 
 import static general.ConstantsHTTP.*;
 
@@ -27,11 +24,11 @@ public class ManuallyCodeConfigurationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
-
+        PrintWriter out = response.getWriter();
         if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

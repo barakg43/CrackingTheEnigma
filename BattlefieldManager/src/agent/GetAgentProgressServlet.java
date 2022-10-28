@@ -33,7 +33,7 @@ public class GetAgentProgressServlet extends HttpServlet {
         if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
 
-            response.getWriter().println("Must login as AGENT first!");
+            out.println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

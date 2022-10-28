@@ -12,6 +12,7 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.*;
 
@@ -23,9 +24,10 @@ public class ReadyToContestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
         String allyName = SessionUtils.getUsername(request);
+        PrintWriter out = response.getWriter();
         if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
-            response.getWriter().println("Must login as Ally first!");
+            out.println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -47,8 +49,8 @@ public class ReadyToContestServlet extends HttpServlet {
                     .getBattleFieldController(uboatManager);
             uboatController.checkIfAllReady();
             String totalTaskString= String.format("%.0f", allyController.getDecryptionManager().getTotalTasksAmount());
-            response.getWriter().format(SINGLE_JSON_FORMAT+"\r\n", TOTAL_TASK_AMOUNT,totalTaskString);
-            response.getWriter().flush();
+            out.format(SINGLE_JSON_FORMAT+"\r\n", TOTAL_TASK_AMOUNT,totalTaskString);
+            out.flush();
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e){
             ServletUtils.setBadRequestErrorResponse(e,response);}

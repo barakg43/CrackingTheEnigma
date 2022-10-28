@@ -5,6 +5,7 @@ import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
 import application.login.LoginController;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

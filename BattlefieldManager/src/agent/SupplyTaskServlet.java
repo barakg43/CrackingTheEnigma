@@ -27,7 +27,7 @@ public class SupplyTaskServlet extends HttpServlet {
 
         if (agentName == null || !ServletUtils.getSystemManager().isAgentExist(agentName)) {
 
-            response.getWriter().println("Must login as AGENT first!");
+            out.println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -35,7 +35,7 @@ public class SupplyTaskServlet extends HttpServlet {
 
         int amountFromParameter = ServletUtils.getIntParameter(request, AMOUNT);
         if (amountFromParameter <1) {
-            response.getWriter().println("Must use '"+AMOUNT+"' query parameter with positive in this request");
+            out.println("Must use '"+AMOUNT+"' query parameter with positive in this request");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

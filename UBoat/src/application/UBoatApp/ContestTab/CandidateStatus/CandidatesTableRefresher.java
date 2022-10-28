@@ -47,9 +47,6 @@ public class CandidatesTableRefresher extends TimerTask {
 
 //        String urlContext=String.format(QUERY_FORMAT,UPDATE_CANDIDATES,CANDIDATES_VERSION_PARAMETER,candidatesVersion);
         String body = httpClientUtil.getGson().toJson(alliesVersionMap);
-        for (String allyName:alliesVersionMap.keySet()) {
-            System.out.println(allyName +" version before:"+ alliesVersionMap.get(allyName));
-        }
 
         HttpResponseDTO responseDTO = httpClientUtil.doPostSync(UPDATE_CANDIDATES,body );
 
@@ -82,9 +79,7 @@ public class CandidatesTableRefresher extends TimerTask {
         } else
             createErrorAlertWindow("Candidates And Agent Progress", "General error");
 
-        for (String allyName:alliesVersionMap.keySet()) {
-            System.out.println(allyName +" version after:"+ alliesVersionMap.get(allyName));
-        }
+
     }
 
 

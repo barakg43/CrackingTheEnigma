@@ -32,7 +32,7 @@ public class InputDataStringServlet extends HttpServlet {
         if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -49,7 +49,7 @@ public class InputDataStringServlet extends HttpServlet {
                .getEnigmaEngine()
                .processDataInput(inputString);
        uboatController.setContestInitConfiguration(output);
-       out.format(SINGLE_JSON_FORMAT+"\r\n",OUTPUT_PROPERTY,output);
+       out.println(String.format(SINGLE_JSON_FORMAT,OUTPUT_PROPERTY,output));
        out.flush();
         response.setStatus(HttpServletResponse.SC_OK);
 

@@ -86,10 +86,6 @@ public class AllyProgressController {
 
 
     }
-    public void updateMassageLabel(String massage)
-    {
-        statusMessage.setText(massage);
-    }
 
     public void updateAgentsTasksDone(long agentsTasksDone) {
 
@@ -160,6 +156,8 @@ public class AllyProgressController {
     {
         Platform.runLater(() -> {
           updateTasksAmountProduced(0);
+          updateAgentsTasksDone(0);
+
             allyAgentDataTable.getItems().clear();
             this.totalTaskAmount.setText("0");
         });

@@ -22,12 +22,12 @@ public class UpdateCandidateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
-
+        PrintWriter out = response.getWriter();
         String agentName = SessionUtils.getUsername(request);
 
         if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
-            response.getWriter().println("Must login as AGENT first!");
+            out.println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

@@ -21,11 +21,11 @@ public class ActiveTeamsListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String username = SessionUtils.getUsername(request);
-
+        PrintWriter out = response.getWriter();
         if (username == null || !ServletUtils.getSystemManager().isUboatExist(username)) {
 
             if (username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -37,12 +37,12 @@ public class ActiveTeamsListServlet extends HttpServlet {
 
             //returning JSON objects, not HTML
             response.setContentType("application/json");
-            try (PrintWriter out = response.getWriter()) {
+
                 Gson gson = ServletUtils.getGson();
                 String json = gson.toJson(activeTeamsDTO);
                 out.println(json);
                 out.flush();
-            }
+
             response.setStatus(HttpServletResponse.SC_OK);
 
         } catch (RuntimeException e) {

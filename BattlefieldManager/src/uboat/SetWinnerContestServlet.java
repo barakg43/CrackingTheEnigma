@@ -11,6 +11,7 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.*;
 
@@ -28,11 +29,11 @@ public class SetWinnerContestServlet extends HttpServlet {
 
 
         String username = SessionUtils.getUsername(request);
-
+        PrintWriter out = response.getWriter();
         if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -50,8 +51,8 @@ public class SetWinnerContestServlet extends HttpServlet {
 
         }
         else {
-            response.getWriter().println("Missing winner Json body!");
-            response.getWriter().flush();
+            out.println("Missing winner Json body!");
+            out.flush();
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         }catch (RuntimeException e) {

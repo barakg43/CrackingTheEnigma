@@ -127,7 +127,7 @@
          </ScrollPane>
          <ScrollPane fx:id="tamsCandidatesComponentPane" fitToHeight="true" fitToWidth="true">
             <content>
-                     <fx:include fx:id="tamsCandidatesComponent" source="teamsCandidatesComponent/teamsCandidates.fxml" />
+                     <fx:include fx:id="teamsCandidatesComponent" source="teamsCandidatesComponent/teamsCandidates.fxml" />
             </content>
             <HBox.margin>
                <Insets />

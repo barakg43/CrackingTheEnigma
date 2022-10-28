@@ -29,7 +29,7 @@ public class GetAgentConfigurationServlet extends HttpServlet {
         if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
             response.setContentType("text/plain");
-            response.getWriter().println("Must login as AGENT first!");
+            out.println("Must login as AGENT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

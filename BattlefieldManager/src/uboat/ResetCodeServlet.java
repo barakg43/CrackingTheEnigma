@@ -20,11 +20,11 @@ public class ResetCodeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        PrintWriter out = response.getWriter();
         String username = SessionUtils.getUsername(request);
         if (username == null || !ServletUtils.getSystemManager().isUboatExist(username)) {
             if (username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -38,12 +38,12 @@ public class ResetCodeServlet extends HttpServlet {
         //returning JSON objects, not HTML
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
-        try (PrintWriter out = response.getWriter()) {
+
             Gson gson = ServletUtils.getGson();
             String json = gson.toJson(enigmaEngine.getCodeFormat(true));
             out.println(json);
             out.flush();
-        }
+
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);
         }

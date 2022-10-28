@@ -92,7 +92,7 @@ public class CandidatesStatusController {
         for(AllyCandidateDTO allyCandidateDTO:alliesDataList) {
             for (CandidateDTO candidateDTO : allyCandidateDTO.getPossibleCandidates()) {
                 alliesDataListObs.add(new CandidateTableRow(candidateDTO, allyCandidateDTO.getAllyName()));
-                if(candidateDTO.getOutput().equals(originalInputString.get()))
+                if(false&&candidateDTO.getOutput().equals(originalInputString.get()))//TODO :!!
                     winnerAllyTeamConsumer.accept( allyCandidateDTO.getAllyName());
             }
         }
@@ -110,7 +110,7 @@ public class CandidatesStatusController {
     public void startCandidatesRefresher(Set<String> alliesName) {
     listRefresher = new CandidatesTableRefresher(this::addAllyDataToCandidatesTable,alliesName);
     timer = new Timer();
-    timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+    timer.schedule(listRefresher, FAST_REFRESH_RATE, FAST_REFRESH_RATE);
 }
 
     //   @Override

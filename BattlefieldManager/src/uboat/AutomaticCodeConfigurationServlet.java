@@ -10,6 +10,7 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.*;
 
@@ -21,11 +22,11 @@ public class AutomaticCodeConfigurationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String username = SessionUtils.getUsername(request);
-
+        PrintWriter out = response.getWriter();
         if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
             if(username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

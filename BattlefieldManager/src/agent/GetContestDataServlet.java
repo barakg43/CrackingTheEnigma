@@ -30,8 +30,8 @@ public class GetContestDataServlet extends HttpServlet {
         if (agentName == null||!ServletUtils.getSystemManager().isAgentExist(agentName))
         {
 
-            response.getWriter().println("Must login as AGENT first!");
-            response.getWriter().flush();
+            out.println("Must login as AGENT first!");
+            out.flush();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

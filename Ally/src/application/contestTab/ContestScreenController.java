@@ -21,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -55,8 +54,8 @@ public class ContestScreenController {
     @FXML private AllyProgressController teamsAgentsComponentController;
 
 
-    @FXML private AnchorPane tamsCandidatesComponent;
-    @FXML private AgentsCandidatesController tamsCandidatesComponentController;
+    @FXML private AnchorPane teamsCandidatesComponent;
+    @FXML private AgentsCandidatesController teamsCandidatesComponentController;
 
     @FXML
     private Label statusAmountLabel;
@@ -231,7 +230,7 @@ public class ContestScreenController {
                                                                                          this::updateAgentsTasksDone);
 
         timer = new Timer();
-        timer.schedule(agentsAndCandidatesListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(agentsAndCandidatesListRefresher, FAST_REFRESH_RATE, FAST_REFRESH_RATE);
     }
 
     public void stopAgentsProgressAndCandidatesRefresher() {

@@ -8,6 +8,7 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.ALLY_CONTEXT;
 import static general.ConstantsHTTP.START_TASKS_CREATOR;
@@ -20,10 +21,11 @@ public class StartTaskCreatorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String allyName = SessionUtils.getUsername(request);
+        PrintWriter out = response.getWriter();
         if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
             response.setContentType("text/plain");
-            response.getWriter().println("Must login as Ally first!");
+            out.println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

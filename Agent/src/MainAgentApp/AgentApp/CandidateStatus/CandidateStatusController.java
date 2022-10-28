@@ -32,6 +32,7 @@ public class CandidateStatusController {
     {
         for(CandidateDTO candidateDTO: taskFinishDataDTO.getPossibleCandidates())
         {
+            System.out.println("adding new tile...");
             addNewTile(candidateDTO);
         }
     }

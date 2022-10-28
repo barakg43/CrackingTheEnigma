@@ -29,7 +29,7 @@ public class GetContestWinnerServlet extends HttpServlet {
                         !ServletUtils.getSystemManager().isAllyExist(username)))
         {
 
-            response.getWriter().println("Must login as AGENT or ALLY first!");
+            out.println("Must login as AGENT or ALLY first!");
             response.getWriter().flush();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;

@@ -34,7 +34,7 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
         if (allyName == null||!ServletUtils.getSystemManager().isAllyExist(allyName))
         {
             response.setContentType("text/plain");
-            response.getWriter().println("Must login as Ally first!");
+            out.println("Must login as Ally first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -43,6 +43,7 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
 
             Gson gson = ServletUtils.getGson();
             String uboatManager=ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
+
             SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
                     .getBattleFieldController(uboatManager);
             List<AllyDataDTO> allyDataDTOList= uboatController.getAlliesDataListForUboat();

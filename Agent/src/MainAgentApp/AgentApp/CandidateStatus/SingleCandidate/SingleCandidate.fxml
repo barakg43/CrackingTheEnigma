@@ -7,31 +7,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
-
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="371.0" stylesheets="@../../AgentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainAgentApp.AgentApp.CandidateStatus.SingleCandidate.SingleCandidateController">
-   <children>
-      <Pane prefHeight="54.0" prefWidth="398.0">
-         <children>
-            <Label layoutX="14.0" layoutY="14.0" styleClass="title-label" text="String:" />
-            <TextFlow fx:id="outputString" layoutX="91.0" layoutY="17.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" styleClass="title-label" />
-         </children>
-      </Pane>
-      <Pane prefHeight="49.0" prefWidth="398.0">
-         <children>
-            <Label layoutX="14.0" layoutY="14.0" styleClass="title-label" text="Task Number:" />
-            <Label fx:id="taskNumberLabel" layoutX="157.0" layoutY="14.0" styleClass="title-label" />
-         </children>
-      </Pane>
-      <ScrollPane fitToWidth="true" prefHeight="77.0" prefWidth="398.0">
-         <content>
-            <FlowPane prefHeight="71.0" prefWidth="396.0">
-               <children>
-                  <fx:include fx:id="simpleCodeFormat" source="../../SimpleCode/simpleCodeVersion.fxml" />
-               </children>
-            </FlowPane>
-         </content>
-      </ScrollPane>
-   </children>
-
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0"
+      stylesheets="@../../AgentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="MainAgentApp.AgentApp.CandidateStatus.SingleCandidate.SingleCandidateController">
+   <AnchorPane>
+      <HBox layoutX="23.0" spacing="10.0">
+         <Label styleClass="title-label" text="Candidate:"/>
+         <TextFlow fx:id="outputString" styleClass="title-label"/>
+      </HBox>
+   </AnchorPane>
+   <ScrollPane fitToWidth="true" prefHeight="77.0" prefWidth="398.0">
+      <FlowPane prefHeight="71.0" prefWidth="396.0">
+         <fx:include fx:id="simpleCodeFormat" source="../../SimpleCode/simpleCodeVersion.fxml"/>
+      </FlowPane>
+   </ScrollPane>
 </VBox>

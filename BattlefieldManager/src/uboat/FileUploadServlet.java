@@ -38,15 +38,15 @@ public class FileUploadServlet extends HttpServlet {
 
         if(parts.size()!=1) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("ERROR! must upload only 1 XML file.");
-            response.getWriter().flush();
+            out.println("ERROR! must upload only 1 XML file.");
+            out.flush();
         }
         String username = SessionUtils.getUsername(request);
 
         if (username == null||!ServletUtils.getSystemManager().isUboatExist(username))
         {
-            if(username == null)
-                response.getWriter().println("Must login as UBOAT first!");
+
+                out.println("Must login as UBOAT first!");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -57,23 +57,24 @@ public class FileUploadServlet extends HttpServlet {
         {
             try {
                 SingleBattleFieldController uboatController= ServletUtils.getSystemManager().getBattleFieldController(username);
-//
+                    Engine engine=new EnigmaEngine();
 
+                    String xmlContent=readFromInputStream(input.getInputStream());
 
-                Engine engine=uboatController.getEnigmaEngine();
-
-
-                    uboatController.assignXMLFileToUboat(
-                            readFromInputStream(input.getInputStream()));
-                    String battleFieldName=uboatController.getBattlefieldDataDTO().getBattlefieldName();
-                    if(ServletUtils.getSystemManager().ifBattleFieldExist(battleFieldName))
-                    {
-                        ServletUtils.getSystemManager().removeUserName(username,ApplicationType.UBOAT);
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.getOutputStream().print("Battlefield " + battleFieldName + " already exists. Please choose a different battlefield.");
-                        return;
+                    engine.loadXMLFileFromStringContent(xmlContent);
+                    String battleFieldName=engine.getBattlefieldDataDTO().getBattlefieldName();
+                    synchronized (getServletContext()) {
+                        if (ServletUtils.getSystemManager().ifBattleFieldExist(battleFieldName)) {
+                            //    ServletUtils.getSystemManager().removeUserName(username,ApplicationType.UBOAT);
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            out.print("Battlefield " + battleFieldName + " already exists. Please choose a different battlefield.");
+                            out.flush();
+                            return;
+                        }
+                        ServletUtils.getSystemManager().addNewBattleField(battleFieldName);
                     }
-                    ServletUtils.getSystemManager().addNewBattleField(battleFieldName);
+                    uboatController.assignXMLFileToUboat(xmlContent,engine);
+
                     String machineDataContent = ServletUtils.getGson().toJson(engine.getMachineData());
                     out.println(machineDataContent);
                     out.flush();
