@@ -73,17 +73,20 @@ public class AllyProgressController {
     }
 
     public void setTotalTaskAmount(long totalTaskAmount) {
+        produceProgressProperty.bind(Bindings.divide(tasksProducedProperty,totalTaskAmount));
         System.out.println("total task amount:"+totalTaskAmount);
        Platform.runLater(()->this.totalTaskAmount.setText(String.format("%,d",totalTaskAmount)));
         totalTaskAmountValue=totalTaskAmount;
-        produceProgressProperty.bind(Bindings.divide(tasksProducedProperty,totalTaskAmount));
-        doneProgressProperty.bind(Bindings.divide(tasksDoneProperty,totalTaskAmount));
+
+
 
     }
 
     public void updateTasksAmountProduced(long tasksProduced) {
         System.out.println("task produced:"+tasksProduced);
-        tasksProducedProperty.set(tasksProduced);
+
+                tasksProducedProperty.set(tasksProduced);
+
 
     }
     public void updateMassageLabel(String massage)
@@ -92,25 +95,31 @@ public class AllyProgressController {
     }
 
     public void updateAgentsTasksDone(long agentsTasksDone) {
-        Platform.runLater(() ->
-                    agentsTasksDoneLabel.setText(String.valueOf(agentsTasksDone)) );
-       // doneProgressProperty.set(agentsTasksDone*1.0/totalTaskAmountValue);
-        tasksDoneProperty.set(agentsTasksDone);
+
+
+        Platform.runLater(() -> {
+
+            tasksAmountProduced.textProperty().bind(tasksProducedProperty.asString());
+            //     doneProgressProperty.bind(Bindings.divide(tasksDoneProperty,totalTaskAmountValue));
+
+            doneProgressProperty.set(agentsTasksDone * 1.0 / totalTaskAmountValue);
+
+
+            agentsTasksDoneLabel.setText(String.valueOf(agentsTasksDone));
+            tasksDoneProperty.set(agentsTasksDone);
+        });
+
+
     }
 
     private void bindProgressUIComponents() {
-        // task message
-
-        // task progress bar
+        produceProgressProperty.bind(Bindings.divide(
+                tasksProducedProperty,
+                totalTaskAmountValue));
 
         agentsTasksProgressBar.progressProperty().bind(doneProgressProperty);
         taskProducedProgressBar.progressProperty().bind(produceProgressProperty);
 
-        tasksAmountProduced.textProperty().bind(tasksProducedProperty.asString());
-
-        produceProgressProperty.bind(Bindings.divide(
-                tasksProducedProperty,
-                totalTaskAmountValue));
 
         agentsTasksDonePercent.textProperty().bind(Bindings.concat(
                 Bindings.format(

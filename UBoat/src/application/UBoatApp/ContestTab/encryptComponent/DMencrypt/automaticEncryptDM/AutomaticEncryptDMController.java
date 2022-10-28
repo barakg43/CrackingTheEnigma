@@ -109,6 +109,7 @@ public class AutomaticEncryptDMController {
     }
 
     public void clearListView() {
+
         encryptController.clearListView();
     }
 

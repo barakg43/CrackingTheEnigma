@@ -16,7 +16,7 @@
          <children>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="373.0" prefWidth="701.0" spacing="20.0">
                <children>
-                  <fx:include fx:id="codeEncryptComponent" prefHeight="350.0" source="DMencrypt/automaticEncryptDM/automaticEncrypteDM.fxml" />
+                  <fx:include fx:id="codeEncryptComponent" source="DMencrypt/automaticEncryptDM/automaticEncrypteDM.fxml" />
                   <AnchorPane>
                      <children>
                         <Button id="ready-button" fx:id="readyButton" layoutX="57.0" mnemonicParsing="false" onAction="#startBattlefieldContest" prefHeight="36.0" prefWidth="103.0" stylesheets="@../contestCSS.css" text="ready" />
