@@ -10,10 +10,7 @@ import general.ApplicationType;
 import general.UserListDTO;
 import uboat.SingleBattleFieldController;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -29,10 +26,13 @@ public class SystemManager {
     private final Map<String, SingleAllyController> allyControllerMap;
     private final Map<String, SingleBattleFieldController> uboatMapControllerSet;
 
+    private final Set<String> battleFieldSet;
+
     public SystemManager() {
         uboatMapControllerSet = new HashMap<>();
         allyControllerMap=new HashMap<>();
         agentToAllyMap=new HashMap<>();
+        battleFieldSet=new HashSet<>();
 
 
     }
@@ -56,7 +56,6 @@ public class SystemManager {
                 allyControllerMap.put(username,new SingleAllyController(username));
                 break;
         }
-
     }
 
 
@@ -87,6 +86,12 @@ public class SystemManager {
                 allyControllerMap.containsKey(username) ||
                 agentToAllyMap.containsKey(username);
     }
+
+    public boolean ifBattleFieldExist(String battleFieldName)
+    {
+        return battleFieldSet.contains(battleFieldName);
+    }
+
     public boolean isUboatExist(String uboatName)
     {
         return uboatMapControllerSet.containsKey(uboatName);
@@ -156,4 +161,7 @@ public class SystemManager {
     }
 
 
+    public void addNewBattleField(String battleFieldName) {
+        battleFieldSet.add(battleFieldName);
+    }
 }

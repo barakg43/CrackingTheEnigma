@@ -44,14 +44,17 @@ public class SupplyTaskServlet extends HttpServlet {
 
         try {
             Gson gson = ServletUtils.getGson();
-            String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
-            List<SimpleDecryptedTaskDTO> taskList = ServletUtils.getSystemManager()
-                    .getSingleAllyController(allyName)
-                    .getDecryptionManager()
-                    .getTasksForAgentSession(amountFromParameter);
-            String json = gson.toJson(taskList);
-            out.println(json);
-            out.flush();
+
+            synchronized (getServletContext()) {
+                String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
+                List<SimpleDecryptedTaskDTO> taskList = ServletUtils.getSystemManager()
+                        .getSingleAllyController(allyName)
+                        .getDecryptionManager()
+                        .getTasksForAgentSession(amountFromParameter);
+                String json = gson.toJson(taskList);
+                out.println(json);
+                out.flush();
+            }
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (RuntimeException e) {

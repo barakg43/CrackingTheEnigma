@@ -2,8 +2,13 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<GridPane maxWidth="1.7976931348623157E308" prefHeight="163.0" prefWidth="600.0" styleClass="Grid-Pane" stylesheets="/MainAgentApp/AgentApp/AgentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxWidth="1.7976931348623157E308" prefHeight="275.0" prefWidth="600.0" styleClass="Grid-Pane" stylesheets="/MainAgentApp/AgentApp/AgentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainAgentApp.AgentApp.ContestTeamData.ContestTeamDataController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="216.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0" prefWidth="384.0" />
@@ -19,12 +24,16 @@
          </GridPane.margin>
       </Label>
       <Label fx:id="alliesName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
-      <Label styleClass="title-label" text="Contest details:" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets left="15.0" />
-         </GridPane.margin>
-      </Label>
-      <AnchorPane prefHeight="208.0" prefWidth="448.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <Label maxWidth="1.7976931348623157E308" prefHeight="33.0" styleClass="title-label" text="Contest details:">
+               <HBox.margin>
+                  <Insets left="10.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <AnchorPane prefHeight="205.0" prefWidth="448.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <fx:include fx:id="contestDataComponent" source="contestDataComponent/contestDataComponent.fxml" GridPane.columnIndex="1" />
          </children>

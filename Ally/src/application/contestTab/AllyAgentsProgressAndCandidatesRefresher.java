@@ -24,19 +24,22 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
     private final Consumer<Long> taskProducedConsumer;
     private final Consumer<GameStatus> gameStatusConsumer;
     private final CustomHttpClient httpClientUtil;
+    private final Consumer<Long> agentsTaskDone;
     private Integer candidatesVersion;
     private final AtomicInteger counter=new AtomicInteger(0);
 
     public AllyAgentsProgressAndCandidatesRefresher(Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer,
                                                     Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer,
                                                     Consumer<Long> taskProducedConsumer,
-                                                    Consumer<GameStatus> gameStatusConsumer) {
+                                                    Consumer<GameStatus> gameStatusConsumer,Consumer<Long> agentsTaskDone) {
+
         this.allyCandidatesListConsumer = allyCandidatesListConsumer;
         this.teamAgentsConsumer=teamAgentsConsumer;
         this.taskProducedConsumer = taskProducedConsumer;
         this.gameStatusConsumer = gameStatusConsumer;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
         candidatesVersion=0;
+        this.agentsTaskDone=agentsTaskDone;
     }
 
     @Override
@@ -58,7 +61,16 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
                 }
                 gameStatusConsumer.accept(allyContestDataAndTeams.getGameStatus());
                 if(allyContestDataAndTeams.getAgentsDataProgressDTOS()!=null)
+                {
                     teamAgentsConsumer.accept(allyContestDataAndTeams.getAgentsDataProgressDTOS());}
+
+                List<AgentsTeamProgressDTO> agentsTeamProgressDTOS=allyContestDataAndTeams.getAgentsDataProgressDTOS();
+                long count=0L;
+                for (AgentsTeamProgressDTO agentTeamDTO: agentsTeamProgressDTOS) {
+                    count+=(agentTeamDTO.getReceivedTaskAmount()-agentTeamDTO.getWaitingTaskAmount());
+                }
+                    agentsTaskDone.accept(count);
+                }
             else
                 createErrorAlertWindow("Candidates And Agent Progress",responseDTO.getBody());
         }else

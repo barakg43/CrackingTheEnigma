@@ -30,6 +30,8 @@ public class EnigmaEngine implements Engine , Serializable {
     private int agentAmount;
     private StatisticsData statisticsData;
     private BattlefieldDataDTO battlefieldDataDTO;
+
+
     private Set<String> loadedBattlefieldName;
 
     private Reflector selectedReflector = null;
@@ -61,7 +63,9 @@ public class EnigmaEngine implements Engine , Serializable {
         loadedBattlefieldName=new HashSet<>();
         plugBoardPairs=new ArrayList<>();
     }
-
+    public Set<String> getLoadedBattlefieldName() {
+        return loadedBattlefieldName;
+    }
     public void resetAllData()
     {
 
@@ -545,6 +549,7 @@ public class EnigmaEngine implements Engine , Serializable {
             {
                 throw new RuntimeException("the "+level+" isn't valid game level");
             }
+            loadedBattlefieldName.add(battlefieldName);
             battlefieldDataDTO=new BattlefieldDataDTO(battlefieldName,alliesAmount,gameLevel.toString());
         }
 

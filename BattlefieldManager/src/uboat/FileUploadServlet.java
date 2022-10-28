@@ -3,6 +3,9 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
+import enigmaEngine.Engine;
+import enigmaEngine.EnigmaEngine;
+import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -54,14 +57,28 @@ public class FileUploadServlet extends HttpServlet {
         {
             try {
                 SingleBattleFieldController uboatController= ServletUtils.getSystemManager().getBattleFieldController(username);
-                uboatController.assignXMLFileToUboat(
-                                readFromInputStream(input.getInputStream()));
-                String machineDataContent= ServletUtils.getGson().toJson(uboatController
-                                .getEnigmaEngine()
-                                .getMachineData());
-                out.println(machineDataContent);
-                out.flush();
-                response.setStatus(HttpServletResponse.SC_OK);
+//
+
+
+                Engine engine=uboatController.getEnigmaEngine();
+
+
+                    uboatController.assignXMLFileToUboat(
+                            readFromInputStream(input.getInputStream()));
+                    String battleFieldName=uboatController.getBattlefieldDataDTO().getBattlefieldName();
+                    if(ServletUtils.getSystemManager().ifBattleFieldExist(battleFieldName))
+                    {
+                        ServletUtils.getSystemManager().removeUserName(username,ApplicationType.UBOAT);
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.getOutputStream().print("Battlefield " + battleFieldName + " already exists. Please choose a different battlefield.");
+                        return;
+                    }
+                    ServletUtils.getSystemManager().addNewBattleField(battleFieldName);
+                    String machineDataContent = ServletUtils.getGson().toJson(engine.getMachineData());
+                    out.println(machineDataContent);
+                    out.flush();
+                    response.setStatus(HttpServletResponse.SC_OK);
+
                // out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
             }
             catch (RuntimeException e) {

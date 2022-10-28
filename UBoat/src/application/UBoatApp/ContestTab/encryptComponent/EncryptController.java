@@ -146,13 +146,16 @@ public class EncryptController {
 
     public void deleteButtonOnAction(ActionEvent ignoredActionEvent) {
         searchBox.clear();
+        clearListView();
+        contestController.setDictionaryList();
     }
 
     public void clearAllData() {
         simpleCodeComponentController.clearCurrentCodeView();
-       codeEncryptComponentController.clearListView();
 
-     //   clearListView();
+        codeEncryptComponentController.clearListView();
+        clearListView();
+
         codeEncryptComponentController.resetAllData();
 
     }
@@ -177,9 +180,6 @@ public class EncryptController {
     public void clearListView() {
 
         dictionaryListView.getSelectionModel().clearSelection();
-        dictionaryListView.getItems().clear();
-        // dictionaryListView.getSelectionModel().getSelectedItems().removeAll();
-
     }
 
 

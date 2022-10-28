@@ -167,7 +167,7 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseBody = CustomHttpClient.getResponseBodyAsString(response);
+            String responseBody = CustomHttpClient.getResponseBodyAsString(response);
                 if (response.code() != HTTP_OK) {
                     UBoatAppController.createErrorAlertWindow("Upload file to Server",responseBody);
                 } else {
@@ -176,7 +176,9 @@ public class HttpClientAdapter {
                     wordsSet.clear();
                     wordsSet.addAll(machineData.getDictionaryWords());
                     updateFileSettings.accept(filePath);
+
                 }
+
             }
         });
     }

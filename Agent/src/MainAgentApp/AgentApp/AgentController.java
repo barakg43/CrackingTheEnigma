@@ -12,6 +12,7 @@ import decryptionManager.DecryptionAgent;
 import decryptionManager.components.DecryptedTask;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
+
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -20,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,8 +32,10 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class AgentController {
 
 
-    @FXML private GridPane contestAndTeamData;
-    @FXML private ContestTeamDataController contestAndTeamDataController;
+    public VBox agentVbox;
+    @FXML private GridPane ContestAndTeamData;
+    @FXML private ContestTeamDataController ContestAndTeamDataController;
+
     @FXML private GridPane agentProgressAndStatus;
     @FXML private AgentStatusController agentProgressAndStatusController;
     @FXML private ScrollPane agentsCandidates;
@@ -71,6 +75,8 @@ public class AgentController {
 
         //agentProgressAndStatus.prefHeightProperty().bind(Bindings.divide(heightProperty,4));
         agentsCandidates.prefWidthProperty().bind(widthProperty);
+        agentsCandidatesController.bindComponentsWidthToScene(widthProperty,heightProperty);
+        agentVbox.prefWidthProperty().bind(widthProperty);
         //agentsCandidates.prefHeightProperty().bind(Bindings.divide(heightProperty,3));
     }
     public void setAgentInfo(AgentDataDTO agentDataDTO)
@@ -81,6 +87,7 @@ public class AgentController {
     }
     private void getNewTasksSession()
     {
+
         System.out.println(++counter +" # before getting new Task Session...");
        taskPuller.submit(()->{
            boolean successGetNewTaskSession=false;
@@ -110,6 +117,7 @@ public class AgentController {
                }
            }
        });
+
     }
     public void setMainController(MainAgentController mainAgentController) {
         this.mainController=mainAgentController;

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.contestTab.teamsCandidatesComponent.AgentsCandidatesController">
-    <TableView fx:id="agentsCandidatesTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0">
-      <columns>
-          <TableColumn fx:id="agentNameColumn" prefWidth="144.0" text="agent Name" />
-         <TableColumn fx:id="outputStringColumn" prefWidth="255.0" text="Possible Output String" />
-          <TableColumn fx:id="codeConfColumn" prefWidth="431.0" text="Code Configuration" />
-      </columns>
-        <columnResizePolicy>
-          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-        </columnResizePolicy>
-    </TableView>
-</ScrollPane>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.contestTab.teamsCandidatesComponent.AgentsCandidatesController">
+   <children>
+       <TableView fx:id="agentsCandidatesTable" maxHeight="-Infinity" prefHeight="400.0" prefWidth="700.0">
+         <columns>
+             <TableColumn fx:id="agentNameColumn" prefWidth="144.0" text="agent Name" />
+            <TableColumn fx:id="outputStringColumn" prefWidth="255.0" text="Possible Output String" />
+             <TableColumn fx:id="codeConfColumn" prefWidth="431.0" text="Code Configuration" />
+         </columns>
+           <columnResizePolicy>
+             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+           </columnResizePolicy>
+       </TableView>
+   </children>
+</AnchorPane>

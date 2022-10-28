@@ -77,6 +77,7 @@ public class HttpClientAdapter {
             }
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+
                 String body=CustomHttpClient.getResponseBodyAsString(response);
                 try {
                 if(!body.isEmpty()) {
@@ -90,7 +91,9 @@ public class HttpClientAdapter {
 
                             }
                         } else
+
                             createErrorAlertWindow("Ready to Start -Ally","missing "+TOTAL_TASK_AMOUNT+" property");
+
                 }catch(RuntimeException e)
                 {
                     createErrorAlertWindow("Ready to Start -Ally", e.getMessage());

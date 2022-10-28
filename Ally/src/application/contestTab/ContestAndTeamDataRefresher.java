@@ -43,7 +43,10 @@ public class ContestAndTeamDataRefresher extends TimerTask {
             if(responseDTO.getCode()==HTTP_OK) {
                 AllyContestDataAndTeamsDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(responseDTO.getBody(),(AllyContestDataAndTeamsDTO.class));
                 allyDataList.accept(allyContestDataAndTeams.getOtherAllyDataDTOList());
-                contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());}
+                contestDataDTOConsumer.accept(allyContestDataAndTeams.getContestDataDTO());
+
+
+            }
             else
                 createErrorAlertWindow("Update Contest And Teams",responseDTO.getBody());
         }else

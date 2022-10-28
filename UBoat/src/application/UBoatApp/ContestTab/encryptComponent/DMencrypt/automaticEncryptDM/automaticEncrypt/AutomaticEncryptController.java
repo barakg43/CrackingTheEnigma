@@ -78,9 +78,11 @@ public class AutomaticEncryptController {
         {
             Platform.runLater(()->outputProperty.setValue(output));
         }
-        @FXML public void clearTextFieldInput(ActionEvent event) {
-             stringInputTextField.clear();
 
+        @FXML public void clearTextFieldInput(ActionEvent event) {
+             stringInputTextField.setText("");
+
+            automaticEncryptDMController.clearListView();
              if(automaticEncryptDMController!=null)
                     automaticEncryptDMController.clearOutputInputLabels();
         }
