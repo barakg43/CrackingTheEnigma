@@ -12,6 +12,10 @@ public class AllyDataManager extends AllyDataDTO {
     {
         agentsAmount++;
     }
+    public void increaseAgentNumber(int amount)
+    {
+        agentsAmount+=amount;
+    }
     public void setTaskSize(int taskSize) {
        this.taskSize=taskSize;
     }

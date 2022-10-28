@@ -53,10 +53,7 @@ public class AgentController {
 
     @FXML
     public void initialize() {
-
         contestAndTeamDataController.setAgentController(this);
-
-
     }
     public void resetData() {
         contestAndTeamDataController.resetData();
@@ -136,8 +133,6 @@ public class AgentController {
 
     }
 
-
-
     public void setGameStatus(GameStatus gameStatus)
     {
         this.gameStatus = gameStatus;
@@ -176,6 +171,7 @@ public class AgentController {
             ButtonType result = alert.getResult();
             if (result != null && result == clear) {
                 {
+                    taskPuller.shutdownNow();
                     agentsCandidatesController.clearAllTiles();
                     resetData();
                 }

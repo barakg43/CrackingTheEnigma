@@ -211,6 +211,24 @@ public class HttpClientAdapter {
         });
 
     }
+    public static void logoffUboat(Consumer<Boolean> isSuccess) {
+        HTTP_CLIENT.doPostASync(LOGOUT,"", new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UBoatAppController.createErrorAlertWindow("Logoff", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                String body=CustomHttpClient.getResponseBodyAsString(response);
+                isSuccess.accept(response.code()==HTTP_OK);
+                if(response.code()!=HTTP_OK)
+                    UBoatAppController.createErrorAlertWindow("Logoff", "Error when trying to logoff from contest\n"+body);
+            }
+        });
+
+    }
+
 
     public static void setCodeManually(Consumer<AllCodeFormatDTO> allCodeFormatDTOConsumer, CodeFormatDTO selectedCode) {
 

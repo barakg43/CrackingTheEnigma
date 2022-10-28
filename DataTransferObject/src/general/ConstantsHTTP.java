@@ -27,6 +27,7 @@ public class ConstantsHTTP {
     public final static String FULL_SERVER_PATH = BASE_URL + CONTEXT_PATH;
     /**################ Common URLs ####################**/
     public final static String LOGIN = "/login";
+    public final static String LOGOUT = "/logout";
     public static final String USER_LIST = "/user-list";
     public static final String  UPDATE_CANDIDATES="/update-candidates";
 //    public static final String CONTEST_DATA="/update-contest-data";

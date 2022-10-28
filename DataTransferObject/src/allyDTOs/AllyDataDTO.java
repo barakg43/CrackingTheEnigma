@@ -9,6 +9,8 @@ public class AllyDataDTO {
         READY("ready"),
         WAITING_FOR_AGENT("waiting for agents...");
 
+
+
         final String status;
         Status(String level) {
             status=level;
