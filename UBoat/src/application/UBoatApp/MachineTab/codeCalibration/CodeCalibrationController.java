@@ -237,8 +237,7 @@ public class CodeCalibrationController {
     }
 
     public void SelectedReflectorActionListener(ActionEvent actionEvent) {
-       // uBoatMachineController.getIsCodeSelectedByUser().set(true);
-        // isSelected.set(true);
+
         uBoatMachineController.getShowCodeDetails().set(true);
     }
 

@@ -1,15 +1,12 @@
 package allies;
 
 
-
 import Ally.SingleAllyController;
 import UBoatDTO.GameStatus;
+import allyDTOs.AgentsTeamProgressDTO;
 import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyCandidateDTO;
-import allyDTOs.AgentsTeamProgressDTO;
-import allyDTOs.AllyDataDTO;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,10 +15,9 @@ import uboat.SingleBattleFieldController;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 import static general.ConstantsHTTP.*;
 

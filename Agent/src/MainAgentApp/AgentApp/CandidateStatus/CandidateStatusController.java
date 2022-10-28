@@ -2,25 +2,15 @@ package MainAgentApp.AgentApp.CandidateStatus;
 
 
 import MainAgentApp.AgentApp.CandidateStatus.SingleCandidate.SingleCandidateController;
-import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.CommonResources;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
-
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static general.ConstantsHTTP.FAST_REFRESH_RATE;
-import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class CandidateStatusController {
 

@@ -1,13 +1,11 @@
 package application.dashboardTab;
 
 import agent.AgentDataDTO;
-import allyDTOs.AllyContestDataAndTeamsDTO;
 import allyDTOs.AllyDashboardScreenDTO;
 import allyDTOs.ContestDataDTO;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
 
 import java.util.List;
 import java.util.TimerTask;
@@ -15,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static application.ApplicationController.createErrorAlertWindow;
-import static general.ConstantsHTTP.UPDATE_CONTEST;
 import static general.ConstantsHTTP.UPDATE_DASHBOARD;
 import static java.net.HttpURLConnection.HTTP_OK;
 

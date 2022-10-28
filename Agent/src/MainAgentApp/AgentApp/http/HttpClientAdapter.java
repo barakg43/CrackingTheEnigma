@@ -1,11 +1,9 @@
 package MainAgentApp.AgentApp.http;
 
 
-import MainAgentApp.AgentApp.AgentController;
 import MainAgentApp.agentLogin.LoginInterface;
 import agent.AgentDataDTO;
 import agent.AgentSetupConfigurationDTO;
-import allyDTOs.ContestDataDTO;
 import com.google.gson.JsonObject;
 import com.sun.istack.internal.NotNull;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
@@ -15,9 +13,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-
 import java.io.IOException;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;

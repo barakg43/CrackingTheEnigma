@@ -7,9 +7,7 @@ import application.dashboardTab.allAgentsData.TeamAgentsDataController;
 import application.dashboardTab.allContestsData.AllContestDataController;
 import application.http.HttpClientAdapter;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -68,13 +66,13 @@ public class DashboardScreenController {
         contestTableComponent.prefWidthProperty().bind(Bindings.divide(sceneWidthProperty,2));
     }
 
-    public void startListRefresher() {
+    public void startDashboardScreenRefresher() {
         listRefresher = new DashboardScreenDataRefresher(this::addAllAgentsDataToTable, this::addAllContestDataToTable );
         timer = new Timer();
         timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
-    public void stopListRefresher() {
+    public void stopDashboardScreenRefresher() {
         if (listRefresher != null && timer != null) {
             listRefresher.cancel();
             timer.cancel();

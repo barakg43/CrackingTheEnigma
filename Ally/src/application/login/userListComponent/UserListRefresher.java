@@ -5,7 +5,6 @@ import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
 
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;

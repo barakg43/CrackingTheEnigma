@@ -12,7 +12,6 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import static general.ConstantsHTTP.*;
 
@@ -48,7 +47,7 @@ public class ReadyToContestServlet extends HttpServlet {
                     .getBattleFieldController(uboatManager);
             uboatController.checkIfAllReady();
             String totalTaskString= String.format("%.0f", allyController.getDecryptionManager().getTotalTasksAmount());
-            response.getWriter().format(SINGLE_JSON_FORMAT+'\n', TOTAL_TASK_AMOUNT,totalTaskString);
+            response.getWriter().format(SINGLE_JSON_FORMAT+"\r\n", TOTAL_TASK_AMOUNT,totalTaskString);
             response.getWriter().flush();
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e){

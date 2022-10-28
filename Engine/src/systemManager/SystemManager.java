@@ -1,7 +1,6 @@
 package systemManager;
 
 import Ally.SingleAllyController;
-import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
@@ -115,8 +114,6 @@ public class SystemManager {
 
     }
 
-
-    //TODO: check this start function
     private void startContestInAssignAllies(String uboatName) {
         SingleBattleFieldController uboatController = this.getBattleFieldController(uboatName);
         CodeFormatDTO codeFormatConfiguration = uboatController.getCodeFormatConfiguration();

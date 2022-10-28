@@ -2,14 +2,11 @@ package MainAgentApp.AgentApp;
 
 import MainAgentApp.AgentApp.AgentStatus.AgentStatusController;
 import MainAgentApp.AgentApp.CandidateStatus.CandidateStatusController;
-
 import MainAgentApp.AgentApp.CandidateStatus.ProgressStatusRefresher;
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import decryptionManager.DecryptionAgent;
-
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
-
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.concurrent.Task;
@@ -191,8 +188,11 @@ public class UIUpdater {
 
     public void stopCandidateListener()
     {
-        if(candidateListenerTask.isRunning())
+        Platform.runLater(()->{
+            if(candidateListenerTask.isRunning())
             candidateListenerTask.cancel();
+        });
+
     }
 
 

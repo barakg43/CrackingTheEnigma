@@ -13,7 +13,8 @@ import decryptionManager.components.DecryptedTask;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
 import javafx.application.Platform;
-import javafx.beans.property.*;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -29,7 +30,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class AgentController {
 
 
-    @FXML private GridPane ContestAndTeamData;
+    @FXML private GridPane contestAndTeamData;
     @FXML private ContestTeamDataController contestAndTeamDataController;
     @FXML private GridPane agentProgressAndStatus;
     @FXML private AgentStatusController agentProgressAndStatusController;
@@ -56,7 +57,7 @@ public class AgentController {
     public void resetData() {
         contestAndTeamDataController.resetData();
         uiUpdater.resetAllUIData();
-       // agentsCandidatesController.clearAllTiles(); TODO: move to winner func
+
     }
 
     public void setAlliesName(String alliesName){
@@ -64,7 +65,7 @@ public class AgentController {
     }
 
     public void bindScene(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty) {
-        ContestAndTeamData.prefWidthProperty().bind(widthProperty);
+        contestAndTeamData.prefWidthProperty().bind(widthProperty);
     ///    agentsCandidates.prefHeightProperty().bind(Bindings.divide(heightProperty,4));
         agentProgressAndStatus.prefWidthProperty().bind(widthProperty);
 
@@ -152,24 +153,24 @@ public class AgentController {
             uiUpdater.startProgressStatusUpdater();
         }
         if(gameStatus==GameStatus.FINISH) {
-            System.out.println("");//TODO
-        HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup);
-
+             HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup);
         }
 
 //        ContestAndTeamDataController.updateContestData(contestDataDTO);
     }
     private void createWinnerDialogPopup(String allyNameWinner){
 
-
+    Platform.runLater(()->{
+        uiUpdater.stopCandidateListener();
+        uiUpdater.stopProgressStatusUpdater();
+        contestAndTeamDataController.stopListRefresher();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert.setTitle("The Contest Finish ");
+        alert.setTitle("Agent:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
         alert.setContentText("Clearing ALL contest data");
         ButtonType clear = new ButtonType("Clear Data");
         alert.getButtonTypes().setAll(clear);
-//            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
+    //            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
 
         // Listen for the Alert to close and get the result
         alert.setOnCloseRequest(e -> {
@@ -177,9 +178,7 @@ public class AgentController {
             ButtonType result = alert.getResult();
             if (result != null && result == clear) {
                 {
-                    uiUpdater.stopCandidateListener();
-                    uiUpdater.stopProgressStatusUpdater();
-                    contestAndTeamDataController.stopListRefresher();
+                    agentsCandidatesController.clearAllTiles();
                     resetData();
                 }
             } else {
@@ -188,6 +187,11 @@ public class AgentController {
         });
 
         alert.show();
+
+
+
+});
+
 
     }
 

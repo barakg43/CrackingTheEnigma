@@ -2,19 +2,14 @@ package MainAgentApp.AgentApp.CandidateStatus;
 
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import allyDTOs.AgentsTeamProgressDTO;
-import allyDTOs.AllyCandidateDTO;
-import allyDTOs.ContestDataDTO;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
 import javafx.beans.property.LongProperty;
 
 import java.util.TimerTask;
-import java.util.function.Consumer;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
-import static general.ConstantsHTTP.UPDATE_CONTEST;
 import static general.ConstantsHTTP.UPDATE_PROGRESS;
-import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class ProgressStatusRefresher extends TimerTask {
@@ -44,7 +39,7 @@ public class ProgressStatusRefresher extends TimerTask {
     @Override
     public void run() {
 
-          // System.out.println("#Sending agent progress to server...."); TODO : uncomment
+           System.out.println("#Sending agent progress to server....");
         AgentsTeamProgressDTO agentsTeamProgressDTO=new AgentsTeamProgressDTO(agentName,
                 pulledTaskAmountProperty.intValue(),
                 pulledTaskAmountProperty.intValue()-completeTaskAmountProperty.intValue(),

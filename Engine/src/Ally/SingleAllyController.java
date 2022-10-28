@@ -1,11 +1,10 @@
 package Ally;
 
 import agent.AgentDataDTO;
+import allyDTOs.AgentsTeamProgressDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
-import allyDTOs.AgentsTeamProgressDTO;
 import decryptionManager.DecryptionManager;
-import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.GameLevel;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import engineDTOs.MachineDataDTO;
@@ -16,7 +15,8 @@ public class SingleAllyController {
 
     private String uboatManager;
 
-    private final Set<AgentDataDTO> agentSet;
+    private final Set<AgentDataDTO> activeAgentSet;
+    private final Set<AgentDataDTO> waitingListAgentSet;
     private DecryptionManager decryptionManager;
     private final List<AllyCandidateDTO> allyCandidateDTOList;
 
@@ -27,9 +27,10 @@ public class SingleAllyController {
 
 
     public SingleAllyController(String allyName) {
-        this.agentSet = new HashSet<>();
+        this.activeAgentSet = new HashSet<>();
+        waitingListAgentSet= new HashSet<>();
         agentsTasksProgress=new HashMap<>();
-        uboatManager=null;
+        uboatManager="";
         allyDataManager=new AllyDataManager(allyName);
         allyCandidateDTOList=new ArrayList<>();
     }
@@ -41,6 +42,10 @@ public class SingleAllyController {
     public List<AgentsTeamProgressDTO> getAgentProgressDTOList()
     {
         return new ArrayList<>(agentsTasksProgress.values());
+    }
+    public void unassignedAboutManager()
+    {
+        uboatManager="";
     }
 
     public synchronized List<AllyCandidateDTO> getAllyCandidateDTOListWithVersion(int candidatesVersion) {
@@ -92,13 +97,14 @@ public class SingleAllyController {
     }
     public synchronized void assignAgentToAlly(AgentDataDTO agentDataDTO)
     {
-        if(agentSet.add(agentDataDTO))
+
+        if(activeAgentSet.add(agentDataDTO))
             allyDataManager.increaseAgentNumber();
     }
 
     public List<AgentDataDTO> getAgentDataListForAlly()
     {
-        return Collections.unmodifiableList(new ArrayList<>(agentSet));
+        return Collections.unmodifiableList(new ArrayList<>(activeAgentSet));
     }
 
 

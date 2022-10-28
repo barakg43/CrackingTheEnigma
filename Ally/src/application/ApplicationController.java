@@ -5,19 +5,12 @@ import application.contestTab.ContestScreenController;
 import application.dashboardTab.DashboardScreenController;
 import application.login.LoginController;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -112,7 +105,7 @@ public class ApplicationController {
     private void registerActionPressedInDashboard()
     {
         Platform.runLater(()->{
-            dashboardScreenController.stopListRefresher();
+            dashboardScreenController.stopDashboardScreenRefresher();
             contestScreenController.startContestAndTeamDataRefresher();
             switchToContestScreen();
         });
@@ -146,7 +139,7 @@ public class ApplicationController {
     }
 
     public void updateListRefresher() {
-        dashboardScreenController.startListRefresher();
+        dashboardScreenController.startDashboardScreenRefresher();
     }
 
 

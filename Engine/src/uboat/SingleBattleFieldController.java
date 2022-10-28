@@ -3,10 +3,8 @@ package uboat;
 import UBoatDTO.ActiveTeamsDTO;
 import UBoatDTO.GameStatus;
 import agent.AgentSetupConfigurationDTO;
-
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
-
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.CodeFormatDTO;
 import enigmaEngine.Engine;

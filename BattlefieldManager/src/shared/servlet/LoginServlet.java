@@ -3,7 +3,6 @@ package shared.servlet;
 
 import agent.AgentDataDTO;
 import com.google.gson.Gson;
-import com.sun.deploy.security.SelectableSecurityManager;
 import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

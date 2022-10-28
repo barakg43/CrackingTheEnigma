@@ -1,7 +1,6 @@
 package MainAgentApp.AgentApp.AgentStatus;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

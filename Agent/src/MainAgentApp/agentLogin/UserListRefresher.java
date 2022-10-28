@@ -5,14 +5,12 @@ import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import general.HttpResponseDTO;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
-import javafx.beans.property.BooleanProperty;
 
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
-import static general.ConstantsHTTP.ACTIVE_TEAMS_LIST;
 import static general.ConstantsHTTP.USER_LIST;
 import static java.net.HttpURLConnection.HTTP_OK;
 

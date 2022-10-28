@@ -34,5 +34,16 @@ public class ContestDataController {
                     contestData.getRequiredAlliesAmount()));
         });
     }
+    public void clearAllData()
+    {
+        Platform.runLater(() -> {
+            battlefieldNameLabel.setText("");
+            uboatUserLabel.setText("");
+            gameStatusLabel.setText("");
+            gameLevelLabel.setText("");
+            alliesAmountLabel.setText("");
+        });
+
+    }
 
 }

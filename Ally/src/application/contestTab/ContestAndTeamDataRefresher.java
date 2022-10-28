@@ -5,18 +5,15 @@ import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
-
 import http.client.CustomHttpClient;
 
-
-import java.io.IOException;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static application.ApplicationController.createErrorAlertWindow;
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.UPDATE_CONTEST;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class ContestAndTeamDataRefresher extends TimerTask {

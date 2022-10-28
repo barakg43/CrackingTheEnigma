@@ -1,10 +1,6 @@
 package application.http;
 
 
-import agent.AgentDataDTO;
-import allyDTOs.AllyContestDataAndTeamsDTO;
-import allyDTOs.AllyDashboardScreenDTO;
-import allyDTOs.ContestDataDTO;
 import application.login.LoginInterface;
 import com.google.gson.JsonObject;
 import com.sun.istack.internal.NotNull;
@@ -15,9 +11,6 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.*;
 import java.util.function.Consumer;
 
 import static application.ApplicationController.createErrorAlertWindow;

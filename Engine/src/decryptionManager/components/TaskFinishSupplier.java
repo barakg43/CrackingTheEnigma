@@ -1,6 +1,5 @@
 package decryptionManager.components;
 
-import UBoatDTO.GameStatus;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 
 import java.util.concurrent.BlockingQueue;
@@ -8,12 +7,12 @@ import java.util.function.Supplier;
 
 public class TaskFinishSupplier implements Supplier<TaskFinishDataDTO> {
     private final BlockingQueue<TaskFinishDataDTO> finishQueue;
-    private final Boolean isContestEnded;
-    public TaskFinishSupplier(BlockingQueue<TaskFinishDataDTO> queue, Boolean isContestEnded)
+
+    public TaskFinishSupplier(BlockingQueue<TaskFinishDataDTO> queue)
     {
         this.finishQueue=queue;
 
-        this.isContestEnded=isContestEnded;
+
     }
 
     @Override

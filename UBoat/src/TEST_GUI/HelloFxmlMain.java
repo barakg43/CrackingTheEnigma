@@ -1,36 +1,21 @@
 package TEST_GUI;
 
 
-import allyDTOs.AllyCandidateDTO;
-import application.Login.userListComponent.AllUserListController;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import application.http.HttpClientAdapter;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.CandidateDTO;
-import engineDTOs.DmDTO.TaskFinishDataDTO;
-import engineDTOs.PlugboardPairDTO;
-import engineDTOs.RotorInfoDTO;
-import general.UserListDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.SINGLE_JSON_FORMAT;
+import static general.ConstantsHTTP.WINNER_NAME;
 
 
 //video: 100189 - FXML Hello World [JAD, JavaFX] | Powered by SpeaCode

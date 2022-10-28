@@ -9,7 +9,8 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.ALLY_CONTEXT;
+import static general.ConstantsHTTP.START_TASKS_CREATOR;
 
 
 @WebServlet(name = "StartTaskCreatorServlet", urlPatterns = {ALLY_CONTEXT+START_TASKS_CREATOR})

@@ -1,7 +1,6 @@
 package uboat;
 
 
-
 import UBoatDTO.GameStatus;
 import com.google.gson.JsonObject;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +11,6 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Properties;
 
 import static general.ConstantsHTTP.*;
 

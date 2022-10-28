@@ -1,11 +1,8 @@
 package application.Login.userListComponent;
 
-import application.http.HttpClientAdapter;
 import general.UserListDTO;
 import http.client.CustomHttpClient;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

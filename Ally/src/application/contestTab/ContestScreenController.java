@@ -1,10 +1,10 @@
 package application.contestTab;
 
 import UBoatDTO.GameStatus;
+import allyDTOs.AgentsTeamProgressDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
-import allyDTOs.AgentsTeamProgressDTO;
 import application.ApplicationController;
 import application.contestTab.contestDataComponent.ContestDataController;
 import application.contestTab.contestsTeamsComponent.ContestTeamsController;
@@ -46,8 +46,8 @@ public class ContestScreenController {
     @FXML private AnchorPane teamsAgentsComponent;
     @FXML private AllyProgressController teamsAgentsComponentController;
 
-    @FXML private ScrollPane tamsCandidatesComponent;
-    @FXML private AgentsCandidatesController tamsCandidatesComponentController;
+    @FXML private ScrollPane teamsCandidatesComponent;
+    @FXML private AgentsCandidatesController teamsCandidatesComponentController;
     @FXML
     private Label statusAmountLabel;
     @FXML
@@ -61,7 +61,7 @@ public class ContestScreenController {
     private final BooleanProperty isAgentsAssign=new SimpleBooleanProperty(false);
     private final BooleanProperty isTaskSizePositive=new SimpleBooleanProperty(false);
     private final BooleanProperty readyDisableProperty =new SimpleBooleanProperty(false);
-    private final Integer candidatesVersion=0;
+
 
     @FXML
     private void initialize(){
@@ -89,9 +89,6 @@ public class ContestScreenController {
         taskSizeTextSpinner.editorProperty().get().setAlignment(Pos.CENTER);
     }
 
-    public void updateMassageLabel( String massage) {
-        teamsAgentsComponentController.updateMassageLabel(massage);
-    }
 
     private void updateTasksAmountProduced(long taskDoneProduced) {
 
@@ -116,7 +113,7 @@ public class ContestScreenController {
     }
 
     private void addTeamsCandidatesRecordsToTeamsTable(List<AllyCandidateDTO> agentsRecordList) {
-        tamsCandidatesComponentController.addAlliesDataToContestTeamTable(agentsRecordList);
+        teamsCandidatesComponentController.addAlliesDataToContestTeamTable(agentsRecordList);
     }
 
 
@@ -202,6 +199,7 @@ public class ContestScreenController {
         timer = new Timer();
         timer.schedule(contestAndTeamListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
+
     public void setGameStatus(GameStatus gameStatus)
     {
 
@@ -209,17 +207,23 @@ public class ContestScreenController {
             HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup);
     }
 
-    public void updateErrorMessage(String errorMessage)
-    {
-        createErrorAlertWindow("Login error",errorMessage);
-    }
 
     public void startAllyAgentsProgressAndCandidatesRefresher() {
         agentsAndCandidatesListRefresher = new AllyAgentsProgressAndCandidatesRefresher(this::addTeamsCandidatesRecordsToTeamsTable,
                                                                                          this::addAgentsRecordsToAllyAgentTable,
-                                                                                         this::updateTasksAmountProduced);
+                                                                                         this::updateTasksAmountProduced,
+                                                                                         this::setGameStatus);
         timer = new Timer();
         timer.schedule(agentsAndCandidatesListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+    }
+
+    public void stopAgentsProgressAndCandidatesRefresher() {
+
+
+        if (agentsAndCandidatesListRefresher != null && timer != null) {
+            agentsAndCandidatesListRefresher.cancel();
+            timer.cancel();
+        }
     }
     public void setMainController(ApplicationController applicationController) {
         this.applicationController=applicationController;
@@ -229,36 +233,25 @@ public class ContestScreenController {
         this.allyName = allyName;
     }
     private void createWinnerDialogPopup(String allyNameWinner){
-
-
+        stopAgentsProgressAndCandidatesRefresher();
+        Platform.runLater(()->{
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        alert.setTitle("The Contest Finish ");
+        alert.setTitle("Ally:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
         alert.setContentText("Clearing ALL contest data");
         ButtonType clear = new ButtonType("Clear Data");
         alert.getButtonTypes().setAll(clear);
-//            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
-
+    //            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
         // Listen for the Alert to close and get the result
         alert.setOnCloseRequest(e -> {
             // Get the result
             ButtonType result = alert.getResult();
             if (result != null && result == clear) {
                 {
-
-//                  contestDataComponentController;
-//
-//                    alliesTeamsComponentController.clearAll();
-//
-//                    teamsAgentsComponentController.;
-//
-//                tamsCandidatesComponent.;
-//                    tamsCandidatesComponentController.;
-//                    uiUpdater.stopCandidateListener();
-//                    uiUpdater.stopProgressStatusUpdater();
-//                    contestAndTeamDataController.stopListRefresher();
-//                    resetData();
+                    contestDataComponentController.clearAllData();
+                    alliesTeamsComponentController.clearAll();
+                    teamsAgentsComponentController.clearAllData();
+                    teamsCandidatesComponentController.clearData();
                 }
             } else {
                 System.out.println("Quit!");
@@ -266,15 +259,7 @@ public class ContestScreenController {
         });
 
         alert.show();
-
+    });
     }
-//    private Runnable pressButton;
-//
-//    public void setPressButton(Runnable pressButton) {
-//        this.pressButton = pressButton;
-//    }
-//
-//    public void swToDash(ActionEvent actionEvent) {
-//        pressButton.run();
-//    }
+
 }

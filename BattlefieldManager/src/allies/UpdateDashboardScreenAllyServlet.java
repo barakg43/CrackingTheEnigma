@@ -1,7 +1,6 @@
 package allies;
 
 
-
 import agent.AgentDataDTO;
 import allyDTOs.AllyDashboardScreenDTO;
 import allyDTOs.ContestDataDTO;
@@ -17,7 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.ALLY_CONTEXT;
+import static general.ConstantsHTTP.UPDATE_DASHBOARD;
 
 
 @WebServlet(name = "UpdateDashboardScreenAllyServlet", urlPatterns = ALLY_CONTEXT+ UPDATE_DASHBOARD)

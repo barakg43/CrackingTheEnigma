@@ -1,8 +1,6 @@
 package application.UBoatApp.ContestTab;
 
-import UBoatDTO.ActiveTeamsDTO;
 import UBoatDTO.GameStatus;
-import allyDTOs.AllyDataDTO;
 import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
 import application.UBoatApp.ContestTab.TeamsStatus.TeamsStatusController;
 import application.UBoatApp.ContestTab.Trie.Trie;
@@ -18,7 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 public class ContestController {
@@ -73,10 +74,10 @@ public class ContestController {
     }
     public void notifyAllyTeamWinner(String allyNameWinner)
     {
-       // System.out.println("winner is::"+allyNameWinner);
-//        candidatesStatusComponentController.stopCandidatesRefresher();
-//        HttpClientAdapter.notifyWinnerTeamToAlliesCompetitors(allyNameWinner);
-//        createWinnerDialogPopup(allyNameWinner);
+        System.out.println("winner is::"+allyNameWinner);
+        candidatesStatusComponentController.stopCandidatesRefresher();
+        HttpClientAdapter.notifyWinnerTeamToAlliesCompetitors(allyNameWinner);
+        Platform.runLater(()->createWinnerDialogPopup(allyNameWinner));
 
     }
     private void createWinnerDialogPopup(String allyNameWinner){
@@ -84,7 +85,7 @@ public class ContestController {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
-        alert.setTitle("The Contest Finish ");
+        alert.setTitle("Uboat:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
         alert.setContentText("Clearing ALL contest data");
         ButtonType clear = new ButtonType("Clear Data");
@@ -151,14 +152,14 @@ public class ContestController {
 
     private void updateGameStatus(GameStatus gameStatus)
     {
-        if (gameStatus==GameStatus.ACTIVE)
+        if (gameStatus==GameStatus.ACTIVE) {
+            teamsStatusComponentController.stopTeamStatusRefresher();
             candidatesStatusComponentController.startCandidatesRefresher(teamsStatusComponentController.getAlliesNames());
+        }
     }
     public void startAlliesTeamRefresher() {
         teamsStatusComponentController.startTeamStatusRefresher(this::updateGameStatus);
     }
 
-    public void clearAllData(ActionEvent actionEvent) {
-        createWinnerDialogPopup("Ally1");
-    }
+
 }

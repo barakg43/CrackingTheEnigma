@@ -2,11 +2,7 @@ package MainAgentApp.AgentApp.ContestTeamData;
 
 import MainAgentApp.AgentApp.AgentController;
 import MainAgentApp.AgentApp.ContestTeamData.contestDataComponent.ContestDataController;
-import MainAgentApp.AgentApp.http.HttpClientAdapter;
-import UBoatDTO.GameStatus;
 import allyDTOs.ContestDataDTO;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -23,7 +19,7 @@ public class ContestTeamDataController {
     @FXML private ContestDataController contestDataComponentController;
     private AgentController agentController;
 
-    private TimerTask listRefresher;
+    private TimerTask contestStatusRefresher;
     private Timer timer;
 
 
@@ -45,15 +41,15 @@ public class ContestTeamDataController {
 
     public void startListRefresher() {
 
-        listRefresher = new ContestTeamDataListRefresher(this::updateContestData);
+        contestStatusRefresher = new ContestTeamDataListRefresher(this::updateContestData);
         timer = new Timer();
-        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(contestStatusRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
 
     }
 
     public void stopListRefresher() {
-        if (listRefresher != null && timer != null) {
-            listRefresher.cancel();
+        if (contestStatusRefresher != null && timer != null) {
+            contestStatusRefresher.cancel();
             timer.cancel();
         }
     }

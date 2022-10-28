@@ -35,12 +35,12 @@ public class GetContestDataServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-   //     ServletUtils.logRequestAndTime(agentName,"GetContestDataServlet"); TODO :uncomment
+        ServletUtils.logRequestAndTime(agentName,"GetContestDataServlet");
         try {
             Gson gson = ServletUtils.getGson();
             String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
             String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
-            if(uboatNameManager==null)
+            if(uboatNameManager.isEmpty())
             {
 
 

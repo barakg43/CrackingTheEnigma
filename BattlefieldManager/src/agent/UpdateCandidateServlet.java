@@ -1,6 +1,5 @@
 package agent;
 
-import allyDTOs.AllyCandidateDTO;
 import com.google.gson.Gson;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import jakarta.servlet.annotation.WebServlet;

@@ -10,7 +10,6 @@ import systemManager.SystemManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 import static general.ConstantsHTTP.INT_PARAMETER_ERROR;
 
 

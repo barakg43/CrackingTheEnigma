@@ -1,8 +1,9 @@
 package application.contestTab;
 
+import UBoatDTO.GameStatus;
+import allyDTOs.AgentsTeamProgressDTO;
 import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyCandidateDTO;
-import allyDTOs.AgentsTeamProgressDTO;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
@@ -21,16 +22,19 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
     private final Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer;
     private final Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer;
     private final Consumer<Long> taskProducedConsumer;
+    private final Consumer<GameStatus> gameStatusConsumer;
     private final CustomHttpClient httpClientUtil;
     private Integer candidatesVersion;
     private final AtomicInteger counter=new AtomicInteger(0);
 
     public AllyAgentsProgressAndCandidatesRefresher(Consumer<List<AllyCandidateDTO>> allyCandidatesListConsumer,
                                                     Consumer<List<AgentsTeamProgressDTO>> teamAgentsConsumer,
-                                                    Consumer<Long> taskProducedConsumer) {
+                                                    Consumer<Long> taskProducedConsumer,
+                                                    Consumer<GameStatus> gameStatusConsumer) {
         this.allyCandidatesListConsumer = allyCandidatesListConsumer;
         this.teamAgentsConsumer=teamAgentsConsumer;
         this.taskProducedConsumer = taskProducedConsumer;
+        this.gameStatusConsumer = gameStatusConsumer;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
         candidatesVersion=0;
     }
@@ -52,7 +56,7 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
                     allyCandidatesListConsumer.accept(allyContestDataAndTeams.getUpdatedAllyCandidates());
                     candidatesVersion+=allyContestDataAndTeams.getUpdatedAllyCandidates().size();
                 }
-
+                gameStatusConsumer.accept(allyContestDataAndTeams.getGameStatus());
                 if(allyContestDataAndTeams.getAgentsDataProgressDTOS()!=null)
                     teamAgentsConsumer.accept(allyContestDataAndTeams.getAgentsDataProgressDTOS());}
             else

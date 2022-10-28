@@ -37,7 +37,7 @@ public class TeamsStatusController {
     private ScrollPane  teamAlliesComponent;
     @FXML
     private ContestTeamsController teamAlliesComponentController;
-    private TimerTask listRefresher;
+    private TimerTask teamStatusRefresher;
     private Timer timer;
     private CustomHttpClient httpClient;
     private Set<String> alliesNames;
@@ -91,16 +91,16 @@ public class TeamsStatusController {
     }
 
     public void startTeamStatusRefresher(Consumer<GameStatus> gameStatusConsumer) {
-        listRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies,gameStatusConsumer);
+        teamStatusRefresher = new ActiveTeamStatusListRefresher(this::setAllTeamAllies,gameStatusConsumer);
         timer = new Timer();
-        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(teamStatusRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
 
  //   @Override
-    public void close() {
-        clearData();
-        if (listRefresher != null && timer != null) {
-            listRefresher.cancel();
+    public void stopTeamStatusRefresher() {
+
+        if (teamStatusRefresher != null && timer != null) {
+            teamStatusRefresher.cancel();
             timer.cancel();
         }
     }
@@ -108,7 +108,6 @@ public class TeamsStatusController {
         alliesAmountLabel.setText("");
         teamAlliesComponentController.clearAll();
     }
-    public void stopListRefresher() {close();}
 
     public Set<String> getAlliesNames() {
          return alliesNames;

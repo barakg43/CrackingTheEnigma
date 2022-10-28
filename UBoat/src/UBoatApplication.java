@@ -1,20 +1,12 @@
 import application.ApplicationController;
 import application.CommonResources;
-import application.UBoatApp.ContestTab.CandidateStatus.CandidatesStatusController;
-import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.CandidateDTO;
-import engineDTOs.DmDTO.TaskFinishDataDTO;
-import engineDTOs.RotorInfoDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UBoatApplication extends Application{
     private Stage primaryStage;

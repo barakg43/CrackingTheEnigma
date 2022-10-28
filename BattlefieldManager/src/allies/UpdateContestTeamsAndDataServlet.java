@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.ALLY_CONTEXT;
+import static general.ConstantsHTTP.UPDATE_CONTEST;
 
 
 @WebServlet(name = "UpdateContestTeamsAndDataServlet", urlPatterns = ALLY_CONTEXT+UPDATE_CONTEST)

@@ -1,9 +1,7 @@
 package uboat;
 
 
-
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +11,6 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Properties;
 
 import static general.ConstantsHTTP.*;
 
@@ -52,7 +49,7 @@ public class InputDataStringServlet extends HttpServlet {
                .getEnigmaEngine()
                .processDataInput(inputString);
        uboatController.setContestInitConfiguration(output);
-       out.format(SINGLE_JSON_FORMAT+"\n",OUTPUT_PROPERTY,output);
+       out.format(SINGLE_JSON_FORMAT+"\r\n",OUTPUT_PROPERTY,output);
        out.flush();
         response.setStatus(HttpServletResponse.SC_OK);
 

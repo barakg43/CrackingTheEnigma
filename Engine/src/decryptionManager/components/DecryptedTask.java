@@ -6,8 +6,6 @@ import engineDTOs.DmDTO.SimpleDecryptedTaskDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import enigmaEngine.Engine;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;

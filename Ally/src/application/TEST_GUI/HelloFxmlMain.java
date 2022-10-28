@@ -5,11 +5,8 @@ import UBoatDTO.GameStatus;
 import agent.AgentDataDTO;
 import allyDTOs.AllyCandidateDTO;
 import allyDTOs.ContestDataDTO;
-import application.contestTab.ContestScreenController;
 import application.contestTab.teamsCandidatesComponent.AgentsCandidatesController;
 import application.dashboardTab.DashboardScreenController;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import engineDTOs.CodeFormatDTO;
 import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.GameLevel;
@@ -25,15 +22,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import static application.CommonResourcesPaths.APP_FXML_INCLUDE_RESOURCE;
-import static application.CommonResourcesPaths.CONTEST_SCREEN_FXML_RESOURCE;
 import static general.ConstantsHTTP.TOTAL_TASK_AMOUNT;
 
 

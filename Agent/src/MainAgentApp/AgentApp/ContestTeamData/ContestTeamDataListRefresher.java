@@ -29,7 +29,7 @@ public class ContestTeamDataListRefresher extends TimerTask {
     @Override
     public void run() {
 
-     //   System.out.println(counter.getAndIncrement()+"#Sending contest data request to server....");
+        System.out.println(counter.getAndIncrement()+"#Sending contest data request to server....");
         HttpResponseDTO responseDTO = httpClientUtil.doGetSync(UPDATE_CONTEST);
         if(responseDTO.getCode() == HTTP_NO_CONTENT) {
             System.out.println("Ally is not assign to any Uboat manager");

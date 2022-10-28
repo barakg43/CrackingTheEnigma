@@ -7,27 +7,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0" stylesheets="@../../AgentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainAgentApp.AgentApp.CandidateStatus.SingleCandidate.SingleCandidateController">
-   <children>
-      <AnchorPane>
-         <children>
-            <HBox layoutX="23.0" spacing="10.0">
-               <children>
-                  <Label styleClass="title-label" text="Candidate:" />
-                  <TextFlow fx:id="outputString" styleClass="title-label" />
-               </children>
-            </HBox>
-         </children>
-      </AnchorPane>
-      <ScrollPane fitToWidth="true" prefHeight="77.0" prefWidth="398.0">
-         <content>
-            <FlowPane prefHeight="71.0" prefWidth="396.0">
-               <children>
-                  <fx:include fx:id="simpleCodeFormat" source="../../SimpleCode/simpleCodeVersion.fxml" />
-               </children>
-            </FlowPane>
-         </content>
-      </ScrollPane>
-   </children>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0"
+      stylesheets="@../../AgentCSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="MainAgentApp.AgentApp.CandidateStatus.SingleCandidate.SingleCandidateController">
+   <AnchorPane>
+      <HBox layoutX="23.0" spacing="10.0">
+         <Label styleClass="title-label" text="Candidate:"/>
+         <TextFlow fx:id="outputString" styleClass="title-label"/>
+      </HBox>
+   </AnchorPane>
+   <ScrollPane fitToWidth="true" prefHeight="77.0" prefWidth="398.0">
+      <FlowPane prefHeight="71.0" prefWidth="396.0">
+         <fx:include fx:id="simpleCodeFormat" source="../../SimpleCode/simpleCodeVersion.fxml"/>
+      </FlowPane>
+   </ScrollPane>
 </VBox>

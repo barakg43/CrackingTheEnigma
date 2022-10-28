@@ -2,8 +2,6 @@ package application.UBoatApp.ContestTab.CandidateStatus;
 
 
 import UBoatDTO.UboatCandidatesDTO;
-import allyDTOs.AgentsTeamProgressDTO;
-import allyDTOs.AllyAgentsProgressAndCandidatesDTO;
 import allyDTOs.AllyCandidateDTO;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
@@ -14,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static application.UBoatApp.UBoatAppController.createErrorAlertWindow;
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.UPDATE_CANDIDATES;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class CandidatesTableRefresher extends TimerTask {

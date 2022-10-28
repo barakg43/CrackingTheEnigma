@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
+import static general.ConstantsHTTP.UPDATE_CANDIDATES;
 
 
 @WebServlet(name = "CandidatesServlet", urlPatterns = {UBOAT_CONTEXT+UPDATE_CANDIDATES})

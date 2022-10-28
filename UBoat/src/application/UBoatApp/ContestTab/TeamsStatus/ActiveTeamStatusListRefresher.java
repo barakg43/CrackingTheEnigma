@@ -5,17 +5,17 @@ import UBoatDTO.ActiveTeamsDTO;
 import UBoatDTO.GameStatus;
 import application.http.HttpClientAdapter;
 import general.HttpResponseDTO;
-import general.UserListDTO;
 import http.client.CustomHttpClient;
 
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-;
 import static application.UBoatApp.UBoatAppController.createErrorAlertWindow;
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.ACTIVE_TEAMS_LIST;
 import static java.net.HttpURLConnection.HTTP_OK;
+
+;
 
 public class ActiveTeamStatusListRefresher extends TimerTask {
 

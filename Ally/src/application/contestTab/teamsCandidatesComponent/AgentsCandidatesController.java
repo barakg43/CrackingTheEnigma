@@ -70,5 +70,9 @@ public class AgentsCandidatesController {
         outputStringColumn.setStyle("-fx-alignment:center");
         codeConfColumn.setStyle("-fx-alignment:center");
     }
+    public void clearData()
+    {
+        agentsCandidatesTable.getItems().clear();
+    }
 
 }

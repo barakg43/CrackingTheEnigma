@@ -49,7 +49,7 @@ public class GetContestWinnerServlet extends HttpServlet {
             }
             String winnerName= ServletUtils.getSystemManager().getBattleFieldController(uboatNameManager).getWinnerName();
 
-            out.format(SINGLE_JSON_FORMAT+'\n',WINNER_NAME,winnerName);
+            out.format(SINGLE_JSON_FORMAT+"\r\n",WINNER_NAME,winnerName);
             out.flush();
             response.setContentType("text/plain");
             response.setStatus(HttpServletResponse.SC_OK);

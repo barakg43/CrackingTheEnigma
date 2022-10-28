@@ -4,7 +4,6 @@ import allyDTOs.AgentsTeamProgressDTO;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -145,7 +144,15 @@ public class AllyProgressController {
         waitingTaskColumn.setStyle("-fx-alignment:center");
         candidatesColumn.setStyle("-fx-alignment:center");
     }
+    public void clearAllData()
+    {
+        Platform.runLater(() -> {
+          updateTasksAmountProduced(0);
+            allyAgentDataTable.getItems().clear();
+            this.totalTaskAmount.setText("0");
+        });
 
+    }
 
 }
 
