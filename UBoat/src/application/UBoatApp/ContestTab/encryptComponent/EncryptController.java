@@ -206,6 +206,13 @@ public class EncryptController {
 
     public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
         HttpClientAdapter.sendReadyToContestCommand(readyButton::setDisable);
+        if(!readyButton.isDisable())
+        {
+            contestController.getIsSelected().set(false);
+            contestController.getShowCodeDetails().set(false);
+            contestController.bindReadyButtonToFIleComponent();
+
+        }
     }
 }
 

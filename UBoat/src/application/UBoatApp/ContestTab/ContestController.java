@@ -65,6 +65,15 @@ public class ContestController {
 
     }
 
+    public void bindReadyButtonToFIleComponent(){
+        uBoatController.getFileController().bind(EncryptComponentController.getReadyButtonDisableProperty());
+    }
+
+
+    public SimpleBooleanProperty getShowCodeDetails() {
+        return uBoatController.getShowCodeDetails();
+    }
+
     public void startContestConsumer(ActiveTeamsDTO activeTeams)
     {
         allAlliesAreReady.set(true);
@@ -108,6 +117,11 @@ public class ContestController {
 //                (observable, oldValue, newValue) -> isCodeSelected.set(newValue)));
     }
 
+    public SimpleBooleanProperty getIsSelected(){
+        return uBoatController.getIsSelected();
+    }
+
+
     public void setSimpleCurrentCode(CodeFormatDTO currentCode) {
         EncryptComponentController.setSelectedCode(currentCode);
 
@@ -129,5 +143,9 @@ public class ContestController {
     }
     public void startAlliesTeamRefresher() {
         teamsStatusComponentController.startTeamStatusRefresher(this::updateGameStatus);
+    }
+
+    public SimpleBooleanProperty getIsFileSelected(){
+        return uBoatController.getIsFileSelected();
     }
 }
