@@ -8,14 +8,17 @@ import java.util.HashMap;
 
 public class ScreenController {
     private final HashMap<String, Region> screenMap = new HashMap<>();
-    private final Pane mainPane;
-    private final Stage mainStage;
+    private  Pane mainPane;
+    private  Stage mainStage;
 
-    public ScreenController(Pane mainPane, Stage mainStage) {
+    public ScreenController() {
+
+    }
+    public void setMainPaneAndStage(Pane mainPane, Stage mainStage)
+    {
         this.mainPane = mainPane;
         this.mainStage = mainStage;
     }
-
     protected void addScreen(String name, Region pane){
         screenMap.put(name, pane);
     }

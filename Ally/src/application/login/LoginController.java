@@ -72,7 +72,7 @@ public class LoginController implements LoginInterface {
                 applicationController.updateUserName(userName);
                 userListComponentController.close();
                 applicationController.switchToDashboard();
-                applicationController.updateListRefresher();
+                applicationController.updateDashboardRefresher();
             });
         }
     }

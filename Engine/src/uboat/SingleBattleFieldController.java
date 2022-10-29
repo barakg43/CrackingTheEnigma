@@ -7,6 +7,7 @@ import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.CodeFormatDTO;
+import engineDTOs.DmDTO.GameLevel;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 
@@ -25,12 +26,13 @@ public class SingleBattleFieldController {
     private  String cipheredString;
     private Engine enigmaEngine;
     private ContestDataManager contestDataManager;
-
+    private GameStatus gameStatus;
     private final String uboatName;
     public SingleBattleFieldController(String uboatName, Consumer<String> startContestInAllies) {
         this.startContestInAllies = startContestInAllies;
         alliesDataSet=new HashSet<>();
         enigmaEngine=null;
+        gameStatus=GameStatus.IDLE;
         this.uboatName=uboatName;
         winnerName="";
     }
@@ -53,7 +55,16 @@ public class SingleBattleFieldController {
     public Engine getEnigmaEngine() {
         return enigmaEngine;
     }
+    public void processFinishContestEvent(String winnerName)
+    {
+        this.winnerName = winnerName;
+        changeGameStatus(GameStatus.FINISH);
+        contestDataManager.resetRegisterAmount();
+        this.codeFormatConfiguration = null;
+        this.cipheredString=null;
+        alliesDataSet.clear();
 
+    }
 
     public synchronized void checkIfAllReady()
     {
@@ -65,7 +76,7 @@ public class SingleBattleFieldController {
         if(isAllReady &&
                 contestDataManager.getGameStatus()== GameStatus.WAITING_FOR_ALLIES &&
                 contestDataManager.getRegisteredAmount()==contestDataManager.getRequiredAlliesAmount())
-                                contestDataManager.changeGameStatus(GameStatus.ACTIVE);
+                                    changeGameStatus(GameStatus.ACTIVE);
         if(contestDataManager.getGameStatus()==GameStatus.ACTIVE)
             startContestInAllies.accept(uboatName);//TODO: fix start contest
 
@@ -74,7 +85,11 @@ public class SingleBattleFieldController {
         return codeFormatConfiguration;
     }
 
-
+    public void changeGameStatus(GameStatus gameStatus)
+    {
+        this.gameStatus=gameStatus;
+        contestDataManager.changeGameStatus(gameStatus);
+    }
     public void assignXMLFileToUboat(String XmlContent,Engine loadedEngine)
     {
 
@@ -108,11 +123,12 @@ public class SingleBattleFieldController {
         this.cipheredString=cipheredString;
     }
 
-    public void setWinnerName(String winnerName) {
-        this.winnerName = winnerName;
-    }
 
     public String getWinnerName() {
         return winnerName;
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
     }
 }

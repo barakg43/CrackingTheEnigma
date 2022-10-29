@@ -110,7 +110,7 @@ public class AllContestDataController {
     public void addAllContestsDataToTable(List<ContestDataDTO> contestDataDTOList)
     {
 
-        if(contestDataDTOList==null||contestDataDTOList.isEmpty())
+        if(contestDataDTOList==null)
             return;
 
 

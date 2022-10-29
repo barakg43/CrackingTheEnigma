@@ -40,6 +40,9 @@ public class LogoffServlet extends HttpServlet {
                 ServletUtils.getSystemManager().getSingleAllyController(allyDataDTO.getAllyName()).logoffFromContest();
 
             }
+
+            String battleFieldName=battleFieldController.getContestDataDTO().getBattlefieldName();
+            ServletUtils.getSystemManager().removeBattlefield(battleFieldName);
             ServletUtils.getSystemManager().removeUserName(uboatName, ApplicationType.UBOAT);
 
             SessionUtils.clearSession(request);

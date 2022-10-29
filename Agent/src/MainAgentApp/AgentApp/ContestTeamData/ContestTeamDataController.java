@@ -41,7 +41,7 @@ public class ContestTeamDataController {
 
     public void startListRefresher() {
 
-        contestStatusRefresher = new ContestTeamDataListRefresher(this::updateContestData);
+        contestStatusRefresher = new ContestTeamDataListRefresher(this::updateContestData,agentController::processUboatLogout);
         timer = new Timer();
         timer.schedule(contestStatusRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
 
@@ -53,6 +53,7 @@ public class ContestTeamDataController {
             timer.cancel();
         }
     }
+
 
     public void setAgentController(AgentController agentController) {
         this.agentController = agentController;

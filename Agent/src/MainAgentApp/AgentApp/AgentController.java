@@ -39,15 +39,15 @@ public class AgentController {
     @FXML private GridPane agentProgressAndStatus;
     @FXML private AgentStatusController agentProgressAndStatusController;
     @FXML private ScrollPane agentsCandidates;
-    @FXML private CandidateStatusController agentsCandidatesController;
+    @FXML private  CandidateStatusController agentsCandidatesController;
     private MainAgentController mainController;
     private DecryptionAgent decryptionAgent;
     private SimpleBooleanProperty isAgentConf=new SimpleBooleanProperty(false);
     private final CustomHttpClient httpClientUtil=HttpClientAdapter.getHttpClient();
-    private final ExecutorService taskPuller=Executors.newSingleThreadExecutor();
+    private final   ExecutorService taskPuller=Executors.newSingleThreadExecutor();
     private AgentDataDTO agentDataDTO;
 
-    private UIUpdater uiUpdater;
+    private  UIUpdater uiUpdater;
     private int counter=0;
     private GameStatus gameStatus;
 
@@ -84,6 +84,8 @@ public class AgentController {
     }
     private void getNewTasksSession()
     {
+        if(gameStatus!=GameStatus.ACTIVE)
+             return;
 
         System.out.println(++counter +" # before getting new Task Session...");
        taskPuller.submit(()->{
@@ -132,7 +134,21 @@ public class AgentController {
 
 
     }
+    public void processUboatLogout(String uboatName)
+    {
+        contestAndTeamDataController.stopListRefresher();
+        Platform.runLater(()->{
+            agentsCandidatesController.clearAllTiles();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Agent:Uboat Logout ");
+            alert.setHeaderText("The "+uboatName+ " was logout from server");
+            alert.setContentText("Waiting for ally assign new contest");
+            alert.show();
+            resetData();
 
+        });
+
+    }
     public void setGameStatus(GameStatus gameStatus)
     {
         this.gameStatus = gameStatus;
@@ -160,25 +176,25 @@ public class AgentController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Agent:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
-        alert.setContentText("Clearing ALL contest data");
-        ButtonType clear = new ButtonType("Clear Data");
-        alert.getButtonTypes().setAll(clear);
+        alert.setContentText("Clearing ALL contest data button in top left window!");
+        mainController.setClearButtonVisible(true);
+//        ButtonType clear = new ButtonType("Clear Data");
+
+       // alert.getButtonTypes().setAll(clear);
     //            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
 
         // Listen for the Alert to close and get the result
-        alert.setOnCloseRequest(e -> {
-            // Get the result
-            ButtonType result = alert.getResult();
-            if (result != null && result == clear) {
-                {
-                    taskPuller.shutdownNow();
-                    agentsCandidatesController.clearAllTiles();
-                    resetData();
-                }
-            } else {
-                System.out.println("Quit!");
-            }
-        });
+//        alert.setOnCloseRequest(e -> {
+//            // Get the result
+//            ButtonType result = alert.getResult();
+//            if (result != null && result == clear) {
+//                {
+//
+//                }
+//            } else {
+//                System.out.println("Quit!");
+//            }
+//        });
 
         alert.show();
 
@@ -189,9 +205,14 @@ public class AgentController {
 
     }
 
-
+    public void clearAllApplicationData()
+    {
+        agentsCandidatesController.clearAllTiles();
+        resetData();
+    }
     public void setActive() {
         contestAndTeamDataController.startListRefresher();
+
     }
 }
 

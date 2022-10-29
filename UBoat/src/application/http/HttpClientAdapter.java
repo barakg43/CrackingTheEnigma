@@ -172,6 +172,7 @@ public class HttpClientAdapter {
                     UBoatAppController.createErrorAlertWindow("Upload file to Server",responseBody);
                 } else {
                     System.out.println(filePath+" uploaded successfully");
+                    System.out.println(responseBody);
                     machineData= CustomHttpClient.GSON_INSTANCE.fromJson(responseBody,MachineDataDTO.class);
                     wordsSet.clear();
                     wordsSet.addAll(machineData.getDictionaryWords());

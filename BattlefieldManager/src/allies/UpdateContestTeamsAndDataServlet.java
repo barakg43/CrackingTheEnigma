@@ -43,6 +43,11 @@ public class UpdateContestTeamsAndDataServlet extends HttpServlet {
 
             Gson gson = ServletUtils.getGson();
             String uboatManager=ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
+            if(uboatManager.isEmpty())
+            {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                return;
+            }
 
             SingleBattleFieldController uboatController=ServletUtils.getSystemManager()
                     .getBattleFieldController(uboatManager);

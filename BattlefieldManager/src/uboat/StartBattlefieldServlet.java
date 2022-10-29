@@ -36,7 +36,7 @@ public class StartBattlefieldServlet extends HttpServlet {
             SingleBattleFieldController uboatController = ServletUtils.getSystemManager()
                     .getBattleFieldController(username);
 
-            uboatController.getContestDataManager().changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
+            uboatController.changeGameStatus(GameStatus.WAITING_FOR_ALLIES);
 
             uboatController.checkIfAllReady();
             response.setStatus(HttpServletResponse.SC_OK);

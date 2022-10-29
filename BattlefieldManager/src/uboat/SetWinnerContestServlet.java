@@ -45,8 +45,8 @@ public class SetWinnerContestServlet extends HttpServlet {
         {
        SingleBattleFieldController uboatController= ServletUtils.getSystemManager()
                     .getBattleFieldController(username);
-       uboatController.setWinnerName(winnerName);
-       uboatController.getContestDataManager().changeGameStatus(GameStatus.FINISH);
+       uboatController.processFinishContestEvent(winnerName);
+
         response.setStatus(HttpServletResponse.SC_OK);
 
         }

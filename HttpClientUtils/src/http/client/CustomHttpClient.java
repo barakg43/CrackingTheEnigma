@@ -31,7 +31,7 @@ public class CustomHttpClient {
     public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
         simpleCookieManager.setLogData(logConsumer);
     }
-    public static void removeCookiesOf(String domain) {
+    public void removeCookiesOf(String domain) {
         simpleCookieManager.removeCookiesOf(domain);
     }
     public Gson getGson()

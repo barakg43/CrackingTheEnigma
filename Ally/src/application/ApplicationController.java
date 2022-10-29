@@ -7,9 +7,11 @@ import application.login.LoginController;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 
@@ -23,6 +25,8 @@ import java.net.URL;
 import static application.CommonResourcesPaths.*;
 
 public class ApplicationController {
+    @FXML private Button clearButton;
+    @FXML private  Button chatButton;
     private final String LOGIN="login";
     private final String DASHBOARD="dashboard";
     private final String CONTEST="contest";
@@ -44,7 +48,7 @@ public class ApplicationController {
 
     @FXML
     private void initialize() throws IOException {
-
+        setClearButtonVisible(false);
         loadLoginScreen();
         loadContestScreen();
         loadDashboardScreen();
@@ -142,10 +146,22 @@ public class ApplicationController {
 
     }
 
-    public void updateListRefresher() {
+    public void updateDashboardRefresher() {
         dashboardScreenController.startDashboardScreenRefresher();
     }
+    public void clearDataAction(ActionEvent actionEvent) {
+        contestScreenController.clearAllApplicationData();
+        switchToDashboard();
+        updateDashboardRefresher();
+        setClearButtonVisible(false);
 
+    }
+    public void setClearButtonVisible(boolean state)
+    {
+        clearButton.setVisible(state);
+    }
+    public void openChatWindow(ActionEvent actionEvent) {
+    }
 
     public void updateUserName(String userName) {
         allyName.setText(userName);

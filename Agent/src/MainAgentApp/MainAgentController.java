@@ -8,10 +8,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -24,6 +26,8 @@ import static MainAgentApp.AgentApp.AgentController.createErrorAlertWindow;
 
 public class MainAgentController {
 
+    @FXML private Button clearButton;
+    @FXML private  Button chatButton;
     @FXML private Label agentTitle;
     @FXML private Label helloUserNameLabel;
 
@@ -135,7 +139,7 @@ public class MainAgentController {
 
         mainPanel.prefWidthProperty().bind(widthProperty);
         mainPanel.prefHeightProperty().bind(heightProperty);
-        agentTitle.setPadding(new Insets(0,0,0,widthProperty.getValue()/2));
+      //  agentTitle.setPadding(new Insets(0,0,0,widthProperty.getValue()/2));
 
         agentController.bindScene(widthProperty,heightProperty);
 
@@ -144,6 +148,15 @@ public class MainAgentController {
     }
 
 
+    public void clearDataAction(ActionEvent actionEvent) {
+        agentController.clearAllApplicationData();
+        clearButton.setVisible(false);
 
-
+    }
+    public void setClearButtonVisible(boolean state)
+    {
+        clearButton.setVisible(state);
+    }
+    public void openChatWindow(ActionEvent actionEvent) {
+    }
 }
