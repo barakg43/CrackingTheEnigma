@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact name="Agent:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Agent_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Agent.jar">
+        <element id="module-output" name="Agent" />
+        <element id="module-output" name="DataTransferObject" />
+        <element id="module-output" name="HttpClientUtils" />
+        <element id="module-output" name="Engine" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/../דוגמאות קוד/Online Chat V3/3rd/okHttp/okio-2.8.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../דוגמאות קוד/Online Chat V3/3rd/okHttp/okhttp-4.9.1.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../דוגמאות קוד/Online Chat V3/3rd/okHttp/annotations-13.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../דוגמאות קוד/Online Chat V3/3rd/okHttp/kotlin-stdlib-1.4.10.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/../דוגמאות קוד/Online Chat V3/3rd/okHttp/kotlin-stdlib-common-1.4.10.jar" />
+      <element id="library" level="project" name="okHttp" />
+      <element id="library" level="application_server_libraries" name="Tomcat 10.0.26" />
+    </root>
+  </artifact>
+</component>

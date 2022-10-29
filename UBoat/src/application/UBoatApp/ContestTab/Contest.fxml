@@ -12,7 +12,9 @@
                <children>
                   <AnchorPane prefHeight="199.0" prefWidth="103.0">
                      <children>
+
                         <fx:include fx:id="encryptComponent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" source="encryptComponent/EncryptTab.fxml" />
+
                      </children>
                   </AnchorPane>
                   <fx:include fx:id="teamsStatusComponent" source="TeamsStatus/TeamStatus.fxml" />

@@ -16,11 +16,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 
 import java.util.List;
 
 public class UBoatMachineController {
 
+    public HBox CodeConfigHBox;
     @FXML private ScrollPane MachineDetailsComponent;
 
     @FXML private MachineDetailsController MachineDetailsComponentController;
@@ -53,13 +55,19 @@ public class UBoatMachineController {
             codeCalibrationController.SetMachineConfController(this);
             MachineDetailsComponentController.SetMachineConfController(this);
         }
-
+        bindCodeConfigScene();
 
 
     }
-
+    public void bindCodeConfigScene()
+    {
+        //CodeConfigHBox.disableProperty().bind(showCodeDetails.not());
+        MachineDetailsComponent.disableProperty().bind(showCodeDetails.not());
+        codeCalibration.disableProperty().bind(showCodeDetails.not());
+    }
     public void setMainAppController(UBoatAppController uBoatController) {
         this.UBoatController = uBoatController;
+
     }
 
     public void bindComponentsWidthToScene(ReadOnlyDoubleProperty sceneWidthProperty, ReadOnlyDoubleProperty sceneHeightProperty) {
@@ -69,10 +77,6 @@ public class UBoatMachineController {
     }
 
     public void setInitializeConfiguration() {
-
-
-
-
         showCodeDetails.set(true);
         int numberOfRotorsInUse = machineData.getNumberOfRotorsInUse();
 //        int[] rotorsId = machineData.getRotorsId();

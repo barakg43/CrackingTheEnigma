@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="BattlefieldManager:war exploded">
+  <artifact type="exploded-ear" name="BattlefieldManager:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/BattlefieldManager_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
@@ -11,6 +11,8 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="okHttp" />
           <element id="file-copy" path="$PROJECT_DIR$/BattlefieldManager/web/WEB-INF/lib/gson-2.9.1.jar" />
+          <element id="artifact" artifact-name="Engine:jar" />
+          <element id="artifact" artifact-name="DataTransferObject:jar" />
         </element>
       </element>
     </root>

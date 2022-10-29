@@ -87,12 +87,12 @@ public class ContestScreenController {
         }));
         taskSizeTextSpinner.valueProperty().addListener((observable, oldValue, newValue) -> isTaskSizePositive.set(newValue >0));
 
-        readyButton.disableProperty().bind(Bindings.or(readyDisableProperty,
-                Bindings.or(isAgentsAssign.not(), isTaskSizePositive.not())));
+//        readyButton.disableProperty().bind(Bindings.or(readyDisableProperty,
+//                Bindings.or(isAgentsAssign.not(), isTaskSizePositive.not())));
      //   isAgentsAssign.addListener(((observable, oldValue, newValue) ->System.out.println("AGENTS is:"+newValue )));
 //        readyDisableProperty.addListener(((observable, oldValue, newValue) ->{
 //            readyButton.setDisable(newValue);}));
-        readyButton.disableProperty().bind(readyDisableProperty);
+        readyButton.disableProperty().bind(isTaskSizePositive.not());
         taskSizeTextSpinner.setValueFactory(integerSpinnerValueFactory);
         taskSizeTextSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
         taskSizeTextSpinner.editorProperty().get().setAlignment(Pos.CENTER);
@@ -183,6 +183,7 @@ public class ContestScreenController {
     }
 
     public void readyButtonAction(ActionEvent ignoredActionEvent) {
+        isTaskSizePositive.set(false);
         HttpClientAdapter.readyToStartCommand(this::afterReadyAction,
                                             getTaskSizeFromSpinner(),
                                             teamsAgentsComponentController::setTotalTaskAmount);
