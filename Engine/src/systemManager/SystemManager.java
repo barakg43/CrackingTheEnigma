@@ -91,6 +91,10 @@ public class SystemManager {
     {
         return battleFieldSet.contains(battleFieldName);
     }
+    public void removeBattlefield(String battleFieldName)
+    {
+        battleFieldSet.remove(battleFieldName);
+    }
 
     public boolean isUboatExist(String uboatName)
     {
@@ -110,6 +114,8 @@ public class SystemManager {
     {
         return uboatMapControllerSet.get(uboatUserName);
     }
+
+
     public List<ContestDataDTO> getAllContestDataList()
     {
         return uboatMapControllerSet.values()

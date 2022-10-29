@@ -18,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
@@ -87,27 +86,26 @@ public class ContestController {
 
         alert.setTitle("Uboat:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
-        alert.setContentText("Clearing ALL contest data");
-        ButtonType clear = new ButtonType("Clear Data");
-        alert.getButtonTypes().setAll(clear);
+        alert.setContentText("Clearing ALL contest data button in top left window!");
+        uBoatController.setClearButtonVisible(true);
 //            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
 
         // Listen for the Alert to close and get the result
-        alert.setOnCloseRequest(e -> {
-            // Get the result
-            ButtonType result = alert.getResult();
-            if (result != null && result == clear) {
-                resetAllData();
-            } else {
-                System.out.println("Quit!");
-            }
-        });
+//        alert.setOnCloseRequest(e -> {
+//            // Get the result
+//            ButtonType result = alert.getResult();
+//            if (result != null && result == clear) {
+//                resetAllData();
+//            } else {
+//                System.out.println("Quit!");
+//            }
+//        });
 
         alert.show();
 
     }
 
-    public void resetAllData() {
+    public void clearAllScreenData() {
         encryptComponentController.clearAllData();
         candidatesStatusComponentController.clearData();
         teamsStatusComponentController.clearData();
@@ -146,8 +144,10 @@ public class ContestController {
         uBoatController.bindCurrentCode();
     }
 
-    public void logoutButtonOnAction(ActionEvent actionEvent) {
-        uBoatController.logoutButtonPressed();
+    public void logoutButtonOnAction() {
+        teamsStatusComponentController.stopTeamStatusRefresher();
+        Platform.runLater(()-> uBoatController.logoutButtonPressed());
+
     }
 
     private void updateGameStatus(GameStatus gameStatus)

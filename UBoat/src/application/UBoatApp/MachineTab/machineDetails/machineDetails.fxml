@@ -17,14 +17,10 @@
             <Label fx:id="selectedMachineCodeLabel" layoutX="20.0" layoutY="161.0" prefHeight="21.0" prefWidth="218.0" styleClass="text-button" text="Selected machine code:" />
             <Label fx:id="currentMachineLabel" layoutX="19.0" layoutY="245.0" prefHeight="21.0" prefWidth="210.0" styleClass="text-button" text="Current machine code:" />
             <ScrollPane fx:id="currentCodeScrollPane" fitToWidth="true" layoutX="21.0" layoutY="266.0" maxHeight="81.0" maxWidth="1010.0">
-               <content>
-                  <fx:include fx:id="CurrentMachineCode" source="/application/UBoatApp/ContestTab/SimpleCode/simpleCodeVersion.fxml" />
-               </content>
+               <fx:include fx:id="CurrentMachineCode" source="../../ContestTab/SimpleCode/simpleCodeVersion.fxml"/>
             </ScrollPane>
             <ScrollPane fx:id="selectedCodeConfigScrollPane" fitToWidth="true" layoutX="21.0" layoutY="182.0" maxHeight="81.0" maxWidth="1010.0">
-               <content>
-                  <fx:include fx:id="SelectedMachineCode" source="/application/UBoatApp/ContestTab/SimpleCode/simpleCodeVersion.fxml" />
-               </content>
+               <fx:include fx:id="SelectedMachineCode" source="../../ContestTab/SimpleCode/simpleCodeVersion.fxml"/>
             </ScrollPane>
          </children>
       </AnchorPane>

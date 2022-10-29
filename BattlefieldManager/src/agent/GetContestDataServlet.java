@@ -40,13 +40,10 @@ public class GetContestDataServlet extends HttpServlet {
             Gson gson = ServletUtils.getGson();
             String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
             String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
+
             if(uboatNameManager.isEmpty())
             {
-
-
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
-
                 return;
             }
             ContestDataDTO contestDataDTO= ServletUtils.getSystemManager().getBattleFieldController(uboatNameManager).getContestDataDTO();

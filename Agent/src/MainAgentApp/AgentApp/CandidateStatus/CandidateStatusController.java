@@ -7,6 +7,7 @@ import engineDTOs.DmDTO.CandidateDTO;
 import engineDTOs.DmDTO.TaskFinishDataDTO;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -14,8 +15,10 @@ import javafx.scene.layout.FlowPane;
 
 public class CandidateStatusController {
 
-    public ScrollPane candidateStatusScrollPane;
-    public FlowPane candidateStatusFlowPane;
+    @FXML
+    private ScrollPane candidateStatusScrollPane;
+    @FXML
+    private FlowPane candidateStatusFlowPane;
 
 
 

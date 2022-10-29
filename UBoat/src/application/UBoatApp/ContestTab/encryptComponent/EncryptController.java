@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 public class EncryptController {
     public VBox encrypteVBox;
+    @FXML private Button logoutButton;
     @FXML private Button readyButton;
 
     @FXML private ScrollPane dictionaryScrollPane;
@@ -213,6 +214,18 @@ public class EncryptController {
 
     public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
         HttpClientAdapter.sendReadyToContestCommand(readyButton::setDisable);
+    }
+
+    public void logoutAction(ActionEvent actionEvent) {
+
+        HttpClientAdapter.logoffUboat(this::afterLogoutAction);
+    }
+    private void afterLogoutAction(boolean isSuccess)
+    {
+
+        if(isSuccess)
+            contestController.logoutButtonOnAction();
+
     }
 }
 

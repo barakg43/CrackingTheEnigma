@@ -15,9 +15,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import static general.ConstantsHTTP.BASE_DOMAIN;
+
 public class UBoatAppController {
     public ScrollPane UBoatTabScrollPane;
-    public SplitPane UBoatTabSplitPane;
+    public SplitPane uBoatTabSplitPane;
     public Label UBoatTitleLabel;
     public TextField UBoatNameTextField;
    // public Label FirstLoadFileLabel;
@@ -28,16 +30,16 @@ public class UBoatAppController {
 
     public Tab machineConfTab;
     
-    public HBox MachineTab;
+    public HBox machineTab;
 
-    public UBoatMachineController MachineTabController;
+    public UBoatMachineController machineTabController;
 
-    public Tab contestTab;
+//    public Tab contestTab;
 
     public VBox ContestTab;
 
     public ContestController ContestTabController;
-    public TabPane UboatTabPane;
+    public TabPane uboatTabPane;
    // private Engine mEngine;
     private ReadOnlyDoubleProperty sceneWidthProperty;
     private ReadOnlyDoubleProperty sceneHeightProperty;
@@ -46,9 +48,9 @@ public class UBoatAppController {
 
     @FXML
     public void initialize() {
-        if (filePathComponentController != null && MachineTabController != null && ContestTabController != null) {
+        if (filePathComponentController != null && machineTabController != null && ContestTabController != null) {
             filePathComponentController.setMainAppController(this);
-            MachineTabController.setMainAppController(this);
+            machineTabController.setMainAppController(this);
             ContestTabController.setMainAppController(this);
         }
 
@@ -70,7 +72,7 @@ public class UBoatAppController {
 
     public void bindCurrentCode()
     {
-        MachineTabController.getMachineDetailsController().getCurrentMachineCodeController().setSelectedCode(ContestTabController.getEncryptComponentController().bindCodeComponentController().getCurrentCode());
+        machineTabController.getMachineDetailsController().getCurrentMachineCodeController().setSelectedCode(ContestTabController.getEncryptComponentController().bindCodeComponentController().getCurrentCode());
     }
 
 
@@ -80,17 +82,17 @@ public class UBoatAppController {
         sceneHeightProperty=heightProperty;
         sceneWidthProperty=widthProperty;
 
-        MachineTabController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
+        machineTabController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
         ContestTabController.bindComponentsWidthToScene(sceneWidthProperty,sceneHeightProperty);
     }
 
     public void resetAllData() {
 
-        ContestTabController.resetAllData();
+        ContestTabController.clearAllScreenData();
     }
 
     public void setMachineDetails() {
-        MachineTabController.setMachineDetails();
+        machineTabController.setMachineDetails();
         ContestTabController.setDictionaryList();
         ContestTabController.getEncryptComponentController()
                 .getCodeEncryptComponentController()
@@ -102,7 +104,7 @@ public class UBoatAppController {
     }
 
     public void setConfPanel() {
-        MachineTabController.resetAllFields();
+        machineTabController.resetAllFields();
 
     }
 
@@ -111,7 +113,7 @@ public class UBoatAppController {
     }
 
     public void setEncrypteTab() {
-        ContestTabController.bindTabDisable(MachineTabController.getIsSelected());
+        ContestTabController.bindTabDisable(machineTabController.getIsSelected());
     }
 
 
@@ -132,20 +134,31 @@ public class UBoatAppController {
     {
        // UBoatTabScrollPane.prefWidthProperty().bind(widthProperty);
        // UBoatTabScrollPane.prefHeightProperty().bind(heightProperty);
-        UBoatTabSplitPane.prefWidthProperty().bind(widthProperty);
+        uBoatTabSplitPane.prefWidthProperty().bind(widthProperty);
        // UBoatTabSplitPane.prefHeightProperty().bind(Bindings.subtract(heightProperty,150));
-        MachineTabController.bindComponentsWidthToScene(widthProperty,heightProperty);
+        machineTabController.bindComponentsWidthToScene(widthProperty,heightProperty);
         filePathComponent.prefWidthProperty().bind(widthProperty);
 
     }
 
     public void bindFileToTabPane(SimpleBooleanProperty isFileSelected) {
-        UboatTabPane.disableProperty().bind(isFileSelected.not());
+        uboatTabPane.disableProperty().bind(isFileSelected.not());
     }
 
     public void logoutButtonPressed() {
-        mainController.switchToLogin();
+       HttpClientAdapter.getHttpClient().removeCookiesOf(BASE_DOMAIN);
+        mainController.progressLogoutAction();
 
 
     }
+
+    public void setClearButtonVisible(boolean state) {
+        mainController.setClearButtonVisible(state);
+    }
+
+    public void clearAllApplicationData() {
+        ContestTabController.clearAllScreenData();
+
+    }
+
 }

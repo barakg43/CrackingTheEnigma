@@ -3,10 +3,12 @@ package uboat;
 //taken from: http://www.servletworld.com/servlet-tutorials/servlet3/multipartconfig-file-upload-example.html
 // and http://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 
+import UBoatDTO.GameStatus;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
 import general.ApplicationType;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,7 +34,7 @@ public class FileUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        PrintWriter out = response.getWriter();
+        ServletOutputStream out = response.getOutputStream();
 
         Collection<Part> parts = request.getParts();
 
@@ -57,32 +59,46 @@ public class FileUploadServlet extends HttpServlet {
         {
             try {
                 SingleBattleFieldController uboatController= ServletUtils.getSystemManager().getBattleFieldController(username);
+                GameStatus gameStatus=uboatController.getGameStatus();
+                ContestDataManager contestDataManager = uboatController.getContestDataManager();
+                if(contestDataManager!=null)
+                {
+                    ServletUtils.getSystemManager().removeBattlefield(contestDataManager.getBattlefieldName());
+                }
+                if(gameStatus==GameStatus.WAITING_FOR_ALLIES||gameStatus==GameStatus.ACTIVE)
+                {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    out.print("cannot change Enigma machine after pressing ready or during active contest.");
+                    out.flush();
+                    return;
+                }
                     Engine engine=new EnigmaEngine();
-
                     String xmlContent=readFromInputStream(input.getInputStream());
-
                     engine.loadXMLFileFromStringContent(xmlContent);
                     String battleFieldName=engine.getBattlefieldDataDTO().getBattlefieldName();
                     synchronized (getServletContext()) {
+
                         if (ServletUtils.getSystemManager().ifBattleFieldExist(battleFieldName)) {
                             //    ServletUtils.getSystemManager().removeUserName(username,ApplicationType.UBOAT);
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            out.print("Battlefield " + battleFieldName + " already exists. Please choose a different battlefield.");
-                            out.flush();
+
+                             out.println("Battlefield " + battleFieldName + " already exists. Please choose a different battlefield.");
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                           // out.flush();
                             return;
                         }
                         ServletUtils.getSystemManager().addNewBattleField(battleFieldName);
+
                     }
                     uboatController.assignXMLFileToUboat(xmlContent,engine);
-
                     String machineDataContent = ServletUtils.getGson().toJson(engine.getMachineData());
                     out.println(machineDataContent);
-                    out.flush();
+                   // out.flush();
                     response.setStatus(HttpServletResponse.SC_OK);
 
-               // out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
+                System.out.println("Success upload '" + input.getSubmittedFileName() + "' to server for uboat user:" + username);
             }
             catch (RuntimeException e) {
+                System.out.println("file upload error:"+e.getMessage());
                ServletUtils.setBadRequestErrorResponse(e,response);
             }
         }

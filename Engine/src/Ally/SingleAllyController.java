@@ -43,9 +43,14 @@ public class SingleAllyController {
     {
         return new ArrayList<>(agentsTasksProgress.values());
     }
-    public void unassignedAboutManager()
-    {
+
+    public void logoffFromContest(){
         uboatManager="";
+        allyCandidateDTOList.clear();
+        agentsTasksProgress.clear();
+        allyDataManager.changeStatus(AllyDataDTO.Status.WAITING_FOR_AGENT);
+        activeAgentSet.addAll(waitingListAgentSet);
+        waitingListAgentSet.clear();
     }
 
     public synchronized List<AllyCandidateDTO> getAllyCandidateDTOListWithVersion(int candidatesVersion) {
@@ -54,6 +59,8 @@ public class SingleAllyController {
         }
         return allyCandidateDTOList.subList(candidatesVersion,allyCandidateDTOList.size());
     }
+
+
     public void updateAllyCandidateVersion(){
         candidateVersion=allyCandidateDTOList.size();
     }
@@ -76,7 +83,16 @@ public class SingleAllyController {
         decryptionManager.setTaskSize(taskSize);
         allyDataManager.setTaskSize(taskSize);
     }
+    public boolean isWaitingAgent(String agentName)
+    {
 
+        for(AgentDataDTO agentDataDTO:waitingListAgentSet)
+        {
+            if(agentDataDTO.getAgentName().equals(agentName))
+                return true;
+        }
+        return false;
+    }
     public void createDecryptionManager( MachineDataDTO machineDataDTO,GameLevel level) {
 
         this.decryptionManager = new DecryptionManager(machineDataDTO,level,allyDataManager.getAllyName());
@@ -97,9 +113,12 @@ public class SingleAllyController {
     }
     public synchronized void assignAgentToAlly(AgentDataDTO agentDataDTO)
     {
-
-        if(activeAgentSet.add(agentDataDTO))
-            allyDataManager.increaseAgentNumber();
+        if(allyDataManager.getStatus()== AllyDataDTO.Status.WAITING_FOR_AGENT) {
+            if (activeAgentSet.add(agentDataDTO))
+                allyDataManager.increaseAgentNumber();
+        }
+        else
+            waitingListAgentSet.add(agentDataDTO);
     }
 
     public List<AgentDataDTO> getAgentDataListForAlly()

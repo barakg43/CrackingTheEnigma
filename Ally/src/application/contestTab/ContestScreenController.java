@@ -209,7 +209,7 @@ public class ContestScreenController {
 
     public void startContestAndTeamDataRefresher() {
         contestAndTeamListRefresher = new ContestAndTeamDataRefresher(this::addAlliesDataToContestTeamTable,
-                                                                        this::updateContestData);
+                                                                        this::updateContestData,this::processUboatLogout);
         timer = new Timer();
         timer.schedule(contestAndTeamListRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
     }
@@ -250,32 +250,61 @@ public class ContestScreenController {
     }
     private void createWinnerDialogPopup(String allyNameWinner){
         stopAgentsProgressAndCandidatesRefresher();
+        System.out.println("winner is::"+allyNameWinner);
         Platform.runLater(()->{
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Ally:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
-        alert.setContentText("Clearing ALL contest data");
-        ButtonType clear = new ButtonType("Clear Data");
-        alert.getButtonTypes().setAll(clear);
+        alert.setContentText("Clearing ALL contest data button in top left window!");
+        applicationController.setClearButtonVisible(true);
     //            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
         // Listen for the Alert to close and get the result
-        alert.setOnCloseRequest(e -> {
-            // Get the result
-            ButtonType result = alert.getResult();
-            if (result != null && result == clear) {
-                {
-                    contestDataComponentController.clearAllData();
-                    alliesTeamsComponentController.clearAll();
-                    teamsAgentsComponentController.clearAllData();
-                    teamsCandidatesComponentController.clearData();
-                }
-            } else {
-                System.out.println("Quit!");
-            }
-        });
+//        alert.setOnCloseRequest(e -> {
+//            // Get the result
+//            ButtonType result = alert.getResult();
+//            if (result != null && result == clear) {
+//                {
+//                    contestDataComponentController.clearAllData();
+//                    alliesTeamsComponentController.clearAll();
+//                    teamsAgentsComponentController.clearAllData();
+//                    teamsCandidatesComponentController.clearData();
+//                }
+//            } else {
+//                System.out.println("Quit!");
+//            }
+//        });
 
         alert.show();
     });
     }
+
+    private void processUboatLogout()
+    {
+        stopAgentsProgressAndCandidatesRefresher();
+        closeContestAndTeamDataRefresher();
+    Platform.runLater(()->{
+        applicationController.clearDataAction(new ActionEvent());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Ally:Uboat Logout ");
+        alert.setHeaderText("The uboat was logout from server");
+        alert.setContentText("moving to dashboard screen for choose new contest");
+        alert.show();
+
+    });
+
+
+
+
+    }
+    public void clearAllApplicationData() {
+
+        contestDataComponentController.clearAllData();
+        alliesTeamsComponentController.clearAll();
+        teamsAgentsComponentController.clearAllData();
+        teamsCandidatesComponentController.clearData();
+        taskSizeTextSpinner.setDisable(false);
+
+    }
+
 
 }

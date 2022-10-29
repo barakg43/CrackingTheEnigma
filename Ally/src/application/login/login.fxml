@@ -26,7 +26,7 @@
             <TextField fx:id="userNameTextField"  GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <HBox alignment="CENTER" prefHeight="88.0" prefWidth="269.0" spacing="15.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <children>
-                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="2.0" prefWidth="81.0" styleClass="main-action-button" text="Login" />
+                  <Button fx:id="loginButton" defaultButton="true"  mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="2.0" prefWidth="81.0" styleClass="main-action-button" text="Login" />
                   <Button id="quit-button" mnemonicParsing="false" onAction="#quitButtonClicked" styleClass="main-action-button" text="Quit" />
                </children>
             </HBox>

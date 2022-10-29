@@ -19,9 +19,9 @@ public class ContestDataManager extends ContestDataDTO {
     {
         registeredAmount++;
     }
-    public void decrementRegisterAmount()
+    public void resetRegisterAmount()
     {
-        registeredAmount--;
+        registeredAmount=0;
     }
     public void changeGameStatus(GameStatus gameStatus)
     {

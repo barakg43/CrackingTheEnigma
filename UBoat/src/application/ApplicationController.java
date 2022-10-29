@@ -8,10 +8,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -22,6 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ApplicationController {
+    @FXML private Button clearButton;
+    @FXML private  Button chatButton;
     private final String LOGIN="login";
     private final String DASHBOARD="dashboard";
     public final static ApplicationType TYPE= ApplicationType.UBOAT;
@@ -58,15 +62,14 @@ public class ApplicationController {
 
     @FXML
     public void initialize() {
+        screenController=new ScreenController();
         helloUserLabel.textProperty().bind(Bindings.concat("Hello ", currentUserName));
-
         loadLoginPage();
         loadUBoatPage();
 
-
     }
 
-    private void loadLoginPage() {
+    public void loadLoginPage() {
         URL loginPageUrl = getClass().getClassLoader().getResource(CommonResources.UBOAT_APP_FXML_LOGIN);
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -75,6 +78,7 @@ public class ApplicationController {
             logicController = fxmlLoader.getController();
             logicController.setMainController(this);
             //setMainPanelTo(loginComponent);
+            screenController.addScreen(LOGIN,loginComponent);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,7 +93,7 @@ public class ApplicationController {
             uBoatController = fxmlLoader.getController();
            // uBoatController.bindScene(widthProperty,heightProperty);
             uBoatController.setMainController(this);
-
+            screenController.addScreen(DASHBOARD,UBoatComponent);
 
 
         } catch (IOException e) {
@@ -123,17 +127,17 @@ public class ApplicationController {
 
     public void switchToLogin() {
         uBoatController.filePathComponentController.isFileSelectedProperty().set(false);
-        uBoatController.MachineTabController.bindTabPane( uBoatController.filePathComponentController.isFileSelectedProperty());
-        uBoatController.MachineTabController.resetAllData();
-        uBoatController.filePathComponentController.resetFile();
-        uBoatController.ContestTabController.resetAllData();
+        uBoatController.machineTabController.bindTabPane( uBoatController.filePathComponentController.isFileSelectedProperty());
+//        uBoatController.machineTabController.resetAllData();
+//        uBoatController.filePathComponentController.resetFile();
+//        uBoatController.ContestTabController.clearAllScreenData();
         Platform.runLater(() -> {
             currentUserName.set("");
             logicController.getName().clear();
             //setMainPanelTo(loginComponent);
             setMainPanelTo(LOGIN);
 
-            uBoatController.UboatTabPane.getSelectionModel().select(0);
+            uBoatController.uboatTabPane.getSelectionModel().select(0);
         });
     }
 
@@ -154,10 +158,29 @@ public class ApplicationController {
 
     public void setMainStage(Stage mainStage) {
 
-        screenController=new ScreenController(mainPanel, mainStage);
-        screenController.addScreen(LOGIN,loginComponent);
-        screenController.addScreen(DASHBOARD,UBoatComponent);
+        screenController.setMainPaneAndStage(mainPanel, mainStage);
+
         setMainPanelTo(LOGIN);
+    }
+
+    public void clearDataAction(ActionEvent actionEvent) {
+        uBoatController.clearAllApplicationData();
+        clearButton.setVisible(false);
+
+    }
+    public void setClearButtonVisible(boolean state)
+    {
+        clearButton.setVisible(state);
+    }
+    public void progressLogoutAction()
+    {
+
+        loadLoginPage();
+        switchToLogin();
+        loadUBoatPage();
+    }
+
+    public void openChatWindow(ActionEvent actionEvent) {
     }
 }
 

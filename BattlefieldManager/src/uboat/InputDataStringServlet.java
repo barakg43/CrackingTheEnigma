@@ -2,6 +2,7 @@ package uboat;
 
 
 import com.google.gson.JsonObject;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import utils.ServletUtils;
 import utils.SessionUtils;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.*;
 
@@ -24,7 +24,7 @@ public class InputDataStringServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain");
-        PrintWriter out = response.getWriter();
+        ServletOutputStream out = response.getOutputStream();
 
 
         String username = SessionUtils.getUsername(request);
@@ -50,7 +50,6 @@ public class InputDataStringServlet extends HttpServlet {
                .processDataInput(inputString);
        uboatController.setContestInitConfiguration(output);
        out.println(String.format(SINGLE_JSON_FORMAT,OUTPUT_PROPERTY,output));
-       out.flush();
         response.setStatus(HttpServletResponse.SC_OK);
 
         }
