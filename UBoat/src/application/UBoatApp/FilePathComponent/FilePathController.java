@@ -119,6 +119,10 @@ public class FilePathController {
     }
 
 
+    public SimpleBooleanProperty getIsFileSelected()
+    {
+        return isFileSelected;
+    }
     public void setStartTeamStatus(Runnable startTeamStatus) {
         this.startTeamStatus = startTeamStatus;
     }

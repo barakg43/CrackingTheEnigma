@@ -30,28 +30,29 @@ public class GetContestWinnerServlet extends HttpServlet {
         {
 
             out.println("Must login as AGENT or ALLY first!");
-            response.getWriter().flush();
+            out.flush();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
         ServletUtils.logRequestAndTime(username,"GetContestWinnerServlet");
         try {
-            String allyName;
-            if(ServletUtils.getSystemManager().isAgentExist(username))
-                allyName = ServletUtils.getSystemManager().getAgentData(username).getAllyTeamName();
-            else
-                allyName=username;
-            String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
-            if(uboatNameManager==null)
-            {
-                response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-                return;
-            }
-            String winnerName= ServletUtils.getSystemManager().getBattleFieldController(uboatNameManager).getWinnerName();
+            String uboatName = request.getParameter(UBOAT_PARAMETER);
+            if (uboatName == null || uboatName.isEmpty()) {
+                //no username in session and no username in parameter - not standard situation. it's a conflict
 
-            out.format(SINGLE_JSON_FORMAT+"\r\n",WINNER_NAME,winnerName);
+                // stands for conflict in server state
+                response.setStatus(HttpServletResponse.SC_CONFLICT);
+            }
+            if(ServletUtils.getSystemManager().isAllyExist(username)) {
+                ServletUtils.getSystemManager()
+                        .getSingleAllyController(username).logoffFromContest();
+                ServletUtils.getSystemManager().getBattleFieldController(uboatName).removeAllyFromUboat(username);
+            }
+            String winnerName= ServletUtils.getSystemManager().getBattleFieldController(uboatName).getWinnerName();
+
+            out.println(String.format(SINGLE_JSON_FORMAT,WINNER_NAME,winnerName));
             out.flush();
-            response.setContentType("text/plain");
+            response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e) {
             ServletUtils.setBadRequestErrorResponse(e,response);

@@ -2,6 +2,7 @@ package MainAgentApp.agentLogin;
 
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
 import MainAgentApp.MainAgentController;
+import MainAgentApp.agentLogin.userListComponent.AllUserListController;
 import agent.AgentDataDTO;
 import general.UserListDTO;
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,8 @@ import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class AgentLoginController implements LoginInterface {
 
+    @FXML private HBox userListComponent;
+    @FXML private AllUserListController userListComponentController;
     @FXML
     private GridPane loginPage;
 
@@ -45,18 +49,11 @@ public class AgentLoginController implements LoginInterface {
     @FXML
     private Spinner<Integer> NumberOfTasks;
 
-    @FXML
-    private ListView<String> uboatUsersColumn;
 
-    @FXML
-    private ListView<String> alliesUsersColumn;
 
-    @FXML
-    private ListView<String> agentsUsersColumn;
 
-    private ObservableList<String> uboatUsersObserve;
-    private ObservableList<String> alliesUsersObserve;
-    private ObservableList<String> agentsUsersObserve;
+
+
     private Timer timer;
     private TimerTask listRefresher;
 
@@ -64,13 +61,13 @@ public class AgentLoginController implements LoginInterface {
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
-    private List<String> agentNameList;
+
 
     private MainAgentController mainController;
 
     @FXML
     public void initialize() {
-        agentNameList=new ArrayList<>();
+
         errorAlert.setTitle("Error");
         errorAlert.contentTextProperty().bind(errorMessageProperty);
         SpinnerValueFactory.IntegerSpinnerValueFactory threadSpinnerValueFactory=new SpinnerValueFactory.IntegerSpinnerValueFactory(1,4);
@@ -82,45 +79,14 @@ public class AgentLoginController implements LoginInterface {
         integerSpinnerValueFactory.setAmountToStepBy(10);
         NumberOfTasks.setValueFactory(integerSpinnerValueFactory);
         NumberOfTasks.editorProperty().get().setAlignment(Pos.CENTER);
-
-        initializeAllUsers();
-
-        startListRefresher();
-
+        userListComponentController.setUserListDTOConsumer(this::updateAlliesTeams);
+        userListComponentController.startListRefresher();
 //        HttpClientUtil.setCookieManagerLoggingFacility(line ->
 //                Platform.runLater(() ->
 //                        updateHttpStatusLine(line)));
     }
 
-    private void initializeAllUsers() {
-        uboatUsersColumn.setPlaceholder(
-                new Label("No rows to display"));
 
-        alliesUsersColumn.setPlaceholder(
-                new Label("No rows to display"));
-        agentsUsersColumn.setPlaceholder(
-                new Label("No rows to display"));
-        uboatUsersColumn.setStyle("-fx-alignment:center");
-        alliesUsersColumn.setStyle("-fx-alignment:center");
-        agentsUsersColumn.setStyle("-fx-alignment:center");
-        uboatUsersObserve= FXCollections.observableArrayList();
-        alliesUsersObserve=FXCollections.observableArrayList();
-        agentsUsersObserve=FXCollections.observableArrayList();
-    }
-
-
-    private void updateTableView(UserListDTO allUserList) {
-        if (allUserList != null)
-            Platform.runLater(() -> {
-                uboatUsersObserve.setAll(allUserList.getUboatUsersSet());
-                alliesUsersObserve.setAll(allUserList.getAlliesUsersSet());
-                agentsUsersObserve.setAll(allUserList.getAgentsUsersSet());
-                uboatUsersColumn.setItems(uboatUsersObserve);
-                alliesUsersColumn.setItems(alliesUsersObserve);
-                agentsUsersColumn.setItems(agentsUsersObserve);
-            });
-
-    }
 
     @FXML
     void loginButtonClicked(ActionEvent event) {
@@ -179,11 +145,6 @@ public class AgentLoginController implements LoginInterface {
             return null;
 
         }
-        if(agentNameList.contains(userName))
-        {
-            errorMessageProperty.set("User name already logged in. You can't login with same user name");
-            return null;
-        }
 
         return new AgentDataDTO(userName,AlliesTeamComboBox.getSelectionModel().getSelectedItem()
                 ,numberOfThreads.getValue(), NumberOfTasks.getValue());
@@ -203,9 +164,8 @@ public class AgentLoginController implements LoginInterface {
         } else {
             System.out.println( agentDataDTO.getAgentName() +" login success");
             Platform.runLater(() -> {
-                agentNameList.add(agentDataDTO.getAgentName());
                 mainController.updateAgentInfo(agentDataDTO);
-                stopListRefresher();
+                userListComponentController.closeListRefresher();
                 mainController.switchToAgentPage();
             });
         }
@@ -220,20 +180,5 @@ public class AgentLoginController implements LoginInterface {
         });
     }
 
-    public void startListRefresher() {
-        listRefresher = new UserListRefresher(this::updateTableView, this::updateAlliesTeams);
-        timer = new Timer();
-        timer.schedule(listRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
-    }
-
-    public void stopListRefresher() {
-        uboatUsersColumn.getItems().clear();
-        alliesUsersColumn.getItems().clear();
-        agentsUsersColumn.getItems().clear();
-        if (listRefresher != null && timer != null) {
-            listRefresher.cancel();
-            timer.cancel();
-        }
-    }
 
 }

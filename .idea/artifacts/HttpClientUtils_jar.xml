@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="HttpClientUtils:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/HttpClientUtils_jar</output-path>
+    <root id="archive" name="HttpClientUtils.jar">
+      <element id="module-output" name="HttpClientUtils" />
+      <element id="module-output" name="DataTransferObject" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/BattlefieldManager/web/WEB-INF/lib/gson-2.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/okHttp/okhttp-4.9.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

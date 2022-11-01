@@ -1,7 +1,7 @@
 package uboat;
 
 
-import UBoatDTO.GameStatus;
+import allyDTOs.AllyDataDTO;
 import com.google.gson.JsonObject;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +12,7 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import static general.ConstantsHTTP.*;
 
@@ -45,8 +46,8 @@ public class SetWinnerContestServlet extends HttpServlet {
         {
        SingleBattleFieldController uboatController= ServletUtils.getSystemManager()
                     .getBattleFieldController(username);
-       uboatController.processFinishContestEvent(winnerName);
 
+       uboatController.processFinishContestEvent(winnerName);
         response.setStatus(HttpServletResponse.SC_OK);
 
         }

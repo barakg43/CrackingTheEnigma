@@ -6,7 +6,6 @@ package uboat;
 import UBoatDTO.GameStatus;
 import enigmaEngine.Engine;
 import enigmaEngine.EnigmaEngine;
-import general.ApplicationType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -20,7 +19,6 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Scanner;
 

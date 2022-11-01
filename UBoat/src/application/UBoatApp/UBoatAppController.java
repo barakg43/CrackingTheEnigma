@@ -7,6 +7,7 @@ import application.UBoatApp.MachineTab.UBoatMachineController;
 import application.http.HttpClientAdapter;
 import engineDTOs.CodeFormatDTO;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -55,6 +56,8 @@ public class UBoatAppController {
         }
 
     }
+
+
     public static void createErrorAlertWindow(String title,String error)
     {
         Platform.runLater(() -> {
@@ -76,7 +79,13 @@ public class UBoatAppController {
     }
 
 
-
+    public SimpleBooleanProperty getShowCodeDetails() {
+        return machineTabController.getShowCodeDetails();
+    }
+    public void bindShowConfiguration()
+    {
+         machineTabController.bindCodeConfigScene();
+    }
     public void setSceneWidthHeightProperties(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty)
     {
         sceneHeightProperty=heightProperty;
@@ -91,6 +100,9 @@ public class UBoatAppController {
         ContestTabController.clearAllScreenData();
     }
 
+    public void bindToFileComponent(SimpleBooleanProperty isShowData){
+        filePathComponent.disableProperty().bind(isShowData.not());
+    }
     public void setMachineDetails() {
         machineTabController.setMachineDetails();
         ContestTabController.setDictionaryList();
@@ -103,6 +115,7 @@ public class UBoatAppController {
 
     }
 
+
     public void setConfPanel() {
         machineTabController.resetAllFields();
 
@@ -114,6 +127,10 @@ public class UBoatAppController {
 
     public void setEncrypteTab() {
         ContestTabController.bindTabDisable(machineTabController.getIsSelected());
+    }
+
+    public SimpleBooleanProperty getIsSelected(){
+        return machineTabController.getIsSelected();
     }
 
 
@@ -144,6 +161,10 @@ public class UBoatAppController {
     public void bindFileToTabPane(SimpleBooleanProperty isFileSelected) {
         uboatTabPane.disableProperty().bind(isFileSelected.not());
     }
+    public SimpleBooleanProperty getIsFileSelected()
+    {
+        return filePathComponentController.getIsFileSelected();
+    }
 
     public void logoutButtonPressed() {
        HttpClientAdapter.getHttpClient().removeCookiesOf(BASE_DOMAIN);
@@ -152,12 +173,23 @@ public class UBoatAppController {
 
     }
 
+
     public void setClearButtonVisible(boolean state) {
         mainController.setClearButtonVisible(state);
     }
 
     public void clearAllApplicationData() {
+
+        ContestTabController.getIsSelected().set(true);
+        ContestTabController.getShowCodeDetails().set(true);
         ContestTabController.clearAllScreenData();
+        ContestTabController.getReadyButtonDisableProperty().set(false);
+
+    }
+
+
+    public BooleanProperty getFileController() {
+        return filePathComponent.disableProperty();
 
     }
 

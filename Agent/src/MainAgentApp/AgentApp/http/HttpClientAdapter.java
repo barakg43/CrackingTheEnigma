@@ -71,18 +71,20 @@ public class HttpClientAdapter {
     }
 
 
-public static void getWinnerContestName(Consumer<String> winnerNameConsumer) {
-    HTTP_CLIENT.doGetASync(WINNER_TEAM, new Callback() {
+public static void getWinnerContestName(Consumer<String> winnerNameConsumer,String uboatName) {
+
+        String contextUrl=String.format(QUERY_FORMAT,WINNER_TEAM,UBOAT_PARAMETER,uboatName);
+    HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
         @Override
         public void onFailure(@NotNull Call call, @NotNull IOException e) {
-            createErrorAlertWindow("Agent Configuration", e.getMessage());
+            createErrorAlertWindow("Get Winner Name", e.getMessage());
         }
 
         @Override
         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
             String responseBody = CustomHttpClient.getResponseBodyAsString(response);
             if (response.code() != HTTP_OK) {
-                createErrorAlertWindow("Agent Configuration", responseBody);
+                createErrorAlertWindow("Get Winner Name-Response arrive", responseBody);
             } else {
                 winnerNameConsumer.accept( CustomHttpClient
                         .GSON_INSTANCE

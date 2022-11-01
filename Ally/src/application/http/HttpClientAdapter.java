@@ -35,6 +35,25 @@ public class HttpClientAdapter {
         });
     }
 
+    public static void logoffFromContest()
+    {
+
+        HTTP_CLIENT.doPostASync(FINISH_CONTEST,"", new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                createErrorAlertWindow("Logout From Contest",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call,@NotNull Response response) throws IOException {
+                String body = CustomHttpClient.getResponseBodyAsString(response);
+                if(response.code()!=HTTP_OK)
+                    createErrorAlertWindow("Logout From Contest",body);
+
+            }
+        });
+
+    }
 
     public static void registerAllyToContest(String uboatName,Runnable afterRegistered)
     {
@@ -105,13 +124,13 @@ public class HttpClientAdapter {
     }
 
 
-    public static void getWinnerContestName(Consumer<String> winnerNameConsumer) {
-        HTTP_CLIENT.doGetASync(WINNER_TEAM, new Callback() {
+    public static void getWinnerContestName(Consumer<String> winnerNameConsumer,String uboatName) {
+        String contextUrl=String.format(QUERY_FORMAT,WINNER_TEAM,UBOAT_PARAMETER,uboatName);
+        HTTP_CLIENT.doGetASync(contextUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 createErrorAlertWindow("Agent Configuration", e.getMessage());
             }
-
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseBody = CustomHttpClient.getResponseBodyAsString(response);

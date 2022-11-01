@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact name="Agent:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Agent_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Agent.jar">
+        <element id="module-output" name="Agent" />
+        <element id="module-output" name="DataTransferObject" />
+        <element id="module-output" name="HttpClientUtils" />
+        <element id="module-output" name="Engine" />
+      </element>
+      <element id="library" level="project" name="gson-2.9.1" />
+      <element id="library" level="project" name="okHttp" />
+    </root>
+  </artifact>
+</component>

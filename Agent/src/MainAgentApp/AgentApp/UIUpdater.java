@@ -167,6 +167,7 @@ public class UIUpdater {
         return candidateListenerTask!=null&& candidateListenerTask.isRunning();
     }
     public void resetAllUIData() {
+
         queueTaskAmountProperty.set(0);
         completeTaskAmountProperty.set(0);
         pulledTaskAmountProperty.set(0);

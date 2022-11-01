@@ -78,6 +78,8 @@ public class MachineDetailsController {
     public void setCodes() {
        //machineConfigurationController.getHttpClientAdapter().getInitialCurrentCodeFormat(this::setAllCode);
 
+
+
     }
     public void setAllCode(AllCodeFormatDTO allCodeFormatDTO)
     {

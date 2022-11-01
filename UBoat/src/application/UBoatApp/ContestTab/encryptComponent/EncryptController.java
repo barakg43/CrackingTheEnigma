@@ -214,19 +214,16 @@ public class EncryptController {
 
     public void startBattlefieldContest(ActionEvent ignoredActionEvent) {
         HttpClientAdapter.sendReadyToContestCommand(readyButton::setDisable);
+        if(!readyButton.isDisable())
+        {
+            contestController.getIsSelected().set(false);
+            contestController.getShowCodeDetails().set(false);
+            contestController.bindReadyButtonToFIleComponent();
+
+        }
     }
 
-    public void logoutAction(ActionEvent actionEvent) {
 
-        HttpClientAdapter.logoffUboat(this::afterLogoutAction);
-    }
-    private void afterLogoutAction(boolean isSuccess)
-    {
-
-        if(isSuccess)
-            contestController.logoutButtonOnAction();
-
-    }
 }
 
 

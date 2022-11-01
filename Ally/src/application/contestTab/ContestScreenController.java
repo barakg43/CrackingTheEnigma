@@ -70,7 +70,7 @@ public class ContestScreenController {
     private final BooleanProperty isAgentsAssign=new SimpleBooleanProperty(false);
     private final BooleanProperty isTaskSizePositive=new SimpleBooleanProperty(false);
     private final BooleanProperty readyDisableProperty =new SimpleBooleanProperty(false);
-
+    private String uboatName;
 
     @FXML
     private void initialize(){
@@ -87,12 +87,12 @@ public class ContestScreenController {
         }));
         taskSizeTextSpinner.valueProperty().addListener((observable, oldValue, newValue) -> isTaskSizePositive.set(newValue >0));
 
-        readyButton.disableProperty().bind(Bindings.or(readyDisableProperty,
-                Bindings.or(isAgentsAssign.not(), isTaskSizePositive.not())));
+//        readyButton.disableProperty().bind(Bindings.or(readyDisableProperty,
+//                Bindings.or(isAgentsAssign.not(), isTaskSizePositive.not())));
      //   isAgentsAssign.addListener(((observable, oldValue, newValue) ->System.out.println("AGENTS is:"+newValue )));
 //        readyDisableProperty.addListener(((observable, oldValue, newValue) ->{
 //            readyButton.setDisable(newValue);}));
-        readyButton.disableProperty().bind(readyDisableProperty);
+        readyButton.disableProperty().bind(isTaskSizePositive.not());
         taskSizeTextSpinner.setValueFactory(integerSpinnerValueFactory);
         taskSizeTextSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
         taskSizeTextSpinner.editorProperty().get().setAlignment(Pos.CENTER);
@@ -141,7 +141,8 @@ public class ContestScreenController {
         allyDataDTOList.remove(currentAllyData);
         assert currentAllyData != null;
         AllyDataDTO finalCurrentAllyData = currentAllyData;
-        System.out.println("ready is:"+readyDisableProperty.get()+" Agents="+isAgentsAssign.not().get()+" isTask:"+isTaskSizePositive.not().get());
+       // System.out.println(currentAllyData);
+      //  System.out.println("ready is:"+readyDisableProperty.get()+" Agents="+isAgentsAssign.not().get()+" isTask:"+isTaskSizePositive.not().get());
         Platform.runLater(()->{
             setAllyStatusLabels(finalCurrentAllyData);
             alliesTeamsComponentController.addAlliesDataToContestTeamTable(allyDataDTOList);
@@ -162,6 +163,9 @@ public class ContestScreenController {
 
     }
     private void updateContestData(ContestDataDTO contestDataDTO) {
+
+//        System.out.println(contestDataDTO);
+        uboatName=contestDataDTO.getUboatUserName();
         if(contestDataDTO.getGameStatus()== GameStatus.ACTIVE)
         {
             closeContestAndTeamDataRefresher();
@@ -183,6 +187,7 @@ public class ContestScreenController {
     }
 
     public void readyButtonAction(ActionEvent ignoredActionEvent) {
+        isTaskSizePositive.set(false);
         HttpClientAdapter.readyToStartCommand(this::afterReadyAction,
                                             getTaskSizeFromSpinner(),
                                             teamsAgentsComponentController::setTotalTaskAmount);
@@ -216,9 +221,12 @@ public class ContestScreenController {
 
     public void setGameStatus(GameStatus gameStatus)
     {
-
-        if(gameStatus== GameStatus.FINISH)
-            HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup);
+        System.out.println("game status :"+gameStatus);
+        if(gameStatus== GameStatus.FINISH) {
+            stopAgentsProgressAndCandidatesRefresher();
+           // HttpClientAdapter.logoffFromContest();
+            HttpClientAdapter.getWinnerContestName(this::createWinnerDialogPopup,uboatName);
+        }
     }
 
 
@@ -249,14 +257,17 @@ public class ContestScreenController {
         this.allyName = allyName;
     }
     private void createWinnerDialogPopup(String allyNameWinner){
-        stopAgentsProgressAndCandidatesRefresher();
-        System.out.println("winner is::"+allyNameWinner);
+
+
         Platform.runLater(()->{
+
+       System.out.println("winner is::"+allyNameWinner);
+        applicationController.setClearButtonVisible(true);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Ally:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
         alert.setContentText("Clearing ALL contest data button in top left window!");
-        applicationController.setClearButtonVisible(true);
+
     //            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
         // Listen for the Alert to close and get the result
 //        alert.setOnCloseRequest(e -> {

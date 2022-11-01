@@ -49,7 +49,8 @@ public class ReadyToContestServlet extends HttpServlet {
                     .getBattleFieldController(uboatManager);
             uboatController.checkIfAllReady();
             String totalTaskString= String.format("%.0f", allyController.getDecryptionManager().getTotalTasksAmount());
-            out.format(SINGLE_JSON_FORMAT+"\r\n", TOTAL_TASK_AMOUNT,totalTaskString);
+            out.println(String.format(SINGLE_JSON_FORMAT, TOTAL_TASK_AMOUNT,totalTaskString));
+            response.setContentType("application/json");
             out.flush();
             response.setStatus(HttpServletResponse.SC_OK);
         }catch (RuntimeException e){

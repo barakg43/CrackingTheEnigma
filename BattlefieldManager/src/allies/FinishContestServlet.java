@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import static general.ConstantsHTTP.ALLY_CONTEXT;
-import static general.ConstantsHTTP.START_TASKS_CREATOR;
+import static general.ConstantsHTTP.FINISH_CONTEST;
 
 
-@WebServlet(name = "StartTaskCreatorServlet", urlPatterns = {ALLY_CONTEXT+START_TASKS_CREATOR})
-public class StartTaskCreatorServlet extends HttpServlet {
+@WebServlet(name = "FinishContestServlet", urlPatterns = {ALLY_CONTEXT+ FINISH_CONTEST})
+public class FinishContestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -31,11 +31,10 @@ public class StartTaskCreatorServlet extends HttpServlet {
         }
         ServletUtils.logRequestAndTime(allyName,"StartTaskCreatorServlet");
         try {
-
+            String uboatManager=  ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
             ServletUtils.getSystemManager()
-                    .getSingleAllyController(allyName)
-                    .getDecryptionManager()
-                    .startCreatingContestTasks();
+                    .getSingleAllyController(allyName).logoffFromContest();
+            ServletUtils.getSystemManager().getBattleFieldController(uboatManager).removeAllyFromUboat(allyName);
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             ServletUtils.setBadRequestErrorResponse(e,response);
