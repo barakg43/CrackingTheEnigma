@@ -7,12 +7,12 @@ import allyDTOs.AllyDataDTO;
 import allyDTOs.ContestDataDTO;
 import engineDTOs.BattlefieldDataDTO;
 import engineDTOs.CodeFormatDTO;
-import engineDTOs.DmDTO.GameLevel;
 import enigmaEngine.Engine;
-import enigmaEngine.EnigmaEngine;
 
 import java.util.*;
 import java.util.function.Consumer;
+
+import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class SingleBattleFieldController {
 
@@ -55,17 +55,24 @@ public class SingleBattleFieldController {
     public Engine getEnigmaEngine() {
         return enigmaEngine;
     }
-    public void processFinishContestEvent(String winnerName)
-    {
+    public void processFinishContestEvent(String winnerName) {
         this.winnerName = winnerName;
         changeGameStatus(GameStatus.FINISH);
         contestDataManager.resetRegisterAmount();
         this.codeFormatConfiguration = null;
-        this.cipheredString=null;
-        alliesDataSet.clear();
+        this.cipheredString = null;
+
 
     }
+    public synchronized void removeAllyFromUboat(String allyName)
+    {
 
+        alliesDataSet.removeIf(allyDataDTO -> allyDataDTO.getAllyName().equals(allyName));
+
+        if(alliesDataSet.isEmpty())
+            changeGameStatus(GameStatus.IDLE);
+
+    }
     public synchronized void checkIfAllReady()
     {
         boolean isAllReady=true;

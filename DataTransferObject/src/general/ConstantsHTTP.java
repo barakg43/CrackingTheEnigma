@@ -6,7 +6,7 @@ public class ConstantsHTTP {
     // global constants
     public final static String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    public final static int REFRESH_RATE = 10000;
+    public final static int REFRESH_RATE = 2000;
     public final static int FAST_REFRESH_RATE = 500;
     public static final String CANDIDATES_VERSION_PARAMETER = "candidates-version";
 
@@ -55,7 +55,7 @@ public class ConstantsHTTP {
     /**################ ALLY URLs ####################**/
     public final static  String ALLY_CONTEXT="/ally";
     public static final String REGISTER_TO_UBOAT = "/register-to-uboat";
-    public static final String START_TASKS_CREATOR = "/start-task-creator";
+    public static final String FINISH_CONTEST = "/finish-contest";
     public static final String UBOAT_PARAMETER = ApplicationType.UBOAT.toString();
 
     /**################ AGENT URLs ####################**/

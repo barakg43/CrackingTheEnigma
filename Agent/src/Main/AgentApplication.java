@@ -1,5 +1,7 @@
-import application.ApplicationController;
-import application.CommonResources;
+package Main;
+
+import MainAgentApp.CommonResources;
+import MainAgentApp.MainAgentController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +10,8 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-public class UBoatApplication extends Application{
+public class AgentApplication extends Application {
+
     private Stage primaryStage;
 
     public Stage getPrimaryStage() {
@@ -17,27 +20,25 @@ public class UBoatApplication extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Parameters parameters = getParameters();
+
 
         this.primaryStage=primaryStage;
-        primaryStage.setTitle("application/Login");
         FXMLLoader fxmlLoader=new FXMLLoader();
-        URL url=getClass().getClassLoader().getResource(CommonResources.UBOAT_MAIN_APP_FXML_LOGIN);
+        URL url=getClass().getClassLoader().getResource(CommonResources.AGENT_MAIN_APP_FXML_LOGIN);
         fxmlLoader.setLocation(url);
         assert url != null;
         Parent root=fxmlLoader.load(url.openStream());
 
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root,1080,1000);
         // AllMachineController machineController=fxmlLoader.getController();
-        ApplicationController machineController=fxmlLoader.getController();
+        MainAgentController machineController=fxmlLoader.getController();
         machineController.bindWidthAndHeightScene(scene.widthProperty(),scene.heightProperty());
 
-        machineController.setMainStage(primaryStage);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Uboat Application");
+      //  primaryStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, DMoperationalController::closeWindowEvent);
         primaryStage.show();
-
     }
-
 
 
 }

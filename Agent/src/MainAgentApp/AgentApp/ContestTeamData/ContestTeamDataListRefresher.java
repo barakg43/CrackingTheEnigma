@@ -1,6 +1,7 @@
 package MainAgentApp.AgentApp.ContestTeamData;
 
 import MainAgentApp.AgentApp.http.HttpClientAdapter;
+import UBoatDTO.GameStatus;
 import allyDTOs.ContestDataDTO;
 import general.HttpResponseDTO;
 import http.client.CustomHttpClient;
@@ -17,15 +18,17 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class ContestTeamDataListRefresher extends TimerTask {
     private final Consumer<ContestDataDTO> contestDataDTOConsumer;
-    private final Consumer<String> uboatLogoffAction;
+    private final Consumer<String> uboatEndContestAction;
+    private final Runnable resetContestData;
     private final CustomHttpClient httpClientUtil;
     private final AtomicInteger counter=new AtomicInteger(0);
     private ContestDataDTO contestDataDTO;
     private boolean firstLogoutAlert;
-    public ContestTeamDataListRefresher(Consumer<ContestDataDTO> contestDataDTOConsumer,Consumer<String> uboatLogoffAction) {
+    public ContestTeamDataListRefresher(Consumer<ContestDataDTO> contestDataDTOConsumer,Consumer<String> uboatEndContestAction,Runnable resetContestData) {
 
         this.contestDataDTOConsumer = contestDataDTOConsumer;
-        this.uboatLogoffAction = uboatLogoffAction;
+        this.uboatEndContestAction = uboatEndContestAction;
+        this.resetContestData = resetContestData;
         this.httpClientUtil = HttpClientAdapter.getHttpClient();
         firstLogoutAlert=true;
      }
@@ -40,12 +43,9 @@ public class ContestTeamDataListRefresher extends TimerTask {
             if(contestDataDTO!=null&&firstLogoutAlert)
             {
                 firstLogoutAlert=false;
-                System.out.println("Uboat manager logging out....");
-                uboatLogoffAction.accept(contestDataDTO.getUboatUserName());
-
+                HttpClientAdapter.getWinnerContestName(uboatEndContestAction,contestDataDTO.getUboatUserName());
             }
-            else
-                System.out.println("Ally is not assign to any Uboat manager");
+            System.out.println("Ally is not assign to any Uboat manager");
             return;
         }
 

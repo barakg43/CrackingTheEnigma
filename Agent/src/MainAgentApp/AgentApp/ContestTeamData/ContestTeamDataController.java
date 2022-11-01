@@ -11,7 +11,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static general.ConstantsHTTP.FAST_REFRESH_RATE;
-import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class ContestTeamDataController {
     @FXML private Label alliesName;
@@ -21,7 +20,7 @@ public class ContestTeamDataController {
 
     private TimerTask contestStatusRefresher;
     private Timer timer;
-
+    private String uboatName;
 
     public void setAlliesName(String alliesName)
     {
@@ -29,6 +28,7 @@ public class ContestTeamDataController {
     }
     private void updateContestData(ContestDataDTO contestDataDTO)
     {
+        uboatName=contestDataDTO.getUboatUserName();
         agentController.setGameStatus(contestDataDTO.getGameStatus());
         contestDataComponentController.updateContestData(contestDataDTO);
       //  stopListRefresher();
@@ -41,9 +41,9 @@ public class ContestTeamDataController {
 
     public void startListRefresher() {
 
-        contestStatusRefresher = new ContestTeamDataListRefresher(this::updateContestData,agentController::processUboatLogout);
+        contestStatusRefresher = new ContestTeamDataListRefresher(this::updateContestData,agentController::processEndContestLogout,contestDataComponentController::resetData);
         timer = new Timer();
-        timer.schedule(contestStatusRefresher, FAST_REFRESH_RATE, REFRESH_RATE);
+        timer.schedule(contestStatusRefresher, FAST_REFRESH_RATE, FAST_REFRESH_RATE);
 
     }
 
@@ -60,4 +60,7 @@ public class ContestTeamDataController {
     }
 
 
+    public String getUboatName() {
+        return uboatName;
+    }
 }

@@ -40,9 +40,9 @@ public class GetContestDataServlet extends HttpServlet {
             Gson gson = ServletUtils.getGson();
             String allyName = ServletUtils.getSystemManager().getAgentData(agentName).getAllyTeamName();
             String uboatNameManager= ServletUtils.getSystemManager().getSingleAllyController(allyName).getUboatNameManager();
-
-            if(uboatNameManager.isEmpty())
+            if(uboatNameManager.isEmpty()|| ServletUtils.getSystemManager().getSingleAlly(allyName).isWaitingAgent(agentName))
             {
+                System.out.println(agentName +"is waiting for next contest...");
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 return;
             }

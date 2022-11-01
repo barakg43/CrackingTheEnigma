@@ -52,6 +52,11 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
         if (responseDTO.getBody() != null && !responseDTO.getBody().isEmpty()) {
             if(responseDTO.getCode()==HTTP_OK) {
                 AllyAgentsProgressAndCandidatesDTO allyContestDataAndTeams=httpClientUtil.getGson().fromJson(responseDTO.getBody(),(AllyAgentsProgressAndCandidatesDTO.class));
+                if(allyContestDataAndTeams==null) {
+                    System.out.println("allyContestDataAndTeams is null");
+                    return;
+                }
+                gameStatusConsumer.accept(allyContestDataAndTeams.getGameStatus());
                 if(allyContestDataAndTeams.getTaskAmountProduced()>0) {
                     taskProducedConsumer.accept(allyContestDataAndTeams.getTaskAmountProduced());
                 }
@@ -59,7 +64,7 @@ public class AllyAgentsProgressAndCandidatesRefresher extends TimerTask {
                     allyCandidatesListConsumer.accept(allyContestDataAndTeams.getUpdatedAllyCandidates());
                     candidatesVersion+=allyContestDataAndTeams.getUpdatedAllyCandidates().size();
                 }
-                gameStatusConsumer.accept(allyContestDataAndTeams.getGameStatus());
+
                 if(allyContestDataAndTeams.getAgentsDataProgressDTOS()!=null)
                 {
                     teamAgentsConsumer.accept(allyContestDataAndTeams.getAgentsDataProgressDTOS());}

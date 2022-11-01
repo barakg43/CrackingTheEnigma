@@ -77,7 +77,10 @@ public class ContestController {
         uBoatController.getFileController().bind(encryptComponentController.getReadyButtonDisableProperty());
     }
 
-
+    public BooleanProperty getReadyButtonDisableProperty()
+    {
+        return encryptComponentController.getReadyButtonDisableProperty();
+    }
     public SimpleBooleanProperty getShowCodeDetails() {
         return uBoatController.getShowCodeDetails();
     }
@@ -92,27 +95,12 @@ public class ContestController {
 
     }
     private void createWinnerDialogPopup(String allyNameWinner){
-
-
+        uBoatController.setClearButtonVisible(true);
+        logoutButton.setDisable(false);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
         alert.setTitle("Uboat:The Contest was Finish ");
         alert.setHeaderText("The Winner is: "+allyNameWinner);
         alert.setContentText("Clearing ALL contest data button in top left window!");
-        uBoatController.setClearButtonVisible(true);
-//            alert.setOnHidden(evt -> Platform.exit()); // Don't need this
-
-        // Listen for the Alert to close and get the result
-//        alert.setOnCloseRequest(e -> {
-//            // Get the result
-//            ButtonType result = alert.getResult();
-//            if (result != null && result == clear) {
-//                resetAllData();
-//            } else {
-//                System.out.println("Quit!");
-//            }
-//        });
-
         alert.show();
 
     }
@@ -162,22 +150,38 @@ public class ContestController {
     }
 
     public void logoutButtonOnAction() {
+
         teamsStatusComponentController.stopTeamStatusRefresher();
-        Platform.runLater(()-> uBoatController.logoutButtonPressed());
+        Platform.runLater(()->{
+            uBoatController.logoutButtonPressed();
+            logoutButton.setDisable(false);
+        });
 
     }
 
     private void updateGameStatus(GameStatus gameStatus)
     {
         if (gameStatus==GameStatus.ACTIVE) {
+            logoutButton.setDisable(true);
             teamsStatusComponentController.stopTeamStatusRefresher();
+
             candidatesStatusComponentController.startCandidatesRefresher(teamsStatusComponentController.getAlliesNames());
         }
     }
     public void startAlliesTeamRefresher() {
         teamsStatusComponentController.startTeamStatusRefresher(this::updateGameStatus);
     }
+    public void logoutAction(ActionEvent actionEvent) {
 
+        HttpClientAdapter.logoffUboat(this::afterLogoutAction);
+    }
+    private void afterLogoutAction(boolean isSuccess)
+    {
+
+        if(isSuccess)
+           logoutButtonOnAction();
+
+    }
 
     public SimpleBooleanProperty getIsFileSelected(){
         return uBoatController.getIsFileSelected();

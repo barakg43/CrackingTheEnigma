@@ -44,7 +44,9 @@ public class SingleAllyController {
         return new ArrayList<>(agentsTasksProgress.values());
     }
 
-    public void logoffFromContest(){
+
+    public void logoffFromContest()
+    {
         uboatManager="";
         allyCandidateDTOList.clear();
         agentsTasksProgress.clear();

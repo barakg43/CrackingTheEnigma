@@ -223,17 +223,7 @@ public class EncryptController {
         }
     }
 
-    public void logoutAction(ActionEvent actionEvent) {
 
-        HttpClientAdapter.logoffUboat(this::afterLogoutAction);
-    }
-    private void afterLogoutAction(boolean isSuccess)
-    {
-
-        if(isSuccess)
-            contestController.logoutButtonOnAction();
-
-    }
 }
 
 

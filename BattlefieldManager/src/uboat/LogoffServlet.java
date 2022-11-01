@@ -1,8 +1,6 @@
 package uboat;
 
 import allyDTOs.AllyDataDTO;
-import com.google.gson.Gson;
-import enigmaEngine.Engine;
 import general.ApplicationType;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import static general.ConstantsHTTP.*;
+import static general.ConstantsHTTP.LOGOUT;
+import static general.ConstantsHTTP.UBOAT_CONTEXT;
 
 @WebServlet(name = "LogoffServlet", urlPatterns = {UBOAT_CONTEXT+LOGOUT})
 public class LogoffServlet extends HttpServlet {

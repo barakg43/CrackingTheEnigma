@@ -30,7 +30,6 @@
                   <AnchorPane>
                      <children>
                         <Button id="ready-button" fx:id="readyButton" layoutX="57.0" mnemonicParsing="false" onAction="#startBattlefieldContest" prefHeight="36.0" prefWidth="103.0" stylesheets="@../contestCSS.css" text="ready" />
-                        <Button id="logout-button" fx:id="logoutButton" layoutX="338.0" mnemonicParsing="false" onAction="#logoutAction" prefHeight="36.0" prefWidth="103.0" stylesheets="@../contestCSS.css" text="Logout" />
                      </children>
                   </AnchorPane>
                </children>

@@ -11,7 +11,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -81,11 +80,11 @@ public class UBoatAppController {
 
 
     public SimpleBooleanProperty getShowCodeDetails() {
-        return MachineTabController.getShowCodeDetails();
+        return machineTabController.getShowCodeDetails();
     }
     public void bindShowConfiguration()
     {
-         MachineTabController.bindCodeConfigScene();
+         machineTabController.bindCodeConfigScene();
     }
     public void setSceneWidthHeightProperties(ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty)
     {
@@ -131,7 +130,7 @@ public class UBoatAppController {
     }
 
     public SimpleBooleanProperty getIsSelected(){
-        return MachineTabController.getIsSelected();
+        return machineTabController.getIsSelected();
     }
 
 
@@ -180,7 +179,11 @@ public class UBoatAppController {
     }
 
     public void clearAllApplicationData() {
+
+        ContestTabController.getIsSelected().set(true);
+        ContestTabController.getShowCodeDetails().set(true);
         ContestTabController.clearAllScreenData();
+        ContestTabController.getReadyButtonDisableProperty().set(false);
 
     }
 

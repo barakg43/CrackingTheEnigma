@@ -1,6 +1,7 @@
 package MainAgentApp.AgentApp.ContestTeamData.contestDataComponent;
 
 import allyDTOs.ContestDataDTO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -35,11 +36,16 @@ public class ContestDataController {
     }
     public void resetData()
     {
-        battlefieldNameLabel.setText("");
-        uboatUserLabel.setText("");
-        gameStatusLabel.setText("");
-        gameLevelLabel.setText("");
-        alliesAmountLabel.setText("");
+        Platform.runLater(()->{
+            battlefieldNameLabel.setText("");
+            uboatUserLabel.setText("");
+            gameStatusLabel.setText("");
+            gameLevelLabel.setText("");
+            alliesAmountLabel.setText("");
+
+
+        });
+
     }
 
 }

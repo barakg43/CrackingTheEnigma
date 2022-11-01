@@ -21,7 +21,6 @@ import java.util.TimerTask;
 import java.util.function.Consumer;
 
 import static general.ConstantsHTTP.FAST_REFRESH_RATE;
-import static general.ConstantsHTTP.REFRESH_RATE;
 
 public class CandidatesStatusController {
 

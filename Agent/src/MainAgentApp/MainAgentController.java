@@ -11,7 +11,6 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,7 +30,7 @@ public class MainAgentController {
     @FXML private Label agentTitle;
     @FXML private Label helloUserNameLabel;
 
-    @FXML private GridPane loginComponent;
+    @FXML private AnchorPane loginComponent;
     private AgentLoginController loginComponentController;
 
     @FXML private FlowPane mainPanel;
